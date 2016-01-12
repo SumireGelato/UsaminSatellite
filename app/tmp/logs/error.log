@@ -1,0 +1,27 @@
+2016-01-12 11:40:45 Error: [MissingControllerException] Controller class SateliteController could not be found.
+Exception Attributes: array (
+  'class' => 'SateliteController',
+  'plugin' => NULL,
+)
+Request URL: /Satelite/satelite/
+Stack Trace:
+#0 C:\wamp\www\Satelite\app\webroot\index.php(111): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2016-01-12 11:53:02 Error: [MissingControllerException] Controller class SateliteController could not be found.
+Exception Attributes: array (
+  'class' => 'SateliteController',
+  'plugin' => NULL,
+)
+Request URL: /Satelite/satelite/
+Stack Trace:
+#0 C:\wamp\www\Satelite\app\webroot\index.php(111): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2016-01-12 11:53:15 Error: [MissingControllerException] Controller class PhpStorm-fba09e70-b824-4bf0-81d9-d63fa9f2cf63.phpController could not be found.
+Exception Attributes: array (
+  'class' => 'PhpStorm-fba09e70-b824-4bf0-81d9-d63fa9f2cf63.phpController',
+  'plugin' => NULL,
+)
+Request URL: /Satelite/PhpStorm-fba09e70-b824-4bf0-81d9-d63fa9f2cf63.php
+Stack Trace:
+#0 C:\wamp\www\Satelite\app\webroot\index.php(111): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
