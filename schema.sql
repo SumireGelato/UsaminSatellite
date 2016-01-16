@@ -1,130 +1,154 @@
 -- create clauses
 -- --------------------------------
-create table news (
-  id int unsigned not null auto_increment,
-  author_id INT UNSIGNED NOT NULL,
-  title CHARACTER(255) not null,
-  body TEXT not null,
-  created DATETIME not null,
-  modified DATETIME,
-  isPublished BOOLEAN not null,
-  constraint news_pk primary key (id));
+CREATE TABLE news (
+  id          INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+  author_id   INT UNSIGNED   NOT NULL,
+  title       CHARACTER(255) NOT NULL,
+  body        TEXT           NOT NULL,
+  created     DATETIME       NOT NULL,
+  modified    DATETIME,
+  isPublished BOOLEAN        NOT NULL,
+  CONSTRAINT news_pk PRIMARY KEY (id)
+);
 
-create table idols (
-  id int unsigned not null auto_increment,
-  eName varchar(255) not null,
-  jName varchar(255) not null,
-  age varchar(20) not null,
-  height INT not null,
-  weight INT not null,
-  birthday varchar(50) not null,
-  bloodType varchar(5) not null,
-  bwh varchar(10) not null,
-  hobbies TEXT not null,
-  writingHand CHARACTER(10) not null,
-  horoscope varchar(50) not null,
-  hometown varchar(50) not null,
-  type varchar(10) not null,
-  cv varchar(255) not null,
-  pic1 varchar(255) not null,
-  pic2 VARCHAR(255),
-  constraint idols_pk primary key (id));
+CREATE TABLE idols (
+  id          INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  eName       VARCHAR(255)  NOT NULL,
+  jName       VARCHAR(255)  NOT NULL,
+  age         VARCHAR(20)   NOT NULL,
+  height      INT           NOT NULL,
+  weight      INT           NOT NULL,
+  birthday    VARCHAR(50)   NOT NULL,
+  bloodType   VARCHAR(5)    NOT NULL,
+  bwh         VARCHAR(10)   NOT NULL,
+  hobbies     TEXT          NOT NULL,
+  writingHand CHARACTER(10) NOT NULL,
+  horoscope   VARCHAR(50)   NOT NULL,
+  hometown    VARCHAR(50)   NOT NULL,
+  type        VARCHAR(10)   NOT NULL,
+  cv          VARCHAR(255)  NOT NULL,
+  pic1        VARCHAR(255)  NOT NULL,
+  pic2        VARCHAR(255),
+  CONSTRAINT idols_pk PRIMARY KEY (id)
+);
 
-create table songs (
-  id int unsigned not null auto_increment,
-  eName varchar(255) not null,
-  jName varchar(255) not null,
-  type varchar(10) not null,
-  bpm int not null,
-  unlockCon text not null,
-  coverArt varchar(255) not null,
-  debutLvl int not null,
-  debutStam int not null,
-  debutNotes int not null,
-  regLvl int not null,
-  regStam int not null,
-  regNotes int not null,
-  proLvl int not null,
-  proStam int not null,
-  proNotes int not null,
-  masterLvl int not null,
-  masterStam int not null,
-  masterNotes int not null,
-  constraint songs_pk primary key (id));
+CREATE TABLE songs (
+  id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  eName       VARCHAR(255) NOT NULL,
+  jName       VARCHAR(255) NOT NULL,
+  type        VARCHAR(10)  NOT NULL,
+  bpm         INT          NOT NULL,
+  unlockCon   TEXT         NOT NULL,
+  coverArt    VARCHAR(255) NOT NULL,
+  debutLvl    INT          NOT NULL,
+  debutStam   INT          NOT NULL,
+  debutNotes  INT          NOT NULL,
+  regLvl      INT          NOT NULL,
+  regStam     INT          NOT NULL,
+  regNotes    INT          NOT NULL,
+  proLvl      INT          NOT NULL,
+  proStam     INT          NOT NULL,
+  proNotes    INT          NOT NULL,
+  masterLvl   INT          NOT NULL,
+  masterStam  INT          NOT NULL,
+  masterNotes INT          NOT NULL,
+  CONSTRAINT songs_pk PRIMARY KEY (id)
+);
 
-create table events (
-  id int unsigned not null auto_increment,
-  isCurrent BOOLEAN not null,
-  eName CHARACTER(255) not null,
-  jName CHARACTER(255) not null,
-  begin DATETIME NOT NULL,
-  finish DATETIME not null,
-  info TEXT not null,
-  t1 INT,
-  t2 INT,
-  t3 int,
-  t4 INT,
-  t5 INT,
-  t6 INT,
-  t7 INT,
-  pic CHARACTER(255) not null,
-  constraint events_pk primary key (id));
+CREATE TABLE events (
+  id        INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+  isCurrent BOOLEAN        NOT NULL,
+  eName     CHARACTER(255) NOT NULL,
+  jName     CHARACTER(255) NOT NULL,
+  begin     DATETIME       NOT NULL,
+  finish    DATETIME       NOT NULL,
+  info      TEXT           NOT NULL,
+  t1        INT,
+  t2        INT,
+  t3        INT,
+  t4        INT,
+  t5        INT,
+  t6        INT,
+  t7        INT,
+  pic       CHARACTER(255) NOT NULL,
+  CONSTRAINT events_pk PRIMARY KEY (id)
+);
 
-create table users (
-  id int unsigned not null auto_increment,
-  email character(255) not null,
-  password CHARACTER(255) not null,
-  constraint users_pk primary key (id));
+CREATE TABLE users (
+  id       INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+  email    CHARACTER(255) NOT NULL,
+  password CHARACTER(255) NOT NULL,
+  CONSTRAINT users_pk PRIMARY KEY (id)
+);
 
-create table cards (
-  id int unsigned not null auto_increment,
-  idol_id int unsigned not null,
-  event_id int UNSIGNED NOT NULL,
-  eName character(255) not null,
-  jName character(255) not null,
-  rarity CHARACTER(5) NOT NULL,
-  type character(10) NOT NULL,
-  maxLvl int not null,
-  awkMaxLvl int not null,
-  baseLife int not null,
-  baseVocal int not null,
-  baseDance int not null,
-  baseVisual int not null,
-  baseMaxLife int not null,
-  baseMaxVocal int not null,
-  baseMaxDance int not null,
-  baseMaxVisual int not null,
-  awkBaseLife int not null,
-  awkBaseVocal int not null,
-  awkBaseDance int not null,
-  awkBaseVisual int not null,
-  awkMaxLife int not null,
-  awkMaxVocal int not null,
-  awkMaxDance int not null,
-  awkMaxVisual int not null,
-  centerSkill CHARACTER(50) NOT NULL,
-  specialSkillName CHARACTER(50) NOT NULL,
+CREATE TABLE cards (
+  id               INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+  idol_id          INT UNSIGNED   NOT NULL,
+  event_id         INT UNSIGNED   NOT NULL,
+  eName            CHARACTER(255) NOT NULL,
+  jName            CHARACTER(255) NOT NULL,
+  rarity           CHARACTER(5)   NOT NULL,
+  type             CHARACTER(10)  NOT NULL,
+  maxLvl           INT            NOT NULL,
+  awkMaxLvl        INT            NOT NULL,
+  baseLife         INT            NOT NULL,
+  baseVocal        INT            NOT NULL,
+  baseDance        INT            NOT NULL,
+  baseVisual       INT            NOT NULL,
+  baseMaxLife      INT            NOT NULL,
+  baseMaxVocal     INT            NOT NULL,
+  baseMaxDance     INT            NOT NULL,
+  baseMaxVisual    INT            NOT NULL,
+  awkBaseLife      INT            NOT NULL,
+  awkBaseVocal     INT            NOT NULL,
+  awkBaseDance     INT            NOT NULL,
+  awkBaseVisual    INT            NOT NULL,
+  awkMaxLife       INT            NOT NULL,
+  awkMaxVocal      INT            NOT NULL,
+  awkMaxDance      INT            NOT NULL,
+  awkMaxVisual     INT            NOT NULL,
+  centerSkill      CHARACTER(50)  NOT NULL,
+  specialSkillName CHARACTER(50)  NOT NULL,
   specialSkillText CHARACTER(255) NOT NULL,
-  specialSkillType CHARACTER(50) NOT NULL,
-  baseArt CHARACTER(255) NOT NULL,
-  awkArt CHARACTER(255) NOT NULL,
-  constraint cards_pk primary key (id));
+  specialSkillType CHARACTER(50)  NOT NULL,
+  baseArt          CHARACTER(255) NOT NULL,
+  awkArt           CHARACTER(255) NOT NULL,
+  CONSTRAINT cards_pk PRIMARY KEY (id)
+);
 
-  commit;
+COMMIT;
 
 -- referential integrity clauses
 -- --------------------------------
-alter table news add constraint news_users_fk
-foreign key (author_id)
-references users (id);
+ALTER TABLE news ADD CONSTRAINT news_users_fk
+FOREIGN KEY (author_id)
+REFERENCES users (id);
 
-alter table cards add constraint cards_idols_fk
-foreign key (idol_id)
-references idols (id);
+ALTER TABLE cards ADD CONSTRAINT cards_idols_fk
+FOREIGN KEY (idol_id)
+REFERENCES idols (id);
 
-alter table cards add constraint cards_events_fk
-foreign key (event_id)
-references events (id);
+ALTER TABLE cards ADD CONSTRAINT cards_events_fk
+FOREIGN KEY (event_id)
+REFERENCES events (id);
 
--- test data
+
+ALTER TABLE `idols` CHANGE `jName` `jName` VARCHAR(255) CHARACTER SET eucjpms COLLATE eucjpms_japanese_ci NOT NULL;
+ALTER TABLE `songs` CHANGE `jName` `jName` VARCHAR(255) CHARACTER SET eucjpms COLLATE eucjpms_japanese_ci NOT NULL;
+ALTER TABLE `events` CHANGE `jName` `jName` VARCHAR(255) CHARACTER SET eucjpms COLLATE eucjpms_japanese_ci NOT NULL;
+ALTER TABLE `cards` CHANGE `jName` `jName` VARCHAR(255) CHARACTER SET eucjpms COLLATE eucjpms_japanese_ci NOT NULL;
+
+
+-- test data (User -> News -> Idol -> Event -> Card -> Song
 -- ---------------------------------
+INSERT INTO users (id, email, password) VALUES
+  (1,'pangster123@gmail.com', '$2a$10$j2vlpErMLsUgkCGIPv.VKO8k3T3Fa5GI4GpM01WF3sBLwsnzw2HOq');
+
+INSERT INTO news (id, author_id, title, body, created, isPublished) VALUES
+  (1, 1, 'Test Post', '<h1> This is a published test post </h1>', '2014-09-17 15:33:26', TRUE),
+  (2, 1, 'Test Post 2', '<h1> This is a draft test post</h1>', '2014-09-17 15:33:26', FALSE);
+
+INSERT INTO idols (id,eName,jName,age,height,weight,birthday,bloodType,bwh,hobbies,writingHand,horoscope,hometown,type,cv,pic1) VALUES
+  (1,'Shimamura Uzuki', '島村卯月', '17',159,45,'April 24','O','83/59/87','Long Phone Calls with friends', 'Right','Taurus', 'Tokyo', 'Cute', 'Ohashi Ayaka', ' ');
+
+
