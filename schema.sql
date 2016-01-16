@@ -80,7 +80,6 @@ create table cards (
   id int unsigned not null auto_increment,
   idol_id int unsigned not null,
   event_id int UNSIGNED NOT NULL,
-  cardNumber INT NOT NULL,
   eName character(255) not null,
   jName character(255) not null,
   rarity CHARACTER(5) NOT NULL,
@@ -103,24 +102,29 @@ create table cards (
   awkMaxVocal int not null,
   awkMaxDance int not null,
   awkMaxVisual int not null,
-  constraint subcategories_pk primary key (id));
+  centerSkill CHARACTER(50) NOT NULL,
+  specialSkillName CHARACTER(50) NOT NULL,
+  specialSkillText CHARACTER(255) NOT NULL,
+  specialSkillType CHARACTER(50) NOT NULL,
+  baseArt CHARACTER(255) NOT NULL,
+  awkArt CHARACTER(255) NOT NULL,
+  constraint cards_pk primary key (id));
 
   commit;
 
 -- referential integrity clauses
 -- --------------------------------
-alter table subcategories add constraint subcategories_categories_fk
-foreign key (category_id)
-references categories (id);
-
-alter table customers add constraint customers_users_fk
-foreign key (user_id)
+alter table news add constraint news_users_fk
+foreign key (author_id)
 references users (id);
 
-alter table users add constraint users_groups_fk
-foreign key (group_id)
-references groups (id);
+alter table cards add constraint cards_idols_fk
+foreign key (idol_id)
+references idols (id);
 
-alter table orders add constraint customers_orders_fk
-foreign key (user_id)
-references users (id);
+alter table cards add constraint cards_events_fk
+foreign key (event_id)
+references events (id);
+
+-- test data
+-- ---------------------------------
