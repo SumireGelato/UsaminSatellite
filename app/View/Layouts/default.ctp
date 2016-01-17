@@ -22,41 +22,95 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo $cakeDescription ?>:
-		<?php echo $this->fetch('title'); ?>
+		<?php echo $title_for_layout; ?>
 	</title>
 	<?php
-		echo $this->Html->meta('icon');
+		//echo $this->Html->meta('icon');
+		//echo $this->Html->css('cake.generic.css');
+		echo $this->Html->css('bootstrap.css');
+		//echo $this->Html->css('bootstrap-theme.css');
+		echo $this->Html->css('jquery-ui.css');
+		echo $this->Html->css('jquery-ui.structure.css');
+		echo $this->Html->css('jquery-ui.theme.css');
+		echo $this->Html->css('style.css');
+	echo $this->Html->css('flexslider.css');
 
-		echo $this->Html->css('cake.generic');
-
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
+		//echo $this->fetch('meta');
+		//echo $this->fetch('css');
 		echo $this->fetch('script');
+
+		echo $this->Html->script('jquery-1.12.0');
+		echo $this->Html->script('jquery-ui');
+		echo $this->Html->script('bootstrap');
+		echo $this->Html->script('npm');
+	echo $this->Html->script('jquery.flexslider.js');
 	?>
+
+	<script type="text/javascript" charset="utf-8">
+		$(window).load(function() {
+			$('.flexslider').flexslider( {
+				pauseOnHover: true, //Pause slider when mouse over image
+				slideshowSpeed: 5000, //Control the speed of slider
+				controlNav: true, //True = On circle navigation, False = Off circle navigation
+				directionNav: false //True = On Left & Right arrows, False = Off Left & Right arrows
+
+			});
+		});
+	</script>
+
 </head>
 <body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-		</div>
-		<div id="content">
+<div class="navbar-wrapper">
+	<div class="container">
 
-			<?php echo $this->Flash->render(); ?>
+		<nav class="navbar navbar-inverse navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Project name</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">Home</a></li>
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li class="dropdown-header">Nav header</li>
+								<li><a href="#">Separated link</a></li>
+								<li><a href="#">One more separated link</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 
-			<?php echo $this->fetch('content'); ?>
-		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
-		</div>
+	</div>
+</div>
+
+
+<!-- Get Content -->
+<div class="container marketing" style="padding-bottom: 60px;">
+	<?php echo $this->Session->flash(); ?>
+	<?php echo $this->fetch('content'); ?>
+</div>
+<!-- End get Content -->
+
+<footer>
+	<p class="pull-right"><a href="#">Back to top</a></p>
+	<p>&copy; 2015 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+</footer>
 	</div>
 </body>
 </html>
