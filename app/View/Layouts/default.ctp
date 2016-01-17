@@ -33,7 +33,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->css('jquery-ui.structure.css');
 		echo $this->Html->css('jquery-ui.theme.css');
 		echo $this->Html->css('style.css');
-	echo $this->Html->css('flexslider.css');
+//	echo $this->Html->css('flexslider.css');
+	echo $this->Html->css('slippry.css');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -43,16 +44,38 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->script('jquery-ui');
 		echo $this->Html->script('bootstrap');
 		echo $this->Html->script('npm');
-	echo $this->Html->script('jquery.flexslider.js');
+	echo $this->Html->script('slippry.min')
+//	echo $this->Html->script('jquery.flexslider.js');
 
 	?>
 
 	<script type="text/javascript" charset="utf-8">
 		$(window).load(function() {
-		$('.flexslider').flexslider( {
-				animation: "slide"
-			});
-		});
+/*		$('.flexslider').flexslider( {
+             animation: "slide"
+             });*/
+            jQuery('#news-demo').slippry({
+                // general elements & wrapper
+                slippryWrapper: '<div class="sy-box news-slider" />', // wrapper to wrap everything, including pager
+                elements: 'article', // elments cointaining slide content
+
+                // options
+                adaptiveHeight: false, // height of the sliders adapts to current
+                captions: false,
+
+                // pager
+                pagerClass: 'news-pager',
+
+                // transitions
+                transition: 'horizontal', // fade, horizontal, kenburns, false
+                speed: 1200,
+                pause: 8000,
+
+                // slideshow
+                autoDirection: 'prev'
+            });
+
+        });
 	</script>
 
 </head>
