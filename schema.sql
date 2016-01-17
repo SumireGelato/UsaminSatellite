@@ -52,6 +52,7 @@ CREATE TABLE songs (
   masterLvl   INT          NOT NULL,
   masterStam  INT          NOT NULL,
   masterNotes INT          NOT NULL,
+  dateAdded   DATE         NOT NULL,
   CONSTRAINT songs_pk PRIMARY KEY (id)
 );
 
@@ -86,6 +87,7 @@ CREATE TABLE cards (
   id               INT UNSIGNED   NOT NULL AUTO_INCREMENT,
   idol_id          INT UNSIGNED   NOT NULL,
   event_id         INT UNSIGNED,
+  cardNumber       INT            NOT NULL,
   eName            CHARACTER(255) NOT NULL,
   jName            CHARACTER(255) NOT NULL,
   rarity           CHARACTER(5)   NOT NULL,
@@ -108,10 +110,10 @@ CREATE TABLE cards (
   awkMaxVocal      INT            NOT NULL,
   awkMaxDance      INT            NOT NULL,
   awkMaxVisual     INT            NOT NULL,
-  centerSkill      CHARACTER(50)  NOT NULL,
-  specialSkillName CHARACTER(50)  NOT NULL,
-  specialSkillText CHARACTER(255) NOT NULL,
+  centerSkillName  CHARACTER(50)  NOT NULL,
+  centerSkillText  CHARACTER(255) NOT NULL,
   specialSkillType CHARACTER(50)  NOT NULL,
+  specialSkillText TEXT           NOT NULL,
   baseArt          CHARACTER(255) NOT NULL,
   awkArt           CHARACTER(255) NOT NULL,
   CONSTRAINT cards_pk PRIMARY KEY (id)
@@ -135,17 +137,17 @@ REFERENCES events (id);
 
 
 ALTER TABLE `idols` CHANGE `jName` `jName` VARCHAR(255)
-CHARACTER SET eucjpms
-COLLATE eucjpms_japanese_ci NOT NULL;
+CHARACTER SET utf8
+COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `songs` CHANGE `jName` `jName` VARCHAR(255)
-CHARACTER SET eucjpms
-COLLATE eucjpms_japanese_ci NOT NULL;
+CHARACTER SET utf8
+COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `events` CHANGE `jName` `jName` VARCHAR(255)
-CHARACTER SET eucjpms
-COLLATE eucjpms_japanese_ci NOT NULL;
+CHARACTER SET utf8
+COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `cards` CHANGE `jName` `jName` VARCHAR(255)
-CHARACTER SET eucjpms
-COLLATE eucjpms_japanese_ci NOT NULL;
+CHARACTER SET utf8
+COLLATE utf8_general_ci NOT NULL;
 
 
 -- test data (User -> News -> Idol -> Event -> Card -> Song
@@ -165,13 +167,22 @@ VALUES
    'Ayaka Fukuhara', ' ');
 
 INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, t1, t2, t3, t4, t5, t6, t7, pic) VALUES
-  (1, TRUE, TRUE, 'Cinderellla Caravan', 'シンデレラキャラバン', '2016-01-13 15:00:00', '2016-01-18 15:00:00',
+  (1, TRUE, TRUE, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-01-13 15:00:00', '2016-01-18 15:00:00',
    'Get Coins, Buy Idols', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (2, FALSE, FALSE, 'LIVE Groove Dance burst', 'LIVE Groove Dance burst', '2015-12-30 15:00:00', '2016-01-08 20:59',
    'Medley', 45128, 31182, 27954, 22930, 18874, 3032, 262, ' ');
 
-INSERT INTO cards (id, idol_id, event_id, eName, jName, rarity, type, maxLvl, awkMaxLvl, baseLife, baseVocal, baseDance, baseVisual, baseMaxLife, baseMaxVocal, baseMaxDance, baseMaxVisual, awkBaseLife, awkBaseVocal, awkBaseDance, awkBaseVisual, awkMaxLife, awkMaxVocal, awkMaxDance, awkMaxVisual, centerSkill, specialSkillName, specialSkillText, specialSkillType, baseArt, awkArt)
+INSERT INTO cards (id, idol_id, event_id, cardNumber, eName, jName, rarity, type, maxLvl, awkMaxLvl, baseLife, baseVocal, baseDance, baseVisual, baseMaxLife,
+                   baseMaxVocal, baseMaxDance, baseMaxVisual, awkBaseLife, awkBaseVocal, awkBaseDance, awkBaseVisual, awkMaxLife, awkMaxVocal,
+                   awkMaxDance, awkMaxVisual, centerSkillName, centerSkillText, specialSkillType, specialSkillText, baseArt, awkArt)
 VALUES
-  (1,1,NULL, );
+  (1,1,NULL,43, '"Stage of Magic" Uzuki Shimamura', '［ステージオブマジック］島村卯月','SSR', 'Cute',80,90,40,2028,2006,2001,42,4436,4387,4377,42,2662,2633,2627,44,5349,5289,5278,
+   'Cute Brilliance', 'All Cute Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', ' ', ' '),
+  (2,2,NULL,99, '"Stage of Magic" Rin Shibuya', '［ステージオブマジック］渋谷凛', 'SSR', 'Cool', 80,90,40,2001,2028,2006,42,4377,4436,4387,42,2627,2662,2633,44,5278,5349,5289,
+   'Cool Brilliance', 'All Cool Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', ' ', ' ');
+
+INSERT INTO songs (id, eName, jName, type, bpm, unlockCon, coverArt, debutLvl, debutStam, debutNotes, regLvl, regStam, regNotes, proLvl, proStam, proNotes, masterLvl, masterStam, masterNotes, dateAdded) VALUES
+  (1,'Please! Cinderella', 'お願い！シンデレラ', 'All', 175,'Complete Tutorial', ' ', 5,10,46,10,12,205,15,15,341,20,18,477,'2015-9-3'),
+  (2,'Orange Sapphire', 'Orange Sapphire', 'Passion', 162,'Past Event Song',' ',8,11,116,13,13,214,17,16,411,26,19,719,'2015-12-28');
 
 
