@@ -28,15 +28,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		//echo $this->Html->meta('icon');
 		//echo $this->Html->css('cake.generic.css');
 		echo $this->Html->css('bootstrap.css');
-		//echo $this->Html->css('bootstrap-theme.css');
+		echo $this->Html->css('bootstrap-theme.css');
 		echo $this->Html->css('jquery-ui.css');
 		echo $this->Html->css('jquery-ui.structure.css');
 		echo $this->Html->css('jquery-ui.theme.css');
 		echo $this->Html->css('style.css');
 	echo $this->Html->css('flexslider.css');
 
-		//echo $this->fetch('meta');
-		//echo $this->fetch('css');
+		echo $this->fetch('meta');
+		echo $this->fetch('css');
 		echo $this->fetch('script');
 
 		echo $this->Html->script('jquery-1.12.0');
@@ -44,16 +44,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->script('bootstrap');
 		echo $this->Html->script('npm');
 	echo $this->Html->script('jquery.flexslider.js');
+
 	?>
 
 	<script type="text/javascript" charset="utf-8">
 		$(window).load(function() {
-			$('.flexslider').flexslider( {
-				pauseOnHover: true, //Pause slider when mouse over image
-				slideshowSpeed: 5000, //Control the speed of slider
-				controlNav: true, //True = On circle navigation, False = Off circle navigation
-				directionNav: false //True = On Left & Right arrows, False = Off Left & Right arrows
-
+		$('.flexslider').flexslider( {
+				animation: "slide"
 			});
 		});
 	</script>
