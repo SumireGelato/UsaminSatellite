@@ -65,6 +65,7 @@ CREATE TABLE events (
   begin     DATETIME       NOT NULL,
   finish    DATETIME       NOT NULL,
   info      TEXT           NOT NULL,
+  type      CHARACTER(50)  NOT NULL,
   t1        INT,
   t2        INT,
   t3        INT,
@@ -166,11 +167,11 @@ VALUES
   (2, 'Rin Shibuya', '渋谷凜', '15', 165, 44, 'August 10', 'B', '80/56/81', 'Dog Walking', 'Right', 'Leo', 'Tokyo', 'Cool',
    'Ayaka Fukuhara', ' ');
 
-INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, t1, t2, t3, t4, t5, t6, t7, pic) VALUES
+INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, type, t1, t2, t3, t4, t5, t6, t7, pic) VALUES
   (1, TRUE, TRUE, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-01-13 15:00:00', '2016-01-18 15:00:00',
-   'Get Coins, Buy Idols', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+   'Get Coins, Buy Idols', 'All', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (2, FALSE, FALSE, 'LIVE Groove Dance burst', 'LIVE Groove Dance burst', '2015-12-30 15:00:00', '2016-01-08 20:59',
-   'Medley', 45128, 31182, 27954, 22930, 18874, 3032, 262, ' ');
+   'Medley', 'All', 45128, 31182, 27954, 22930, 18874, 3032, 262, ' ');
 
 INSERT INTO cards (id, idol_id, event_id, cardNumber, eName, jName, rarity, type, maxLvl, awkMaxLvl, baseLife, baseVocal, baseDance, baseVisual, baseMaxLife,
                    baseMaxVocal, baseMaxDance, baseMaxVisual, awkBaseLife, awkBaseVocal, awkBaseDance, awkBaseVisual, awkMaxLife, awkMaxVocal,
