@@ -33,112 +33,99 @@ body {
     padding-right: 0;
     padding-left: 0;
 }
+
 .navbar-wrapper .navbar {
     padding-right: 15px;
     padding-left: 15px;
 }
+
 .navbar-wrapper .navbar .container {
     width: auto;
 }
 
-
-/* CUSTOMIZE THE CAROUSEL
--------------------------------------------------- */
-
-/*.flex-caption {
-    width: 100%;
-    padding: 2%;
-    left: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, .5);
-    color: #fff;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, .3);
-    font-size: 14px;
-    line-height: 18px;
-}*/
-
-/* News */
-/*.news-slider {
-    /!* Style the actual content *!/
-    margin: 100px 0px 50px 0px;
-    color: #000000;
-    height: 500px;
+/*Change navbar color*/
+.navbar-default {
+    background-color: #e74c3c;
+    border-color: #c0392b;
 }
-.news-slider .text-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 1em;
-    width: 100%;
-    height: 30%;
+.navbar-default .navbar-brand {
+    color: #ecf0f1;
 }
-.news-slider .text-content h2 {
-    margin: 0;
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: #ffbbbc;
 }
-.news-slider .text-content p {
-    margin: 1em 0;
+.navbar-default .navbar-text {
+    color: #ecf0f1;
 }
-.news-slider .text-content a.button-link {
-    padding: 0.25em 0.5em;
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
+.navbar-default .navbar-nav > li > a {
+    color: #ecf0f1;
 }
-.news-slider .image-content {
-    line-height: 0;
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #ffbbbc;
 }
-.news-slider .image-content img {
-    /!*zoom: 2; *!/
-
-    display: block;
-    margin: auto;
-    max-width: 100%;
-    /!*width: 1150px;*!/
-    /!*height: 500px;*!/
+.navbar-default .navbar-nav > li > .dropdown-menu {
+    background-color: #e74c3c;
 }
-.news-slider .news-pager {
-    text-align: right;
-    display: block;
-    margin: 0.2em 0 0;
-    padding: 0;
-    list-style: none;
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a {
+    color: #ecf0f1;
 }
-.news-slider .news-pager li {
-    display: inline-block;
-    padding: 0.6em;
-    margin: 0 0 0 1em;
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+    color: #ffbbbc;
+    background-color: #c0392b;
 }
-.news-slider .news-pager li.sy-active a {
-    color: #31ace2;
+.navbar-default .navbar-nav > li > .dropdown-menu > li > .divider {
+    background-color: #e74c3c;
 }
-.news-slider .news-pager li a {
-    font-weight: 500;
-    text-decoration: none;
-    display: block;
-    /!*color: #222;*!/
-    color: #FFFFFF;
-}*/
-
-
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: #ffbbbc;
+    background-color: #c0392b;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #ffbbbc;
+    background-color: #c0392b;
+}
+.navbar-default .navbar-toggle {
+    border-color: #c0392b;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: #c0392b;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #ecf0f1;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+    border-color: #ecf0f1;
+}
+.navbar-default .navbar-link {
+    color: #ecf0f1;
+}
+.navbar-default .navbar-link:hover {
+    color: #ffbbbc;
+}
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
+
+#homeContent {
+    padding-top: 150px;
+}
 
 /* Center align the text within the three columns below the carousel */
 .marketing .col-lg-4 {
     margin-bottom: 20px;
     text-align: center;
 }
+
 .marketing h2 {
     font-weight: normal;
 }
+
 .marketing .col-lg-4 p {
     margin-right: 10px;
     margin-left: 10px;
 }
-
 
 /* Featurettes
 ------------------------- */
@@ -154,7 +141,6 @@ body {
     letter-spacing: -1px;
 }
 
-
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 
@@ -163,10 +149,12 @@ body {
     .navbar-wrapper {
         margin-top: 20px;
     }
+
     .navbar-wrapper .container {
         padding-right: 15px;
         padding-left: 15px;
     }
+
     .navbar-wrapper .navbar {
         padding-right: 0;
         padding-left: 0;
@@ -192,5 +180,18 @@ body {
 @media (min-width: 992px) {
     .featurette-heading {
         margin-top: 120px;
+    }
+}
+
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #ecf0f1;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #ffbbbc;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+        color: #ffbbbc;
+        background-color: #c0392b;
     }
 }

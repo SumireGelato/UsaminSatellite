@@ -3,41 +3,12 @@
 $this->set('title_for_layout', 'S@telite | Home');
 ?>
 
-<!-- Start Carousel -->
-<!--<div class="flexslider">
-    <ul class="slides">
-        <li>
-            <?php /*echo $this->Html->image("test.jpg", array('width' => '1024', 'height' => '450')); */?>
-
-            <h1 class="flex-caption">Adventurer Cheesecake Brownie</h1>
-        </li>
-        <li>
-            <?php /*echo $this->Html->image("usamin.jpg", array('width' => '1024', 'height' => '450')); */?>
-
-            <h1 class="flex-caption">Adventurer Cheesecake Brownie</h1>
-        </li>
-    </ul>
-</div>-->
-<ul id="out-of-the-box-demo">
-    <li>
-        <a href="#slide1">
-            <img src="/Satelite/img/test.jpg" alt="This is caption 1 <a href='#link'>Even with links!</a>">
-        </a>
-    </li>
-    <li>
-        <a href="#slide2">
-            <img src="/Satelite/img/usamin.jpg"  alt="This is caption 2">
-        </a>
-    </li>
-</ul>
-
-
 
 <!-- Marketing messaging and featurettes
 ================================================== -->
 <!-- Wrap the rest of the page in another container to center all the content. -->
 
-<div class="container marketing">
+<div class="container marketing" id="homeContent">
 
     <!-- Three columns of text below the carousel -->
     <div class="row">

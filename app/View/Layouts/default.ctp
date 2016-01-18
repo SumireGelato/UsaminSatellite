@@ -28,13 +28,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		//echo $this->Html->meta('icon');
 		//echo $this->Html->css('cake.generic.css');
 		echo $this->Html->css('bootstrap.css');
-		echo $this->Html->css('bootstrap-theme.css');
+//		echo $this->Html->css('bootstrap-theme.css');
 		echo $this->Html->css('jquery-ui.css');
 		echo $this->Html->css('jquery-ui.structure.css');
 		echo $this->Html->css('jquery-ui.theme.css');
 		echo $this->Html->css('style.css');
-//	echo $this->Html->css('flexslider.css');
-	echo $this->Html->css('slippry.css');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -44,28 +42,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->script('jquery-ui');
 		echo $this->Html->script('bootstrap');
 		echo $this->Html->script('npm');
-	echo $this->Html->script('slippry.min')
-//	echo $this->Html->script('jquery.flexslider.js');
 
 	?>
-
-	<script type="text/javascript" charset="utf-8">
-		$(window).load(function() {
-/*		$('.flexslider').flexslider( {
-             animation: "slide"
-             });*/
-            jQuery('#out-of-the-box-demo').slippry();
-
-
-        });
-	</script>
 
 </head>
 <body>
 <div class="navbar-wrapper">
 	<div class="container">
 
-		<nav class="navbar navbar-inverse navbar-static-top">
+		<nav class="navbar navbar-default" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -103,10 +88,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 <!-- Get Content -->
-<div class="container marketing" style="padding-bottom: 60px;">
+<!--<div class="container marketing" style="padding-bottom: 60px;">-->
 	<?php echo $this->Session->flash(); ?>
 	<?php echo $this->fetch('content'); ?>
-</div>
+<!--</div>-->
 <!-- End get Content -->
 
 <footer>
