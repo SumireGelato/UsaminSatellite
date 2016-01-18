@@ -18,24 +18,19 @@ $this->set('title_for_layout', 'S@telite | Home');
         </li>
     </ul>
 </div>-->
-<section id="news-demo">
-    <article>
-        <div class="text-content">
-            <h2>Boats by the bay</h2>
-            <p>This summer there were, surprise surprise, boats on the bay! Often the sun will shine and when it's partially cloudy we get the 'God' or 'Holy Light' effect. It's pretty cool huh? I wonder what it's pointing to... treasure? Bitcoins?</p>
-            <a href="#!" class="button-link read-more">read more</a>
-        </div>
-        <div class="image-content"><?php echo $this->Html->image("test.jpg"/*, array('width' => '1024', 'height' => '450')*/); ?></div>
-    </article>
-    <article>
-        <div class="text-content">
-            <h2>The winter is coming</h2>
-            <p>And isn't it pretty? It's strange, people who live through heavy winters seem to want to get out of it as soon as possible, yet those who live in more temperate climates see snow and a 'real' winter as an amazing thing that must be experienced.</p>
-            <a href="#!" class="button-link read-more">read more</a>
-        </div>
-        <div class="image-content"><?php echo $this->Html->image("usamin.jpg"/*, array('width' => '1024', 'height' => '450')*/); ?></div>
-    </article>
-</section>
+<ul id="out-of-the-box-demo">
+    <li>
+        <a href="#slide1">
+            <img src="/Satelite/img/test.jpg" alt="This is caption 1 <a href='#link'>Even with links!</a>">
+        </a>
+    </li>
+    <li>
+        <a href="#slide2">
+            <img src="/Satelite/img/usamin.jpg"  alt="This is caption 2">
+        </a>
+    </li>
+</ul>
+
 
 
 <!-- Marketing messaging and featurettes

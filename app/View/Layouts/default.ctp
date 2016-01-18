@@ -54,26 +54,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 /*		$('.flexslider').flexslider( {
              animation: "slide"
              });*/
-            jQuery('#news-demo').slippry({
-                // general elements & wrapper
-                slippryWrapper: '<div class="sy-box news-slider" />', // wrapper to wrap everything, including pager
-                elements: 'article', // elments cointaining slide content
+            jQuery('#out-of-the-box-demo').slippry();
 
-                // options
-                adaptiveHeight: false, // height of the sliders adapts to current
-                captions: false,
-
-                // pager
-                pagerClass: 'news-pager',
-
-                // transitions
-                transition: 'horizontal', // fade, horizontal, kenburns, false
-                speed: 1200,
-                pause: 8000,
-
-                // slideshow
-                autoDirection: 'prev'
-            });
 
         });
 	</script>
