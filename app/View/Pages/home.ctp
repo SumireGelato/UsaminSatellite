@@ -1,6 +1,6 @@
 <!-- page title -->
 <?php
-$this->set('title_for_layout', 'S@telite | Home');
+$this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources directly from Planet Usamin!');
 ?>
 
 
@@ -8,7 +8,7 @@ $this->set('title_for_layout', 'S@telite | Home');
 ================================================== -->
 <!-- Wrap the rest of the page in another container to center all the content. -->
 
-<div class="container marketing" id="homeContent">
+
 
     <!-- Three columns of text below the carousel -->
     <div class="row">

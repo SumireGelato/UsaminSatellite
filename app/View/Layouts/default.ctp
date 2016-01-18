@@ -47,6 +47,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 </head>
 <body>
+<div class="container marketing" id="pageContent">
 <div class="navbar-wrapper">
 	<div class="container">
 
@@ -59,7 +60,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Project name</a>
+					<a class="navbar-brand" href="#">Usamin S@telite</a>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
@@ -88,10 +89,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 <!-- Get Content -->
-<!--<div class="container marketing" style="padding-bottom: 60px;">-->
+
 	<?php echo $this->Session->flash(); ?>
 	<?php echo $this->fetch('content'); ?>
-<!--</div>-->
+</div>
 <!-- End get Content -->
 
 <footer>
