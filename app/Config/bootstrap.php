@@ -109,3 +109,6 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+//Set to JST
+date_default_timezone_set('Asia/Tokyo');

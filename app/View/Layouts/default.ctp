@@ -25,7 +25,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<?php echo $title_for_layout; ?>
 	</title>
 	<?php
-		//echo $this->Html->meta('icon');
+//		echo $this->Html->meta('icon');
 		//echo $this->Html->css('cake.generic.css');
 		echo $this->Html->css('bootstrap.css');
 //		echo $this->Html->css('bootstrap-theme.css');
@@ -34,9 +34,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->css('jquery-ui.theme.css');
 		echo $this->Html->css('style.css');
 
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
+//		echo $this->fetch('meta');
+//		echo $this->fetch('css');
+//		echo $this->fetch('script');
 
 		echo $this->Html->script('jquery-1.12.0');
 		echo $this->Html->script('jquery-ui');
@@ -45,9 +45,42 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 	?>
 
+<!--    Favicon Stuff-->
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
+
+    <script>
+        function startTime() {
+            var today = new Date();
+            /*var h = today.getUTCHours();
+            var m = today.getUTCMinutes();
+            var s = today.getUTCSeconds();
+            m = checkTime(m);
+            s = checkTime(s);*/
+            utc = today.getTime() + (today.getTimezoneOffset() * 60000);
+            offset = +9.0;
+            var now = utc + (3600000*offset);
+            var now = new Date(utc + (3600000*offset));
+
+            var h = now.getHours();
+             var m = now.getMinutes();
+             var s = now.getSeconds();
+             m = checkTime(m);
+             s = checkTime(s);
+
+            document.getElementById('clock').innerHTML =
+                "This time is currently " + h + ":" + m + ":" + s + " JST";
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+            return i;
+        }
+    </script>
+
 </head>
-<body>
-<div class="container marketing" id="pageContent">
+<body onload="startTime()">
+<div class="container marketing">
 <div class="navbar-wrapper">
 	<div class="container">
 
@@ -60,26 +93,31 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Usamin S@telite</a>
-				</div>
+					<a class="navbar-brand" href="" style="padding: 0"><?php echo $this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150));?></a>
+<!--                    --><?php //echo $this->Html->link($this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home')); ?>
+                </div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li class="dropdown-header">Nav header</li>
-								<li><a href="#">Separated link</a></li>
-								<li><a href="#">One more separated link</a></li>
-							</ul>
-						</li>
+						<li><a href="cards"><span class="glyphicon glyphicon-th-large"></span> Cards</a></li>
+						<li><a href="events"><span class="glyphicon glyphicon-bullhorn"></span> Events</a></li>
+						<li><a href="songs"><span class="glyphicon glyphicon-music"></span> Songs</a></li>
+                        <li><a href="idols"><span class="glyphicon glyphicon-heart"></span> Idols</a></li>
+                        <li><a href="translations"><span class="glyphicon glyphicon-list"></span> Translations</a></li>
 					</ul>
+                   <ul class="nav navbar-nav navbar-right">
+                        <p class="navbar-text" id="clock"></p>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Other Info<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="links"><span class="glyphicon glyphicon-link"></span> Links</a></li>
+                                <li><a href="credits"><span class="glyphicon glyphicon-book"></span> Credits</a></li>
+                                <li><a href="aboutSite"><span class="glyphicon glyphicon-info-sign"></span> About the Site</a></li>
+                                <li><a href="aboutStaff"><span class="glyphicon glyphicon-user"></span> About the Staff</a></li>
+                                <li><a href="contactUs"><span class="glyphicon glyphicon-envelope"></span> Contact Us</a></li>
+                                <li><a href="help"><span class="glyphicon glyphicon-question-sign"></span> Help</a></li>
+                            </ul>
+                        </li>
+                    </ul>
 				</div>
 			</div>
 		</nav>

@@ -12,7 +12,7 @@ html {
 
 body {
     padding-bottom: 40px;
-    color: #000;
+    color: #FFF;
     background: inherit;
 }
 
@@ -111,9 +111,17 @@ body {
 /* MARKETING CONTENT
 -------------------------------------------------- */
 
-#pageContent {
-    padding-top: 80px;
+#homeContainer{
     background-color: rgba(255,255,255,0.6) ;
+    color: #000;
+}
+
+#pageContent {
+    padding-top: 20px;
+}
+
+#homeHeading {
+    padding-top: 50px;
 }
 
 /* Center align the text within the three columns below the carousel */
