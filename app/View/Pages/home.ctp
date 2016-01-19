@@ -6,7 +6,6 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 
 <!-- Marketing messaging and featurettes
 ================================================== -->
-<div id="homeContainer">
     <div class="row" id="homeHeading">
         <div class="col-lg-9 col-lg-offset-3">
             <h1>Welcome to Usamin S@telite!</h1>
@@ -68,25 +67,45 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 
         <hr class="featurette-divider">
 
-        <div class="row featurette">
-            <div class="col-md-7">
-                <h2 class="featurette-heading">First featurette heading. <span
-                        class="text-muted">It'll blow your mind.</span></h2>
-
-                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis
-                    euismod
-                    semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac
-                    cursus
-                    commodo.</p>
+        <div class="row">
+            <div class="col-lg-2">
+                <img class="img-square"
+                     src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+                     alt="Generic placeholder image" width="75" height="75">
+                <p>About Game</p>
             </div>
-            <div class="col-md-5">
-                <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto"
-                     alt="Generic placeholder image">
+            <div class="col-lg-2">
+                <img class="img-square"
+                     src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+                     alt="Generic placeholder image" width="75" height="75">
+                <p>About This Website</p>
+            </div>
+            <div class="col-lg-2">
+                <img class="img-square"
+                     src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+                     alt="Generic placeholder image" width="75" height="75">
+                <p>Links</p>
+            </div>
+            <div class="col-lg-2">
+                <div class="newsHeader">Latest News</div>
+                <div class="alert">
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                    <p>blah</p>
+                </div>
             </div>
         </div>
 
         <hr class="featurette-divider">
     </div>
-</div>
 
 <!-- /END THE FEATURETTES -->

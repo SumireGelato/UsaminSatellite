@@ -80,7 +80,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 </head>
 <body onload="startTime()">
-<div class="container marketing">
+<div class="container marketing" id="contentContainer">
 <div class="navbar-wrapper">
 	<div class="container">
 
@@ -93,8 +93,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="" style="padding: 0"><?php echo $this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150));?></a>
-<!--                    --><?php //echo $this->Html->link($this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home')); ?>
+<!--					<a class="navbar-brand" href="" style="padding: 0">--><?php //echo $this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150));?><!--</a>-->
+                    <?php echo $this->Html->link($this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'), array('class' => 'navbar-brand','escape' => false, 'style' => 'padding: 0')); ?>
                 </div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
@@ -127,16 +127,17 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 <!-- Get Content -->
-
+<!--<div id="contentContainer">-->
 	<?php echo $this->Session->flash(); ?>
 	<?php echo $this->fetch('content'); ?>
+    </div>
+<!--    <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy;  &middot;</p>
+    </footer>-->
 </div>
 <!-- End get Content -->
 
-<footer>
-	<p class="pull-right"><a href="#">Back to top</a></p>
-	<p>&copy; 2015 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-</footer>
-	</div>
+
 </body>
 </html>
