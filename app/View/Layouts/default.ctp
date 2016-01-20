@@ -93,8 +93,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-<!--					<a class="navbar-brand" href="" style="padding: 0">--><?php //echo $this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150));?><!--</a>-->
-                    <?php echo $this->Html->link($this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'), array('class' => 'navbar-brand','escape' => false, 'style' => 'padding: 0')); ?>
+					<a class="navbar-brand" href=""  id="showText">Usamin S@telite</a>
+                    <?php echo $this->Html->link($this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'), array('class' => 'navbar-brand', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0')); ?>
                 </div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
