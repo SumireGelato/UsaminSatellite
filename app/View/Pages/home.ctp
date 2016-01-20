@@ -27,7 +27,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
                     vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo
                     cursus magna.</p>
 
-                <p><a class="btn btn-default" href="cards" role="button">Go &raquo;</a></p>
+                <p><a class="btn btn-default" href="cards" role="button">Go <span class=" glyphicon glyphicon-chevron-right"></span></a></p>
             </div>
             <!-- /.col-lg-4 -->
             <div class="col-lg-4">
@@ -41,7 +41,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
                     mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris
                     condimentum nibh.</p>
 
-                <p><a class="btn btn-default" href="events" role="button">Go &raquo;</a></p>
+                <p><a class="btn btn-default" href="events" role="button">Go <span class=" glyphicon glyphicon-chevron-right"></span></a></p>
             </div>
             <!-- /.col-lg-4 -->
             <div class="col-lg-4">
@@ -56,7 +56,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
                     ut
                     fermentum massa justo sit amet risus.</p>
 
-                <p><a class="btn btn-default" href="songs" role="button">Go &raquo;</a></p>
+                <p><a class="btn btn-default" href="songs" role="button">Go <span class=" glyphicon glyphicon-chevron-right"></span></a></p>
             </div>
             <!-- /.col-lg-4 -->
         </div>
@@ -86,21 +86,13 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
                      alt="Generic placeholder image" width="75" height="75">
                 <p>Links</p>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-6">
                 <div class="newsHeader">Latest News</div>
-                <div class="alert">
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
-                    <p>blah</p>
+                <div class="news">
+                    <p><img src="img/event.png" class="newsItem">blah<span class=" glyphicon glyphicon-chevron-right"></span></p>
+                    <p><img src="img/site.png" class="newsItem">blah<span class=" glyphicon glyphicon-chevron-right"></span></p>
+                    <p><img src="img/gacha.png" class="newsItem">blah<span class=" glyphicon glyphicon-chevron-right"></span></p>
+                    <p><img src="img/game.png" class="newsItem">blah<span class=" glyphicon glyphicon-chevron-right"></span></p>
                 </div>
             </div>
         </div>
