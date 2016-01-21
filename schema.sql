@@ -164,9 +164,9 @@ INSERT INTO news (id, author_id, title, category, body, created, isPublished) VA
 INSERT INTO idols (id, eName, jName, age, height, weight, birthday, bloodType, bwh, hobbies, writingHand, horoscope, hometown, type, cv, pic1)
 VALUES
   (1, 'Uzuki Shimamura', '島村卯月', '17', 159, 45, 'April 24', 'O', '83/59/87', 'Long Phone Calls with friends', 'Right',
-   'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', ' '),
+   'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'uzuki.png'),
   (2, 'Rin Shibuya', '渋谷凜', '15', 165, 44, 'August 10', 'B', '80/56/81', 'Dog Walking', 'Right', 'Leo', 'Tokyo', 'Cool',
-   'Ayaka Fukuhara', ' ');
+   'Ayaka Fukuhara', 'rin.png');
 
 INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, type, t1, t2, t3, t4, t5, t6, t7, pic) VALUES
   (1, TRUE, TRUE, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-01-13 15:00:00', '2016-01-18 15:00:00',
@@ -179,9 +179,9 @@ INSERT INTO cards (id, idol_id, event_id, cardNumber, eName, jName, rarity, type
                    awkMaxDance, awkMaxVisual, centerSkillName, centerSkillText, specialSkillType, specialSkillText, baseArt, awkArt)
 VALUES
   (1,1,NULL,43, '"Stage of Magic" Uzuki Shimamura', '［ステージオブマジック］島村卯月','SSR', 'Cute',80,90,40,2028,2006,2001,42,4436,4387,4377,42,2662,2633,2627,44,5349,5289,5278,
-   'Cute Brilliance', 'All Cute Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', ' ', ' '),
+   'Cute Brilliance', 'All Cute Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', '43.png', '44.png'),
   (2,2,NULL,99, '"Stage of Magic" Rin Shibuya', '［ステージオブマジック］渋谷凛', 'SSR', 'Cool', 80,90,40,2001,2028,2006,42,4377,4436,4387,42,2627,2662,2633,44,5278,5349,5289,
-   'Cool Brilliance', 'All Cool Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', ' ', ' ');
+   'Cool Brilliance', 'All Cool Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', '99.png', '100.png');
 
 INSERT INTO songs (id, eName, jName, type, bpm, unlockCon, coverArt, debutLvl, debutStam, debutNotes, regLvl, regStam, regNotes, proLvl, proStam, proNotes, masterLvl, masterStam, masterNotes, dateAdded) VALUES
   (1,'Please! Cinderella', 'お願い！シンデレラ', 'All', 175,'Complete Tutorial', ' ', 5,10,46,10,12,205,15,15,341,20,18,477,'2015-9-3'),
