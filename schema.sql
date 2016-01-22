@@ -112,7 +112,6 @@ CREATE TABLE cards (
   awkMaxVocal      INT            NOT NULL,
   awkMaxDance      INT            NOT NULL,
   awkMaxVisual     INT            NOT NULL,
-  centerSkillName  CHARACTER(50)  NOT NULL,
   centerSkillText  CHARACTER(255) NOT NULL,
   specialSkillType CHARACTER(50)  NOT NULL,
   specialSkillText TEXT           NOT NULL,
@@ -176,15 +175,15 @@ INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info,
 
 INSERT INTO cards (id, idol_id, event_id, cardNumber, eName, jName, rarity, type, maxLvl, awkMaxLvl, baseLife, baseVocal, baseDance, baseVisual, baseMaxLife,
                    baseMaxVocal, baseMaxDance, baseMaxVisual, awkBaseLife, awkBaseVocal, awkBaseDance, awkBaseVisual, awkMaxLife, awkMaxVocal,
-                   awkMaxDance, awkMaxVisual, centerSkillName, centerSkillText, specialSkillType, specialSkillText, baseArt, awkArt)
+                   awkMaxDance, awkMaxVisual, centerSkillText, specialSkillType, specialSkillText, baseArt, awkArt)
 VALUES
   (1,1,NULL,43, '"Stage of Magic" Uzuki Shimamura', '［ステージオブマジック］島村卯月','SSR', 'Cute',80,90,40,2028,2006,2001,42,4436,4387,4377,42,2662,2633,2627,44,5349,5289,5278,
-   'Cute Brilliance', 'All Cute Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', '43.png', '44.png'),
+   'All Cute Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', '43.png', '44.png'),
   (2,2,NULL,99, '"Stage of Magic" Rin Shibuya', '［ステージオブマジック］渋谷凛', 'SSR', 'Cool', 80,90,40,2001,2028,2006,42,4377,4436,4387,42,2627,2662,2633,44,5278,5349,5289,
-   'Cool Brilliance', 'All Cool Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', '99.png', '100.png');
+   'All Cool Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', '99.png', '100.png');
 
 INSERT INTO songs (id, eName, jName, type, bpm, unlockCon, coverArt, debutLvl, debutStam, debutNotes, regLvl, regStam, regNotes, proLvl, proStam, proNotes, masterLvl, masterStam, masterNotes, dateAdded) VALUES
-  (1,'Please! Cinderella', 'お願い！シンデレラ', 'All', 175,'Complete Tutorial', ' ', 5,10,46,10,12,205,15,15,341,20,18,477,'2015-9-3'),
-  (2,'Orange Sapphire', 'Orange Sapphire', 'Passion', 162,'Past Event Song',' ',8,11,116,13,13,214,17,16,411,26,19,719,'2015-12-28');
+  (1,'Please! Cinderella', 'お願い！シンデレラ', 'All', 175,'Complete Tutorial', 'お願い！シンデレラ.jpg', 5,10,46,10,12,205,15,15,341,20,18,477,'2015-9-3'),
+  (2,'Orange Sapphire', 'Orange Sapphire', 'Passion', 162,'Past Event Song','Orange Sapphire.jpg',8,11,116,13,13,214,17,16,411,26,19,719,'2015-12-28');
 
 
