@@ -2,7 +2,7 @@
 -- --------------------------------
 CREATE TABLE news (
   id          INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  author_id   INT UNSIGNED   NOT NULL,
+  user_id     INT UNSIGNED   NOT NULL,
   title       CHARACTER(255) NOT NULL,
   category    CHARACTER(50)  NOT NULL,
   body        TEXT           NOT NULL,
@@ -125,7 +125,7 @@ COMMIT;
 -- referential integrity clauses
 -- --------------------------------
 ALTER TABLE news ADD CONSTRAINT news_users_fk
-FOREIGN KEY (author_id)
+FOREIGN KEY (user_id)
 REFERENCES users (id);
 
 ALTER TABLE cards ADD CONSTRAINT cards_idols_fk
@@ -156,9 +156,9 @@ COLLATE utf8_general_ci NOT NULL;
 INSERT INTO users (id, email, password) VALUES
   (1, 'pangster123@gmail.com', '$2a$10$j2vlpErMLsUgkCGIPv.VKO8k3T3Fa5GI4GpM01WF3sBLwsnzw2HOq');
 
-INSERT INTO news (id, author_id, title, category, body, created, isPublished) VALUES
-  (1, 1, 'Test Post', 'Site', '<h1> This is a published test post </h1>', '2015-09-17 15:33:26', TRUE),
-  (2, 1, 'Test Post 2', 'Game', '<h1> This is a draft test post</h1>', '2015-09-17 15:33:26', FALSE);
+INSERT INTO news (id, user_id, title, category, body, created, isPublished) VALUES
+  (1, 1, 'Test Post', 'site', '<h1> This is a published test post </h1>', '2015-09-17 15:33:26', TRUE),
+  (2, 1, 'Test Post 2', 'game', '<h1> This is a draft test post</h1>', '2015-09-17 15:33:26', TRUE);
 
 INSERT INTO idols (id, eName, jName, age, height, weight, birthday, bloodType, bwh, hobbies, writingHand, horoscope, hometown, type, cv, pic1)
 VALUES

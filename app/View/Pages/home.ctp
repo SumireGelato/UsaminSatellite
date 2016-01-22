@@ -31,12 +31,13 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 
             <h2>Cards</h2>
 
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies
-                vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo
-                cursus magna.</p>
+            <h4>Don't know what your new SSR does? Trying to build a team? Check out the card database!</h4>
 
-            <p><a class="btn btn-default" href="cards" role="button">Go <span
-                        class=" glyphicon glyphicon-chevron-right"></span></a></p>
+            <p>
+                <?php echo $this->Html->link('Go <span
+                        class=" glyphicon glyphicon-chevron-right"></span>',
+                    array('controller' => 'cards', 'action' => 'index'), array('escape' => false, 'role' => 'button', 'class' => 'btn btn-default')); ?>
+            </p>
         </div>
         <!-- /.col-lg-4 -->
         <div class="col-lg-4">
@@ -46,12 +47,16 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 
             <h2>Events</h2>
 
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras
-                mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                condimentum nibh.</p>
+            <h4>Latest info on the current event including strategy, drops, border feed and more! Also includes
+                information from past events!</h4>
 
-            <p><a class="btn btn-default" href="events" role="button">Go <span
-                        class=" glyphicon glyphicon-chevron-right"></span></a></p>
+            <p>
+                <?php echo $this->Html->link('Go <span
+                        class=" glyphicon glyphicon-chevron-right"></span>',
+                    array('controller' => 'events', 'action' => 'index'), array('escape' => false, 'role' => 'button', 'class' => 'btn btn-default')); ?>
+            </p>
+
+
         </div>
         <!-- /.col-lg-4 -->
         <div class="col-lg-4">
@@ -61,13 +66,13 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 
             <h2>Songs</h2>
 
-            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula
-                porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
-                ut
-                fermentum massa justo sit amet risus.</p>
+            <h4>Song info including difficulty, unlock conditions and more! Also includes flavor information about each song!</h4>
 
-            <p><a class="btn btn-default" href="songs" role="button">Go <span
-                        class=" glyphicon glyphicon-chevron-right"></span></a></p>
+            <p>
+                <?php echo $this->Html->link('Go <span
+                        class=" glyphicon glyphicon-chevron-right"></span>',
+                    array('controller' => 'songs', 'action' => 'index'), array('escape' => false, 'role' => 'button', 'class' => 'btn btn-default')); ?>
+            </p>
         </div>
         <!-- /.col-lg-4 -->
     </div>
@@ -98,17 +103,18 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
         <div class="col-lg-6">
             <div class="newsHeader">Latest News</div>
             <div class="news">
-                <p><img src="img/event.png" class="newsItem">blah<span
-                        class=" glyphicon glyphicon-chevron-right"></span></p>
-
-                <p><img src="img/site.png" class="newsItem">blah<span class=" glyphicon glyphicon-chevron-right"></span>
-                </p>
-
-                <p><img src="img/gacha.png" class="newsItem">blah<span
-                        class=" glyphicon glyphicon-chevron-right"></span></p>
-
-                <p><img src="img/game.png" class="newsItem">blah<span class=" glyphicon glyphicon-chevron-right"></span>
-                </p>
+                <?php
+                foreach ($news as $newsItem) { ?>
+                    <p>
+                        <?php
+                        echo $this->Html->image($newsItem['News']['category'] . '.png', array('class' => 'newsItem')) . ' ' .
+                            $this->Html->link($newsItem['News']['title'] . ' ' . '<span class=" glyphicon glyphicon-chevron-right"></span>',
+                                array('controller' => 'news', 'action' => 'view', $newsItem['News']['id']), array('escape' => false));
+                        ?>
+                    </p>
+                    <?php
+                }
+                ?>
             </div>
         </div>
     </div>
