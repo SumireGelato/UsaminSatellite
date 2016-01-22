@@ -52,11 +52,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <script>
         function startTime() {
             var today = new Date();
-            /*var h = today.getUTCHours();
-            var m = today.getUTCMinutes();
-            var s = today.getUTCSeconds();
-            m = checkTime(m);
-            s = checkTime(s);*/
             utc = today.getTime() + (today.getTimezoneOffset() * 60000);
             offset = +9.0;
             var now = utc + (3600000*offset);

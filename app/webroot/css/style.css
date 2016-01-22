@@ -20,7 +20,7 @@ body {
     color: #FFF;
     background: inherit;
     font-family: 'kawaii', sans-serif!important;
-    font-size: 1.49em;
+    font-size: 1.45em;
 }
 
 /* CUSTOMIZE THE NAVBAR
@@ -124,11 +124,20 @@ body {
 }
 
 #pageContent {
-    padding-top: 20px;
+    padding-top: 10px;
+}
+
+#pageContent hr {
+    margin-top: 0;
 }
 
 #homeHeading {
     padding-top: 50px;
+    text-align: center;
+}
+
+#homeHeading h3 {
+    margin: 0;
 }
 
 #showText {
@@ -208,7 +217,7 @@ body {
     -webkit-border-top-left-radius: 8px;
     -moz-border-radius-bottomright: 8px;
     -webkit-border-bottom-right-radius: 8px;
-    height: 200px;
+    height: 175px;
     /*width: 300px;*/
     overflow: auto;
 }
