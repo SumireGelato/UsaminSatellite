@@ -68,6 +68,10 @@ class PagesController extends AppController
         $this->loadModel('News');
         $this->set('news', $this->News->find('all',array('conditions' => array('News.isPublished' => true), 'recursive' => -1, 'order' => 'News.created','limit' => 10)));
 
+        $background = mt_rand(1,16);
+
+        $this->Session->write('background', $background);
+
         $this->set(compact('page', 'subpage', 'title_for_layout'));
 
         try {

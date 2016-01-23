@@ -29,7 +29,6 @@
 			<th><?php echo $this->Paginator->sort('awkMaxVocal'); ?></th>
 			<th><?php echo $this->Paginator->sort('awkMaxDance'); ?></th>
 			<th><?php echo $this->Paginator->sort('awkMaxVisual'); ?></th>
-			<th><?php echo $this->Paginator->sort('centerSkillName'); ?></th>
 			<th><?php echo $this->Paginator->sort('centerSkillText'); ?></th>
 			<th><?php echo $this->Paginator->sort('specialSkillType'); ?></th>
 			<th><?php echo $this->Paginator->sort('specialSkillText'); ?></th>
@@ -71,7 +70,6 @@
 		<td><?php echo h($card['Card']['awkMaxVocal']); ?>&nbsp;</td>
 		<td><?php echo h($card['Card']['awkMaxDance']); ?>&nbsp;</td>
 		<td><?php echo h($card['Card']['awkMaxVisual']); ?>&nbsp;</td>
-		<td><?php echo h($card['Card']['centerSkillName']); ?>&nbsp;</td>
 		<td><?php echo h($card['Card']['centerSkillText']); ?>&nbsp;</td>
 		<td><?php echo h($card['Card']['specialSkillType']); ?>&nbsp;</td>
 		<td><?php echo h($card['Card']['specialSkillText']); ?>&nbsp;</td>

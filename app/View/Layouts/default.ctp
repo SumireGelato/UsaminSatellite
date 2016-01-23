@@ -33,62 +33,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('jquery-ui.structure.css');
     echo $this->Html->css('jquery-ui.theme.css');
     echo $this->Html->css('style.css');
-
-    $background = mt_rand(1, 16);
-    ?>
-
-    <style>
-        html {
-            background: url("<?php echo $this->Html->url('/').'img/backgrounds/'.$background.'.png'?>") no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-    </style>
-
-    <?php
-    //		echo $this->fetch('meta');
-    //		echo $this->fetch('css');
-    //		echo $this->fetch('script');
-
-    echo $this->Html->script('jquery-1.12.0');
-    echo $this->Html->script('jquery-ui');
-    echo $this->Html->script('bootstrap');
-    echo $this->Html->script('npm');
-
     ?>
 
     <!--    Favicon Stuff-->
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
     <link rel="icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
-
-    <script>
-        function startTime() {
-            var today = new Date();
-            utc = today.getTime() + (today.getTimezoneOffset() * 60000);
-            offset = +9.0;
-            var now = utc + (3600000 * offset);
-            var now = new Date(utc + (3600000 * offset));
-
-            var h = now.getHours();
-            var m = now.getMinutes();
-            var s = now.getSeconds();
-            m = checkTime(m);
-            s = checkTime(s);
-
-            document.getElementById('clock').innerHTML =
-                "It is currently " + h + ":" + m + ":" + s + " JST";
-            var t = setTimeout(startTime, 500);
-        }
-        function checkTime(i) {
-            if (i < 10) {
-                i = "0" + i
-            }
-            ;  // add zero in front of numbers < 10
-            return i;
-        }
-    </script>
 
 </head>
 <body onload="startTime()">
@@ -106,8 +55,20 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="" id="showText">Usamin S@telite</a>
-                        <?php echo $this->Html->link($this->Html->image('usamin-logo.png', array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'), array('class' => 'navbar-brand', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0')); ?>
+                        <?php
+                        if ($this->here == $this->base.'/')
+                        {
+                            echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action'=>'display', 'home'),
+                                array('class'=>'navbar-brand', 'id'=>'showText'));
+                            echo $this->Html->link($this->Html->image('usamin-logo.png',
+                                array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'),
+                                array('class' => 'navbar-brand', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0'));
+                        } else
+                        {
+                            echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action'=>'display', 'home'),
+                                array('class'=>'navbar-brand'));
+                        }
+                        ?>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
@@ -120,7 +81,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-heart"></span> Idols',
                                     array('controller' => 'idols', 'action' => 'index'), array('escape' => false)); ?></li>
                             <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-list"></span> Translations',
-                                    array('controller' => 'pages', 'action' => 'display', 'translations'), array('escape' => false)); ?></li>
+                                    '/translations', array('escape' => false)); ?></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <p class="navbar-text" id="clock"></p>
@@ -131,19 +92,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-flag"></span> News',
                                             array('controller' => 'news', 'action' => 'index'), array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-link"></span> Links',
-                                            array('controller' => 'pages', 'action' => 'display', 'links'), array('escape' => false)); ?></li>
+                                            '/links', array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-book"></span> Credits',
-                                            array('controller' => 'pages', 'action' => 'display', 'credits'), array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About the Site',
-                                            array('controller' => 'pages', 'action' => 'display', 'aboutSite'), array('escape' => false)); ?></li>
+                                            '/credits', array('escape' => false)); ?></li>
+                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About Game & Site',
+                                            '/about', array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-user"></span> About the Staff',
-                                            array('controller' => 'pages', 'action' => 'display', 'aboutUs'), array('escape' => false)); ?></li>
+                                            '/aboutUs', array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-envelope"></span> Contact Us',
-                                            array('controller' => 'pages', 'action' => 'display', 'contactUs'), array('escape' => false)); ?></li>
+                                            '/contactUs', array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-usd"></span> Donate',
-                                            array('controller' => 'pages', 'action' => 'display', 'donate'), array('escape' => false)); ?></li>
+                                            '/donate', array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-question-sign"></span> Help',
-                                            array('controller' => 'pages', 'action' => 'display', 'links'), array('escape' => false)); ?></li>
+                                            '/help', array('escape' => false)); ?></li>
                                 </ul>
                             </li>
                         </ul>
@@ -156,7 +117,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
     <!-- Get Content -->
-    <!--<div id="contentContainer">-->
+    <div id="pageContent">
     <?php echo $this->Session->flash(); ?>
     <?php echo $this->fetch('content'); ?>
 </div>
@@ -169,4 +130,51 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 </body>
+
+<?php
+
+echo $this->Html->script('jquery-1.12.0');
+echo $this->Html->script('jquery-ui');
+echo $this->Html->script('bootstrap');
+echo $this->Html->script('npm');
+
+?>
+
+<script>
+    function startTime() {
+        var today = new Date();
+        utc = today.getTime() + (today.getTimezoneOffset() * 60000);
+        offset = +9.0;
+        var now = utc + (3600000 * offset);
+        var now = new Date(utc + (3600000 * offset));
+
+        var h = now.getHours();
+        var m = now.getMinutes();
+        var s = now.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+
+        document.getElementById('clock').innerHTML =
+            "It is currently " + h + ":" + m + ":" + s + " JST";
+        var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i
+        }
+        ;  // add zero in front of numbers < 10
+        return i;
+    }
+</script>
+
+<style>
+    html {
+        background: url("<?php echo $this->Html->url('/').'img/backgrounds/'.$this->Session->read('background').'.png'?>") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
+
 </html>

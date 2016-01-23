@@ -17,7 +17,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 
 
 <!-- 2 Columns of content -->
-<div id="pageContent">
+<!--<div id="pageContent">-->
     <?php
     $num1 = mt_rand(1, 362); //Cards
     $num2 = mt_rand(1, 11); //Events
@@ -87,18 +87,21 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
     $num2 = mt_rand(1, 357);
     $num3 = mt_rand(1, 357);
     ?>
-    <div class="row">
+    <div class="row" id="puchis">
         <div class="col-lg-2">
-            <?php echo $this->Html->image('puchis/' . $num1 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi1', 'height' => 180)); ?>
-            <h4>About The Game</h4>
+            <?php echo $this->Html->link($this->Html->image('puchis/' . $num1 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi1', 'height' => 180)).
+            '<h3>About The Game</h3>', '/about', array('escape' => false))?>
+            <p>What is Starlight Stage?</p>
         </div>
         <div class="col-lg-2">
-            <?php echo $this->Html->image('puchis/' . $num2 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi2', 'height' => 180)); ?>
-            <h4>About This Website</h4>
+            <?php echo $this->Html->link($this->Html->image('puchis/' . $num2 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi2', 'height' => 180)).
+                '<h3>About This Website</h3>', '/about', array('escape' => false))?>
+            <p>What is Usamin S@telite?</p>
         </div>
         <div class="col-lg-2">
-            <?php echo $this->Html->image('puchis/' . $num3 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi3', 'height' => 180)); ?>
-            <h4>Links</h4>
+            <?php echo $this->Html->link($this->Html->image('puchis/' . $num3 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi3', 'height' => 180)).
+                '<h3>Donate</h3>', '/donate', array('escape' => false))?>
+            <p>Usamin S@telite survives on your donations! Please consider it!</p>
         </div>
         <div class="col-lg-6">
             <div class="newsHeader">Latest News</div>
@@ -120,6 +123,6 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
     </div>
 
     <hr class="featurette-divider"/>
-</div>
+<!--</div>-->
 
 <!-- /END THE FEATURETTES -->

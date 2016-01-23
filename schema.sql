@@ -37,6 +37,7 @@ CREATE TABLE songs (
   id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
   eName       VARCHAR(255) NOT NULL,
   jName       VARCHAR(255) NOT NULL,
+  romaji      VARCHAR(255) NOT NULL,
   type        VARCHAR(10)  NOT NULL,
   bpm         INT          NOT NULL,
   unlockCon   TEXT         NOT NULL,
@@ -165,9 +166,13 @@ VALUES
   (1, 'Uzuki Shimamura', '島村卯月', '17', 159, 45, 'April 24', 'O', '83/59/87', 'Long Phone Calls with friends', 'Right',
    'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'uzuki.png'),
   (2, 'Rin Shibuya', '渋谷凜', '15', 165, 44, 'August 10', 'B', '80/56/81', 'Dog Walking', 'Right', 'Leo', 'Tokyo', 'Cool',
-   'Ayaka Fukuhara', 'rin.png');
+   'Ayaka Fukuhara', 'rin.png'),
+  (3, 'Mio Honda', '本田未央', 15, 161, 46, 'December 1', 'B', '84/58/87', 'Shopping', 'Right', 'Sagittarius', 'Chiba',
+   'Passion',
+   'Sayuri Hara', 'mio.png');
 
-INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, type, t1, t2, t3, t4, t5, t6, t7, pic) VALUES
+INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, type, t1, t2, t3, t4, t5, t6, t7, pic)
+VALUES
   (1, TRUE, TRUE, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-01-13 15:00:00', '2016-01-18 15:00:00',
    'Get Coins, Buy Idols', 'All', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'caravan1.jpg'),
   (2, FALSE, FALSE, 'LIVE Groove Dance burst', 'LIVE Groove Dance burst', '2015-12-30 15:00:00', '2016-01-08 20:59',
@@ -177,13 +182,44 @@ INSERT INTO cards (id, idol_id, event_id, cardNumber, eName, jName, rarity, type
                    baseMaxVocal, baseMaxDance, baseMaxVisual, awkBaseLife, awkBaseVocal, awkBaseDance, awkBaseVisual, awkMaxLife, awkMaxVocal,
                    awkMaxDance, awkMaxVisual, centerSkillText, specialSkillType, specialSkillText, baseArt, awkArt)
 VALUES
-  (1,1,NULL,43, '"Stage of Magic" Uzuki Shimamura', '［ステージオブマジック］島村卯月','SSR', 'Cute',80,90,40,2028,2006,2001,42,4436,4387,4377,42,2662,2633,2627,44,5349,5289,5278,
-   'All Cute Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', '43.png', '44.png'),
-  (2,2,NULL,99, '"Stage of Magic" Rin Shibuya', '［ステージオブマジック］渋谷凛', 'SSR', 'Cool', 80,90,40,2001,2028,2006,42,4377,4436,4387,42,2627,2662,2633,44,5278,5349,5289,
-   'All Cool Idol Appeal up 30%', 'Perfect Lock', 'There is a high chance of turning all bads, nice and goods in the next 9 seconds into perfects', '99.png', '100.png');
+  (1, 1, NULL, 43, '"Stage of Magic" Uzuki Shimamura', '［ステージオブマジック］島村卯月', 'SSR', 'Cute', 80, 90, 40, 2028, 2006, 2001,
+   42, 4436, 4387, 4377, 42, 2662, 2633, 2627, 44, 5349, 5289, 5278,
+   'All Appeals of all Cute Idols up 30%', 'Perfect Lock',
+   'GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 9 seconds for a very short time.',
+   '43.png', '44.png'),
+  (2, 2, NULL, 99, '"Stage of Magic" Rin Shibuya', '［ステージオブマジック］渋谷凛', 'SSR', 'Cool', 80, 90, 40, 2001, 2028, 2006, 42,
+   4377, 4436, 4387, 42, 2627, 2662, 2633, 44, 5278, 5349, 5289,
+   'All Appeals of all Cool Idols up 30%', 'Perfect Lock',
+   'GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 12 seconds for a short time.',
+   '99.png', '100.png'),
+  (3, 1, NULL, 1, 'Uzuki Shimamura', '島村卯月', 'R', 'Cute', 40, 50, 25, 1020, 1248, 1965, 27, 1815, 2221, 3497, 27, 1280,
+   1566, 2465, 29, 2257, 2761, 4347,
+   'Visual Appeal of all Cute idols up 30%', 'Score Boost',
+   'PERFECT score 10% up, low probability of triggering every 6 seconds for a short time.', '1.png', '2.png'),
+  (4, 2, NULL, 57, 'Rin Shibuya', '渋谷凜', 'R', 'Cool', 40, 50, 25, 1936, 1044, 1263, 27, 3444, 1857, 2247, 27, 2428,
+   1309, 1584, 29, 4281, 2309, 2793,
+   'Vocal Appeal of all Cool idols up 30%', 'Score Boost',
+   'PERFECT score 10% up, low probability of triggering every 6 seconds for a short time.', '57.png', '58.png'),
+  (5, 3, NULL, 115, 'Mio Honda', '本田未央', 'R', 'Passion', 40, 50, 25, 1058, 1918, 1272, 27, 1882, 3413, 2263, 27, 1327,
+   2406, 1595, 29, 2340, 4243, 2813,
+   'Dance Appeal of all Passion idols up 30%', 'Score Boost',
+   'PERFECT score 10% up, low probability of triggering every 6 seconds for a short time.', '115.png', '116.png'),
+  (6, 3, NULL, 159, '"Stage of Magic" Mio Honda', '［ステージオブマジック］本田未央', 'SSR', 'Passion', 80, 90, 40, 2006, 2001, 2028,
+   42, 4387, 4377, 4436, 42, 2633, 2627, 2662, 44, 5289, 5278, 5349,
+   'All Appeals of all Passion Idols up 30%', 'Perfect Lock',
+   'GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 15 seconds for a considerable length of time.',
+   '159.png', '160.png'),
+  (7, 3, 2, 325, '"Gokigen Party Night" Mio Honda', '［ゴキゲンParty Night］本田未央', 'SR', 'Passion', 60, 70, 35, 2481, 1272,
+   1563, 37, 5010, 2570, 3157, 37, 3198, 1641, 2015, 39, 6115, 3137, 3854,
+   'Vocal Appeal of all idols up 48%', 'Combo Bonus',
+   'COMBO pt bonus 12% up, medium probability of triggering every 6 seconds for some time.', '325.png', '326.png');
 
-INSERT INTO songs (id, eName, jName, type, bpm, unlockCon, coverArt, debutLvl, debutStam, debutNotes, regLvl, regStam, regNotes, proLvl, proStam, proNotes, masterLvl, masterStam, masterNotes, dateAdded) VALUES
-  (1,'Please! Cinderella', 'お願い！シンデレラ', 'All', 175,'Complete Tutorial', 'お願い！シンデレラ.jpg', 5,10,46,10,12,205,15,15,341,20,18,477,'2015-9-3'),
-  (2,'Orange Sapphire', 'Orange Sapphire', 'Passion', 162,'Past Event Song','Orange Sapphire.jpg',8,11,116,13,13,214,17,16,411,26,19,719,'2015-12-28');
+INSERT INTO songs (id, eName, jName, romaji, type, bpm, unlockCon, coverArt, debutLvl, debutStam, debutNotes, regLvl, regStam, regNotes,
+                   proLvl, proStam, proNotes, masterLvl, masterStam, masterNotes, dateAdded) VALUES
+  (1, 'Please! Cinderella', 'お願い！シンデレラ', 'Onegai! Cinderella', 'All', 175, 'Complete Tutorial',
+   'Onegai! Cinderella.jpg',
+   5, 10, 46, 10, 12, 205, 15, 15, 341, 20, 18, 477, '2015-9-3'),
+  (2, 'Orange Sapphire', 'Orange Sapphire', 'Orange Sapphire', 'Passion', 162, 'Past Event Song', 'Orange Sapphire.jpg',
+   8, 11, 116, 13, 13, 214, 17, 16, 411, 26, 19, 719, '2015-12-28');
 
 

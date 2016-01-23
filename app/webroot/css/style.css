@@ -116,7 +116,7 @@ body {
 }
 
 #pageContent {
-    padding-top: 10px;
+    padding-top: 50px;
 }
 
 #pageContent hr {
@@ -124,7 +124,7 @@ body {
 }
 
 #homeHeading {
-    padding-top: 50px;
+    padding-top: 10px;
     text-align: center;
 }
 
@@ -182,6 +182,14 @@ body {
     font-weight: 300;
     line-height: 1;
     letter-spacing: -1px;
+}
+
+#puchis a{
+    color: #000;
+}
+
+#puchis a h3 {
+    margin-top: 10px;
 }
 
 .newsHeader {
