@@ -9,10 +9,19 @@
 
 body {
     /*padding-bottom: 40px;*/
-    color: #FFF;
     background: inherit;
     font-family: 'kawaii', sans-serif!important;
-    font-size: 16px;
+    font-size: 1.65em;
+}
+
+.btn-default {
+    background-color: #ff6c99;
+}
+
+.btn-default:hover,
+.btn-default:focus {
+    color: #9d2068;
+    background-color: #ffc66c;
 }
 
 /* CUSTOMIZE THE NAVBAR
@@ -25,6 +34,11 @@ body {
     right: 0;
     left: 0;
     z-index: 20;
+}
+
+#clock {
+    margin: 0px -15px;
+    padding: 13px 15px 15px 15px;
 }
 
 /* Flip around the padding for proper display in narrow viewports */
@@ -47,6 +61,46 @@ body {
     background-color: #ff6c99;
     border-color: #ffc66c;
     width: inherit;
+}
+
+.navbar-default  .btn-default {
+    background-color: #ffc66c;
+}
+
+.navbar-default  .btn-default:hover,
+.navbar-default  .btn-default:focus {
+    color: #ffc66c;
+    background-color: #9d2068;
+}
+
+.navbar-default h1 {
+    color: #ffe0e9;
+    margin: 0px -15px;
+    padding: 15px;
+}
+
+.navbar-default h2{
+    color: #ffe0e9;
+    margin: 0px -15px;
+    padding: 15px;
+}
+
+.navbar-default h3{
+    color: #ffe0e9;
+    margin: 0px -15px;
+    padding: 15px;
+}
+
+.navbar-default h4{
+    color: #ffe0e9;
+    margin: 0px -15px;
+    padding: 15px;
+}
+
+.navbar-default h5 {
+    color: #ffe0e9;
+    margin: 0px -15px;
+    padding: 15px;
 }
 
 .navbar-default .navbar-brand {
@@ -229,6 +283,12 @@ body {
 .news a{
     color: #000000;
     font-size: 16px;
+}
+
+/* SEARCH / FILTER BAR
+-------------------------------------------------- */
+.search {
+    margin-top: 8px;
 }
 
 /* RESPONSIVE CSS

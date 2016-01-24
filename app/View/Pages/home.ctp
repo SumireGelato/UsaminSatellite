@@ -104,7 +104,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
             <p>Usamin S@telite survives on your donations! Please consider it!</p>
         </div>
         <div class="col-lg-6">
-            <div class="newsHeader">Latest News</div>
+            <div class="newsHeader">Latest News - <a href="https://twitter.com/UsaminSatelite">Follow Us on Twitter!</a></div>
             <div class="news">
                 <?php
                 foreach ($news as $newsItem) { ?>
