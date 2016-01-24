@@ -35,4 +35,14 @@ class AppController extends Controller {
 
     public $helpers = array('Session');
 
+    public function beforeFilter() {
+        parent::beforeFilter();
+        if(!$this ->Session->check('background'))
+        {
+            $background = mt_rand(1,16);
+
+            $this->Session->write('background', $background);
+        }
+    }
+
 }

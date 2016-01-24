@@ -215,7 +215,11 @@
  * the cake shell command: cake schema create Sessions
  */
 	Configure::write('Session', array(
-		'defaults' => 'php'
+		'defaults' => 'php',
+        'cookie' => 'usamin_cookie',
+        'cookieTimeout' => 0,
+        'timeout' => 60,
+        'checkAgent' => false
 	));
 
 /**
@@ -266,7 +270,8 @@
  * Uncomment this line and correct your server timezone to fix
  * any date & time related errors.
  */
-	//date_default_timezone_set('UTC');
+//Set to JST
+    date_default_timezone_set('Asia/Tokyo');
 
 /**
  * `Config.timezone` is available in which you can set users' timezone string.
