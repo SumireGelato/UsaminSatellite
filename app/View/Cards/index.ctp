@@ -33,19 +33,20 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 </div>
 
 <!--Cards Gallery-->
-<?php $numItems = 0; ?>
+<?php $numItems = 0;
+      $totalItems = 1;?>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 <div class="row">
         <?php foreach ($cards as $card) { ?>
             <!--CARD-->
             <div class="col-lg-4">
             <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <div class="panel-heading" role="tab" id="<?php echo "heading".$totalItems;?>">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="<?php echo "#collapse".$totalItems;?>" aria-expanded="false" aria-controls="<?php echo "collapse".$totalItems;?>">
                             <img src="img/cards/44.png" height="100%" width="100%"/>
                         </a>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div id="<?php echo "collapse".$totalItems;?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="<?php echo "heading".$totalItems;?>">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-12">
@@ -130,6 +131,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
         </div>
         <?php
             $numItems++;
+            $totalItems++;
             if($numItems==3){
                 echo '</div> <div class="row">';
                 $numItems = 0;
