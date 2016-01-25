@@ -33,10 +33,12 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 </div>
 
 <!--Cards Gallery-->
-<?php //for($i=0;$i<=count($cards);$i+=3) { ?>
+<?php $numItems = 0; ?>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 <div class="row">
-    <div class="col-lg-4">
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <?php foreach ($cards as $card) { ?>
+            <!--CARD-->
+            <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingOne">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -126,196 +128,20 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        <img src="img/cards/44.png" height="100%" width="100%"/>
-                    </a>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary active">
-                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h3>"Stage of Magic" Uzuki Shimamura</h3>
-                                <em>［ステージオブマジック］島村卯月</em><!--If it's a sr or higher add padding right 12px to account for
-                                                                        the double width brackets-->
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <p>Rarity: SSR</p>
-                            </div>
-                            <div class="col-xs-6">
-                                <p>Type: Cute</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary active">
-                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options" id="option2" autocomplete="off">Level 80
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <table>
-                                    <tr>
-                                        <td>Life 27</td>
-                                        <td>Vocal 2158</td>
-                                        <td>Dance 1578</td>
-                                        <td>Visual 1665</td>
-                                        <td>Total 5571</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Center Skill</h4>
-                                <p>All Cute Appeal up 30%</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Special Skill: Perfect Lock</h4>
-                                <p>GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 9 seconds for a very short time.</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <p><h4>Source:</h4>
-                                Gacha</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <?php
+            $numItems++;
+            if($numItems==3){
+                echo '</div> <div class="row">';
+                $numItems = 0;
+            }
 
-    <div class="col-lg-4">
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingThree">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        <img src="img/cards/44.png" height="100%" width="100%"/>
-                    </a>
-                </div>
-                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary active">
-                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h3>"Stage of Magic" Uzuki Shimamura</h3>
-                                <em>［ステージオブマジック］島村卯月</em><!--If it's a sr or higher add padding right 12px to account for
-                                                                        the double width brackets-->
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <p>Rarity: SSR</p>
-                            </div>
-                            <div class="col-xs-6">
-                                <p>Type: Cute</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary active">
-                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options" id="option2" autocomplete="off">Level 80
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <table>
-                                    <tr>
-                                        <td>Life 27</td>
-                                        <td>Vocal 2158</td>
-                                        <td>Dance 1578</td>
-                                        <td>Visual 1665</td>
-                                        <td>Total 5571</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Center Skill</h4>
-                                <p>All Cute Appeal up 30%</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Special Skill: Perfect Lock</h4>
-                                <p>GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 9 seconds for a very short time.</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <p><h4>Source:</h4>
-                                Gacha</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        }
+        ?>
     </div>
-
-    </div>
-<?php //} ?>
 </div>
+
+
+
 
 <!--Rofl don't need ANY of the original code! Only Here as a reference-->
 <!--<div class="cards index">
