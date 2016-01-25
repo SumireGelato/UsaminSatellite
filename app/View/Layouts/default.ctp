@@ -28,10 +28,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     //		echo $this->Html->meta('icon');
     //echo $this->Html->css('cake.generic.css');
     echo $this->Html->css('bootstrap.css');
+    echo $this->Html->css('http://mplus-fonts.sourceforge.jp/webfonts/basic_latin/mplus_webfonts.css');
+    echo $this->Html->css('http://mplus-fonts.sourceforge.jp/webfonts/general-j/mplus_webfonts.css');
     //		echo $this->Html->css('bootstrap-theme.css');
-    echo $this->Html->css('jquery-ui.css');
-    echo $this->Html->css('jquery-ui.structure.css');
-    echo $this->Html->css('jquery-ui.theme.css');
+//    echo $this->Html->css('jquery-ui.css');
+//    echo $this->Html->css('jquery-ui.structure.css');
+//    echo $this->Html->css('jquery-ui.theme.css');
     echo $this->Html->css('style.css');
     ?>
 
@@ -134,9 +136,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <?php
 
 echo $this->Html->script('jquery-1.12.0');
-echo $this->Html->script('jquery-ui');
+//echo $this->Html->script('jquery-ui');
 echo $this->Html->script('bootstrap');
-echo $this->Html->script('npm');
+//echo $this->Html->script('npm');
 
 ?>
 

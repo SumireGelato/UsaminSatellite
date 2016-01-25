@@ -1,17 +1,13 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
 
-@font-face {
-    font-family: 'kawaii';
-    src: url('fonts/KTEGAKI.ttf');
-    font-style: normal;
-}
-
 body {
     /*padding-bottom: 40px;*/
     background: inherit;
-    font-family: 'kawaii', sans-serif!important;
-    font-size: 1.65em;
+    font-family:
+    'M+ C Type-1 (basic latin) Regular',
+    'M+ Type-2 (general-j) Regular',sans-serif;
+    font-size: 1.6em;
 }
 
 .btn-default {
