@@ -50,10 +50,19 @@ $totalItems = 1; ?>
                            aria-controls="<?php echo "collapse" . $totalItems; ?>">
                             <img src="img/cards/44.png" height="100%" width="100%"/>
                         </a>
+                        <h3 style="margin: 10px 0 0 0">Blah blah blah blah</h3>
                     </div>
                     <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse" role="tabpanel"
                          aria-labelledby="<?php echo "heading" . $totalItems; ?>">
                         <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!--                                    <h3>"Stage of Magic" Uzuki Shimamura</h3>-->
+                                    <em>［ステージオブマジック］島村卯月</em><!--If it's a sr or higher add padding right 12px to account for
+                                                                        the double width brackets-->
+                                </div>
+                            </div>
+                            <hr>
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="btn-group" data-toggle="buttons">
@@ -64,14 +73,6 @@ $totalItems = 1; ?>
                                             <input type="radio" name="options" id="option2" autocomplete="off">Awakened
                                         </label>
                                     </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h3>"Stage of Magic" Uzuki Shimamura</h3>
-                                    <em>［ステージオブマジック］島村卯月</em><!--If it's a sr or higher add padding right 12px to account for
-                                                                        the double width brackets-->
                                 </div>
                             </div>
                             <hr>
