@@ -23,16 +23,18 @@ App::uses('DebugPanel', 'DebugKit.Lib');
  *
  * @since         DebugKit 0.1
  */
-class TestPanel extends DebugPanel {
+class TestPanel extends DebugPanel
+{
 
-/**
- * Startup
- *
- * @param Controller $controller The controller.
- * @return void
- */
-	public function startup(Controller $controller) {
-		$controller->testPanel = true;
-	}
+    /**
+     * Startup
+     *
+     * @param Controller $controller The controller.
+     * @return void
+     */
+    public function startup(Controller $controller)
+    {
+        $controller->testPanel = true;
+    }
 
 }

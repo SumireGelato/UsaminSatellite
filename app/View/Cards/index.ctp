@@ -9,7 +9,8 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -26,113 +27,122 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
                         </div>
                         <button type="submit" class="btn btn-default">Go</button>
                     </form>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
         </nav>
     </div>
 </div>
 
 <!--Cards Gallery-->
 <?php $numItems = 0;
-      $totalItems = 1;?>
+$totalItems = 1; ?>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-<div class="row">
+    <div class="row">
         <?php foreach ($cards as $card) { ?>
             <!--CARD-->
             <div class="col-lg-4">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="<?php echo "heading".$totalItems;?>">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="<?php echo "#collapse".$totalItems;?>" aria-expanded="false" aria-controls="<?php echo "collapse".$totalItems;?>">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="<?php echo "heading" . $totalItems; ?>">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                           href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
+                           aria-controls="<?php echo "collapse" . $totalItems; ?>">
                             <img src="img/cards/44.png" height="100%" width="100%"/>
                         </a>
-                </div>
-                <div id="<?php echo "collapse".$totalItems;?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="<?php echo "heading".$totalItems;?>">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary active">
-                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
-                                    </label>
+                    </div>
+                    <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse" role="tabpanel"
+                         aria-labelledby="<?php echo "heading" . $totalItems; ?>">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-primary active">
+                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
+                                        </label>
+                                        <label class="btn btn-primary">
+                                            <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h3>"Stage of Magic" Uzuki Shimamura</h3>
-                                <em>［ステージオブマジック］島村卯月</em><!--If it's a sr or higher add padding right 12px to account for
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3>"Stage of Magic" Uzuki Shimamura</h3>
+                                    <em>［ステージオブマジック］島村卯月</em><!--If it's a sr or higher add padding right 12px to account for
                                                                         the double width brackets-->
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <p>Rarity: SSR</p>
-                            </div>
-                            <div class="col-xs-6">
-                                <p>Type: Cute</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary active">
-                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options" id="option2" autocomplete="off">Level 80
-                                    </label>
                                 </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <table>
-                                    <tr>
-                                        <td>Life 27</td>
-                                        <td>Vocal 2158</td>
-                                        <td>Dance 1578</td>
-                                        <td>Visual 1665</td>
-                                        <td>Total 5571</td>
-                                    </tr>
-                                </table>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <p>Rarity: SSR</p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <p>Type: Cute</p>
+                                </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Center Skill</h4>
-                                <p>All Cute Appeal up 30%</p>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-primary active">
+                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level
+                                            1
+                                        </label>
+                                        <label class="btn btn-primary">
+                                            <input type="radio" name="options" id="option2" autocomplete="off">Level 80
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Special Skill: Perfect Lock</h4>
-                                <p>GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 9 seconds for a very short time.</p>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table>
+                                        <tr>
+                                            <td>Life 27</td>
+                                            <td>Vocal 2158</td>
+                                            <td>Dance 1578</td>
+                                            <td>Visual 1665</td>
+                                            <td>Total 5571</td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <p><h4>Source:</h4>
-                                Gacha</p>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>Center Skill</h4>
+
+                                    <p>All Cute Appeal up 30%</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>Special Skill: Perfect Lock</h4>
+
+                                    <p>GREATs, NICEs and BADs become PERFECTs temporarily, high probability of
+                                        triggering every 9 seconds for a very short time.</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p><h4>Source:</h4>
+                                    Gacha</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <?php
+            <?php
             $numItems++;
             $totalItems++;
-            if($numItems==3){
+            if ($numItems == 3) {
                 echo '</div> <div class="row">';
                 $numItems = 0;
             }
@@ -144,16 +154,16 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 
 <p>
     <?php
-    	echo $this->Paginator->counter(array(
-            'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-        ));
-         ?>	</p>
+    echo $this->Paginator->counter(array(
+        'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+    ));
+    ?>    </p>
 <div class="paging">
     <?php
-    		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-            echo $this->Paginator->numbers(array('separator' => ''));
-            echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-         ?>
+    echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+    echo $this->Paginator->numbers(array('separator' => ''));
+    echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+    ?>
 </div>
 
 

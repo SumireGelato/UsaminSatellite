@@ -16,15 +16,17 @@ App::uses('DebugPanel', 'DebugKit.Lib');
 /**
  * Provides debug information on the View variables.
  */
-class VariablesPanel extends DebugPanel {
+class VariablesPanel extends DebugPanel
+{
 
-/**
- * beforeRender callback
- *
- * @param Controller $controller Controller object.
- * @return array
- */
-	public function beforeRender(Controller $controller) {
-		return array_merge($controller->viewVars, array('$request->data' => $controller->request->data));
-	}
+    /**
+     * beforeRender callback
+     *
+     * @param Controller $controller Controller object.
+     * @return array
+     */
+    public function beforeRender(Controller $controller)
+    {
+        return array_merge($controller->viewVars, array('$request->data' => $controller->request->data));
+    }
 }

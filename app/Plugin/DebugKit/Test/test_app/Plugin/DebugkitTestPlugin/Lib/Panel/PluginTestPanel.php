@@ -20,5 +20,6 @@ App::uses('DebugPanel', 'DebugKit.Lib');
 /**
  * Class PluginTestPanel
  */
-class PluginTestPanel extends DebugPanel {
+class PluginTestPanel extends DebugPanel
+{
 }

@@ -27,25 +27,27 @@ App::uses('Controller', 'Controller');
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
  *
- * @package		app.Controller
- * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
+ * @package        app.Controller
+ * @link        http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
-class AppController extends Controller {
+class AppController extends Controller
+{
     public $components = array('DebugKit.Toolbar', 'Session');
 
     public $helpers = array('Session');
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
-        if(!$this ->Session->check('background'))
-        {
-            $background = mt_rand(1,16);
+        if (!$this->Session->check('background')) {
+            $background = mt_rand(1, 16);
 
             $this->Session->write('background', $background);
         }
     }
 
-    public function beforeRender() {
+    public function beforeRender()
+    {
         $this->layout = ($this->request->is("ajax")) ? "ajax" : "default";
     }
 

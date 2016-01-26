@@ -31,9 +31,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('http://mplus-fonts.sourceforge.jp/webfonts/basic_latin/mplus_webfonts.css');
     echo $this->Html->css('http://mplus-fonts.sourceforge.jp/webfonts/general-j/mplus_webfonts.css');
     //		echo $this->Html->css('bootstrap-theme.css');
-//    echo $this->Html->css('jquery-ui.css');
-//    echo $this->Html->css('jquery-ui.structure.css');
-//    echo $this->Html->css('jquery-ui.theme.css');
+    //    echo $this->Html->css('jquery-ui.css');
+    //    echo $this->Html->css('jquery-ui.structure.css');
+    //    echo $this->Html->css('jquery-ui.theme.css');
     echo $this->Html->css('style.css');
     ?>
 
@@ -58,17 +58,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             <span class="icon-bar"></span>
                         </button>
                         <?php
-                        if ($this->here == $this->base.'/')
-                        {
-                            echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action'=>'display', 'home'),
-                                array('class'=>'navbar-brand', 'id'=>'showText'));
+                        if ($this->here == $this->base . '/') {
+                            echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
+                                array('class' => 'navbar-brand', 'id' => 'showText'));
                             echo $this->Html->link($this->Html->image('usamin-logo.png',
                                 array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'),
                                 array('class' => 'navbar-brand', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0'));
-                        } else
-                        {
-                            echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action'=>'display', 'home'),
-                                array('class'=>'navbar-brand'));
+                        } else {
+                            echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
+                                array('class' => 'navbar-brand'));
                         }
                         ?>
                     </div>
@@ -120,13 +118,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
     <!-- Get Content -->
     <div id="pageContent">
-    <?php echo $this->Session->flash(); ?>
-    <?php echo $this->fetch('content'); ?>
-</div>
-<!--    <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy;  &middot;</p>
-    </footer>-->
+        <?php echo $this->Session->flash(); ?>
+        <?php echo $this->fetch('content'); ?>
+    </div>
+    <!--    <footer>
+            <p class="pull-right"><a href="#">Back to top</a></p>
+            <p>&copy;  &middot;</p>
+        </footer>-->
 </div>
 <!-- End get Content -->
 
