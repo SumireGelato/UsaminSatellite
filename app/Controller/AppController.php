@@ -45,4 +45,8 @@ class AppController extends Controller {
         }
     }
 
+    public function beforeRender() {
+        $this->layout = ($this->request->is("ajax")) ? "ajax" : "default";
+    }
+
 }
