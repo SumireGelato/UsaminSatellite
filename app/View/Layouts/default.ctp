@@ -46,6 +46,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
     <link rel="icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
 
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
 </head>
 <body onload="startTime()">
 <div class="container marketing" id="contentContainer">
