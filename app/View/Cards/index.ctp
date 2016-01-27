@@ -1,44 +1,50 @@
 <!-- page title -->
 <?php
 $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
+if (!$this->request->is('ajax'))
+{
 ?>
-<!--Search and filter bar-->
-<div class="row">
-    <div class="col-lg-12">
-        <nav class="navbar navbar-default search">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <h4>Search</h4>
-                </div>
+    <!--Search and filter bar-->
+    <div class="row">
+        <div class="col-lg-12">
+            <nav class="navbar navbar-default search">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <h4>Search</h4>
+                    </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Go</button>
-                    </form>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                            <button type="submit" class="btn btn-default">Go</button>
+                        </form>
+                    </div>
+                    <!-- /.navbar-collapse -->
                 </div>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container-fluid -->
-        </nav>
+                <!-- /.container-fluid -->
+            </nav>
+        </div>
     </div>
-</div>
 
-<!--Cards Gallery-->
+    <!--Cards Gallery-->
 <?php $numItems = 0;
 $totalItems = 1; ?>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <?php
+    } // End Stuff you don't need if ajax request
+    ?>
+
     <div class="row">
         <?php foreach ($cards as $card) { ?>
             <!--CARD-->
@@ -50,6 +56,7 @@ $totalItems = 1; ?>
                            aria-controls="<?php echo "collapse" . $totalItems; ?>">
                             <img src="img/cards/44.png" height="100%" width="100%"/>
                         </a>
+
                         <h3 style="margin: 10px 0 0 0">Blah blah blah blah</h3>
                     </div>
                     <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse" role="tabpanel"
@@ -153,20 +160,17 @@ $totalItems = 1; ?>
     </div>
 </div>
 
-<p>
-    <?php
-    echo $this->Paginator->counter(array(
-        'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-    ));
-    ?>    </p>
-<div class="paging">
-    <?php
-    echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-    echo $this->Paginator->numbers(array('separator' => ''));
-    echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+<?php
+if ($this->Paginator->counter('(:pages)') > 1) {
     ?>
-</div>
-
+    <div class="paging">
+        <?php
+        echo $this->Paginator->next('Show More....');
+        ?>
+    </div>
+    <?php
+}
+?>
 
 <!--Rofl don't need ANY of the original code! Only Here as a reference-->
 <!--<div class="cards index">
