@@ -1,6 +1,7 @@
 <!-- page title -->
 <?php
 $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
+
 if (!$this->request->is('ajax'))
 {
 ?>
@@ -36,15 +37,11 @@ if (!$this->request->is('ajax'))
             </nav>
         </div>
     </div>
-
     <!--Cards Gallery-->
-<?php $numItems = 0;
-$totalItems = 1; ?>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <?php
     } // End Stuff you don't need if ajax request
     ?>
-
     <div class="row">
         <?php foreach ($cards as $card) { ?>
             <!--CARD-->
@@ -161,13 +158,27 @@ $totalItems = 1; ?>
 </div>
 
 <?php
-if ($this->Paginator->counter('(:pages)') > 1) {
+if ($this->Paginator->counter('{:pages}') > 1) {
+    $this->Paginator->options(array(
+        'url' => array(
+            'pass' => $totalItems
+        )
+    ));
+    echo $this->Paginator->next('Show More ...');
     ?>
-    <div class="paging">
-        <?php
-        echo $this->Paginator->next('Show More....');
-        ?>
-    </div>
+    <script>
+        $(document).ready(function (e) {
+            var url = $('.next a').attr('href');
+            $('.next').text('Show More ...');
+            $('.next').click(function (e) {
+                $(this).remove();
+                $.get(url, function (data) {
+                    $('#accordion').append(data);
+                    alert(url);
+                });
+            });
+        });
+    </script>
     <?php
 }
 ?>

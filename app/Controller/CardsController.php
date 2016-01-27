@@ -21,8 +21,9 @@ class CardsController extends AppController
         'limit' => 6,
         'order' => array(
             'Card.cardNumber' => 'asc'
-        )
+        ),
     );
+
 
     /**
      * index method
@@ -32,6 +33,15 @@ class CardsController extends AppController
     public function index()
     {
         $this->Card->recursive = 0;
+        $numItems = 0;
+        if (!$this->request->is('ajax')) {
+            $totalItems = 1;
+        }
+        else{
+            $totalItems = $this->passedArgs['pass'];
+        }
+        $this->set(compact('numItems'));
+        $this->set(compact('totalItems'));
         $this->Paginator->settings = $this->paginate;
         $this->set('cards', $this->Paginator->paginate());
     }
