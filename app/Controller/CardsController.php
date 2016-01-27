@@ -18,7 +18,7 @@ class CardsController extends AppController
     public $components = array('Paginator');
 
     public $paginate = array(
-        'limit' => 6,
+        'limit' => 9,
         'order' => array(
             'Card.cardNumber' => 'asc'
         ),

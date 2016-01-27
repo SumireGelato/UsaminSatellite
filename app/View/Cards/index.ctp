@@ -168,15 +168,34 @@ if ($this->Paginator->counter('{:pages}') > 1) {
     ?>
     <script>
         $(document).ready(function (e) {
+            var processing;
             var url = $('.next a').attr('href');
-            $('.next').text('Show More ...');
-            $('.next').click(function (e) {
-                $(this).remove();
-                $.get(url, function (data) {
-                    $('#accordion').append(data);
-                    alert(url);
-                });
+            $('.next').text('');
+            if(url == undefined)
+            {
+                return false;
+            }
+            $(document).scroll(function (e) {
+                if (processing) {
+                    return false;
+                }
+                if (($(window).scrollTop()+ $(window).height())>=$(document).height()) {
+                    processing = true;
+//                    alert("i'm at the bottom!");
+                    $(this).remove();
+                    $.get(url, function (data) {
+                        $('#accordion').append(data);
+//                        alert(url);
+                    });
+                }
             });
+//            $('.next').click(function (e) {
+//                $(this).remove();
+//                $.get(url, function (data) {
+//                    $('#accordion').append(data);
+//                    alert(url);
+//                });
+//            });
         });
     </script>
     <?php
