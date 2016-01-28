@@ -51,10 +51,11 @@ if (!$this->request->is('ajax'))
                         <a id="cardArt" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                            href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
                            aria-controls="<?php echo "collapse" . $totalItems; ?>">
-                            <!--                            <img src="img/cards/44.png" height="100%" width="100%"/>-->
+
                             <?php echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '100%', 'width' => '100%', 'class' => 'baseCardImage')); ?>
 
                             <?php echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '100%', 'width' => '100%', 'class' => 'awkCardImage')); ?>
+
                         </a>
                         <h4><?php echo $card['Card']['eName']; ?></h4>
                     </div>
