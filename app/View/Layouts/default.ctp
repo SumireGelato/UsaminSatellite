@@ -28,8 +28,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     //		echo $this->Html->meta('icon');
     //echo $this->Html->css('cake.generic.css');
     echo $this->Html->css('bootstrap.css');
-    echo $this->Html->css('http://mplus-fonts.sourceforge.jp/webfonts/basic_latin/mplus_webfonts.css');
-    echo $this->Html->css('http://mplus-fonts.sourceforge.jp/webfonts/general-j/mplus_webfonts.css');
+    echo $this->Html->css('http://mplus-fonts.osdn.jp/webfonts/basic_latin/mplus_webfonts.css');
+    echo $this->Html->css('http://mplus-fonts.osdn.jp/webfonts/general-j/mplus_webfonts.css');
     //		echo $this->Html->css('bootstrap-theme.css');
     //    echo $this->Html->css('jquery-ui.css');
     //    echo $this->Html->css('jquery-ui.structure.css');

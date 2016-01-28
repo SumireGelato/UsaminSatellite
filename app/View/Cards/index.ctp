@@ -51,17 +51,18 @@ if (!$this->request->is('ajax'))
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                            href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
                            aria-controls="<?php echo "collapse" . $totalItems; ?>">
-                            <img src="img/cards/44.png" height="100%" width="100%"/>
+<!--                            <img src="img/cards/44.png" height="100%" width="100%"/>-->
+                        <?php echo $this->Html->image('cards/'.$card['Card']['baseArt'], array('height'=>'100%', 'width=100%')); ?>
+                            <div class="awkArt"></div>
                         </a>
 
-                        <h3 style="margin: 10px 0 0 0">Blah blah blah blah</h3>
+                        <h4><?php echo $card['Card']['eName']; ?></h4>
                     </div>
                     <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse" role="tabpanel"
                          aria-labelledby="<?php echo "heading" . $totalItems; ?>">
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <!--                                    <h3>"Stage of Magic" Uzuki Shimamura</h3>-->
                                     <em>［ステージオブマジック］島村卯月</em><!--If it's a sr or higher add padding right 12px to account for
                                                                         the double width brackets-->
                                 </div>

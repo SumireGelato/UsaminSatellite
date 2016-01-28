@@ -15,7 +15,7 @@ class CardsController extends AppController
      *
      * @var array
      */
-    public $components = array('Paginator');
+    public $components = array('Paginator', 'Search.Prg');
 
     public $paginate = array(
         'limit' => 9,
