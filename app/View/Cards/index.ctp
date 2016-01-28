@@ -48,14 +48,14 @@ if (!$this->request->is('ajax'))
             <div class="col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="<?php echo "heading" . $totalItems; ?>">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                        <a id="cardArt" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                            href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
                            aria-controls="<?php echo "collapse" . $totalItems; ?>">
-<!--                            <img src="img/cards/44.png" height="100%" width="100%"/>-->
-                        <?php echo $this->Html->image('cards/'.$card['Card']['baseArt'], array('height'=>'100%', 'width=100%')); ?>
-                            <div class="awkArt"></div>
-                        </a>
+                            <!--                            <img src="img/cards/44.png" height="100%" width="100%"/>-->
+                            <?php echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '100%', 'width' => '100%', 'class' => 'baseCardImage')); ?>
 
+                            <?php echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '100%', 'width' => '100%', 'class' => 'awkCardImage')); ?>
+                        </a>
                         <h4><?php echo $card['Card']['eName']; ?></h4>
                     </div>
                     <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse" role="tabpanel"
@@ -172,15 +172,14 @@ if ($this->Paginator->counter('{:pages}') > 1) {
             var processing;
             var url = $('.next a').attr('href');
             $('.next').text('');
-            if(url == undefined)
-            {
+            if (url == undefined) {
                 return false;
             }
             $(document).scroll(function (e) {
                 if (processing) {
                     return false;
                 }
-                if (($(window).scrollTop()+ $(window).height())>=$(document).height()) {
+                if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
                     processing = true;
 //                    alert("i'm at the bottom!");
                     $(this).remove();
@@ -190,13 +189,6 @@ if ($this->Paginator->counter('{:pages}') > 1) {
                     });
                 }
             });
-//            $('.next').click(function (e) {
-//                $(this).remove();
-//                $.get(url, function (data) {
-//                    $('#accordion').append(data);
-//                    alert(url);
-//                });
-//            });
         });
     </script>
     <?php

@@ -19,6 +19,18 @@ body {
     background-color: #ffc66c;
 }
 
+.awkCardImage {
+    display: none;
+}
+
+#cardArt:hover .awkCardImage{
+    display: block;
+}
+
+#cardArt:hover .baseCardImage{
+    display: none;
+}
+
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 
