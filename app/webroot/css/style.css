@@ -19,16 +19,28 @@ body {
     background-color: #ffc66c;
 }
 
-.awkCardImage {
+.awkSRCardImage {
     display: none;
 }
 
-#cardArt:hover .awkCardImage{
+#cardArt:hover .awkSRCardImage{
     display: block;
 }
 
-#cardArt:hover .baseCardImage{
+#cardArt:hover .baseSRCardImage{
     display: none;
+}
+
+.panel-heading.cute {
+    background-color: #FF547F;
+}
+
+.panel-heading.cool {
+    background-color: #0275F2;
+}
+
+.panel-heading.passion {
+    background-color: #FFAF3A;
 }
 
 /* CUSTOMIZE THE NAVBAR

@@ -5,199 +5,246 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 if (!$this->request->is('ajax'))
 {
 ?>
-    <!--Search and filter bar-->
-    <div class="row">
-        <div class="col-lg-12">
-            <nav class="navbar navbar-default search">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <h4>Search</h4>
-                    </div>
-
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <form class="navbar-form navbar-left" role="search">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search">
-                            </div>
-                            <button type="submit" class="btn btn-default">Go</button>
-                        </form>
-                    </div>
-                    <!-- /.navbar-collapse -->
+<!--Search and filter bar-->
+<div class="row">
+    <div class="col-lg-12">
+        <nav class="navbar navbar-default search">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <h4>Search</h4>
                 </div>
-                <!-- /.container-fluid -->
-            </nav>
-        </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">Go</button>
+                    </form>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
     </div>
-    <!--Cards Gallery-->
+</div>
+<!--Cards Gallery-->
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <?php
     } // End Stuff you don't need if ajax request
     ?>
     <div class="row">
         <?php foreach ($cards as $card) { ?>
-            <!--CARD-->
-            <div class="col-lg-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="<?php echo "heading" . $totalItems; ?>">
-                        <a id="cardArt" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
-                           href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
-                           aria-controls="<?php echo "collapse" . $totalItems; ?>">
+        <!--CARD-->
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <?php if ($card['Card']['type'] == 'Cool') { ?>
+                    <div class="panel-heading cool" role="tab" id="<?php echo "heading" . $totalItems; ?>">
+                <?php } elseif ($card['Card']['type'] == 'Cute') { ?>
+                    <div class="panel-heading cute" role="tab" id="<?php echo "heading" . $totalItems; ?>">
+                <?php } else { ?>
+                    <div class="panel-heading passion" role="tab" id="<?php echo "heading" . $totalItems; ?>">
+                        <?php } ?>
 
-                            <?php echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '100%', 'width' => '100%', 'class' => 'baseCardImage')); ?>
-
-                            <?php echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '100%', 'width' => '100%', 'class' => 'awkCardImage')); ?>
-
-                        </a>
-                        <h4><?php echo $card['Card']['eName']; ?></h4>
-                    </div>
-                    <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse" role="tabpanel"
-                         aria-labelledby="<?php echo "heading" . $totalItems; ?>">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <em>［ステージオブマジック］島村卯月</em><!--If it's a sr or higher add padding right 12px to account for
-                                                                        the double width brackets-->
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn btn-primary active">
-                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
-                                        </label>
-                                        <label class="btn btn-primary">
-                                            <input type="radio" name="options" id="option2" autocomplete="off">Awakened
-                                        </label>
+                            <a id="cardArt" class="collapsed" role="button" data-toggle="collapse"
+                               data-parent="#accordion"
+                               href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
+                               aria-controls="<?php echo "collapse" . $totalItems; ?>"
+                               style="text-decoration: none; color: black">
+                                <?php
+                                if ($card['Card']['rarity'] == 'N' || $card['Card']['rarity'] == 'R') {
+                                    echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '50%', 'width' => '50%', 'class' => 'baseCardImage'));
+                                    echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '50%', 'width' => '50%', 'class' => 'awkCardImage'));
+                                } else {
+                                    echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '100%', 'width' => '97%', 'class' => 'baseSRCardImage'));
+                                    echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '100%', 'width' => '97%', 'class' => 'awkSRCardImage'));
+                                }
+                                ?>
+                                <!--                            <h4>-->
+                                <?php //echo $card['Card']['eName']; ?><!--</h4>-->
+                            </a>
+                        </div>
+                        <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"
+                             role="tabpanel"
+                             aria-labelledby="<?php echo "heading" . $totalItems; ?>">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 style="font-weight: bold"><?php echo $card['Card']['eName']; ?></h4>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <p>Rarity: SSR</p>
-                                </div>
-                                <div class="col-xs-6">
-                                    <p>Type: Cute</p>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn btn-primary active">
-                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level
-                                            1
-                                        </label>
-                                        <label class="btn btn-primary">
-                                            <input type="radio" name="options" id="option2" autocomplete="off">Level 80
-                                        </label>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <?php
+                                        if ($card['Card']['rarity'] == 'N' || $card['Card']['rarity'] == 'R') {
+                                            echo '<p style="font-style: italic">' . $card['Card']['jName'] . '</p>';
+                                        } else {
+                                            echo '<p style="padding-right: 12px; font-style: italic">' . $card['Card']['jName'] . '</p>';
+                                        }
+                                        ?>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <table>
-                                        <tr>
-                                            <td>Life 27</td>
-                                            <td>Vocal 2158</td>
-                                            <td>Dance 1578</td>
-                                            <td>Visual 1665</td>
-                                            <td>Total 5571</td>
-                                        </tr>
-                                    </table>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <p><span style="font-weight: bold">Rarity: </span><?php echo $card['Card']['rarity']; ?></p>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <?php switch($card['Card']['type']) {
+                                            case "Cute":
+                                                echo '<p><span style="font-weight: bold">Type: </span>'.
+                                                    $this->Html->image('cute.png', array('height'=>'10%','width'=>'10%', 'style'=>'padding-bottom:5px')).' '.
+                                                    $card['Card']['type'].'</p>';
+                                                break;
+                                            case "Cool":
+                                                echo '<p><span style="font-weight: bold">Type: </span>'.
+                                                    $this->Html->image('cool.png', array('height'=>'10%','width'=>'10%', 'style'=>'padding-bottom:5px')).' '.
+                                                    $card['Card']['type'].'</p>';
+                                                break;
+                                            case "Passion":
+                                                echo '<p><span style="font-weight: bold">Type: </span>'.
+                                                    $this->Html->image('passion.png', array('height'=>'10%','width'=>'10%', 'style'=>'padding-bottom:5px')).' '.
+                                                    $card['Card']['type'].'</p>';
+                                                break;
+                                        }?>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h4>Center Skill</h4>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn btn-primary active">
+                                                <input type="radio" name="options" id="option1" autocomplete="off"
+                                                       checked>Regular
+                                            </label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="stats">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-primary active">
+                                                    <input type="radio" name="options" id="option1" autocomplete="off"
+                                                           checked>Level
+                                                    1
+                                                </label>
+                                                <label class="btn btn-primary">
+                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level
+                                                    80
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <table>
+                                                <tr>
+                                                    <td>Life 27</td>
+                                                    <td>Vocal 2158</td>
+                                                    <td>Dance 1578</td>
+                                                    <td>Visual 1665</td>
+                                                    <td>Total 5571</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4>Center Skill</h4>
 
-                                    <p>All Cute Appeal up 30%</p>
+                                        <p>All Cute Appeal up 30%</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h4>Special Skill: Perfect Lock</h4>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4>Special Skill: Perfect Lock</h4>
 
-                                    <p>GREATs, NICEs and BADs become PERFECTs temporarily, high probability of
-                                        triggering every 9 seconds for a very short time.</p>
+                                        <p>GREATs, NICEs and BADs become PERFECTs temporarily, high probability of
+                                            triggering every 9 seconds for a very short time.</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <p><h4>Source:</h4>
-                                    Gacha</p>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <p><h4>Source:</h4>
+                                        Gacha</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <?php
-            $numItems++;
-            $totalItems++;
-            if ($numItems == 3) {
-                echo '</div> <div class="row">';
-                $numItems = 0;
-            }
+                <?php
+                $numItems++;
+                $totalItems++;
+                if ($numItems == 3) {
+                    echo '</div> <div class="row">';
+                    $numItems = 0;
+                }
 
+                }
+                ?>
+            </div>
+        </div>
+
+        <?php
+        if ($this->Paginator->counter('{:pages}') > 1) {
+            $this->Paginator->options(array(
+                'url' => array(
+                    'pass' => $totalItems
+                )
+            ));
+            echo $this->Paginator->next('Show More ...');
+            ?>
+            <script>
+                $(document).ready(function (e) {
+                    var processing;
+                    var url = $('.next a').attr('href');
+                    $('.next').text('');
+                    if (url == undefined) {
+                        return false;
+                    }
+                    $(document).scroll(function (e) {
+                        if (processing) {
+                            return false;
+                        }
+                        if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
+                            processing = true;
+//                    alert("i'm at the bottom!");
+                            $(this).remove();
+                            $.get(url, function (data) {
+                                $('#accordion').append(data);
+//                        alert(url);
+                            });
+                        }
+                    });
+                });
+            </script>
+            <?php
         }
         ?>
-    </div>
-</div>
 
-<?php
-if ($this->Paginator->counter('{:pages}') > 1) {
-    $this->Paginator->options(array(
-        'url' => array(
-            'pass' => $totalItems
-        )
-    ));
-    echo $this->Paginator->next('Show More ...');
-    ?>
-    <script>
-        $(document).ready(function (e) {
-            var processing;
-            var url = $('.next a').attr('href');
-            $('.next').text('');
-            if (url == undefined) {
-                return false;
-            }
-            $(document).scroll(function (e) {
-                if (processing) {
-                    return false;
-                }
-                if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
-                    processing = true;
-//                    alert("i'm at the bottom!");
-                    $(this).remove();
-                    $.get(url, function (data) {
-                        $('#accordion').append(data);
-//                        alert(url);
-                    });
-                }
-            });
-        });
-    </script>
-    <?php
-}
-?>
-
-<!--Rofl don't need ANY of the original code! Only Here as a reference-->
-<!--<div class="cards index">
+        <!--Rofl don't need ANY of the original code! Only Here as a reference-->
+        <!--<div class="cards index">
 	<h2><?php /*echo __('Cards'); */ ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<thead>
@@ -285,16 +332,16 @@ if ($this->Paginator->counter('{:pages}') > 1) {
 	</table>
 	<p>
 	<?php
-/*	echo $this->Paginator->counter(array(
-		'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	*/ ?>	</p>
+        /*	echo $this->Paginator->counter(array(
+                'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+            ));
+            */ ?>	</p>
 	<div class="paging">
 	<?php
-/*		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-	*/ ?>
+        /*		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+                echo $this->Paginator->numbers(array('separator' => ''));
+                echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+            */ ?>
 	</div>
 </div>
 <div class="actions">

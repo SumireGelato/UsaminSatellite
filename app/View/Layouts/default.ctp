@@ -50,9 +50,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 </head>
 <body onload="startTime()">
-<div class="container marketing" id="contentContainer">
+<div class="container-fluid marketing" id="contentContainer">
     <div class="navbar-wrapper">
-        <div class="container">
+        <div class="container-fluid">
 
             <nav class="navbar navbar-default" role="navigation">
                 <div class="container">
@@ -89,21 +89,18 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                     array('controller' => 'idols', 'action' => 'index'), array('escape' => false)); ?></li>
                             <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-list"></span> Translations',
                                     '/translations', array('escape' => false)); ?></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <p class="navbar-text" id="clock"></p>
+                            <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-flag"></span> News',
+                                    array('controller' => 'news', 'action' => 'index'), array('escape' => false)); ?></li>
+                            <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About Game & Site',
+                                    '/about', array('escape' => false)); ?></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-haspopup="true" aria-expanded="false">Other Info<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-flag"></span> News',
-                                            array('controller' => 'news', 'action' => 'index'), array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-link"></span> Links',
                                             '/links', array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-book"></span> Credits',
                                             '/credits', array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About Game & Site',
-                                            '/about', array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-user"></span> About the Staff',
                                             '/aboutUs', array('escape' => false)); ?></li>
                                     <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-envelope"></span> Contact Us',
@@ -114,6 +111,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                             '/help', array('escape' => false)); ?></li>
                                 </ul>
                             </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <p class="navbar-text" id="clock"></p>
                         </ul>
                     </div>
                 </div>

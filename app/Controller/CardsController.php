@@ -20,7 +20,7 @@ class CardsController extends AppController
     public $paginate = array(
         'limit' => 9,
         'order' => array(
-            'Card.cardNumber' => 'asc'
+            'Card.cardNumber' => 'desc'
         ),
     );
 
