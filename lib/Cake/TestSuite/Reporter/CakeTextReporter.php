@@ -27,18 +27,6 @@ class CakeTextReporter extends CakeBaseReporter
 {
 
     /**
-     * Sets the text/plain header if the test is not a CLI test.
-     *
-     * @return void
-     */
-    public function paintDocumentStart()
-    {
-        if (!headers_sent()) {
-            header('Content-type: text/plain');
-        }
-    }
-
-    /**
      * Paints a pass
      *
      * @return void
@@ -98,6 +86,18 @@ class CakeTextReporter extends CakeBaseReporter
     }
 
     /**
+     * Generates a Text summary of the coverage data.
+     *
+     * @param array $coverage Array of coverage data.
+     * @return void
+     */
+    public function paintCoverage($coverage)
+    {
+        $reporter = new TextCoverageReport($coverage, $this);
+        echo $reporter->report();
+    }
+
+    /**
      * Paints the title only.
      *
      * @return void
@@ -106,6 +106,18 @@ class CakeTextReporter extends CakeBaseReporter
     {
         $this->paintDocumentStart();
         flush();
+    }
+
+    /**
+     * Sets the text/plain header if the test is not a CLI test.
+     *
+     * @return void
+     */
+    public function paintDocumentStart()
+    {
+        if (!headers_sent()) {
+            header('Content-type: text/plain');
+        }
     }
 
     /**
@@ -177,18 +189,6 @@ class CakeTextReporter extends CakeBaseReporter
 
         $buffer .= "\n";
         echo $buffer;
-    }
-
-    /**
-     * Generates a Text summary of the coverage data.
-     *
-     * @param array $coverage Array of coverage data.
-     * @return void
-     */
-    public function paintCoverage($coverage)
-    {
-        $reporter = new TextCoverageReport($coverage, $this);
-        echo $reporter->report();
     }
 
 }

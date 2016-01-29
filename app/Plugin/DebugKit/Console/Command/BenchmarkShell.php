@@ -90,6 +90,18 @@ class BenchmarkShell extends Shell
     }
 
     /**
+     * Calculate the standard deviation.
+     *
+     * @param array $times Array of values
+     * @param bool $sample Defaults to true.
+     * @return float Standard deviation
+     */
+    protected function _deviation($times, $sample = true)
+    {
+        return sqrt($this->_variance($times, $sample));
+    }
+
+    /**
      * One-pass, numerically stable calculation of population variance.
      *
      * Donald E. Knuth (1998).
@@ -117,18 +129,6 @@ class BenchmarkShell extends Shell
         }
 
         return $M2 / $n;
-    }
-
-    /**
-     * Calculate the standard deviation.
-     *
-     * @param array $times Array of values
-     * @param bool $sample Defaults to true.
-     * @return float Standard deviation
-     */
-    protected function _deviation($times, $sample = true)
-    {
-        return sqrt($this->_variance($times, $sample));
     }
 
     /**

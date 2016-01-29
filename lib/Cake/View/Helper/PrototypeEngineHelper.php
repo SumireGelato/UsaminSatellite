@@ -112,25 +112,15 @@ class PrototypeEngineHelper extends JsBaseEngineHelper
     );
 
     /**
-     * Create javascript selector for a CSS rule
+     * Create a domReady event. This is a special event in many libraries
      *
-     * @param string $selector The selector that is targeted
-     * @return $this
+     * @param string $functionBody The code to run on domReady
+     * @return string completed domReady method
      */
-    public function get($selector)
+    public function domReady($functionBody)
     {
-        $this->_multiple = false;
-        if ($selector === 'window' || $selector === 'document') {
-            $this->selection = "$(" . $selector . ")";
-            return $this;
-        }
-        if (preg_match('/^#[^\s.]+$/', $selector)) {
-            $this->selection = '$("' . substr($selector, 1) . '")';
-            return $this;
-        }
-        $this->_multiple = true;
-        $this->selection = '$$("' . $selector . '")';
-        return $this;
+        $this->selection = 'document';
+        return $this->event('dom:loaded', $functionBody, array('stop' => false));
     }
 
     /**
@@ -160,29 +150,6 @@ class PrototypeEngineHelper extends JsBaseEngineHelper
         }
         $out = $this->selection . ".observe(\"{$type}\", $callback);";
         return $out;
-    }
-
-    /**
-     * Create a domReady event. This is a special event in many libraries
-     *
-     * @param string $functionBody The code to run on domReady
-     * @return string completed domReady method
-     */
-    public function domReady($functionBody)
-    {
-        $this->selection = 'document';
-        return $this->event('dom:loaded', $functionBody, array('stop' => false));
-    }
-
-    /**
-     * Create an iteration over the current selection result.
-     *
-     * @param string $callback The function body you wish to apply during the iteration.
-     * @return string completed iteration
-     */
-    public function each($callback)
-    {
-        return $this->selection . '.each(function (item, index) {' . $callback . '});';
     }
 
     /**
@@ -308,6 +275,17 @@ class PrototypeEngineHelper extends JsBaseEngineHelper
     }
 
     /**
+     * Create an iteration over the current selection result.
+     *
+     * @param string $callback The function body you wish to apply during the iteration.
+     * @return string completed iteration
+     */
+    public function each($callback)
+    {
+        return $this->selection . '.each(function (item, index) {' . $callback . '});';
+    }
+
+    /**
      * Create a Droppable element.
      *
      * #### Note: Requires scriptaculous to be loaded.
@@ -355,6 +333,28 @@ class PrototypeEngineHelper extends JsBaseEngineHelper
         $out = 'var jsSlider = new Control.Slider(' . $this->selection . ', ' . $slider . $optionString . ');';
         $this->selection = $slider;
         return $out;
+    }
+
+    /**
+     * Create javascript selector for a CSS rule
+     *
+     * @param string $selector The selector that is targeted
+     * @return $this
+     */
+    public function get($selector)
+    {
+        $this->_multiple = false;
+        if ($selector === 'window' || $selector === 'document') {
+            $this->selection = "$(" . $selector . ")";
+            return $this;
+        }
+        if (preg_match('/^#[^\s.]+$/', $selector)) {
+            $this->selection = '$("' . substr($selector, 1) . '")';
+            return $this;
+        }
+        $this->_multiple = true;
+        $this->selection = '$$("' . $selector . '")';
+        return $this;
     }
 
     /**

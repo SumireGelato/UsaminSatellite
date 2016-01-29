@@ -197,20 +197,18 @@ class SecurityComponent extends Component
      * @var array
      */
     public $components = array('Session');
-
-    /**
-     * Holds the current action of the controller
-     *
-     * @var string
-     */
-    protected $_action = null;
-
     /**
      * Request object
      *
      * @var CakeRequest
      */
     public $request;
+    /**
+     * Holds the current action of the controller
+     *
+     * @var string
+     */
+    protected $_action = null;
 
     /**
      * Component startup. All security checking happens here.
@@ -251,80 +249,27 @@ class SecurityComponent extends Component
     }
 
     /**
-     * Sets the actions that require a POST request, or empty for all actions
+     * Check if HTTP methods are required
      *
-     * @return void
-     * @deprecated 3.0.0 Use CakeRequest::onlyAllow() instead.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/components/security-component.html#SecurityComponent::requirePost
+     * @param Controller $controller Instantiating controller
+     * @return bool True if $method is required
      */
-    public function requirePost()
+    protected function _methodsRequired(Controller $controller)
     {
-        $args = func_get_args();
-        $this->_requireMethod('Post', $args);
-    }
-
-    /**
-     * Sets the actions that require a GET request, or empty for all actions
-     *
-     * @deprecated 3.0.0 Use CakeRequest::onlyAllow() instead.
-     * @return void
-     */
-    public function requireGet()
-    {
-        $args = func_get_args();
-        $this->_requireMethod('Get', $args);
-    }
-
-    /**
-     * Sets the actions that require a PUT request, or empty for all actions
-     *
-     * @deprecated 3.0.0 Use CakeRequest::onlyAllow() instead.
-     * @return void
-     */
-    public function requirePut()
-    {
-        $args = func_get_args();
-        $this->_requireMethod('Put', $args);
-    }
-
-    /**
-     * Sets the actions that require a DELETE request, or empty for all actions
-     *
-     * @deprecated 3.0.0 Use CakeRequest::onlyAllow() instead.
-     * @return void
-     */
-    public function requireDelete()
-    {
-        $args = func_get_args();
-        $this->_requireMethod('Delete', $args);
-    }
-
-    /**
-     * Sets the actions that require a request that is SSL-secured, or empty for all actions
-     *
-     * @return void
-     * @link http://book.cakephp.org/2.0/en/core-libraries/components/security-component.html#SecurityComponent::requireSecure
-     */
-    public function requireSecure()
-    {
-        $args = func_get_args();
-        $this->_requireMethod('Secure', $args);
-    }
-
-    /**
-     * Sets the actions that require whitelisted form submissions.
-     *
-     * Adding actions with this method will enforce the restrictions
-     * set in SecurityComponent::$allowedControllers and
-     * SecurityComponent::$allowedActions.
-     *
-     * @return void
-     * @link http://book.cakephp.org/2.0/en/core-libraries/components/security-component.html#SecurityComponent::requireAuth
-     */
-    public function requireAuth()
-    {
-        $args = func_get_args();
-        $this->_requireMethod('Auth', $args);
+        foreach (array('Post', 'Get', 'Put', 'Delete') as $method) {
+            $property = 'require' . $method;
+            if (is_array($this->$property) && !empty($this->$property)) {
+                $require = $this->$property;
+                if (in_array($this->_action, $require) || $this->$property === array('*')) {
+                    if (!$this->request->is($method)) {
+                        if (!$this->blackHole($controller, $method)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -347,42 +292,20 @@ class SecurityComponent extends Component
     }
 
     /**
-     * Sets the actions that require a $method HTTP request, or empty for all actions
+     * Calls a controller callback method
      *
-     * @param string $method The HTTP method to assign controller actions to
-     * @param array $actions Controller actions to set the required HTTP method to.
-     * @return void
+     * @param Controller $controller Controller to run callback on
+     * @param string $method Method to execute
+     * @param array $params Parameters to send to method
+     * @return mixed Controller callback method's response
+     * @throws BadRequestException When a the blackholeCallback is not callable.
      */
-    protected function _requireMethod($method, $actions = array())
+    protected function _callback(Controller $controller, $method, $params = array())
     {
-        if (isset($actions[0]) && is_array($actions[0])) {
-            $actions = $actions[0];
+        if (!is_callable(array($controller, $method))) {
+            throw new BadRequestException(__d('cake_dev', 'The request has been black-holed'));
         }
-        $this->{'require' . $method} = (empty($actions)) ? array('*') : $actions;
-    }
-
-    /**
-     * Check if HTTP methods are required
-     *
-     * @param Controller $controller Instantiating controller
-     * @return bool True if $method is required
-     */
-    protected function _methodsRequired(Controller $controller)
-    {
-        foreach (array('Post', 'Get', 'Put', 'Delete') as $method) {
-            $property = 'require' . $method;
-            if (is_array($this->$property) && !empty($this->$property)) {
-                $require = $this->$property;
-                if (in_array($this->_action, $require) || $this->$property === array('*')) {
-                    if (!$this->request->is($method)) {
-                        if (!$this->blackHole($controller, $method)) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
+        return call_user_func_array(array(&$controller, $method), empty($params) ? null : $params);
     }
 
     /**
@@ -534,6 +457,27 @@ class SecurityComponent extends Component
     }
 
     /**
+     * Validate that the controller has a CSRF token in the POST data
+     * and that the token is legit/not expired. If the token is valid
+     * it will be removed from the list of valid tokens.
+     *
+     * @param Controller $controller A controller to check
+     * @return bool Valid csrf token.
+     */
+    protected function _validateCsrf(Controller $controller)
+    {
+        $token = $this->Session->read('_Token');
+        $requestToken = $controller->request->data('_Token.key');
+        if (isset($token['csrfTokens'][$requestToken]) && $token['csrfTokens'][$requestToken] >= time()) {
+            if ($this->csrfUseOnce) {
+                $this->Session->delete('_Token.csrfTokens.' . $requestToken);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Manually add CSRF token information into the provided request object.
      *
      * @param CakeRequest $request The request object to add into.
@@ -581,27 +525,6 @@ class SecurityComponent extends Component
     }
 
     /**
-     * Validate that the controller has a CSRF token in the POST data
-     * and that the token is legit/not expired. If the token is valid
-     * it will be removed from the list of valid tokens.
-     *
-     * @param Controller $controller A controller to check
-     * @return bool Valid csrf token.
-     */
-    protected function _validateCsrf(Controller $controller)
-    {
-        $token = $this->Session->read('_Token');
-        $requestToken = $controller->request->data('_Token.key');
-        if (isset($token['csrfTokens'][$requestToken]) && $token['csrfTokens'][$requestToken] >= time()) {
-            if ($this->csrfUseOnce) {
-                $this->Session->delete('_Token.csrfTokens.' . $requestToken);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Expire CSRF nonces and remove them from the valid tokens.
      * Uses a simple timeout to expire the tokens.
      *
@@ -624,20 +547,95 @@ class SecurityComponent extends Component
     }
 
     /**
-     * Calls a controller callback method
+     * Sets the actions that require a POST request, or empty for all actions
      *
-     * @param Controller $controller Controller to run callback on
-     * @param string $method Method to execute
-     * @param array $params Parameters to send to method
-     * @return mixed Controller callback method's response
-     * @throws BadRequestException When a the blackholeCallback is not callable.
+     * @return void
+     * @deprecated 3.0.0 Use CakeRequest::onlyAllow() instead.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/components/security-component.html#SecurityComponent::requirePost
      */
-    protected function _callback(Controller $controller, $method, $params = array())
+    public function requirePost()
     {
-        if (!is_callable(array($controller, $method))) {
-            throw new BadRequestException(__d('cake_dev', 'The request has been black-holed'));
+        $args = func_get_args();
+        $this->_requireMethod('Post', $args);
+    }
+
+    /**
+     * Sets the actions that require a $method HTTP request, or empty for all actions
+     *
+     * @param string $method The HTTP method to assign controller actions to
+     * @param array $actions Controller actions to set the required HTTP method to.
+     * @return void
+     */
+    protected function _requireMethod($method, $actions = array())
+    {
+        if (isset($actions[0]) && is_array($actions[0])) {
+            $actions = $actions[0];
         }
-        return call_user_func_array(array(&$controller, $method), empty($params) ? null : $params);
+        $this->{'require' . $method} = (empty($actions)) ? array('*') : $actions;
+    }
+
+    /**
+     * Sets the actions that require a GET request, or empty for all actions
+     *
+     * @deprecated 3.0.0 Use CakeRequest::onlyAllow() instead.
+     * @return void
+     */
+    public function requireGet()
+    {
+        $args = func_get_args();
+        $this->_requireMethod('Get', $args);
+    }
+
+    /**
+     * Sets the actions that require a PUT request, or empty for all actions
+     *
+     * @deprecated 3.0.0 Use CakeRequest::onlyAllow() instead.
+     * @return void
+     */
+    public function requirePut()
+    {
+        $args = func_get_args();
+        $this->_requireMethod('Put', $args);
+    }
+
+    /**
+     * Sets the actions that require a DELETE request, or empty for all actions
+     *
+     * @deprecated 3.0.0 Use CakeRequest::onlyAllow() instead.
+     * @return void
+     */
+    public function requireDelete()
+    {
+        $args = func_get_args();
+        $this->_requireMethod('Delete', $args);
+    }
+
+    /**
+     * Sets the actions that require a request that is SSL-secured, or empty for all actions
+     *
+     * @return void
+     * @link http://book.cakephp.org/2.0/en/core-libraries/components/security-component.html#SecurityComponent::requireSecure
+     */
+    public function requireSecure()
+    {
+        $args = func_get_args();
+        $this->_requireMethod('Secure', $args);
+    }
+
+    /**
+     * Sets the actions that require whitelisted form submissions.
+     *
+     * Adding actions with this method will enforce the restrictions
+     * set in SecurityComponent::$allowedControllers and
+     * SecurityComponent::$allowedActions.
+     *
+     * @return void
+     * @link http://book.cakephp.org/2.0/en/core-libraries/components/security-component.html#SecurityComponent::requireAuth
+     */
+    public function requireAuth()
+    {
+        $args = func_get_args();
+        $this->_requireMethod('Auth', $args);
     }
 
 }

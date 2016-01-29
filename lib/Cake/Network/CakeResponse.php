@@ -407,214 +407,6 @@ class CakeResponse
     }
 
     /**
-     * Sends the complete response to the client including headers and message body.
-     * Will echo out the content in the response body.
-     *
-     * @return void
-     */
-    public function send()
-    {
-        if (isset($this->_headers['Location']) && $this->_status === 200) {
-            $this->statusCode(302);
-        }
-
-        $codeMessage = $this->_statusCodes[$this->_status];
-        $this->_setCookies();
-        $this->_sendHeader("{$this->_protocol} {$this->_status} {$codeMessage}");
-        $this->_setContent();
-        $this->_setContentLength();
-        $this->_setContentType();
-        foreach ($this->_headers as $header => $values) {
-            foreach ((array)$values as $value) {
-                $this->_sendHeader($header, $value);
-            }
-        }
-        if ($this->_file) {
-            $this->_sendFile($this->_file, $this->_fileRange);
-            $this->_file = $this->_fileRange = null;
-        } else {
-            $this->_sendContent($this->_body);
-        }
-    }
-
-    /**
-     * Sets the cookies that have been added via CakeResponse::cookie() before any
-     * other output is sent to the client. Will set the cookies in the order they
-     * have been set.
-     *
-     * @return void
-     */
-    protected function _setCookies()
-    {
-        foreach ($this->_cookies as $name => $c) {
-            setcookie(
-                $name, $c['value'], $c['expire'], $c['path'],
-                $c['domain'], $c['secure'], $c['httpOnly']
-            );
-        }
-    }
-
-    /**
-     * Formats the Content-Type header based on the configured contentType and charset
-     * the charset will only be set in the header if the response is of type text
-     *
-     * @return void
-     */
-    protected function _setContentType()
-    {
-        if (in_array($this->_status, array(304, 204))) {
-            return;
-        }
-        $whitelist = array(
-            'application/javascript', 'application/json', 'application/xml', 'application/rss+xml'
-        );
-
-        $charset = false;
-        if ($this->_charset &&
-            (strpos($this->_contentType, 'text/') === 0 || in_array($this->_contentType, $whitelist))
-        ) {
-            $charset = true;
-        }
-
-        if ($charset) {
-            $this->header('Content-Type', "{$this->_contentType}; charset={$this->_charset}");
-        } else {
-            $this->header('Content-Type', "{$this->_contentType}");
-        }
-    }
-
-    /**
-     * Sets the response body to an empty text if the status code is 204 or 304
-     *
-     * @return void
-     */
-    protected function _setContent()
-    {
-        if (in_array($this->_status, array(304, 204))) {
-            $this->body('');
-        }
-    }
-
-    /**
-     * Calculates the correct Content-Length and sets it as a header in the response
-     * Will not set the value if already set or if the output is compressed.
-     *
-     * @return void
-     */
-    protected function _setContentLength()
-    {
-        $shouldSetLength = !isset($this->_headers['Content-Length']) && !in_array($this->_status, range(301, 307));
-        if (isset($this->_headers['Content-Length']) && $this->_headers['Content-Length'] === false) {
-            unset($this->_headers['Content-Length']);
-            return;
-        }
-        if ($shouldSetLength && !$this->outputCompressed()) {
-            $offset = ob_get_level() ? ob_get_length() : 0;
-            if (ini_get('mbstring.func_overload') & 2 && function_exists('mb_strlen')) {
-                $this->length($offset + mb_strlen($this->_body, '8bit'));
-            } else {
-                $this->length($this->_headers['Content-Length'] = $offset + strlen($this->_body));
-            }
-        }
-    }
-
-    /**
-     * Sends a header to the client.
-     *
-     * Will skip sending headers if headers have already been sent.
-     *
-     * @param string $name the header name
-     * @param string $value the header value
-     * @return void
-     */
-    protected function _sendHeader($name, $value = null)
-    {
-        if (headers_sent($filename, $linenum)) {
-            return;
-        }
-        if ($value === null) {
-            header($name);
-        } else {
-            header("{$name}: {$value}");
-        }
-    }
-
-    /**
-     * Sends a content string to the client.
-     *
-     * @param string $content string to send as response body
-     * @return void
-     */
-    protected function _sendContent($content)
-    {
-        echo $content;
-    }
-
-    /**
-     * Buffers a header string to be sent
-     * Returns the complete list of buffered headers
-     *
-     * ### Single header
-     * e.g `header('Location', 'http://example.com');`
-     *
-     * ### Multiple headers
-     * e.g `header(array('Location' => 'http://example.com', 'X-Extra' => 'My header'));`
-     *
-     * ### String header
-     * e.g `header('WWW-Authenticate: Negotiate');`
-     *
-     * ### Array of string headers
-     * e.g `header(array('WWW-Authenticate: Negotiate', 'Content-type: application/pdf'));`
-     *
-     * Multiple calls for setting the same header name will have the same effect as setting the header once
-     * with the last value sent for it
-     *  e.g `header('WWW-Authenticate: Negotiate'); header('WWW-Authenticate: Not-Negotiate');`
-     * will have the same effect as only doing `header('WWW-Authenticate: Not-Negotiate');`
-     *
-     * @param string|array $header An array of header strings or a single header string
-     *    - an associative array of "header name" => "header value" is also accepted
-     *    - an array of string headers is also accepted
-     * @param string|array $value The header value(s)
-     * @return array list of headers to be sent
-     */
-    public function header($header = null, $value = null)
-    {
-        if ($header === null) {
-            return $this->_headers;
-        }
-        $headers = is_array($header) ? $header : array($header => $value);
-        foreach ($headers as $header => $value) {
-            if (is_numeric($header)) {
-                list($header, $value) = array($value, null);
-            }
-            if ($value === null) {
-                list($header, $value) = explode(':', $header, 2);
-            }
-            $this->_headers[$header] = is_array($value) ? array_map('trim', $value) : trim($value);
-        }
-        return $this->_headers;
-    }
-
-    /**
-     * Accessor for the location header.
-     *
-     * Get/Set the Location header value.
-     *
-     * @param null|string $url Either null to get the current location, or a string to set one.
-     * @return string|null When setting the location null will be returned. When reading the location
-     *    a string of the current location header value (if any) will be returned.
-     */
-    public function location($url = null)
-    {
-        if ($url === null) {
-            $headers = $this->header();
-            return isset($headers['Location']) ? $headers['Location'] : null;
-        }
-        $this->header('Location', $url);
-        return null;
-    }
-
-    /**
      * Buffers the response message to be sent
      * if $content is null the current buffer is returned
      *
@@ -627,25 +419,6 @@ class CakeResponse
             return $this->_body;
         }
         return $this->_body = $content;
-    }
-
-    /**
-     * Sets the HTTP status code to be sent
-     * if $code is null the current code is returned
-     *
-     * @param int $code the HTTP status code
-     * @return int current status code
-     * @throws CakeException When an unknown status code is reached.
-     */
-    public function statusCode($code = null)
-    {
-        if ($code === null) {
-            return $this->_status;
-        }
-        if (!isset($this->_statusCodes[$code])) {
-            throw new CakeException(__d('cake_dev', 'Unknown status code'));
-        }
-        return $this->_status = $code;
     }
 
     /**
@@ -700,6 +473,25 @@ class CakeResponse
     }
 
     /**
+     * Sets the HTTP status code to be sent
+     * if $code is null the current code is returned
+     *
+     * @param int $code the HTTP status code
+     * @return int current status code
+     * @throws CakeException When an unknown status code is reached.
+     */
+    public function statusCode($code = null)
+    {
+        if ($code === null) {
+            return $this->_status;
+        }
+        if (!isset($this->_statusCodes[$code])) {
+            throw new CakeException(__d('cake_dev', 'Unknown status code'));
+        }
+        return $this->_status = $code;
+    }
+
+    /**
      * Sets the response content type. It can be either a file extension
      * which will be mapped internally to a mime-type or a string representing a mime-type
      * if $contentType is null the current content type is returned
@@ -746,6 +538,327 @@ class CakeResponse
     }
 
     /**
+     * Sets the response charset
+     * if $charset is null the current charset is returned
+     *
+     * @param string $charset Character set string.
+     * @return string current charset
+     */
+    public function charset($charset = null)
+    {
+        if ($charset === null) {
+            return $this->_charset;
+        }
+        return $this->_charset = $charset;
+    }
+
+    /**
+     * Sends the complete response to the client including headers and message body.
+     * Will echo out the content in the response body.
+     *
+     * @return void
+     */
+    public function send()
+    {
+        if (isset($this->_headers['Location']) && $this->_status === 200) {
+            $this->statusCode(302);
+        }
+
+        $codeMessage = $this->_statusCodes[$this->_status];
+        $this->_setCookies();
+        $this->_sendHeader("{$this->_protocol} {$this->_status} {$codeMessage}");
+        $this->_setContent();
+        $this->_setContentLength();
+        $this->_setContentType();
+        foreach ($this->_headers as $header => $values) {
+            foreach ((array)$values as $value) {
+                $this->_sendHeader($header, $value);
+            }
+        }
+        if ($this->_file) {
+            $this->_sendFile($this->_file, $this->_fileRange);
+            $this->_file = $this->_fileRange = null;
+        } else {
+            $this->_sendContent($this->_body);
+        }
+    }
+
+    /**
+     * Sets the cookies that have been added via CakeResponse::cookie() before any
+     * other output is sent to the client. Will set the cookies in the order they
+     * have been set.
+     *
+     * @return void
+     */
+    protected function _setCookies()
+    {
+        foreach ($this->_cookies as $name => $c) {
+            setcookie(
+                $name, $c['value'], $c['expire'], $c['path'],
+                $c['domain'], $c['secure'], $c['httpOnly']
+            );
+        }
+    }
+
+    /**
+     * Sends a header to the client.
+     *
+     * Will skip sending headers if headers have already been sent.
+     *
+     * @param string $name the header name
+     * @param string $value the header value
+     * @return void
+     */
+    protected function _sendHeader($name, $value = null)
+    {
+        if (headers_sent($filename, $linenum)) {
+            return;
+        }
+        if ($value === null) {
+            header($name);
+        } else {
+            header("{$name}: {$value}");
+        }
+    }
+
+    /**
+     * Sets the response body to an empty text if the status code is 204 or 304
+     *
+     * @return void
+     */
+    protected function _setContent()
+    {
+        if (in_array($this->_status, array(304, 204))) {
+            $this->body('');
+        }
+    }
+
+    /**
+     * Calculates the correct Content-Length and sets it as a header in the response
+     * Will not set the value if already set or if the output is compressed.
+     *
+     * @return void
+     */
+    protected function _setContentLength()
+    {
+        $shouldSetLength = !isset($this->_headers['Content-Length']) && !in_array($this->_status, range(301, 307));
+        if (isset($this->_headers['Content-Length']) && $this->_headers['Content-Length'] === false) {
+            unset($this->_headers['Content-Length']);
+            return;
+        }
+        if ($shouldSetLength && !$this->outputCompressed()) {
+            $offset = ob_get_level() ? ob_get_length() : 0;
+            if (ini_get('mbstring.func_overload') & 2 && function_exists('mb_strlen')) {
+                $this->length($offset + mb_strlen($this->_body, '8bit'));
+            } else {
+                $this->length($this->_headers['Content-Length'] = $offset + strlen($this->_body));
+            }
+        }
+    }
+
+    /**
+     * Returns whether the resulting output will be compressed by PHP
+     *
+     * @return bool
+     */
+    public function outputCompressed()
+    {
+        return strpos(env('HTTP_ACCEPT_ENCODING'), 'gzip') !== false
+        && (ini_get("zlib.output_compression") === '1' || in_array('ob_gzhandler', ob_list_handlers()));
+    }
+
+    /**
+     * Sets the Content-Length header for the response
+     * If called with no arguments returns the last Content-Length set
+     *
+     * @param int $bytes Number of bytes
+     * @return int|null
+     */
+    public function length($bytes = null)
+    {
+        if ($bytes !== null) {
+            $this->_headers['Content-Length'] = $bytes;
+        }
+        if (isset($this->_headers['Content-Length'])) {
+            return $this->_headers['Content-Length'];
+        }
+        return null;
+    }
+
+    /**
+     * Formats the Content-Type header based on the configured contentType and charset
+     * the charset will only be set in the header if the response is of type text
+     *
+     * @return void
+     */
+    protected function _setContentType()
+    {
+        if (in_array($this->_status, array(304, 204))) {
+            return;
+        }
+        $whitelist = array(
+            'application/javascript', 'application/json', 'application/xml', 'application/rss+xml'
+        );
+
+        $charset = false;
+        if ($this->_charset &&
+            (strpos($this->_contentType, 'text/') === 0 || in_array($this->_contentType, $whitelist))
+        ) {
+            $charset = true;
+        }
+
+        if ($charset) {
+            $this->header('Content-Type', "{$this->_contentType}; charset={$this->_charset}");
+        } else {
+            $this->header('Content-Type', "{$this->_contentType}");
+        }
+    }
+
+    /**
+     * Buffers a header string to be sent
+     * Returns the complete list of buffered headers
+     *
+     * ### Single header
+     * e.g `header('Location', 'http://example.com');`
+     *
+     * ### Multiple headers
+     * e.g `header(array('Location' => 'http://example.com', 'X-Extra' => 'My header'));`
+     *
+     * ### String header
+     * e.g `header('WWW-Authenticate: Negotiate');`
+     *
+     * ### Array of string headers
+     * e.g `header(array('WWW-Authenticate: Negotiate', 'Content-type: application/pdf'));`
+     *
+     * Multiple calls for setting the same header name will have the same effect as setting the header once
+     * with the last value sent for it
+     *  e.g `header('WWW-Authenticate: Negotiate'); header('WWW-Authenticate: Not-Negotiate');`
+     * will have the same effect as only doing `header('WWW-Authenticate: Not-Negotiate');`
+     *
+     * @param string|array $header An array of header strings or a single header string
+     *    - an associative array of "header name" => "header value" is also accepted
+     *    - an array of string headers is also accepted
+     * @param string|array $value The header value(s)
+     * @return array list of headers to be sent
+     */
+    public function header($header = null, $value = null)
+    {
+        if ($header === null) {
+            return $this->_headers;
+        }
+        $headers = is_array($header) ? $header : array($header => $value);
+        foreach ($headers as $header => $value) {
+            if (is_numeric($header)) {
+                list($header, $value) = array($value, null);
+            }
+            if ($value === null) {
+                list($header, $value) = explode(':', $header, 2);
+            }
+            $this->_headers[$header] = is_array($value) ? array_map('trim', $value) : trim($value);
+        }
+        return $this->_headers;
+    }
+
+    /**
+     * Reads out a file, and echos the content to the client.
+     *
+     * @param File $file File object
+     * @param array $range The range to read out of the file.
+     * @return bool True is whole file is echoed successfully or false if client connection is lost in between
+     */
+    protected function _sendFile($file, $range)
+    {
+        $compress = $this->outputCompressed();
+        $file->open('rb');
+
+        $end = $start = false;
+        if ($range) {
+            list($start, $end) = $range;
+        }
+        if ($start !== false) {
+            $file->offset($start);
+        }
+
+        $bufferSize = 8192;
+        set_time_limit(0);
+        session_write_close();
+        while (!feof($file->handle)) {
+            if (!$this->_isActive()) {
+                $file->close();
+                return false;
+            }
+            $offset = $file->offset();
+            if ($end && $offset >= $end) {
+                break;
+            }
+            if ($end && $offset + $bufferSize >= $end) {
+                $bufferSize = $end - $offset + 1;
+            }
+            echo fread($file->handle, $bufferSize);
+            if (!$compress) {
+                $this->_flushBuffer();
+            }
+        }
+        $file->close();
+        return true;
+    }
+
+    /**
+     * Returns true if connection is still active
+     *
+     * @return bool
+     */
+    protected function _isActive()
+    {
+        return connection_status() === CONNECTION_NORMAL && !connection_aborted();
+    }
+
+    /**
+     * Flushes the contents of the output buffer
+     *
+     * @return void
+     */
+    protected function _flushBuffer()
+    {
+        //@codingStandardsIgnoreStart
+        @flush();
+        if (ob_get_level()) {
+            @ob_flush();
+        }
+        //@codingStandardsIgnoreEnd
+    }
+
+    /**
+     * Sends a content string to the client.
+     *
+     * @param string $content string to send as response body
+     * @return void
+     */
+    protected function _sendContent($content)
+    {
+        echo $content;
+    }
+
+    /**
+     * Accessor for the location header.
+     *
+     * Get/Set the Location header value.
+     *
+     * @param null|string $url Either null to get the current location, or a string to set one.
+     * @return string|null When setting the location null will be returned. When reading the location
+     *    a string of the current location header value (if any) will be returned.
+     */
+    public function location($url = null)
+    {
+        if ($url === null) {
+            $headers = $this->header();
+            return isset($headers['Location']) ? $headers['Location'] : null;
+        }
+        $this->header('Location', $url);
+        return null;
+    }
+
+    /**
      * Returns the mime type definition for an alias
      *
      * e.g `getMimeType('pdf'); // returns 'application/pdf'`
@@ -784,21 +897,6 @@ class CakeResponse
     }
 
     /**
-     * Sets the response charset
-     * if $charset is null the current charset is returned
-     *
-     * @param string $charset Character set string.
-     * @return string current charset
-     */
-    public function charset($charset = null)
-    {
-        if ($charset === null) {
-            return $this->_charset;
-        }
-        return $this->_charset = $charset;
-    }
-
-    /**
      * Sets the correct headers to instruct the client to not cache the response
      *
      * @return void
@@ -831,6 +929,76 @@ class CakeResponse
         $this->expires($time);
         $this->sharable(true);
         $this->maxAge($time - time());
+    }
+
+    /**
+     * Sets the Last-Modified header for the response by taking a modification time
+     * If called with no parameters it will return the current Last-Modified value
+     *
+     * ## Examples:
+     *
+     * `$response->modified('now')` Will set the Last-Modified to the current time
+     * `$response->modified(new DateTime('+1 day'))` Will set the modification date in the past 24 hours
+     * `$response->modified()` Will return the current Last-Modified header value
+     *
+     * @param string|DateTime $time Valid time string or DateTime object.
+     * @return string
+     */
+    public function modified($time = null)
+    {
+        if ($time !== null) {
+            $date = $this->_getUTCDate($time);
+            $this->_headers['Last-Modified'] = $date->format('D, j M Y H:i:s') . ' GMT';
+        }
+        if (isset($this->_headers['Last-Modified'])) {
+            return $this->_headers['Last-Modified'];
+        }
+        return null;
+    }
+
+    /**
+     * Returns a DateTime object initialized at the $time param and using UTC
+     * as timezone
+     *
+     * @param string|DateTime $time Valid time string or unix timestamp or DateTime object.
+     * @return DateTime
+     */
+    protected function _getUTCDate($time = null)
+    {
+        if ($time instanceof DateTime) {
+            $result = clone $time;
+        } elseif (is_int($time)) {
+            $result = new DateTime(date('Y-m-d H:i:s', $time));
+        } else {
+            $result = new DateTime($time);
+        }
+        $result->setTimeZone(new DateTimeZone('UTC'));
+        return $result;
+    }
+
+    /**
+     * Sets the Expires header for the response by taking an expiration time
+     * If called with no parameters it will return the current Expires value
+     *
+     * ## Examples:
+     *
+     * `$response->expires('now')` Will Expire the response cache now
+     * `$response->expires(new DateTime('+1 day'))` Will set the expiration in next 24 hours
+     * `$response->expires()` Will return the current expiration header value
+     *
+     * @param string|DateTime $time Valid time string or DateTime object.
+     * @return string
+     */
+    public function expires($time = null)
+    {
+        if ($time !== null) {
+            $date = $this->_getUTCDate($time);
+            $this->_headers['Expires'] = $date->format('D, j M Y H:i:s') . ' GMT';
+        }
+        if (isset($this->_headers['Expires'])) {
+            return $this->_headers['Expires'];
+        }
+        return null;
     }
 
     /**
@@ -872,27 +1040,6 @@ class CakeResponse
     }
 
     /**
-     * Sets the Cache-Control s-maxage directive.
-     * The max-age is the number of seconds after which the response should no longer be considered
-     * a good candidate to be fetched from a shared cache (like in a proxy server).
-     * If called with no parameters, this function will return the current max-age value if any
-     *
-     * @param int $seconds if null, the method will return the current s-maxage value
-     * @return int
-     */
-    public function sharedMaxAge($seconds = null)
-    {
-        if ($seconds !== null) {
-            $this->_cacheDirectives['s-maxage'] = $seconds;
-            $this->_setCacheControl();
-        }
-        if (isset($this->_cacheDirectives['s-maxage'])) {
-            return $this->_cacheDirectives['s-maxage'];
-        }
-        return null;
-    }
-
-    /**
      * Sets the Cache-Control max-age directive.
      * The max-age is the number of seconds after which the response should no longer be considered
      * a good candidate to be fetched from the local (client) cache.
@@ -909,6 +1056,44 @@ class CakeResponse
         }
         if (isset($this->_cacheDirectives['max-age'])) {
             return $this->_cacheDirectives['max-age'];
+        }
+        return null;
+    }
+
+    /**
+     * Helper method to generate a valid Cache-Control header from the options set
+     * in other methods
+     *
+     * @return void
+     */
+    protected function _setCacheControl()
+    {
+        $control = '';
+        foreach ($this->_cacheDirectives as $key => $val) {
+            $control .= $val === true ? $key : sprintf('%s=%s', $key, $val);
+            $control .= ', ';
+        }
+        $control = rtrim($control, ', ');
+        $this->header('Cache-Control', $control);
+    }
+
+    /**
+     * Sets the Cache-Control s-maxage directive.
+     * The max-age is the number of seconds after which the response should no longer be considered
+     * a good candidate to be fetched from a shared cache (like in a proxy server).
+     * If called with no parameters, this function will return the current max-age value if any
+     *
+     * @param int $seconds if null, the method will return the current s-maxage value
+     * @return int
+     */
+    public function sharedMaxAge($seconds = null)
+    {
+        if ($seconds !== null) {
+            $this->_cacheDirectives['s-maxage'] = $seconds;
+            $this->_setCacheControl();
+        }
+        if (isset($this->_cacheDirectives['s-maxage'])) {
+            return $this->_cacheDirectives['s-maxage'];
         }
         return null;
     }
@@ -938,98 +1123,6 @@ class CakeResponse
     }
 
     /**
-     * Helper method to generate a valid Cache-Control header from the options set
-     * in other methods
-     *
-     * @return void
-     */
-    protected function _setCacheControl()
-    {
-        $control = '';
-        foreach ($this->_cacheDirectives as $key => $val) {
-            $control .= $val === true ? $key : sprintf('%s=%s', $key, $val);
-            $control .= ', ';
-        }
-        $control = rtrim($control, ', ');
-        $this->header('Cache-Control', $control);
-    }
-
-    /**
-     * Sets the Expires header for the response by taking an expiration time
-     * If called with no parameters it will return the current Expires value
-     *
-     * ## Examples:
-     *
-     * `$response->expires('now')` Will Expire the response cache now
-     * `$response->expires(new DateTime('+1 day'))` Will set the expiration in next 24 hours
-     * `$response->expires()` Will return the current expiration header value
-     *
-     * @param string|DateTime $time Valid time string or DateTime object.
-     * @return string
-     */
-    public function expires($time = null)
-    {
-        if ($time !== null) {
-            $date = $this->_getUTCDate($time);
-            $this->_headers['Expires'] = $date->format('D, j M Y H:i:s') . ' GMT';
-        }
-        if (isset($this->_headers['Expires'])) {
-            return $this->_headers['Expires'];
-        }
-        return null;
-    }
-
-    /**
-     * Sets the Last-Modified header for the response by taking a modification time
-     * If called with no parameters it will return the current Last-Modified value
-     *
-     * ## Examples:
-     *
-     * `$response->modified('now')` Will set the Last-Modified to the current time
-     * `$response->modified(new DateTime('+1 day'))` Will set the modification date in the past 24 hours
-     * `$response->modified()` Will return the current Last-Modified header value
-     *
-     * @param string|DateTime $time Valid time string or DateTime object.
-     * @return string
-     */
-    public function modified($time = null)
-    {
-        if ($time !== null) {
-            $date = $this->_getUTCDate($time);
-            $this->_headers['Last-Modified'] = $date->format('D, j M Y H:i:s') . ' GMT';
-        }
-        if (isset($this->_headers['Last-Modified'])) {
-            return $this->_headers['Last-Modified'];
-        }
-        return null;
-    }
-
-    /**
-     * Sets the response as Not Modified by removing any body contents
-     * setting the status code to "304 Not Modified" and removing all
-     * conflicting headers
-     *
-     * @return void
-     */
-    public function notModified()
-    {
-        $this->statusCode(304);
-        $this->body('');
-        $remove = array(
-            'Allow',
-            'Content-Encoding',
-            'Content-Language',
-            'Content-Length',
-            'Content-MD5',
-            'Content-Type',
-            'Last-Modified'
-        );
-        foreach ($remove as $header) {
-            unset($this->_headers[$header]);
-        }
-    }
-
-    /**
      * Sets the Vary header for the response, if an array is passed,
      * values will be imploded into a comma separated string. If no
      * parameters are passed, then an array with the current Vary header
@@ -1049,6 +1142,69 @@ class CakeResponse
             return explode(', ', $this->_headers['Vary']);
         }
         return null;
+    }
+
+    /**
+     * Sets the correct output buffering handler to send a compressed response. Responses will
+     * be compressed with zlib, if the extension is available.
+     *
+     * @return bool false if client does not accept compressed responses or no handler is available, true otherwise
+     */
+    public function compress()
+    {
+        $compressionEnabled = ini_get("zlib.output_compression") !== '1' &&
+            extension_loaded("zlib") &&
+            (strpos(env('HTTP_ACCEPT_ENCODING'), 'gzip') !== false);
+        return $compressionEnabled && ob_start('ob_gzhandler');
+    }
+
+    /**
+     * Sets the protocol to be used when sending the response. Defaults to HTTP/1.1
+     * If called with no arguments, it will return the current configured protocol
+     *
+     * @param string $protocol Protocol to be used for sending response.
+     * @return string protocol currently set
+     */
+    public function protocol($protocol = null)
+    {
+        if ($protocol !== null) {
+            $this->_protocol = $protocol;
+        }
+        return $this->_protocol;
+    }
+
+    /**
+     * Checks whether a response has not been modified according to the 'If-None-Match'
+     * (Etags) and 'If-Modified-Since' (last modification date) request
+     * headers. If the response is detected to be not modified, it
+     * is marked as so accordingly so the client can be informed of that.
+     *
+     * In order to mark a response as not modified, you need to set at least
+     * the Last-Modified etag response header before calling this method. Otherwise
+     * a comparison will not be possible.
+     *
+     * @param CakeRequest $request Request object
+     * @return bool whether the response was marked as not modified or not.
+     */
+    public function checkNotModified(CakeRequest $request)
+    {
+        $etags = preg_split('/\s*,\s*/', $request->header('If-None-Match'), null, PREG_SPLIT_NO_EMPTY);
+        $modifiedSince = $request->header('If-Modified-Since');
+        if ($responseTag = $this->etag()) {
+            $etagMatches = in_array('*', $etags) || in_array($responseTag, $etags);
+        }
+        if ($modifiedSince) {
+            $timeMatches = strtotime($this->modified()) === strtotime($modifiedSince);
+        }
+        $checks = compact('etagMatches', 'timeMatches');
+        if (empty($checks)) {
+            return false;
+        }
+        $notModified = !in_array(false, $checks, true);
+        if ($notModified) {
+            $this->notModified();
+        }
+        return $notModified;
     }
 
     /**
@@ -1084,126 +1240,28 @@ class CakeResponse
     }
 
     /**
-     * Returns a DateTime object initialized at the $time param and using UTC
-     * as timezone
+     * Sets the response as Not Modified by removing any body contents
+     * setting the status code to "304 Not Modified" and removing all
+     * conflicting headers
      *
-     * @param string|DateTime $time Valid time string or unix timestamp or DateTime object.
-     * @return DateTime
-     */
-    protected function _getUTCDate($time = null)
-    {
-        if ($time instanceof DateTime) {
-            $result = clone $time;
-        } elseif (is_int($time)) {
-            $result = new DateTime(date('Y-m-d H:i:s', $time));
-        } else {
-            $result = new DateTime($time);
-        }
-        $result->setTimeZone(new DateTimeZone('UTC'));
-        return $result;
-    }
-
-    /**
-     * Sets the correct output buffering handler to send a compressed response. Responses will
-     * be compressed with zlib, if the extension is available.
-     *
-     * @return bool false if client does not accept compressed responses or no handler is available, true otherwise
-     */
-    public function compress()
-    {
-        $compressionEnabled = ini_get("zlib.output_compression") !== '1' &&
-            extension_loaded("zlib") &&
-            (strpos(env('HTTP_ACCEPT_ENCODING'), 'gzip') !== false);
-        return $compressionEnabled && ob_start('ob_gzhandler');
-    }
-
-    /**
-     * Returns whether the resulting output will be compressed by PHP
-     *
-     * @return bool
-     */
-    public function outputCompressed()
-    {
-        return strpos(env('HTTP_ACCEPT_ENCODING'), 'gzip') !== false
-        && (ini_get("zlib.output_compression") === '1' || in_array('ob_gzhandler', ob_list_handlers()));
-    }
-
-    /**
-     * Sets the correct headers to instruct the browser to download the response as a file.
-     *
-     * @param string $filename the name of the file as the browser will download the response
      * @return void
      */
-    public function download($filename)
+    public function notModified()
     {
-        $this->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
-    }
-
-    /**
-     * Sets the protocol to be used when sending the response. Defaults to HTTP/1.1
-     * If called with no arguments, it will return the current configured protocol
-     *
-     * @param string $protocol Protocol to be used for sending response.
-     * @return string protocol currently set
-     */
-    public function protocol($protocol = null)
-    {
-        if ($protocol !== null) {
-            $this->_protocol = $protocol;
+        $this->statusCode(304);
+        $this->body('');
+        $remove = array(
+            'Allow',
+            'Content-Encoding',
+            'Content-Language',
+            'Content-Length',
+            'Content-MD5',
+            'Content-Type',
+            'Last-Modified'
+        );
+        foreach ($remove as $header) {
+            unset($this->_headers[$header]);
         }
-        return $this->_protocol;
-    }
-
-    /**
-     * Sets the Content-Length header for the response
-     * If called with no arguments returns the last Content-Length set
-     *
-     * @param int $bytes Number of bytes
-     * @return int|null
-     */
-    public function length($bytes = null)
-    {
-        if ($bytes !== null) {
-            $this->_headers['Content-Length'] = $bytes;
-        }
-        if (isset($this->_headers['Content-Length'])) {
-            return $this->_headers['Content-Length'];
-        }
-        return null;
-    }
-
-    /**
-     * Checks whether a response has not been modified according to the 'If-None-Match'
-     * (Etags) and 'If-Modified-Since' (last modification date) request
-     * headers. If the response is detected to be not modified, it
-     * is marked as so accordingly so the client can be informed of that.
-     *
-     * In order to mark a response as not modified, you need to set at least
-     * the Last-Modified etag response header before calling this method. Otherwise
-     * a comparison will not be possible.
-     *
-     * @param CakeRequest $request Request object
-     * @return bool whether the response was marked as not modified or not.
-     */
-    public function checkNotModified(CakeRequest $request)
-    {
-        $etags = preg_split('/\s*,\s*/', $request->header('If-None-Match'), null, PREG_SPLIT_NO_EMPTY);
-        $modifiedSince = $request->header('If-Modified-Since');
-        if ($responseTag = $this->etag()) {
-            $etagMatches = in_array('*', $etags) || in_array($responseTag, $etags);
-        }
-        if ($modifiedSince) {
-            $timeMatches = strtotime($this->modified()) === strtotime($modifiedSince);
-        }
-        $checks = compact('etagMatches', 'timeMatches');
-        if (empty($checks)) {
-            return false;
-        }
-        $notModified = !in_array(false, $checks, true);
-        if ($notModified) {
-            $this->notModified();
-        }
-        return $notModified;
     }
 
     /**
@@ -1439,6 +1497,17 @@ class CakeResponse
     }
 
     /**
+     * Sets the correct headers to instruct the browser to download the response as a file.
+     *
+     * @param string $filename the name of the file as the browser will download the response
+     * @return void
+     */
+    public function download($filename)
+    {
+        $this->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+
+    /**
      * Apply a file range to a file and set the end offset.
      *
      * If an invalid range is requested a 416 Status code will be used
@@ -1482,60 +1551,6 @@ class CakeResponse
     }
 
     /**
-     * Reads out a file, and echos the content to the client.
-     *
-     * @param File $file File object
-     * @param array $range The range to read out of the file.
-     * @return bool True is whole file is echoed successfully or false if client connection is lost in between
-     */
-    protected function _sendFile($file, $range)
-    {
-        $compress = $this->outputCompressed();
-        $file->open('rb');
-
-        $end = $start = false;
-        if ($range) {
-            list($start, $end) = $range;
-        }
-        if ($start !== false) {
-            $file->offset($start);
-        }
-
-        $bufferSize = 8192;
-        set_time_limit(0);
-        session_write_close();
-        while (!feof($file->handle)) {
-            if (!$this->_isActive()) {
-                $file->close();
-                return false;
-            }
-            $offset = $file->offset();
-            if ($end && $offset >= $end) {
-                break;
-            }
-            if ($end && $offset + $bufferSize >= $end) {
-                $bufferSize = $end - $offset + 1;
-            }
-            echo fread($file->handle, $bufferSize);
-            if (!$compress) {
-                $this->_flushBuffer();
-            }
-        }
-        $file->close();
-        return true;
-    }
-
-    /**
-     * Returns true if connection is still active
-     *
-     * @return bool
-     */
-    protected function _isActive()
-    {
-        return connection_status() === CONNECTION_NORMAL && !connection_aborted();
-    }
-
-    /**
      * Clears the contents of the topmost output buffer and discards them
      *
      * @return bool
@@ -1546,21 +1561,6 @@ class CakeResponse
             return ob_end_clean();
         }
         return true;
-    }
-
-    /**
-     * Flushes the contents of the output buffer
-     *
-     * @return void
-     */
-    protected function _flushBuffer()
-    {
-        //@codingStandardsIgnoreStart
-        @flush();
-        if (ob_get_level()) {
-            @ob_flush();
-        }
-        //@codingStandardsIgnoreEnd
     }
 
 }

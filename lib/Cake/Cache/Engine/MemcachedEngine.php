@@ -29,13 +29,6 @@ class MemcachedEngine extends CacheEngine
 {
 
     /**
-     * memcached wrapper.
-     *
-     * @var Memcache
-     */
-    protected $_Memcached = null;
-
-    /**
      * Settings
      *
      *  - servers = string or array of memcached servers, default => 127.0.0.1. If an
@@ -52,7 +45,12 @@ class MemcachedEngine extends CacheEngine
      * @var array
      */
     public $settings = array();
-
+    /**
+     * memcached wrapper.
+     *
+     * @var Memcache
+     */
+    protected $_Memcached = null;
     /**
      * List of available serializer engines
      *

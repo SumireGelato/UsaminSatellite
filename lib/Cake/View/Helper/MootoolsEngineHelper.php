@@ -116,25 +116,15 @@ class MootoolsEngineHelper extends JsBaseEngineHelper
     );
 
     /**
-     * Create javascript selector for a CSS rule
+     * Create a domReady event. This is a special event in many libraries
      *
-     * @param string $selector The selector that is targeted
-     * @return $this
+     * @param string $functionBody The code to run on domReady
+     * @return string completed domReady method
      */
-    public function get($selector)
+    public function domReady($functionBody)
     {
-        $this->_multipleSelection = false;
-        if ($selector === 'window' || $selector === 'document') {
-            $this->selection = "$(" . $selector . ")";
-            return $this;
-        }
-        if (preg_match('/^#[^\s.]+$/', $selector)) {
-            $this->selection = '$("' . substr($selector, 1) . '")';
-            return $this;
-        }
-        $this->_multipleSelection = true;
-        $this->selection = '$$("' . $selector . '")';
-        return $this;
+        $this->selection = 'window';
+        return $this->event('domready', $functionBody, array('stop' => false));
     }
 
     /**
@@ -164,18 +154,6 @@ class MootoolsEngineHelper extends JsBaseEngineHelper
         }
         $out = $this->selection . ".addEvent(\"{$type}\", $callback);";
         return $out;
-    }
-
-    /**
-     * Create a domReady event. This is a special event in many libraries
-     *
-     * @param string $functionBody The code to run on domReady
-     * @return string completed domReady method
-     */
-    public function domReady($functionBody)
-    {
-        $this->selection = 'window';
-        return $this->event('domready', $functionBody, array('stop' => false));
     }
 
     /**
@@ -334,6 +312,28 @@ class MootoolsEngineHelper extends JsBaseEngineHelper
         $out = $this->selection . '.makeDraggable({' . $optionString . '});';
         $this->selection = $options['droppables'];
         return $out;
+    }
+
+    /**
+     * Create javascript selector for a CSS rule
+     *
+     * @param string $selector The selector that is targeted
+     * @return $this
+     */
+    public function get($selector)
+    {
+        $this->_multipleSelection = false;
+        if ($selector === 'window' || $selector === 'document') {
+            $this->selection = "$(" . $selector . ")";
+            return $this;
+        }
+        if (preg_match('/^#[^\s.]+$/', $selector)) {
+            $this->selection = '$("' . substr($selector, 1) . '")';
+            return $this;
+        }
+        $this->_multipleSelection = true;
+        $this->selection = '$$("' . $selector . '")';
+        return $this;
     }
 
     /**

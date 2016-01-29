@@ -29,12 +29,17 @@ abstract class ObjectCollection
 {
 
     /**
+     * Default object priority. A non zero integer.
+     *
+     * @var int
+     */
+    public $defaultPriority = 10;
+    /**
      * List of the currently-enabled objects
      *
      * @var array
      */
     protected $_enabled = array();
-
     /**
      * A hash of loaded objects, indexed by name
      *
@@ -43,11 +48,26 @@ abstract class ObjectCollection
     protected $_loaded = array();
 
     /**
-     * Default object priority. A non zero integer.
+     * Normalizes an object array, creates an array that makes lazy loading
+     * easier
      *
-     * @var int
+     * @param array $objects Array of child objects to normalize.
+     * @return array Array of normalized objects.
      */
-    public $defaultPriority = 10;
+    public static function normalizeObjectArray($objects)
+    {
+        $normal = array();
+        foreach ($objects as $i => $objectName) {
+            $options = array();
+            if (!is_int($i)) {
+                $options = (array)$objectName;
+                $objectName = $i;
+            }
+            list(, $name) = pluginSplit($objectName);
+            $normal[$name] = array('class' => $objectName, 'settings' => $options);
+        }
+        return $normal;
+    }
 
     /**
      * Loads a new object onto the collection. Can throw a variety of exceptions
@@ -330,28 +350,6 @@ abstract class ObjectCollection
             $this->_loaded[$name] = $object;
         }
         return $this->_loaded;
-    }
-
-    /**
-     * Normalizes an object array, creates an array that makes lazy loading
-     * easier
-     *
-     * @param array $objects Array of child objects to normalize.
-     * @return array Array of normalized objects.
-     */
-    public static function normalizeObjectArray($objects)
-    {
-        $normal = array();
-        foreach ($objects as $i => $objectName) {
-            $options = array();
-            if (!is_int($i)) {
-                $options = (array)$objectName;
-                $objectName = $i;
-            }
-            list(, $name) = pluginSplit($objectName);
-            $normal[$name] = array('class' => $objectName, 'settings' => $options);
-        }
-        return $normal;
     }
 
 }

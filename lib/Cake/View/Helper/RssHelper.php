@@ -116,6 +116,76 @@ class RssHelper extends AppHelper
     }
 
     /**
+     * Generates an XML element
+     *
+     * @param string $name The name of the XML element
+     * @param array $attrib The attributes of the XML element
+     * @param string|array $content XML element content
+     * @param bool $endTag Whether the end tag of the element should be printed
+     * @return string XML
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/rss.html#RssHelper::elem
+     */
+    public function elem($name, $attrib = array(), $content = null, $endTag = true)
+    {
+        $namespace = null;
+        if (isset($attrib['namespace'])) {
+            $namespace = $attrib['namespace'];
+            unset($attrib['namespace']);
+        }
+        $cdata = false;
+        if (is_array($content) && isset($content['cdata'])) {
+            $cdata = true;
+            unset($content['cdata']);
+        }
+        if (is_array($content) && array_key_exists('value', $content)) {
+            $content = $content['value'];
+        }
+        $children = array();
+        if (is_array($content)) {
+            $children = $content;
+            $content = null;
+        }
+
+        $xml = '<' . $name;
+        if (!empty($namespace)) {
+            $xml .= ' xmlns';
+            if (is_array($namespace)) {
+                $xml .= ':' . $namespace['prefix'];
+                $namespace = $namespace['url'];
+            }
+            $xml .= '="' . $namespace . '"';
+        }
+        $bareName = $name;
+        if (strpos($name, ':') !== false) {
+            list($prefix, $bareName) = explode(':', $name, 2);
+            switch ($prefix) {
+                case 'atom':
+                    $xml .= ' xmlns:atom="http://www.w3.org/2005/Atom"';
+                    break;
+            }
+        }
+        if ($cdata && !empty($content)) {
+            $content = '<![CDATA[' . $content . ']]>';
+        }
+        $xml .= '>' . $content . '</' . $name . '>';
+        $elem = Xml::build($xml, array('return' => 'domdocument'));
+        $nodes = $elem->getElementsByTagName($bareName);
+        if ($attrib) {
+            foreach ($attrib as $key => $value) {
+                $nodes->item(0)->setAttribute($key, $value);
+            }
+        }
+        foreach ($children as $child) {
+            $child = $elem->createElement($name, $child);
+            $nodes->item(0)->appendChild($child);
+        }
+
+        $xml = $elem->saveXml();
+        $xml = trim(substr($xml, strpos($xml, '?>') + 2));
+        return $xml;
+    }
+
+    /**
      * Returns an RSS `<channel />` element
      *
      * @param array $attrib `<channel />` tag attributes
@@ -287,76 +357,6 @@ class RssHelper extends AppHelper
     public function time($time)
     {
         return $this->Time->toRSS($time);
-    }
-
-    /**
-     * Generates an XML element
-     *
-     * @param string $name The name of the XML element
-     * @param array $attrib The attributes of the XML element
-     * @param string|array $content XML element content
-     * @param bool $endTag Whether the end tag of the element should be printed
-     * @return string XML
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/rss.html#RssHelper::elem
-     */
-    public function elem($name, $attrib = array(), $content = null, $endTag = true)
-    {
-        $namespace = null;
-        if (isset($attrib['namespace'])) {
-            $namespace = $attrib['namespace'];
-            unset($attrib['namespace']);
-        }
-        $cdata = false;
-        if (is_array($content) && isset($content['cdata'])) {
-            $cdata = true;
-            unset($content['cdata']);
-        }
-        if (is_array($content) && array_key_exists('value', $content)) {
-            $content = $content['value'];
-        }
-        $children = array();
-        if (is_array($content)) {
-            $children = $content;
-            $content = null;
-        }
-
-        $xml = '<' . $name;
-        if (!empty($namespace)) {
-            $xml .= ' xmlns';
-            if (is_array($namespace)) {
-                $xml .= ':' . $namespace['prefix'];
-                $namespace = $namespace['url'];
-            }
-            $xml .= '="' . $namespace . '"';
-        }
-        $bareName = $name;
-        if (strpos($name, ':') !== false) {
-            list($prefix, $bareName) = explode(':', $name, 2);
-            switch ($prefix) {
-                case 'atom':
-                    $xml .= ' xmlns:atom="http://www.w3.org/2005/Atom"';
-                    break;
-            }
-        }
-        if ($cdata && !empty($content)) {
-            $content = '<![CDATA[' . $content . ']]>';
-        }
-        $xml .= '>' . $content . '</' . $name . '>';
-        $elem = Xml::build($xml, array('return' => 'domdocument'));
-        $nodes = $elem->getElementsByTagName($bareName);
-        if ($attrib) {
-            foreach ($attrib as $key => $value) {
-                $nodes->item(0)->setAttribute($key, $value);
-            }
-        }
-        foreach ($children as $child) {
-            $child = $elem->createElement($name, $child);
-            $nodes->item(0)->appendChild($child);
-        }
-
-        $xml = $elem->saveXml();
-        $xml = trim(substr($xml, strpos($xml, '?>') + 2));
-        return $xml;
     }
 
 }

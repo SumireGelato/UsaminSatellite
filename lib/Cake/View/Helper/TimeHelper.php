@@ -65,24 +65,6 @@ class TimeHelper extends AppHelper
     }
 
     /**
-     * Magic accessor for deprecated attributes.
-     *
-     * @param string $name Name of the attribute to set.
-     * @param string $value Value of the attribute to set.
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        switch ($name) {
-            case 'niceFormat':
-                $this->_engine->{$name} = $value;
-                break;
-            default:
-                $this->{$name} = $value;
-        }
-    }
-
-    /**
      * Magic isset check for deprecated attributes.
      *
      * @param string $name Name of the attribute to check.
@@ -116,6 +98,24 @@ class TimeHelper extends AppHelper
             return $this->_engine->{$name};
         }
         return null;
+    }
+
+    /**
+     * Magic accessor for deprecated attributes.
+     *
+     * @param string $name Name of the attribute to set.
+     * @param string $value Value of the attribute to set.
+     * @return void
+     */
+    public function __set($name, $value)
+    {
+        switch ($name) {
+            case 'niceFormat':
+                $this->_engine->{$name} = $value;
+                break;
+            default:
+                $this->{$name} = $value;
+        }
     }
 
     /**

@@ -80,41 +80,6 @@ class IncludePanel extends DebugPanel
     }
 
     /**
-     * Get the possible include paths
-     *
-     * @return array
-     */
-    protected function _includePaths()
-    {
-        $paths = array_flip(array_merge(explode(PATH_SEPARATOR, get_include_path()), array(CAKE)));
-
-        unset($paths['.']);
-        return array_flip($paths);
-    }
-
-    /**
-     * Check if a path is part of cake core
-     *
-     * @param string $file The file.
-     * @return bool True if it is a core path, else false.
-     */
-    protected function _isCoreFile($file)
-    {
-        return strstr($file, CAKE);
-    }
-
-    /**
-     * Check if a path is from APP but not a plugin
-     *
-     * @param string $file The file.
-     * @return bool True if it is an app path, else false.
-     */
-    protected function _isAppFile($file)
-    {
-        return strstr($file, APP);
-    }
-
-    /**
      * Check if a path is from a plugin
      *
      * @param string $file The file.
@@ -129,6 +94,23 @@ class IncludePanel extends DebugPanel
         }
 
         return false;
+    }
+
+    /**
+     * Get the type of file (model, controller etc)
+     *
+     * @param string $file The file.
+     * @return string The file type of the given file.
+     */
+    protected function _getFileType($file)
+    {
+        foreach ($this->_fileTypes as $type) {
+            if (stripos($file, '/' . $type . '/') !== false) {
+                return $type;
+            }
+        }
+
+        return 'Other';
     }
 
     /**
@@ -153,19 +135,37 @@ class IncludePanel extends DebugPanel
     }
 
     /**
-     * Get the type of file (model, controller etc)
+     * Check if a path is from APP but not a plugin
      *
      * @param string $file The file.
-     * @return string The file type of the given file.
+     * @return bool True if it is an app path, else false.
      */
-    protected function _getFileType($file)
+    protected function _isAppFile($file)
     {
-        foreach ($this->_fileTypes as $type) {
-            if (stripos($file, '/' . $type . '/') !== false) {
-                return $type;
-            }
-        }
+        return strstr($file, APP);
+    }
 
-        return 'Other';
+    /**
+     * Check if a path is part of cake core
+     *
+     * @param string $file The file.
+     * @return bool True if it is a core path, else false.
+     */
+    protected function _isCoreFile($file)
+    {
+        return strstr($file, CAKE);
+    }
+
+    /**
+     * Get the possible include paths
+     *
+     * @return array
+     */
+    protected function _includePaths()
+    {
+        $paths = array_flip(array_merge(explode(PATH_SEPARATOR, get_include_path()), array(CAKE)));
+
+        unset($paths['.']);
+        return array_flip($paths);
     }
 }

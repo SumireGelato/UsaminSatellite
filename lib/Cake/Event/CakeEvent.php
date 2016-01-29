@@ -25,33 +25,29 @@ class CakeEvent
 {
 
     /**
-     * Name of the event
-     *
-     * @var string
-     */
-    protected $_name = null;
-
-    /**
-     * The object this event applies to (usually the same object that generates the event)
-     *
-     * @var object
-     */
-    protected $_subject;
-
-    /**
      * Custom data for the method that receives the event
      *
      * @var mixed
      */
     public $data = null;
-
     /**
      * Property used to retain the result value of the event listeners
      *
      * @var mixed
      */
     public $result = null;
-
+    /**
+     * Name of the event
+     *
+     * @var string
+     */
+    protected $_name = null;
+    /**
+     * The object this event applies to (usually the same object that generates the event)
+     *
+     * @var object
+     */
+    protected $_subject;
     /**
      * Flags an event as stopped or not, default is false
      *

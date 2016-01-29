@@ -142,18 +142,6 @@ abstract class CacheEngine
     }
 
     /**
-     * Does whatever initialization for each group is required
-     * and returns the `group value` for each of them, this is
-     * the token representing each group in the cache key
-     *
-     * @return array
-     */
-    public function groups()
-    {
-        return $this->settings['groups'];
-    }
-
-    /**
      * Cache Engine settings
      *
      * @return array settings
@@ -182,6 +170,18 @@ abstract class CacheEngine
 
         $key = preg_replace('/[\s]+/', '_', strtolower(trim(str_replace(array(DS, '/', '.'), '_', strval($key)))));
         return $prefix . $key;
+    }
+
+    /**
+     * Does whatever initialization for each group is required
+     * and returns the `group value` for each of them, this is
+     * the token representing each group in the cache key
+     *
+     * @return array
+     */
+    public function groups()
+    {
+        return $this->settings['groups'];
     }
 
 }

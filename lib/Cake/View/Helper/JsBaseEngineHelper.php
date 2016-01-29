@@ -32,7 +32,13 @@ abstract class JsBaseEngineHelper extends AppHelper
      * @var string
      */
     public $selection;
-
+    /**
+     * An array of lowercase method names in the Engine that are buffered unless otherwise disabled.
+     * This allows specific 'end point' methods to be automatically buffered by the JsHelper.
+     *
+     * @var array
+     */
+    public $bufferedMethods = array('event', 'sortable', 'drag', 'drop', 'slider');
     /**
      * Collection of option maps. Option maps allow other helpers to use generic names for engine
      * callbacks and options. Allowing uniform code access for all engine types. Their use is optional
@@ -41,15 +47,6 @@ abstract class JsBaseEngineHelper extends AppHelper
      * @var array
      */
     protected $_optionMap = array();
-
-    /**
-     * An array of lowercase method names in the Engine that are buffered unless otherwise disabled.
-     * This allows specific 'end point' methods to be automatically buffered by the JsHelper.
-     *
-     * @var array
-     */
-    public $bufferedMethods = array('event', 'sortable', 'drag', 'drop', 'slider');
-
     /**
      * Contains a list of callback names -> default arguments.
      *
@@ -66,116 +63,6 @@ abstract class JsBaseEngineHelper extends AppHelper
     public function alert($message)
     {
         return 'alert("' . $this->escape($message) . '");';
-    }
-
-    /**
-     * Redirects to a URL. Creates a window.location modification snippet
-     * that can be used to trigger 'redirects' from JavaScript.
-     *
-     * @param string|array $url URL
-     * @return string completed redirect in javascript
-     */
-    public function redirect($url = null)
-    {
-        return 'window.location = "' . Router::url($url) . '";';
-    }
-
-    /**
-     * Create a `confirm()` message
-     *
-     * @param string $message Message you want confirmed.
-     * @return string completed confirm()
-     */
-    public function confirm($message)
-    {
-        return 'confirm("' . $this->escape($message) . '");';
-    }
-
-    /**
-     * Generate a confirm snippet that returns false from the current
-     * function scope.
-     *
-     * @param string $message Message to use in the confirm dialog.
-     * @return string completed confirm with return script
-     */
-    public function confirmReturn($message)
-    {
-        $out = 'var _confirm = ' . $this->confirm($message);
-        $out .= "if (!_confirm) {\n\treturn false;\n}";
-        return $out;
-    }
-
-    /**
-     * Create a `prompt()` JavaScript function
-     *
-     * @param string $message Message you want to prompt.
-     * @param string $default Default message
-     * @return string completed prompt()
-     */
-    public function prompt($message, $default = '')
-    {
-        return 'prompt("' . $this->escape($message) . '", "' . $this->escape($default) . '");';
-    }
-
-    /**
-     * Generates a JavaScript object in JavaScript Object Notation (JSON)
-     * from an array. Will use native JSON encode method if available, and $useNative == true
-     *
-     * ### Options:
-     *
-     * - `prefix` - String prepended to the returned data.
-     * - `postfix` - String appended to the returned data.
-     *
-     * @param array $data Data to be converted.
-     * @param array $options Set of options, see above.
-     * @return string A JSON code block
-     */
-    public function object($data = array(), $options = array())
-    {
-        $defaultOptions = array(
-            'prefix' => '', 'postfix' => '',
-        );
-        $options += $defaultOptions;
-
-        return $options['prefix'] . json_encode($data) . $options['postfix'];
-    }
-
-    /**
-     * Converts a PHP-native variable of any type to a JSON-equivalent representation
-     *
-     * @param mixed $val A PHP variable to be converted to JSON
-     * @param bool $quoteString If false, leaves string values unquoted
-     * @param string $key Key name.
-     * @return string a JavaScript-safe/JSON representation of $val
-     */
-    public function value($val = array(), $quoteString = null, $key = 'value')
-    {
-        if ($quoteString === null) {
-            $quoteString = true;
-        }
-        switch (true) {
-            case (is_array($val) || is_object($val)):
-                $val = $this->object($val);
-                break;
-            case ($val === null):
-                $val = 'null';
-                break;
-            case (is_bool($val)):
-                $val = ($val === true) ? 'true' : 'false';
-                break;
-            case (is_int($val)):
-                $val = $val;
-                break;
-            case (is_float($val)):
-                $val = sprintf("%.11f", $val);
-                break;
-            default:
-                $val = $this->escape($val);
-                if ($quoteString) {
-                    $val = '"' . $val . '"';
-                }
-        }
-        return $val;
     }
 
     /**
@@ -289,6 +176,55 @@ abstract class JsBaseEngineHelper extends AppHelper
             }
         }
         return $return;
+    }
+
+    /**
+     * Redirects to a URL. Creates a window.location modification snippet
+     * that can be used to trigger 'redirects' from JavaScript.
+     *
+     * @param string|array $url URL
+     * @return string completed redirect in javascript
+     */
+    public function redirect($url = null)
+    {
+        return 'window.location = "' . Router::url($url) . '";';
+    }
+
+    /**
+     * Generate a confirm snippet that returns false from the current
+     * function scope.
+     *
+     * @param string $message Message to use in the confirm dialog.
+     * @return string completed confirm with return script
+     */
+    public function confirmReturn($message)
+    {
+        $out = 'var _confirm = ' . $this->confirm($message);
+        $out .= "if (!_confirm) {\n\treturn false;\n}";
+        return $out;
+    }
+
+    /**
+     * Create a `confirm()` message
+     *
+     * @param string $message Message you want confirmed.
+     * @return string completed confirm()
+     */
+    public function confirm($message)
+    {
+        return 'confirm("' . $this->escape($message) . '");';
+    }
+
+    /**
+     * Create a `prompt()` JavaScript function
+     *
+     * @param string $message Message you want to prompt.
+     * @param string $default Default message
+     * @return string completed prompt()
+     */
+    public function prompt($message, $default = '')
+    {
+        return 'prompt("' . $this->escape($message) . '", "' . $this->escape($default) . '");';
     }
 
     /**
@@ -486,26 +422,19 @@ abstract class JsBaseEngineHelper extends AppHelper
     abstract public function serializeForm($options = array());
 
     /**
-     * Parse an options assoc array into a JavaScript object literal.
-     * Similar to object() but treats any non-integer value as a string,
-     * does not include `{ }`
+     * Convenience wrapper method for all common option processing steps.
+     * Runs _mapOptions, _prepareCallbacks, and _parseOptions in order.
      *
-     * @param array $options Options to be converted
-     * @param array $safeKeys Keys that should not be escaped.
-     * @return string Parsed JSON options without enclosing { }.
+     * @param string $method Name of method processing options for.
+     * @param array $options Array of options to process.
+     * @return string Parsed options string.
      */
-    protected function _parseOptions($options, $safeKeys = array())
+    protected function _processOptions($method, $options)
     {
-        $out = array();
-        $safeKeys = array_flip($safeKeys);
-        foreach ($options as $key => $value) {
-            if (!is_int($value) && !isset($safeKeys[$key])) {
-                $value = $this->value($value);
-            }
-            $out[] = $key . ':' . $value;
-        }
-        sort($out);
-        return implode(', ', $out);
+        $options = $this->_mapOptions($method, $options);
+        $options = $this->_prepareCallbacks($method, $options);
+        $options = $this->_parseOptions($options, array_keys($this->_callbackArguments[$method]));
+        return $options;
     }
 
     /**
@@ -569,19 +498,87 @@ abstract class JsBaseEngineHelper extends AppHelper
     }
 
     /**
-     * Convenience wrapper method for all common option processing steps.
-     * Runs _mapOptions, _prepareCallbacks, and _parseOptions in order.
+     * Parse an options assoc array into a JavaScript object literal.
+     * Similar to object() but treats any non-integer value as a string,
+     * does not include `{ }`
      *
-     * @param string $method Name of method processing options for.
-     * @param array $options Array of options to process.
-     * @return string Parsed options string.
+     * @param array $options Options to be converted
+     * @param array $safeKeys Keys that should not be escaped.
+     * @return string Parsed JSON options without enclosing { }.
      */
-    protected function _processOptions($method, $options)
+    protected function _parseOptions($options, $safeKeys = array())
     {
-        $options = $this->_mapOptions($method, $options);
-        $options = $this->_prepareCallbacks($method, $options);
-        $options = $this->_parseOptions($options, array_keys($this->_callbackArguments[$method]));
-        return $options;
+        $out = array();
+        $safeKeys = array_flip($safeKeys);
+        foreach ($options as $key => $value) {
+            if (!is_int($value) && !isset($safeKeys[$key])) {
+                $value = $this->value($value);
+            }
+            $out[] = $key . ':' . $value;
+        }
+        sort($out);
+        return implode(', ', $out);
+    }
+
+    /**
+     * Converts a PHP-native variable of any type to a JSON-equivalent representation
+     *
+     * @param mixed $val A PHP variable to be converted to JSON
+     * @param bool $quoteString If false, leaves string values unquoted
+     * @param string $key Key name.
+     * @return string a JavaScript-safe/JSON representation of $val
+     */
+    public function value($val = array(), $quoteString = null, $key = 'value')
+    {
+        if ($quoteString === null) {
+            $quoteString = true;
+        }
+        switch (true) {
+            case (is_array($val) || is_object($val)):
+                $val = $this->object($val);
+                break;
+            case ($val === null):
+                $val = 'null';
+                break;
+            case (is_bool($val)):
+                $val = ($val === true) ? 'true' : 'false';
+                break;
+            case (is_int($val)):
+                $val = $val;
+                break;
+            case (is_float($val)):
+                $val = sprintf("%.11f", $val);
+                break;
+            default:
+                $val = $this->escape($val);
+                if ($quoteString) {
+                    $val = '"' . $val . '"';
+                }
+        }
+        return $val;
+    }
+
+    /**
+     * Generates a JavaScript object in JavaScript Object Notation (JSON)
+     * from an array. Will use native JSON encode method if available, and $useNative == true
+     *
+     * ### Options:
+     *
+     * - `prefix` - String prepended to the returned data.
+     * - `postfix` - String appended to the returned data.
+     *
+     * @param array $data Data to be converted.
+     * @param array $options Set of options, see above.
+     * @return string A JSON code block
+     */
+    public function object($data = array(), $options = array())
+    {
+        $defaultOptions = array(
+            'prefix' => '', 'postfix' => '',
+        );
+        $options += $defaultOptions;
+
+        return $options['prefix'] . json_encode($data) . $options['postfix'];
     }
 
     /**

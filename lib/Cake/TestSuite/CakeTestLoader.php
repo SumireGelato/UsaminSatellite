@@ -29,6 +29,52 @@ class CakeTestLoader extends PHPUnit_Runner_StandardTestSuiteLoader
 {
 
     /**
+     * Get the list of files for the test listing.
+     *
+     * @param string $params Path parameters
+     * @return array
+     */
+    public static function generateTestList($params)
+    {
+        $directory = static::_basePath($params);
+        $fileList = static::_getRecursiveFileList($directory);
+
+        $testCases = array();
+        foreach ($fileList as $testCaseFile) {
+            $case = str_replace($directory . DS, '', $testCaseFile);
+            $case = str_replace('Test.php', '', $case);
+            $testCases[$testCaseFile] = $case;
+        }
+        sort($testCases);
+        return $testCases;
+    }
+
+    /**
+     * Gets a recursive list of files from a given directory and matches then against
+     * a given fileTestFunction, like isTestCaseFile()
+     *
+     * @param string $directory The directory to scan for files.
+     * @return array
+     */
+    protected static function _getRecursiveFileList($directory = '.')
+    {
+        $fileList = array();
+        if (!is_dir($directory)) {
+            return $fileList;
+        }
+
+        $files = new RegexIterator(
+            new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)),
+            '/.*Test.php$/'
+        );
+
+        foreach ($files as $file) {
+            $fileList[] = $file->getPathname();
+        }
+        return $fileList;
+    }
+
+    /**
      * Load a file and find the first test case / suite in that file.
      *
      * @param string $filePath The file path to load
@@ -80,52 +126,6 @@ class CakeTestLoader extends PHPUnit_Runner_StandardTestSuiteLoader
             $result = APP_TEST_CASES;
         }
         return $result;
-    }
-
-    /**
-     * Get the list of files for the test listing.
-     *
-     * @param string $params Path parameters
-     * @return array
-     */
-    public static function generateTestList($params)
-    {
-        $directory = static::_basePath($params);
-        $fileList = static::_getRecursiveFileList($directory);
-
-        $testCases = array();
-        foreach ($fileList as $testCaseFile) {
-            $case = str_replace($directory . DS, '', $testCaseFile);
-            $case = str_replace('Test.php', '', $case);
-            $testCases[$testCaseFile] = $case;
-        }
-        sort($testCases);
-        return $testCases;
-    }
-
-    /**
-     * Gets a recursive list of files from a given directory and matches then against
-     * a given fileTestFunction, like isTestCaseFile()
-     *
-     * @param string $directory The directory to scan for files.
-     * @return array
-     */
-    protected static function _getRecursiveFileList($directory = '.')
-    {
-        $fileList = array();
-        if (!is_dir($directory)) {
-            return $fileList;
-        }
-
-        $files = new RegexIterator(
-            new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)),
-            '/.*Test.php$/'
-        );
-
-        foreach ($files as $file) {
-            $fileList[] = $file->getPathname();
-        }
-        return $fileList;
     }
 
 }

@@ -71,19 +71,6 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener
     }
 
     /**
-     * Backwards compatible alias for load()
-     *
-     * @param string $behavior Behavior name.
-     * @param array $config Configuration options.
-     * @return void
-     * @deprecated 3.0.0 Will be removed in 3.0. Replaced with load().
-     */
-    public function attach($behavior, $config = array())
-    {
-        return $this->load($behavior, $config);
-    }
-
-    /**
      * Loads a behavior into the collection. You can use use `$config['enabled'] = false`
      * to load a behavior with callbacks disabled. By default callbacks are enabled. Disable behaviors
      * can still be used as normal.
@@ -182,6 +169,31 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener
     }
 
     /**
+     * Backwards compatible alias for load()
+     *
+     * @param string $behavior Behavior name.
+     * @param array $config Configuration options.
+     * @return void
+     * @deprecated 3.0.0 Will be removed in 3.0. Replaced with load().
+     */
+    public function attach($behavior, $config = array())
+    {
+        return $this->load($behavior, $config);
+    }
+
+    /**
+     * Backwards compatible alias for unload()
+     *
+     * @param string $name Name of behavior
+     * @return void
+     * @deprecated 3.0.0 Will be removed in 3.0. Use unload instead.
+     */
+    public function detach($name)
+    {
+        return $this->unload($name);
+    }
+
+    /**
      * Detaches a behavior from a model
      *
      * @param string $name CamelCased name of the behavior to unload
@@ -199,18 +211,6 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener
                 unset($this->_methods[$m]);
             }
         }
-    }
-
-    /**
-     * Backwards compatible alias for unload()
-     *
-     * @param string $name Name of behavior
-     * @return void
-     * @deprecated 3.0.0 Will be removed in 3.0. Use unload instead.
-     */
-    public function detach($name)
-    {
-        return $this->unload($name);
     }
 
     /**
@@ -247,17 +247,6 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener
     }
 
     /**
-     * Gets the method list for attached behaviors, i.e. all public, non-callback methods.
-     * This does not include mappedMethods.
-     *
-     * @return array All public methods for all behaviors attached to this collection
-     */
-    public function methods()
-    {
-        return $this->_methods;
-    }
-
-    /**
      * Check to see if a behavior in this collection implements the provided method. Will
      * also check mappedMethods.
      *
@@ -281,6 +270,17 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener
             }
         }
         return false;
+    }
+
+    /**
+     * Gets the method list for attached behaviors, i.e. all public, non-callback methods.
+     * This does not include mappedMethods.
+     *
+     * @return array All public methods for all behaviors attached to this collection
+     */
+    public function methods()
+    {
+        return $this->_methods;
     }
 
     /**

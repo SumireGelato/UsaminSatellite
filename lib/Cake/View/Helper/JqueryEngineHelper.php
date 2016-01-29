@@ -40,6 +40,13 @@ class JqueryEngineHelper extends JsBaseEngineHelper
 {
 
     /**
+     * The variable name of the jQuery Object, useful
+     * when jQuery is put into noConflict() mode.
+     *
+     * @var string
+     */
+    public $jQueryObject = '$';
+    /**
      * Option mappings for jQuery
      *
      * @var array
@@ -66,7 +73,6 @@ class JqueryEngineHelper extends JsBaseEngineHelper
             'direction' => 'orientation'
         )
     );
-
     /**
      * Callback arguments lists
      *
@@ -113,35 +119,6 @@ class JqueryEngineHelper extends JsBaseEngineHelper
             'xhr' => ''
         )
     );
-
-    /**
-     * The variable name of the jQuery Object, useful
-     * when jQuery is put into noConflict() mode.
-     *
-     * @var string
-     */
-    public $jQueryObject = '$';
-
-    /**
-     * Helper function to wrap repetitive simple method templating.
-     *
-     * @param string $method The method name being generated.
-     * @param string $template The method template
-     * @param array $options Array of options for method
-     * @param array $extraSafeKeys Extra safe keys
-     * @return string Composed method string
-     */
-    protected function _methodTemplate($method, $template, $options, $extraSafeKeys = array())
-    {
-        $options = $this->_mapOptions($method, $options);
-        $options = $this->_prepareCallbacks($method, $options);
-        $callbacks = array_keys($this->_callbackArguments[$method]);
-        if (!empty($extraSafeKeys)) {
-            $callbacks = array_merge($callbacks, $extraSafeKeys);
-        }
-        $options = $this->_parseOptions($options, $callbacks);
-        return sprintf($template, $this->selection, $options);
-    }
 
     /**
      * Create javascript selector for a CSS rule
@@ -300,6 +277,27 @@ class JqueryEngineHelper extends JsBaseEngineHelper
     {
         $template = '%s.sortable({%s});';
         return $this->_methodTemplate('sortable', $template, $options);
+    }
+
+    /**
+     * Helper function to wrap repetitive simple method templating.
+     *
+     * @param string $method The method name being generated.
+     * @param string $template The method template
+     * @param array $options Array of options for method
+     * @param array $extraSafeKeys Extra safe keys
+     * @return string Composed method string
+     */
+    protected function _methodTemplate($method, $template, $options, $extraSafeKeys = array())
+    {
+        $options = $this->_mapOptions($method, $options);
+        $options = $this->_prepareCallbacks($method, $options);
+        $callbacks = array_keys($this->_callbackArguments[$method]);
+        if (!empty($extraSafeKeys)) {
+            $callbacks = array_merge($callbacks, $extraSafeKeys);
+        }
+        $options = $this->_parseOptions($options, $callbacks);
+        return sprintf($template, $this->selection, $options);
     }
 
     /**

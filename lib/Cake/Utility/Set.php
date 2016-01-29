@@ -189,15 +189,33 @@ class Set
     }
 
     /**
-     * Checks to see if all the values in the array are numeric
+     * Counts the dimensions of an array. If $all is set to false (which is the default) it will
+     * only consider the dimension of the first element in the array.
      *
-     * @param array $array The array to check. If null, the value of the current Set object
-     * @return bool true if values are numeric, false otherwise
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::numeric
+     * @param array $array Array to count dimensions on
+     * @param bool $all Set to true to count the dimension considering all elements in array
+     * @param int $count Start the dimension count at this number
+     * @return int The number of dimensions in $array
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::countDim
      */
-    public static function numeric($array = null)
+    public static function countDim($array, $all = false, $count = 0)
     {
-        return Hash::numeric($array);
+        if ($all) {
+            $depth = array($count);
+            if (is_array($array) && reset($array) !== false) {
+                foreach ($array as $value) {
+                    $depth[] = Set::countDim($value, true, $count + 1);
+                }
+            }
+            $return = max($depth);
+        } else {
+            if (is_array(reset($array))) {
+                $return = Set::countDim(reset($array)) + 1;
+            } else {
+                $return = 1;
+            }
+        }
+        return $return;
     }
 
     /**
@@ -228,6 +246,218 @@ class Set
             $return = $list[$select];
         }
         return $return;
+    }
+
+    /**
+     * Normalizes a string or array list.
+     *
+     * @param mixed $list List to normalize
+     * @param bool $assoc If true, $list will be converted to an associative array
+     * @param string $sep If $list is a string, it will be split into an array with $sep
+     * @param bool $trim If true, separated strings will be trimmed
+     * @return array
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::normalize
+     */
+    public static function normalize($list, $assoc = true, $sep = ',', $trim = true)
+    {
+        if (is_string($list)) {
+            $list = explode($sep, $list);
+            if ($trim) {
+                foreach ($list as $key => $value) {
+                    $list[$key] = trim($value);
+                }
+            }
+            if ($assoc) {
+                return Hash::normalize($list);
+            }
+        } elseif (is_array($list)) {
+            $list = Hash::normalize($list, $assoc);
+        }
+        return $list;
+    }
+
+    /**
+     * Inserts $data into an array as defined by $path.
+     *
+     * @param array $list Where to insert into
+     * @param string $path A dot-separated string.
+     * @param array $data Data to insert
+     * @return array
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::insert
+     */
+    public static function insert($list, $path, $data = null)
+    {
+        return Hash::insert($list, $path, $data);
+    }
+
+    /**
+     * Removes an element from a Set or array as defined by $path.
+     *
+     * @param array $list From where to remove
+     * @param string $path A dot-separated string.
+     * @return array Array with $path removed from its value
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::remove
+     */
+    public static function remove($list, $path = null)
+    {
+        return Hash::remove($list, $path);
+    }
+
+    /**
+     * Checks if a particular path is set in an array
+     *
+     * @param string|array $data Data to check on
+     * @param string|array $path A dot-separated string.
+     * @return bool true if path is found, false otherwise
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::check
+     */
+    public static function check($data, $path = null)
+    {
+        if (empty($path)) {
+            return $data;
+        }
+        if (!is_array($path)) {
+            $path = explode('.', $path);
+        }
+
+        foreach ($path as $i => $key) {
+            if (is_numeric($key) && (int)$key > 0 || $key === '0') {
+                $key = (int)$key;
+            }
+            if ($i === count($path) - 1) {
+                return (is_array($data) && array_key_exists($key, $data));
+            }
+
+            if (!is_array($data) || !array_key_exists($key, $data)) {
+                return false;
+            }
+            $data =& $data[$key];
+        }
+        return true;
+    }
+
+    /**
+     * Computes the difference between a Set and an array, two Sets, or two arrays
+     *
+     * @param mixed $val1 First value
+     * @param mixed $val2 Second value
+     * @return array Returns the key => value pairs that are not common in $val1 and $val2
+     * The expression for this function is($val1 - $val2) + ($val2 - ($val1 - $val2))
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::diff
+     */
+    public static function diff($val1, $val2 = null)
+    {
+        if (empty($val1)) {
+            return (array)$val2;
+        }
+        if (empty($val2)) {
+            return (array)$val1;
+        }
+        $intersection = array_intersect_key($val1, $val2);
+        while (($key = key($intersection)) !== null) {
+            if ($val1[$key] == $val2[$key]) {
+                unset($val1[$key]);
+                unset($val2[$key]);
+            }
+            next($intersection);
+        }
+
+        return $val1 + $val2;
+    }
+
+    /**
+     * Determines if one Set or array contains the exact keys and values of another.
+     *
+     * @param array $val1 First value
+     * @param array $val2 Second value
+     * @return bool true if $val1 contains $val2, false otherwise
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::contains
+     */
+    public static function contains($val1, $val2 = null)
+    {
+        if (empty($val1) || empty($val2)) {
+            return false;
+        }
+
+        foreach ($val2 as $key => $val) {
+            if (is_numeric($key)) {
+                Set::contains($val, $val1);
+            } else {
+                if (!isset($val1[$key]) || $val1[$key] != $val) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Creates an associative array using a $path1 as the path to build its keys, and optionally
+     * $path2 as path to get the values. If $path2 is not specified, all values will be initialized
+     * to null (useful for Set::merge). You can optionally group the values by what is obtained when
+     * following the path specified in $groupPath.
+     *
+     * @param array|object $data Array or object from where to extract keys and values
+     * @param string|array $path1 As an array, or as a dot-separated string.
+     * @param string|array $path2 As an array, or as a dot-separated string.
+     * @param string $groupPath As an array, or as a dot-separated string.
+     * @return array Combined array
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::combine
+     */
+    public static function combine($data, $path1 = null, $path2 = null, $groupPath = null)
+    {
+        if (empty($data)) {
+            return array();
+        }
+
+        if (is_object($data)) {
+            if (!($data instanceof ArrayAccess || $data instanceof Traversable)) {
+                $data = get_object_vars($data);
+            }
+        }
+
+        if (is_array($path1)) {
+            $format = array_shift($path1);
+            $keys = Set::format($data, $format, $path1);
+        } else {
+            $keys = Set::extract($data, $path1);
+        }
+        if (empty($keys)) {
+            return array();
+        }
+
+        if (!empty($path2) && is_array($path2)) {
+            $format = array_shift($path2);
+            $vals = Set::format($data, $format, $path2);
+        } elseif (!empty($path2)) {
+            $vals = Set::extract($data, $path2);
+        } else {
+            $count = count($keys);
+            for ($i = 0; $i < $count; $i++) {
+                $vals[$i] = null;
+            }
+        }
+
+        if ($groupPath) {
+            $group = Set::extract($data, $groupPath);
+            if (!empty($group)) {
+                $c = count($keys);
+                for ($i = 0; $i < $c; $i++) {
+                    if (!isset($group[$i])) {
+                        $group[$i] = 0;
+                    }
+                    if (!isset($out[$group[$i]])) {
+                        $out[$group[$i]] = array();
+                    }
+                    $out[$group[$i]][$keys[$i]] = $vals[$i];
+                }
+                return $out;
+            }
+        }
+        if (empty($vals)) {
+            return array();
+        }
+        return array_combine($keys, $vals);
     }
 
     /**
@@ -464,80 +694,6 @@ class Set
     }
 
     /**
-     * This function can be used to see if a single item or a given xpath match certain conditions.
-     *
-     * @param string|array $conditions An array of condition strings or an XPath expression
-     * @param array $data An array of data to execute the match on
-     * @param int $i Optional: The 'nth'-number of the item being matched.
-     * @param int $length Length.
-     * @return bool
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::matches
-     */
-    public static function matches($conditions, $data = array(), $i = null, $length = null)
-    {
-        if (empty($conditions)) {
-            return true;
-        }
-        if (is_string($conditions)) {
-            return (bool)Set::extract($conditions, $data);
-        }
-        foreach ($conditions as $condition) {
-            if ($condition === ':last') {
-                if ($i != $length) {
-                    return false;
-                }
-                continue;
-            } elseif ($condition === ':first') {
-                if ($i != 1) {
-                    return false;
-                }
-                continue;
-            }
-            if (!preg_match('/(.+?)([><!]?[=]|[><])(.*)/', $condition, $match)) {
-                if (ctype_digit($condition)) {
-                    if ($i != $condition) {
-                        return false;
-                    }
-                } elseif (preg_match_all('/(?:^[0-9]+|(?<=,)[0-9]+)/', $condition, $matches)) {
-                    return in_array($i, $matches[0]);
-                } elseif (!array_key_exists($condition, $data)) {
-                    return false;
-                }
-                continue;
-            }
-            list(, $key, $op, $expected) = $match;
-            if (!(isset($data[$key]) || array_key_exists($key, $data))) {
-                return false;
-            }
-
-            $val = $data[$key];
-
-            if ($op === '=' && $expected && $expected{0} === '/') {
-                return preg_match($expected, $val);
-            }
-            if ($op === '=' && $val != $expected) {
-                return false;
-            }
-            if ($op === '!=' && $val == $expected) {
-                return false;
-            }
-            if ($op === '>' && $val <= $expected) {
-                return false;
-            }
-            if ($op === '<' && $val >= $expected) {
-                return false;
-            }
-            if ($op === '<=' && $val > $expected) {
-                return false;
-            }
-            if ($op === '>=' && $val < $expected) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Gets a value from an array or object that is contained in a given path using an array path syntax, i.e.:
      * "{n}.Person.{[a-z]+}" - Where "{n}" represents a numeric key, "Person" represents a string literal,
      * and "{[a-z]+}" (i.e. any string literal enclosed in brackets besides {n} and {s}) is interpreted as
@@ -629,245 +785,89 @@ class Set
     }
 
     /**
-     * Inserts $data into an array as defined by $path.
+     * Checks to see if all the values in the array are numeric
      *
-     * @param array $list Where to insert into
-     * @param string $path A dot-separated string.
-     * @param array $data Data to insert
-     * @return array
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::insert
+     * @param array $array The array to check. If null, the value of the current Set object
+     * @return bool true if values are numeric, false otherwise
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::numeric
      */
-    public static function insert($list, $path, $data = null)
+    public static function numeric($array = null)
     {
-        return Hash::insert($list, $path, $data);
+        return Hash::numeric($array);
     }
 
     /**
-     * Removes an element from a Set or array as defined by $path.
+     * This function can be used to see if a single item or a given xpath match certain conditions.
      *
-     * @param array $list From where to remove
-     * @param string $path A dot-separated string.
-     * @return array Array with $path removed from its value
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::remove
+     * @param string|array $conditions An array of condition strings or an XPath expression
+     * @param array $data An array of data to execute the match on
+     * @param int $i Optional: The 'nth'-number of the item being matched.
+     * @param int $length Length.
+     * @return bool
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::matches
      */
-    public static function remove($list, $path = null)
+    public static function matches($conditions, $data = array(), $i = null, $length = null)
     {
-        return Hash::remove($list, $path);
-    }
-
-    /**
-     * Checks if a particular path is set in an array
-     *
-     * @param string|array $data Data to check on
-     * @param string|array $path A dot-separated string.
-     * @return bool true if path is found, false otherwise
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::check
-     */
-    public static function check($data, $path = null)
-    {
-        if (empty($path)) {
-            return $data;
+        if (empty($conditions)) {
+            return true;
         }
-        if (!is_array($path)) {
-            $path = explode('.', $path);
+        if (is_string($conditions)) {
+            return (bool)Set::extract($conditions, $data);
         }
-
-        foreach ($path as $i => $key) {
-            if (is_numeric($key) && (int)$key > 0 || $key === '0') {
-                $key = (int)$key;
-            }
-            if ($i === count($path) - 1) {
-                return (is_array($data) && array_key_exists($key, $data));
-            }
-
-            if (!is_array($data) || !array_key_exists($key, $data)) {
-                return false;
-            }
-            $data =& $data[$key];
-        }
-        return true;
-    }
-
-    /**
-     * Computes the difference between a Set and an array, two Sets, or two arrays
-     *
-     * @param mixed $val1 First value
-     * @param mixed $val2 Second value
-     * @return array Returns the key => value pairs that are not common in $val1 and $val2
-     * The expression for this function is($val1 - $val2) + ($val2 - ($val1 - $val2))
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::diff
-     */
-    public static function diff($val1, $val2 = null)
-    {
-        if (empty($val1)) {
-            return (array)$val2;
-        }
-        if (empty($val2)) {
-            return (array)$val1;
-        }
-        $intersection = array_intersect_key($val1, $val2);
-        while (($key = key($intersection)) !== null) {
-            if ($val1[$key] == $val2[$key]) {
-                unset($val1[$key]);
-                unset($val2[$key]);
-            }
-            next($intersection);
-        }
-
-        return $val1 + $val2;
-    }
-
-    /**
-     * Determines if one Set or array contains the exact keys and values of another.
-     *
-     * @param array $val1 First value
-     * @param array $val2 Second value
-     * @return bool true if $val1 contains $val2, false otherwise
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::contains
-     */
-    public static function contains($val1, $val2 = null)
-    {
-        if (empty($val1) || empty($val2)) {
-            return false;
-        }
-
-        foreach ($val2 as $key => $val) {
-            if (is_numeric($key)) {
-                Set::contains($val, $val1);
-            } else {
-                if (!isset($val1[$key]) || $val1[$key] != $val) {
+        foreach ($conditions as $condition) {
+            if ($condition === ':last') {
+                if ($i != $length) {
                     return false;
                 }
+                continue;
+            } elseif ($condition === ':first') {
+                if ($i != 1) {
+                    return false;
+                }
+                continue;
+            }
+            if (!preg_match('/(.+?)([><!]?[=]|[><])(.*)/', $condition, $match)) {
+                if (ctype_digit($condition)) {
+                    if ($i != $condition) {
+                        return false;
+                    }
+                } elseif (preg_match_all('/(?:^[0-9]+|(?<=,)[0-9]+)/', $condition, $matches)) {
+                    return in_array($i, $matches[0]);
+                } elseif (!array_key_exists($condition, $data)) {
+                    return false;
+                }
+                continue;
+            }
+            list(, $key, $op, $expected) = $match;
+            if (!(isset($data[$key]) || array_key_exists($key, $data))) {
+                return false;
+            }
+
+            $val = $data[$key];
+
+            if ($op === '=' && $expected && $expected{0} === '/') {
+                return preg_match($expected, $val);
+            }
+            if ($op === '=' && $val != $expected) {
+                return false;
+            }
+            if ($op === '!=' && $val == $expected) {
+                return false;
+            }
+            if ($op === '>' && $val <= $expected) {
+                return false;
+            }
+            if ($op === '<' && $val >= $expected) {
+                return false;
+            }
+            if ($op === '<=' && $val > $expected) {
+                return false;
+            }
+            if ($op === '>=' && $val < $expected) {
+                return false;
             }
         }
         return true;
-    }
-
-    /**
-     * Counts the dimensions of an array. If $all is set to false (which is the default) it will
-     * only consider the dimension of the first element in the array.
-     *
-     * @param array $array Array to count dimensions on
-     * @param bool $all Set to true to count the dimension considering all elements in array
-     * @param int $count Start the dimension count at this number
-     * @return int The number of dimensions in $array
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::countDim
-     */
-    public static function countDim($array, $all = false, $count = 0)
-    {
-        if ($all) {
-            $depth = array($count);
-            if (is_array($array) && reset($array) !== false) {
-                foreach ($array as $value) {
-                    $depth[] = Set::countDim($value, true, $count + 1);
-                }
-            }
-            $return = max($depth);
-        } else {
-            if (is_array(reset($array))) {
-                $return = Set::countDim(reset($array)) + 1;
-            } else {
-                $return = 1;
-            }
-        }
-        return $return;
-    }
-
-    /**
-     * Normalizes a string or array list.
-     *
-     * @param mixed $list List to normalize
-     * @param bool $assoc If true, $list will be converted to an associative array
-     * @param string $sep If $list is a string, it will be split into an array with $sep
-     * @param bool $trim If true, separated strings will be trimmed
-     * @return array
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::normalize
-     */
-    public static function normalize($list, $assoc = true, $sep = ',', $trim = true)
-    {
-        if (is_string($list)) {
-            $list = explode($sep, $list);
-            if ($trim) {
-                foreach ($list as $key => $value) {
-                    $list[$key] = trim($value);
-                }
-            }
-            if ($assoc) {
-                return Hash::normalize($list);
-            }
-        } elseif (is_array($list)) {
-            $list = Hash::normalize($list, $assoc);
-        }
-        return $list;
-    }
-
-    /**
-     * Creates an associative array using a $path1 as the path to build its keys, and optionally
-     * $path2 as path to get the values. If $path2 is not specified, all values will be initialized
-     * to null (useful for Set::merge). You can optionally group the values by what is obtained when
-     * following the path specified in $groupPath.
-     *
-     * @param array|object $data Array or object from where to extract keys and values
-     * @param string|array $path1 As an array, or as a dot-separated string.
-     * @param string|array $path2 As an array, or as a dot-separated string.
-     * @param string $groupPath As an array, or as a dot-separated string.
-     * @return array Combined array
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::combine
-     */
-    public static function combine($data, $path1 = null, $path2 = null, $groupPath = null)
-    {
-        if (empty($data)) {
-            return array();
-        }
-
-        if (is_object($data)) {
-            if (!($data instanceof ArrayAccess || $data instanceof Traversable)) {
-                $data = get_object_vars($data);
-            }
-        }
-
-        if (is_array($path1)) {
-            $format = array_shift($path1);
-            $keys = Set::format($data, $format, $path1);
-        } else {
-            $keys = Set::extract($data, $path1);
-        }
-        if (empty($keys)) {
-            return array();
-        }
-
-        if (!empty($path2) && is_array($path2)) {
-            $format = array_shift($path2);
-            $vals = Set::format($data, $format, $path2);
-        } elseif (!empty($path2)) {
-            $vals = Set::extract($data, $path2);
-        } else {
-            $count = count($keys);
-            for ($i = 0; $i < $count; $i++) {
-                $vals[$i] = null;
-            }
-        }
-
-        if ($groupPath) {
-            $group = Set::extract($data, $groupPath);
-            if (!empty($group)) {
-                $c = count($keys);
-                for ($i = 0; $i < $c; $i++) {
-                    if (!isset($group[$i])) {
-                        $group[$i] = 0;
-                    }
-                    if (!isset($out[$group[$i]])) {
-                        $out[$group[$i]] = array();
-                    }
-                    $out[$group[$i]][$keys[$i]] = $vals[$i];
-                }
-                return $out;
-            }
-        }
-        if (empty($vals)) {
-            return array();
-        }
-        return array_combine($keys, $vals);
     }
 
     /**
@@ -949,30 +949,6 @@ class Set
     }
 
     /**
-     * Flattens an array for sorting
-     *
-     * @param array $results Array to flatten.
-     * @param string $key Key.
-     * @return array
-     */
-    protected static function _flatten($results, $key = null)
-    {
-        $stack = array();
-        foreach ($results as $k => $r) {
-            $id = $k;
-            if ($key !== null) {
-                $id = $key;
-            }
-            if (is_array($r) && !empty($r)) {
-                $stack = array_merge($stack, Set::_flatten($r, $id));
-            } else {
-                $stack[] = array('id' => $id, 'value' => $r);
-            }
-        }
-        return $stack;
-    }
-
-    /**
      * Sorts an array by any value, determined by a Set-compatible path
      *
      * @param array $data An array of data to sort
@@ -1017,6 +993,30 @@ class Set
             }
         }
         return $sorted;
+    }
+
+    /**
+     * Flattens an array for sorting
+     *
+     * @param array $results Array to flatten.
+     * @param string $key Key.
+     * @return array
+     */
+    protected static function _flatten($results, $key = null)
+    {
+        $stack = array();
+        foreach ($results as $k => $r) {
+            $id = $k;
+            if ($key !== null) {
+                $id = $key;
+            }
+            if (is_array($r) && !empty($r)) {
+                $stack = array_merge($stack, Set::_flatten($r, $id));
+            } else {
+                $stack[] = array('id' => $id, 'value' => $r);
+            }
+        }
+        return $stack;
     }
 
     /**

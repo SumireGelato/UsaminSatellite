@@ -31,81 +31,71 @@ class CakeValidationRule
 {
 
     /**
-     * Whether the field passed this validation rule
-     *
-     * @var mixed
-     */
-    protected $_valid = true;
-
-    /**
-     * Holds whether the record being validated exists in datasource or not
-     *
-     * @var bool
-     */
-    protected $_recordExists = false;
-
-    /**
-     * Validation method
-     *
-     * @var mixed
-     */
-    protected $_rule = null;
-
-    /**
-     * Validation method arguments
-     *
-     * @var array
-     */
-    protected $_ruleParams = array();
-
-    /**
-     * Holds passed in options
-     *
-     * @var array
-     */
-    protected $_passedOptions = array();
-
-    /**
      * The 'rule' key
      *
      * @var mixed
      */
     public $rule = 'blank';
-
     /**
      * The 'required' key
      *
      * @var mixed
      */
     public $required = null;
-
     /**
      * The 'allowEmpty' key
      *
      * @var bool
      */
     public $allowEmpty = null;
-
     /**
      * The 'on' key
      *
      * @var string
      */
     public $on = null;
-
     /**
      * The 'last' key
      *
      * @var bool
      */
     public $last = true;
-
     /**
      * The 'message' key
      *
      * @var string
      */
     public $message = null;
+    /**
+     * Whether the field passed this validation rule
+     *
+     * @var mixed
+     */
+    protected $_valid = true;
+    /**
+     * Holds whether the record being validated exists in datasource or not
+     *
+     * @var bool
+     */
+    protected $_recordExists = false;
+    /**
+     * Validation method
+     *
+     * @var mixed
+     */
+    protected $_rule = null;
+    /**
+     * Validation method arguments
+     *
+     * @var array
+     */
+    protected $_ruleParams = array();
+    /**
+     * Holds passed in options
+     *
+     * @var array
+     */
+    protected $_passedOptions = array();
 
     /**
      * Constructor
@@ -115,6 +105,28 @@ class CakeValidationRule
     public function __construct($validator = array())
     {
         $this->_addValidatorProps($validator);
+    }
+
+    /**
+     * Sets the rule properties from the rule entry in validate
+     *
+     * @param array $validator [optional]
+     * @return void
+     */
+    protected function _addValidatorProps($validator = array())
+    {
+        if (!is_array($validator)) {
+            $validator = array('rule' => $validator);
+        }
+        foreach ($validator as $key => $value) {
+            if (isset($value) || !empty($value)) {
+                if (in_array($key, array('rule', 'required', 'allowEmpty', 'on', 'message', 'last'))) {
+                    $this->{$key} = $validator[$key];
+                } else {
+                    $this->_passedOptions[$key] = $value;
+                }
+            }
+        }
     }
 
     /**
@@ -142,20 +154,37 @@ class CakeValidationRule
     }
 
     /**
-     * Checks if the field is required according to the `required` property
+     * Checks if the validation rule should be skipped
      *
-     * @return bool
+     * @return bool True if the ValidationRule can be skipped
      */
-    public function isRequired()
+    public function skip()
     {
-        if (in_array($this->required, array('create', 'update'), true)) {
-            if ($this->required === 'create' && !$this->isUpdate() || $this->required === 'update' && $this->isUpdate()) {
+        if (!empty($this->on)) {
+            if ($this->on === 'create' && $this->isUpdate() || $this->on === 'update' && !$this->isUpdate()) {
                 return true;
             }
-            return false;
         }
+        return false;
+    }
 
-        return $this->required;
+    /**
+     * Sets the recordExists configuration value for this rule,
+     * ir refers to whether the model record it is validating exists
+     * exists in the collection or not (create or update operation)
+     *
+     * If called with no parameters it will return whether this rule
+     * is configured for update operations or not.
+     *
+     * @param bool $exists Boolean to indicate if records exists
+     * @return bool
+     */
+    public function isUpdate($exists = null)
+    {
+        if ($exists === null) {
+            return $this->_recordExists;
+        }
+        return $this->_recordExists = $exists;
     }
 
     /**
@@ -177,6 +206,23 @@ class CakeValidationRule
     }
 
     /**
+     * Checks if the field is required according to the `required` property
+     *
+     * @return bool
+     */
+    public function isRequired()
+    {
+        if (in_array($this->required, array('create', 'update'), true)) {
+            if ($this->required === 'create' && !$this->isUpdate() || $this->required === 'update' && $this->isUpdate()) {
+                return true;
+            }
+            return false;
+        }
+
+        return $this->required;
+    }
+
+    /**
      * Checks if the allowEmpty key applies
      *
      * @param string $field Field name
@@ -187,21 +233,6 @@ class CakeValidationRule
     {
         if (empty($data[$field]) && $data[$field] != '0' && $this->allowEmpty === true) {
             return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the validation rule should be skipped
-     *
-     * @return bool True if the ValidationRule can be skipped
-     */
-    public function skip()
-    {
-        if (!empty($this->on)) {
-            if ($this->on === 'create' && $this->isUpdate() || $this->on === 'update' && !$this->isUpdate()) {
-                return true;
-            }
         }
         return false;
     }
@@ -225,46 +256,6 @@ class CakeValidationRule
     public function getValidationResult()
     {
         return $this->_valid;
-    }
-
-    /**
-     * Gets an array with the rule properties
-     *
-     * @return array
-     */
-    protected function _getPropertiesArray()
-    {
-        $rule = $this->rule;
-        if (!is_string($rule)) {
-            unset($rule[0]);
-        }
-        return array(
-            'rule' => $rule,
-            'required' => $this->required,
-            'allowEmpty' => $this->allowEmpty,
-            'on' => $this->on,
-            'last' => $this->last,
-            'message' => $this->message
-        );
-    }
-
-    /**
-     * Sets the recordExists configuration value for this rule,
-     * ir refers to whether the model record it is validating exists
-     * exists in the collection or not (create or update operation)
-     *
-     * If called with no parameters it will return whether this rule
-     * is configured for update operations or not.
-     *
-     * @param bool $exists Boolean to indicate if records exists
-     * @return bool
-     */
-    public function isUpdate($exists = null)
-    {
-        if ($exists === null) {
-            return $this->_recordExists;
-        }
-        return $this->_recordExists = $exists;
     }
 
     /**
@@ -299,6 +290,45 @@ class CakeValidationRule
     }
 
     /**
+     * Parses the rule and sets the rule and ruleParams
+     *
+     * @param string $field Field name
+     * @param array &$data Data array
+     * @return void
+     */
+    protected function _parseRule($field, &$data)
+    {
+        if (is_array($this->rule)) {
+            $this->_rule = $this->rule[0];
+            $this->_ruleParams = array_merge(array($data[$field]), array_values(array_slice($this->rule, 1)));
+        } else {
+            $this->_rule = $this->rule;
+            $this->_ruleParams = array($data[$field]);
+        }
+    }
+
+    /**
+     * Gets an array with the rule properties
+     *
+     * @return array
+     */
+    protected function _getPropertiesArray()
+    {
+        $rule = $this->rule;
+        if (!is_string($rule)) {
+            unset($rule[0]);
+        }
+        return array(
+            'rule' => $rule,
+            'required' => $this->required,
+            'allowEmpty' => $this->allowEmpty,
+            'on' => $this->on,
+            'last' => $this->last,
+            'message' => $this->message
+        );
+    }
+
+    /**
      * Resets internal state for this rule, by default it will become valid
      * and it will set isUpdate() to false
      *
@@ -322,46 +352,6 @@ class CakeValidationRule
             return null;
         }
         return $this->_passedOptions[$key];
-    }
-
-    /**
-     * Sets the rule properties from the rule entry in validate
-     *
-     * @param array $validator [optional]
-     * @return void
-     */
-    protected function _addValidatorProps($validator = array())
-    {
-        if (!is_array($validator)) {
-            $validator = array('rule' => $validator);
-        }
-        foreach ($validator as $key => $value) {
-            if (isset($value) || !empty($value)) {
-                if (in_array($key, array('rule', 'required', 'allowEmpty', 'on', 'message', 'last'))) {
-                    $this->{$key} = $validator[$key];
-                } else {
-                    $this->_passedOptions[$key] = $value;
-                }
-            }
-        }
-    }
-
-    /**
-     * Parses the rule and sets the rule and ruleParams
-     *
-     * @param string $field Field name
-     * @param array &$data Data array
-     * @return void
-     */
-    protected function _parseRule($field, &$data)
-    {
-        if (is_array($this->rule)) {
-            $this->_rule = $this->rule[0];
-            $this->_ruleParams = array_merge(array($data[$field]), array_values(array_slice($this->rule, 1)));
-        } else {
-            $this->_rule = $this->rule;
-            $this->_ruleParams = array($data[$field]);
-        }
     }
 
 }

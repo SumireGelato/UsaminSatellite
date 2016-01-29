@@ -61,95 +61,18 @@ class Sanitize
     }
 
     /**
-     * Makes a string SQL-safe.
-     *
-     * @param string $string String to sanitize
-     * @param string $connection Database connection being used
-     * @return string SQL safe string
-     */
-    public static function escape($string, $connection = 'default')
-    {
-        if (is_numeric($string) || $string === null || is_bool($string)) {
-            return $string;
-        }
-        $db = ConnectionManager::getDataSource($connection);
-        $string = $db->value($string, 'string');
-        $start = 1;
-        if ($string{0} === 'N') {
-            $start = 2;
-        }
-
-        return substr(substr($string, $start), 0, -1);
-    }
-
-    /**
-     * Returns given string safe for display as HTML. Renders entities.
-     *
-     * strip_tags() does not validating HTML syntax or structure, so it might strip whole passages
-     * with broken HTML.
-     *
-     * ### Options:
-     *
-     * - remove (boolean) if true strips all HTML tags before encoding
-     * - charset (string) the charset used to encode the string
-     * - quotes (int) see http://php.net/manual/en/function.htmlentities.php
-     * - double (boolean) double encode html entities
-     *
-     * @param string $string String from where to strip tags
-     * @param array $options Array of options to use.
-     * @return string Sanitized string
-     */
-    public static function html($string, $options = array())
-    {
-        static $defaultCharset = false;
-        if ($defaultCharset === false) {
-            $defaultCharset = Configure::read('App.encoding');
-            if ($defaultCharset === null) {
-                $defaultCharset = 'UTF-8';
-            }
-        }
-        $defaults = array(
-            'remove' => false,
-            'charset' => $defaultCharset,
-            'quotes' => ENT_QUOTES,
-            'double' => true
-        );
-
-        $options += $defaults;
-
-        if ($options['remove']) {
-            $string = strip_tags($string);
-        }
-
-        return htmlentities($string, $options['quotes'], $options['charset'], $options['double']);
-    }
-
-    /**
-     * Strips extra whitespace from output
+     * Strips extra whitespace, images, scripts and stylesheets from output
      *
      * @param string $str String to sanitize
-     * @return string whitespace sanitized string
+     * @return string sanitized string
      */
-    public static function stripWhitespace($str)
+    public static function stripAll($str)
     {
-        return preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $str));
-    }
-
-    /**
-     * Strips image tags from output
-     *
-     * @param string $str String to sanitize
-     * @return string Sting with images stripped.
-     */
-    public static function stripImages($str)
-    {
-        $preg = array(
-            '/(<a[^>]*>)(<img[^>]+alt=")([^"]*)("[^>]*>)(<\/a>)/i' => '$1$3$5<br />',
-            '/(<img[^>]+alt=")([^"]*)("[^>]*>)/i' => '$2<br />',
-            '/<img[^>]*>/i' => ''
+        return Sanitize::stripScripts(
+            Sanitize::stripImages(
+                Sanitize::stripWhitespace($str)
+            )
         );
-
-        return preg_replace(array_keys($preg), array_values($preg), $str);
     }
 
     /**
@@ -170,18 +93,31 @@ class Sanitize
     }
 
     /**
-     * Strips extra whitespace, images, scripts and stylesheets from output
+     * Strips image tags from output
      *
      * @param string $str String to sanitize
-     * @return string sanitized string
+     * @return string Sting with images stripped.
      */
-    public static function stripAll($str)
+    public static function stripImages($str)
     {
-        return Sanitize::stripScripts(
-            Sanitize::stripImages(
-                Sanitize::stripWhitespace($str)
-            )
+        $preg = array(
+            '/(<a[^>]*>)(<img[^>]+alt=")([^"]*)("[^>]*>)(<\/a>)/i' => '$1$3$5<br />',
+            '/(<img[^>]+alt=")([^"]*)("[^>]*>)/i' => '$2<br />',
+            '/<img[^>]*>/i' => ''
         );
+
+        return preg_replace(array_keys($preg), array_values($preg), $str);
+    }
+
+    /**
+     * Strips extra whitespace from output
+     *
+     * @param string $str String to sanitize
+     * @return string whitespace sanitized string
+     */
+    public static function stripWhitespace($str)
+    {
+        return preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $str));
     }
 
     /**
@@ -275,5 +211,69 @@ class Sanitize
             $data = preg_replace("/\\\(?!&amp;#|\?#)/", "\\", $data);
         }
         return $data;
+    }
+
+    /**
+     * Returns given string safe for display as HTML. Renders entities.
+     *
+     * strip_tags() does not validating HTML syntax or structure, so it might strip whole passages
+     * with broken HTML.
+     *
+     * ### Options:
+     *
+     * - remove (boolean) if true strips all HTML tags before encoding
+     * - charset (string) the charset used to encode the string
+     * - quotes (int) see http://php.net/manual/en/function.htmlentities.php
+     * - double (boolean) double encode html entities
+     *
+     * @param string $string String from where to strip tags
+     * @param array $options Array of options to use.
+     * @return string Sanitized string
+     */
+    public static function html($string, $options = array())
+    {
+        static $defaultCharset = false;
+        if ($defaultCharset === false) {
+            $defaultCharset = Configure::read('App.encoding');
+            if ($defaultCharset === null) {
+                $defaultCharset = 'UTF-8';
+            }
+        }
+        $defaults = array(
+            'remove' => false,
+            'charset' => $defaultCharset,
+            'quotes' => ENT_QUOTES,
+            'double' => true
+        );
+
+        $options += $defaults;
+
+        if ($options['remove']) {
+            $string = strip_tags($string);
+        }
+
+        return htmlentities($string, $options['quotes'], $options['charset'], $options['double']);
+    }
+
+    /**
+     * Makes a string SQL-safe.
+     *
+     * @param string $string String to sanitize
+     * @param string $connection Database connection being used
+     * @return string SQL safe string
+     */
+    public static function escape($string, $connection = 'default')
+    {
+        if (is_numeric($string) || $string === null || is_bool($string)) {
+            return $string;
+        }
+        $db = ConnectionManager::getDataSource($connection);
+        $string = $db->value($string, 'string');
+        $start = 1;
+        if ($string{0} === 'N') {
+            $start = 2;
+        }
+
+        return substr(substr($string, $start), 0, -1);
     }
 }

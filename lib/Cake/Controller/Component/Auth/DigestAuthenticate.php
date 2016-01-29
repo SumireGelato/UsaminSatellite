@@ -109,6 +109,19 @@ class DigestAuthenticate extends BasicAuthenticate
     }
 
     /**
+     * Creates an auth digest password hash to store
+     *
+     * @param string $username The username to use in the digest hash.
+     * @param string $password The unhashed password to make a digest hash for.
+     * @param string $realm The realm the password is for.
+     * @return string the hashed password that can later be used with Digest authentication.
+     */
+    public static function password($username, $password, $realm)
+    {
+        return md5($username . ':' . $realm . ':' . $password);
+    }
+
+    /**
      * Get a user based on information in the request. Used by cookie-less auth for stateless clients.
      *
      * @param CakeRequest $request Request object.
@@ -196,19 +209,6 @@ class DigestAuthenticate extends BasicAuthenticate
             ':' . $digest['nonce'] . ':' . $digest['nc'] . ':' . $digest['cnonce'] . ':' . $digest['qop'] . ':' .
             md5(env('REQUEST_METHOD') . ':' . $digest['uri'])
         );
-    }
-
-    /**
-     * Creates an auth digest password hash to store
-     *
-     * @param string $username The username to use in the digest hash.
-     * @param string $password The unhashed password to make a digest hash for.
-     * @param string $realm The realm the password is for.
-     * @return string the hashed password that can later be used with Digest authentication.
-     */
-    public static function password($username, $password, $realm)
-    {
-        return md5($username . ':' . $realm . ':' . $password);
     }
 
     /**

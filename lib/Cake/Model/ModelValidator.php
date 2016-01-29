@@ -110,6 +110,211 @@ class ModelValidator implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
+     * Returns an array of fields that have failed validation. On the current model. This method will
+     * actually run validation rules over data, not just return the messages.
+     *
+     * @param string $options An optional array of custom options to be made available in the beforeValidate callback
+     * @return array Array of invalid fields
+     * @triggers Model.afterValidate $model
+     * @see ModelValidator::validates()
+     */
+    public function errors($options = array())
+    {
+        if (!$this->_triggerBeforeValidate($options)) {
+            return false;
+        }
+        $model = $this->getModel();
+
+        if (!$this->_parseRules()) {
+            return $model->validationErrors;
+        }
+
+        $fieldList = $model->whitelist;
+        if (empty($fieldList) && !empty($options['fieldList'])) {
+            if (!empty($options['fieldList'][$model->alias]) && is_array($options['fieldList'][$model->alias])) {
+                $fieldList = $options['fieldList'][$model->alias];
+            } else {
+                $fieldList = $options['fieldList'];
+            }
+        }
+
+        $exists = $model->exists();
+        $methods = $this->getMethods();
+        $fields = $this->_validationList($fieldList);
+
+        foreach ($fields as $field) {
+            $field->setMethods($methods);
+            $field->setValidationDomain($model->validationDomain);
+            $data = isset($model->data[$model->alias]) ? $model->data[$model->alias] : array();
+            $errors = $field->validate($data, $exists);
+            foreach ($errors as $error) {
+                $this->invalidate($field->field, $error);
+            }
+        }
+
+        $model->getEventManager()->dispatch(new CakeEvent('Model.afterValidate', $model));
+        return $model->validationErrors;
+    }
+
+    /**
+     * Propagates beforeValidate event
+     *
+     * @param array $options Options to pass to callback.
+     * @return bool
+     * @triggers Model.beforeValidate $model, array($options)
+     */
+    protected function _triggerBeforeValidate($options = array())
+    {
+        $model = $this->getModel();
+        $event = new CakeEvent('Model.beforeValidate', $model, array($options));
+        list($event->break, $event->breakOn) = array(true, false);
+        $model->getEventManager()->dispatch($event);
+        if ($event->isStopped()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Gets the model related to this validator
+     *
+     * @return Model
+     */
+    public function getModel()
+    {
+        return $this->_model;
+    }
+
+    /**
+     * Sets the CakeValidationSet objects from the `Model::$validate` property
+     * If `Model::$validate` is not set or empty, this method returns false. True otherwise.
+     *
+     * @return bool true if `Model::$validate` was processed, false otherwise
+     */
+    protected function _parseRules()
+    {
+        if ($this->_validate === $this->_model->validate) {
+            return true;
+        }
+
+        if (empty($this->_model->validate)) {
+            $this->_validate = array();
+            $this->_fields = array();
+            return false;
+        }
+
+        $this->_validate = $this->_model->validate;
+        $this->_fields = array();
+        $methods = $this->getMethods();
+        foreach ($this->_validate as $fieldName => $ruleSet) {
+            $this->_fields[$fieldName] = new CakeValidationSet($fieldName, $ruleSet);
+            $this->_fields[$fieldName]->setMethods($methods);
+        }
+        return true;
+    }
+
+    /**
+     * Gets all possible custom methods from the Model and attached Behaviors
+     * to be used as validators
+     *
+     * @return array List of callables to be used as validation methods
+     */
+    public function getMethods()
+    {
+        $behaviors = $this->_model->Behaviors->enabled();
+        if (!empty($this->_methods) && $behaviors === $this->_behaviors) {
+            return $this->_methods;
+        }
+        $this->_behaviors = $behaviors;
+
+        if (empty($this->_modelMethods)) {
+            foreach (get_class_methods($this->_model) as $method) {
+                $this->_modelMethods[strtolower($method)] = array($this->_model, $method);
+            }
+        }
+
+        $methods = $this->_modelMethods;
+        foreach (array_keys($this->_model->Behaviors->methods()) as $method) {
+            $methods += array(strtolower($method) => array($this->_model, $method));
+        }
+
+        return $this->_methods = $methods;
+    }
+
+    /**
+     * Processes the passed fieldList and returns the list of fields to be validated
+     *
+     * @param array $fieldList list of fields to be used for validation
+     * @return array List of validation rules to be applied
+     */
+    protected function _validationList($fieldList = array())
+    {
+        if (empty($fieldList) || Hash::dimensions($fieldList) > 1) {
+            return $this->_fields;
+        }
+
+        $validateList = array();
+        $this->validationErrors = array();
+        foreach ((array)$fieldList as $f) {
+            if (!empty($this->_fields[$f])) {
+                $validateList[$f] = $this->_fields[$f];
+            }
+        }
+
+        return $validateList;
+    }
+
+    /**
+     * Marks a field as invalid, optionally setting a message explaining
+     * why the rule failed
+     *
+     * @param string $field The name of the field to invalidate
+     * @param string $message Validation message explaining why the rule failed, defaults to true.
+     * @return void
+     */
+    public function invalidate($field, $message = true)
+    {
+        $this->getModel()->validationErrors[$field][] = $message;
+    }
+
+    /**
+     * Runs validation for hasAndBelongsToMany associations that have 'with' keys
+     * set and data in the data set.
+     *
+     * @param array $options Array of options to use on Validation of with models
+     * @return bool Failure of validation on with models.
+     * @see Model::validates()
+     */
+    protected function _validateWithModels($options)
+    {
+        $valid = true;
+        $model = $this->getModel();
+
+        foreach ($model->hasAndBelongsToMany as $assoc => $association) {
+            if (empty($association['with']) || !isset($model->data[$assoc])) {
+                continue;
+            }
+            list($join) = $model->joinModel($model->hasAndBelongsToMany[$assoc]['with']);
+            $data = $model->data[$assoc];
+
+            $newData = array();
+            foreach ((array)$data as $row) {
+                if (isset($row[$model->hasAndBelongsToMany[$assoc]['associationForeignKey']])) {
+                    $newData[] = $row;
+                } elseif (isset($row[$join]) && isset($row[$join][$model->hasAndBelongsToMany[$assoc]['associationForeignKey']])) {
+                    $newData[] = $row[$join];
+                }
+            }
+            foreach ($newData as $data) {
+                $data[$model->hasAndBelongsToMany[$assoc]['foreignKey']] = $model->id;
+                $model->{$join}->create($data);
+                $valid = ($valid && $model->{$join}->validator()->validates($options));
+            }
+        }
+        return $valid;
+    }
+
+    /**
      * Validates a single record, as well as all its directly associated records.
      *
      * #### Options
@@ -235,94 +440,6 @@ class ModelValidator implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
-     * Returns an array of fields that have failed validation. On the current model. This method will
-     * actually run validation rules over data, not just return the messages.
-     *
-     * @param string $options An optional array of custom options to be made available in the beforeValidate callback
-     * @return array Array of invalid fields
-     * @triggers Model.afterValidate $model
-     * @see ModelValidator::validates()
-     */
-    public function errors($options = array())
-    {
-        if (!$this->_triggerBeforeValidate($options)) {
-            return false;
-        }
-        $model = $this->getModel();
-
-        if (!$this->_parseRules()) {
-            return $model->validationErrors;
-        }
-
-        $fieldList = $model->whitelist;
-        if (empty($fieldList) && !empty($options['fieldList'])) {
-            if (!empty($options['fieldList'][$model->alias]) && is_array($options['fieldList'][$model->alias])) {
-                $fieldList = $options['fieldList'][$model->alias];
-            } else {
-                $fieldList = $options['fieldList'];
-            }
-        }
-
-        $exists = $model->exists();
-        $methods = $this->getMethods();
-        $fields = $this->_validationList($fieldList);
-
-        foreach ($fields as $field) {
-            $field->setMethods($methods);
-            $field->setValidationDomain($model->validationDomain);
-            $data = isset($model->data[$model->alias]) ? $model->data[$model->alias] : array();
-            $errors = $field->validate($data, $exists);
-            foreach ($errors as $error) {
-                $this->invalidate($field->field, $error);
-            }
-        }
-
-        $model->getEventManager()->dispatch(new CakeEvent('Model.afterValidate', $model));
-        return $model->validationErrors;
-    }
-
-    /**
-     * Marks a field as invalid, optionally setting a message explaining
-     * why the rule failed
-     *
-     * @param string $field The name of the field to invalidate
-     * @param string $message Validation message explaining why the rule failed, defaults to true.
-     * @return void
-     */
-    public function invalidate($field, $message = true)
-    {
-        $this->getModel()->validationErrors[$field][] = $message;
-    }
-
-    /**
-     * Gets all possible custom methods from the Model and attached Behaviors
-     * to be used as validators
-     *
-     * @return array List of callables to be used as validation methods
-     */
-    public function getMethods()
-    {
-        $behaviors = $this->_model->Behaviors->enabled();
-        if (!empty($this->_methods) && $behaviors === $this->_behaviors) {
-            return $this->_methods;
-        }
-        $this->_behaviors = $behaviors;
-
-        if (empty($this->_modelMethods)) {
-            foreach (get_class_methods($this->_model) as $method) {
-                $this->_modelMethods[strtolower($method)] = array($this->_model, $method);
-            }
-        }
-
-        $methods = $this->_modelMethods;
-        foreach (array_keys($this->_model->Behaviors->methods()) as $method) {
-            $methods += array(strtolower($method) => array($this->_model, $method));
-        }
-
-        return $this->_methods = $methods;
-    }
-
-    /**
      * Returns a CakeValidationSet object containing all validation rules for a field, if no
      * params are passed then it returns an array with all CakeValidationSet objects for each field
      *
@@ -342,34 +459,6 @@ class ModelValidator implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
-     * Sets the CakeValidationSet objects from the `Model::$validate` property
-     * If `Model::$validate` is not set or empty, this method returns false. True otherwise.
-     *
-     * @return bool true if `Model::$validate` was processed, false otherwise
-     */
-    protected function _parseRules()
-    {
-        if ($this->_validate === $this->_model->validate) {
-            return true;
-        }
-
-        if (empty($this->_model->validate)) {
-            $this->_validate = array();
-            $this->_fields = array();
-            return false;
-        }
-
-        $this->_validate = $this->_model->validate;
-        $this->_fields = array();
-        $methods = $this->getMethods();
-        foreach ($this->_validate as $fieldName => $ruleSet) {
-            $this->_fields[$fieldName] = new CakeValidationSet($fieldName, $ruleSet);
-            $this->_fields[$fieldName]->setMethods($methods);
-        }
-        return true;
-    }
-
-    /**
      * Sets the I18n domain for validation messages. This method is chainable.
      *
      * @param string $validationDomain [optional] The validation domain to be used.
@@ -382,95 +471,6 @@ class ModelValidator implements ArrayAccess, IteratorAggregate, Countable
         }
         $this->getModel()->validationDomain = $validationDomain;
         return $this;
-    }
-
-    /**
-     * Gets the model related to this validator
-     *
-     * @return Model
-     */
-    public function getModel()
-    {
-        return $this->_model;
-    }
-
-    /**
-     * Processes the passed fieldList and returns the list of fields to be validated
-     *
-     * @param array $fieldList list of fields to be used for validation
-     * @return array List of validation rules to be applied
-     */
-    protected function _validationList($fieldList = array())
-    {
-        if (empty($fieldList) || Hash::dimensions($fieldList) > 1) {
-            return $this->_fields;
-        }
-
-        $validateList = array();
-        $this->validationErrors = array();
-        foreach ((array)$fieldList as $f) {
-            if (!empty($this->_fields[$f])) {
-                $validateList[$f] = $this->_fields[$f];
-            }
-        }
-
-        return $validateList;
-    }
-
-    /**
-     * Runs validation for hasAndBelongsToMany associations that have 'with' keys
-     * set and data in the data set.
-     *
-     * @param array $options Array of options to use on Validation of with models
-     * @return bool Failure of validation on with models.
-     * @see Model::validates()
-     */
-    protected function _validateWithModels($options)
-    {
-        $valid = true;
-        $model = $this->getModel();
-
-        foreach ($model->hasAndBelongsToMany as $assoc => $association) {
-            if (empty($association['with']) || !isset($model->data[$assoc])) {
-                continue;
-            }
-            list($join) = $model->joinModel($model->hasAndBelongsToMany[$assoc]['with']);
-            $data = $model->data[$assoc];
-
-            $newData = array();
-            foreach ((array)$data as $row) {
-                if (isset($row[$model->hasAndBelongsToMany[$assoc]['associationForeignKey']])) {
-                    $newData[] = $row;
-                } elseif (isset($row[$join]) && isset($row[$join][$model->hasAndBelongsToMany[$assoc]['associationForeignKey']])) {
-                    $newData[] = $row[$join];
-                }
-            }
-            foreach ($newData as $data) {
-                $data[$model->hasAndBelongsToMany[$assoc]['foreignKey']] = $model->id;
-                $model->{$join}->create($data);
-                $valid = ($valid && $model->{$join}->validator()->validates($options));
-            }
-        }
-        return $valid;
-    }
-
-    /**
-     * Propagates beforeValidate event
-     *
-     * @param array $options Options to pass to callback.
-     * @return bool
-     * @triggers Model.beforeValidate $model, array($options)
-     */
-    protected function _triggerBeforeValidate($options = array())
-    {
-        $model = $this->getModel();
-        $event = new CakeEvent('Model.beforeValidate', $model, array($options));
-        list($event->break, $event->breakOn) = array(true, false);
-        $model->getEventManager()->dispatch($event);
-        if ($event->isStopped()) {
-            return false;
-        }
-        return true;
     }
 
     /**

@@ -34,19 +34,6 @@ class TestFireCake extends FireCake
     public $sentHeaders = array();
 
     /**
-     * Send header
-     *
-     * @param string $name Name of the header.
-     * @param string $value The value of the header.
-     * @return void
-     */
-    protected function _sendHeader($name, $value)
-    {
-        $_this = FireCake::getInstance();
-        $_this->sentHeaders[$name] = $value;
-    }
-
-    /**
      * Skip client detection as headers are not being sent.
      *
      * @return bool Always true
@@ -66,5 +53,18 @@ class TestFireCake extends FireCake
         $_this = FireCake::getInstance();
         $_this->sentHeaders = array();
         $_this->_messageIndex = 1;
+    }
+
+    /**
+     * Send header
+     *
+     * @param string $name Name of the header.
+     * @param string $value The value of the header.
+     * @return void
+     */
+    protected function _sendHeader($name, $value)
+    {
+        $_this = FireCake::getInstance();
+        $_this->sentHeaders[$name] = $value;
     }
 }

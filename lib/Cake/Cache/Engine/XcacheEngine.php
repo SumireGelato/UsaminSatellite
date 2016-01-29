@@ -149,39 +149,6 @@ class XcacheEngine extends CacheEngine
     }
 
     /**
-     * Returns the `group value` for each of the configured groups
-     * If the group initial value was not found, then it initializes
-     * the group accordingly.
-     *
-     * @return array
-     */
-    public function groups()
-    {
-        $result = array();
-        foreach ($this->settings['groups'] as $group) {
-            $value = xcache_get($this->settings['prefix'] . $group);
-            if (!$value) {
-                $value = 1;
-                xcache_set($this->settings['prefix'] . $group, $value, 0);
-            }
-            $result[] = $group . $value;
-        }
-        return $result;
-    }
-
-    /**
-     * Increments the group value to simulate deletion of all keys under a group
-     * old values will remain in storage until they expire.
-     *
-     * @param string $group The group to clear.
-     * @return bool success
-     */
-    public function clearGroup($group)
-    {
-        return (bool)xcache_inc($this->settings['prefix'] . $group, 1);
-    }
-
-    /**
      * Populates and reverses $_SERVER authentication values
      * Makes necessary changes (and reverting them back) in $_SERVER
      *
@@ -217,5 +184,38 @@ class XcacheEngine extends CacheEngine
                 }
             }
         }
+    }
+
+    /**
+     * Returns the `group value` for each of the configured groups
+     * If the group initial value was not found, then it initializes
+     * the group accordingly.
+     *
+     * @return array
+     */
+    public function groups()
+    {
+        $result = array();
+        foreach ($this->settings['groups'] as $group) {
+            $value = xcache_get($this->settings['prefix'] . $group);
+            if (!$value) {
+                $value = 1;
+                xcache_set($this->settings['prefix'] . $group, $value, 0);
+            }
+            $result[] = $group . $value;
+        }
+        return $result;
+    }
+
+    /**
+     * Increments the group value to simulate deletion of all keys under a group
+     * old values will remain in storage until they expire.
+     *
+     * @param string $group The group to clear.
+     * @return bool success
+     */
+    public function clearGroup($group)
+    {
+        return (bool)xcache_inc($this->settings['prefix'] . $group, 1);
     }
 }

@@ -162,6 +162,24 @@ class Permission extends AppModel
     }
 
     /**
+     * Get the crud type keys
+     *
+     * @param array $keys Permission schema
+     * @return array permission keys
+     */
+    public function getAcoKeys($keys)
+    {
+        $newKeys = array();
+        $keys = array_keys($keys);
+        foreach ($keys as $key) {
+            if (!in_array($key, array('id', 'aro_id', 'aco_id'))) {
+                $newKeys[] = $key;
+            }
+        }
+        return $newKeys;
+    }
+
+    /**
      * Allow $aro to have access to action $actions in $aco
      *
      * @param string $aro ARO The requesting object identifier.
@@ -241,23 +259,5 @@ class Permission extends AppModel
                 $this->alias . '.aco_id' => $aco
             )))
         );
-    }
-
-    /**
-     * Get the crud type keys
-     *
-     * @param array $keys Permission schema
-     * @return array permission keys
-     */
-    public function getAcoKeys($keys)
-    {
-        $newKeys = array();
-        $keys = array_keys($keys);
-        foreach ($keys as $key) {
-            if (!in_array($key, array('id', 'aro_id', 'aco_id'))) {
-                $newKeys[] = $key;
-            }
-        }
-        return $newKeys;
     }
 }

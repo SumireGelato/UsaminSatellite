@@ -97,6 +97,108 @@ class CakeRoute
     }
 
     /**
+     * Set state magic method to support var_export
+     *
+     * This method helps for applications that want to implement
+     * router caching.
+     *
+     * @param array $fields Key/Value of object attributes
+     * @return CakeRoute A new instance of the route
+     */
+    public static function __set_state($fields)
+    {
+        $class = function_exists('get_called_class') ? get_called_class() : __CLASS__;
+        $obj = new $class('');
+        foreach ($fields as $field => $value) {
+            $obj->$field = $value;
+        }
+        return $obj;
+    }
+
+    /**
+     * Checks to see if the given URL can be parsed by this route.
+     *
+     * If the route can be parsed an array of parameters will be returned; if not
+     * false will be returned. String URLs are parsed if they match a routes regular expression.
+     *
+     * @param string $url The URL to attempt to parse.
+     * @return mixed Boolean false on failure, otherwise an array or parameters
+     */
+    public function parse($url)
+    {
+        if (!$this->compiled()) {
+            $this->compile();
+        }
+        if (!preg_match($this->_compiledRoute, urldecode($url), $route)) {
+            return false;
+        }
+        foreach ($this->defaults as $key => $val) {
+            $key = (string)$key;
+            if ($key[0] === '[' && preg_match('/^\[(\w+)\]$/', $key, $header)) {
+                if (isset($this->_headerMap[$header[1]])) {
+                    $header = $this->_headerMap[$header[1]];
+                } else {
+                    $header = 'http_' . $header[1];
+                }
+                $header = strtoupper($header);
+
+                $val = (array)$val;
+                $h = false;
+
+                foreach ($val as $v) {
+                    if (env($header) === $v) {
+                        $h = true;
+                    }
+                }
+                if (!$h) {
+                    return false;
+                }
+            }
+        }
+        array_shift($route);
+        $count = count($this->keys);
+        for ($i = 0; $i <= $count; $i++) {
+            unset($route[$i]);
+        }
+        $route['pass'] = $route['named'] = array();
+
+        // Assign defaults, set passed args to pass
+        foreach ($this->defaults as $key => $value) {
+            if (isset($route[$key])) {
+                continue;
+            }
+            if (is_int($key)) {
+                $route['pass'][] = $value;
+                continue;
+            }
+            $route[$key] = $value;
+        }
+
+        if (isset($route['_args_'])) {
+            list($pass, $named) = $this->_parseArgs($route['_args_'], $route);
+            $route['pass'] = array_merge($route['pass'], $pass);
+            $route['named'] = $named;
+            unset($route['_args_']);
+        }
+
+        if (isset($route['_trailing_'])) {
+            $route['pass'][] = $route['_trailing_'];
+            unset($route['_trailing_']);
+        }
+
+        // restructure 'pass' key route params
+        if (isset($this->options['pass'])) {
+            $j = count($this->options['pass']);
+            while ($j--) {
+                if (isset($route[$this->options['pass'][$j]])) {
+                    array_unshift($route['pass'], $route[$this->options['pass'][$j]]);
+                }
+            }
+        }
+        return $route;
+    }
+
+    /**
      * Check if a Route has been compiled into a regular expression.
      *
      * @return bool
@@ -182,89 +284,6 @@ class CakeRoute
         $keys = $this->keys;
         sort($keys);
         $this->keys = array_reverse($keys);
-    }
-
-    /**
-     * Checks to see if the given URL can be parsed by this route.
-     *
-     * If the route can be parsed an array of parameters will be returned; if not
-     * false will be returned. String URLs are parsed if they match a routes regular expression.
-     *
-     * @param string $url The URL to attempt to parse.
-     * @return mixed Boolean false on failure, otherwise an array or parameters
-     */
-    public function parse($url)
-    {
-        if (!$this->compiled()) {
-            $this->compile();
-        }
-        if (!preg_match($this->_compiledRoute, urldecode($url), $route)) {
-            return false;
-        }
-        foreach ($this->defaults as $key => $val) {
-            $key = (string)$key;
-            if ($key[0] === '[' && preg_match('/^\[(\w+)\]$/', $key, $header)) {
-                if (isset($this->_headerMap[$header[1]])) {
-                    $header = $this->_headerMap[$header[1]];
-                } else {
-                    $header = 'http_' . $header[1];
-                }
-                $header = strtoupper($header);
-
-                $val = (array)$val;
-                $h = false;
-
-                foreach ($val as $v) {
-                    if (env($header) === $v) {
-                        $h = true;
-                    }
-                }
-                if (!$h) {
-                    return false;
-                }
-            }
-        }
-        array_shift($route);
-        $count = count($this->keys);
-        for ($i = 0; $i <= $count; $i++) {
-            unset($route[$i]);
-        }
-        $route['pass'] = $route['named'] = array();
-
-        // Assign defaults, set passed args to pass
-        foreach ($this->defaults as $key => $value) {
-            if (isset($route[$key])) {
-                continue;
-            }
-            if (is_int($key)) {
-                $route['pass'][] = $value;
-                continue;
-            }
-            $route[$key] = $value;
-        }
-
-        if (isset($route['_args_'])) {
-            list($pass, $named) = $this->_parseArgs($route['_args_'], $route);
-            $route['pass'] = array_merge($route['pass'], $pass);
-            $route['named'] = $named;
-            unset($route['_args_']);
-        }
-
-        if (isset($route['_trailing_'])) {
-            $route['pass'][] = $route['_trailing_'];
-            unset($route['_trailing_']);
-        }
-
-        // restructure 'pass' key route params
-        if (isset($this->options['pass'])) {
-            $j = count($this->options['pass']);
-            while ($j--) {
-                if (isset($route[$this->options['pass'][$j]])) {
-                    array_unshift($route['pass'], $route[$this->options['pass'][$j]]);
-                }
-            }
-        }
-        return $route;
     }
 
     /**
@@ -554,25 +573,6 @@ class CakeRoute
         }
         $out = str_replace('//', '/', $out);
         return $out;
-    }
-
-    /**
-     * Set state magic method to support var_export
-     *
-     * This method helps for applications that want to implement
-     * router caching.
-     *
-     * @param array $fields Key/Value of object attributes
-     * @return CakeRoute A new instance of the route
-     */
-    public static function __set_state($fields)
-    {
-        $class = function_exists('get_called_class') ? get_called_class() : __CLASS__;
-        $obj = new $class('');
-        foreach ($fields as $field => $value) {
-            $obj->$field = $value;
-        }
-        return $obj;
     }
 
 }

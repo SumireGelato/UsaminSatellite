@@ -25,20 +25,6 @@ abstract class BaseAuthorize
 {
 
     /**
-     * Controller for the request.
-     *
-     * @var Controller
-     */
-    protected $_Controller = null;
-
-    /**
-     * Component collection instance for getting more components.
-     *
-     * @var ComponentCollection
-     */
-    protected $_Collection;
-
-    /**
      * Settings for authorize objects.
      *
      * - `actionPath` - The path to ACO nodes that contains the nodes for controllers. Used as a prefix
@@ -60,6 +46,18 @@ abstract class BaseAuthorize
         ),
         'userModel' => 'User'
     );
+    /**
+     * Controller for the request.
+     *
+     * @var Controller
+     */
+    protected $_Controller = null;
+    /**
+     * Component collection instance for getting more components.
+     *
+     * @var ComponentCollection
+     */
+    protected $_Collection;
 
     /**
      * Constructor
@@ -74,15 +72,6 @@ abstract class BaseAuthorize
         $this->controller($controller);
         $this->settings = Hash::merge($this->settings, $settings);
     }
-
-    /**
-     * Checks user authorization.
-     *
-     * @param array $user Active user data
-     * @param CakeRequest $request Request instance.
-     * @return bool
-     */
-    abstract public function authorize($user, CakeRequest $request);
 
     /**
      * Accessor to the controller object.
@@ -102,6 +91,15 @@ abstract class BaseAuthorize
         }
         return $this->_Controller;
     }
+
+    /**
+     * Checks user authorization.
+     *
+     * @param array $user Active user data
+     * @param CakeRequest $request Request instance.
+     * @return bool
+     */
+    abstract public function authorize($user, CakeRequest $request);
 
     /**
      * Get the action path for a given request. Primarily used by authorize objects

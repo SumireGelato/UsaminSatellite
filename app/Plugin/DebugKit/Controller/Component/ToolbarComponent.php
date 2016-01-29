@@ -56,7 +56,44 @@ class ToolbarComponent extends Component implements CakeEventListener
      * @var array
      */
     public $components = array('RequestHandler', 'Session');
-
+    /**
+     * Loaded panel objects.
+     *
+     * @var array
+     */
+    public $panels = array();
+    /**
+     * javascript files component will be using
+     *
+     * @var array
+     */
+    public $javascript = array(
+        'libs' => 'DebugKit./js/js_debug_toolbar'
+    );
+    /**
+     * CSS files component will be using
+     *
+     * @var array
+     */
+    public $css = array('DebugKit./css/debug_toolbar.css');
+    /**
+     * CacheKey used for the cache file.
+     *
+     * @var string
+     */
+    public $cacheKey = 'toolbar_cache';
+    /**
+     * Duration of the debug kit history cache
+     *
+     * @var string
+     */
+    public $cacheDuration = '+4 hours';
+    /**
+     * Status whether component is enable or disable
+     *
+     * @var bool
+     */
+    public $enabled = true;
     /**
      * The default panels the toolbar uses.
      * which panels are used can be configured when attaching the component
@@ -74,50 +111,6 @@ class ToolbarComponent extends Component implements CakeEventListener
         'DebugKit.Environment',
         'DebugKit.Include'
     );
-
-    /**
-     * Loaded panel objects.
-     *
-     * @var array
-     */
-    public $panels = array();
-
-    /**
-     * javascript files component will be using
-     *
-     * @var array
-     */
-    public $javascript = array(
-        'libs' => 'DebugKit./js/js_debug_toolbar'
-    );
-
-    /**
-     * CSS files component will be using
-     *
-     * @var array
-     */
-    public $css = array('DebugKit./css/debug_toolbar.css');
-
-    /**
-     * CacheKey used for the cache file.
-     *
-     * @var string
-     */
-    public $cacheKey = 'toolbar_cache';
-
-    /**
-     * Duration of the debug kit history cache
-     *
-     * @var string
-     */
-    public $cacheDuration = '+4 hours';
-
-    /**
-     * Status whether component is enable or disable
-     *
-     * @var bool
-     */
-    public $enabled = true;
 
     /**
      * Constructor
@@ -170,6 +163,83 @@ class ToolbarComponent extends Component implements CakeEventListener
 
         $this->_loadPanels($panels, $settings);
         return false;
+    }
+
+    /**
+     * Go through user panels and remove default panels as indicated.
+     *
+     * @param array $userPanels The list of panels ther user has added removed.
+     * @return array Array of panels to use.
+     */
+    protected function _makePanelList($userPanels)
+    {
+        $panels = $this->_defaultPanels;
+        foreach ($userPanels as $key => $value) {
+            if (is_numeric($key)) {
+                $panels[] = $value;
+            }
+            if (is_string($key) && $value === false) {
+                $index = array_search($key, $panels);
+                if ($index !== false) {
+                    unset($panels[$index]);
+                }
+                // Compatibility for when panels were not
+                // required to have a plugin prefix.
+                $alternate = 'DebugKit.' . ucfirst($key);
+                $index = array_search($alternate, $panels);
+                if ($index !== false) {
+                    unset($panels[$index]);
+                }
+            }
+        }
+        return $panels;
+    }
+
+    /**
+     * Create the cache config for the history
+     *
+     * @return void
+     */
+    protected function _createCacheConfig()
+    {
+        if (Configure::read('Cache.disable') === true || Cache::config('debug_kit')) {
+            return;
+        }
+        $cache = array(
+            'duration' => $this->cacheDuration,
+            'engine' => 'File',
+            'path' => CACHE
+        );
+        if (isset($this->settings['cache'])) {
+            $cache = array_merge($cache, $this->settings['cache']);
+        }
+        Cache::config('debug_kit', $cache);
+    }
+
+    /**
+     * Load Panels used in the debug toolbar
+     *
+     * @param array $panels The panels.
+     * @param array $settings The settings.
+     * @return void
+     */
+    protected function _loadPanels($panels, $settings)
+    {
+        foreach ($panels as $panel) {
+            $className = ucfirst($panel) . 'Panel';
+            list($plugin, $className) = pluginSplit($className, true);
+
+            App::uses($className, $plugin . 'Panel');
+            if (!class_exists($className)) {
+                trigger_error(__d('debug_kit', 'Could not load DebugToolbar panel %s', $panel), E_USER_WARNING);
+                continue;
+            }
+            $panelObj = new $className($settings);
+            if ($panelObj instanceof DebugPanel) {
+                list(, $panel) = pluginSplit($panel);
+                $this->panels[Inflector::underscore($panel)] = $panelObj;
+            }
+        }
     }
 
     /**
@@ -241,36 +311,6 @@ class ToolbarComponent extends Component implements CakeEventListener
     }
 
     /**
-     * Go through user panels and remove default panels as indicated.
-     *
-     * @param array $userPanels The list of panels ther user has added removed.
-     * @return array Array of panels to use.
-     */
-    protected function _makePanelList($userPanels)
-    {
-        $panels = $this->_defaultPanels;
-        foreach ($userPanels as $key => $value) {
-            if (is_numeric($key)) {
-                $panels[] = $value;
-            }
-            if (is_string($key) && $value === false) {
-                $index = array_search($key, $panels);
-                if ($index !== false) {
-                    unset($panels[$index]);
-                }
-                // Compatibility for when panels were not
-                // required to have a plugin prefix.
-                $alternate = 'DebugKit.' . ucfirst($key);
-                $index = array_search($alternate, $panels);
-                if ($index !== false) {
-                    unset($panels[$index]);
-                }
-            }
-        }
-        return $panels;
-    }
-
-    /**
      * Component Startup
      *
      * @param Controller $controller The controller
@@ -313,6 +353,88 @@ class ToolbarComponent extends Component implements CakeEventListener
         $vars = $this->_gatherVars($controller);
         $this->_saveState($controller, $vars);
         DebugTimer::stop('processToolbar');
+    }
+
+    /**
+     * Collects the panel contents
+     *
+     * @param Controller $controller The controller.
+     * @return array Array of all panel beforeRender().
+     */
+    protected function _gatherVars(Controller $controller)
+    {
+        $vars = array('javascript' => array(), 'css' => array());
+        $panels = array_keys($this->panels);
+
+        foreach ($panels as $panelName) {
+            $panel = $this->panels[$panelName];
+            $panelName = Inflector::underscore($panelName);
+            $vars[$panelName]['content'] = $panel->beforeRender($controller);
+            $elementName = Inflector::underscore($panelName) . '_panel';
+            if (isset($panel->elementName)) {
+                $elementName = $panel->elementName;
+            }
+            $vars[$panelName]['elementName'] = $elementName;
+            $vars[$panelName]['plugin'] = $panel->plugin;
+            $vars[$panelName]['title'] = $panel->title;
+            $vars[$panelName]['disableTimer'] = true;
+
+            if (!empty($panel->javascript)) {
+                $vars['javascript'] = array_merge($vars['javascript'], (array)$panel->javascript);
+            }
+            if (!empty($panel->css)) {
+                $vars['css'] = array_merge($vars['css'], (array)$panel->css);
+            }
+        }
+        return $vars;
+    }
+
+    /**
+     * Save the current state of the toolbar varibles to the cache file.
+     *
+     * @param \Controller|object $controller Controller instance
+     * @param array $vars Vars to save.
+     * @return void
+     */
+    protected function _saveState(Controller $controller, $vars)
+    {
+        $config = Cache::config('debug_kit');
+        if (empty($config) || !isset($this->panels['history'])) {
+            return;
+        }
+        $history = Cache::read($this->cacheKey, 'debug_kit');
+        if (empty($history)) {
+            $history = array();
+        }
+        if (count($history) == $this->panels['history']->history) {
+            array_pop($history);
+        }
+
+        if (isset($vars['variables']['content'])) {
+            // Remove unserializable native objects.
+            array_walk_recursive($vars['variables']['content'], function (&$item) {
+                if (
+                    $item instanceof Closure ||
+                    $item instanceof PDO ||
+                    $item instanceof SimpleXmlElement
+                ) {
+                    $item = 'Unserializable object - ' . get_class($item);
+                } elseif ($item instanceof Exception) {
+                    $item = sprintf(
+                        'Unserializable object - %s. Error: %s in %s, line %s',
+                        get_class($item),
+                        $item,
+                        $item->getMessage(),
+                        $item->getFile(),
+                        $item->getLine()
+                    );
+                }
+                return $item;
+            });
+        }
+        unset($vars['history']);
+        array_unshift($history, $vars);
+        Cache::write($this->cacheKey, $history, 'debug_kit');
     }
 
     /**
@@ -383,135 +505,6 @@ class ToolbarComponent extends Component implements CakeEventListener
             return $history[$key];
         }
         return array();
-    }
-
-    /**
-     * Create the cache config for the history
-     *
-     * @return void
-     */
-    protected function _createCacheConfig()
-    {
-        if (Configure::read('Cache.disable') === true || Cache::config('debug_kit')) {
-            return;
-        }
-        $cache = array(
-            'duration' => $this->cacheDuration,
-            'engine' => 'File',
-            'path' => CACHE
-        );
-        if (isset($this->settings['cache'])) {
-            $cache = array_merge($cache, $this->settings['cache']);
-        }
-        Cache::config('debug_kit', $cache);
-    }
-
-    /**
-     * Collects the panel contents
-     *
-     * @param Controller $controller The controller.
-     * @return array Array of all panel beforeRender().
-     */
-    protected function _gatherVars(Controller $controller)
-    {
-        $vars = array('javascript' => array(), 'css' => array());
-        $panels = array_keys($this->panels);
-
-        foreach ($panels as $panelName) {
-            $panel = $this->panels[$panelName];
-            $panelName = Inflector::underscore($panelName);
-            $vars[$panelName]['content'] = $panel->beforeRender($controller);
-            $elementName = Inflector::underscore($panelName) . '_panel';
-            if (isset($panel->elementName)) {
-                $elementName = $panel->elementName;
-            }
-            $vars[$panelName]['elementName'] = $elementName;
-            $vars[$panelName]['plugin'] = $panel->plugin;
-            $vars[$panelName]['title'] = $panel->title;
-            $vars[$panelName]['disableTimer'] = true;
-
-            if (!empty($panel->javascript)) {
-                $vars['javascript'] = array_merge($vars['javascript'], (array)$panel->javascript);
-            }
-            if (!empty($panel->css)) {
-                $vars['css'] = array_merge($vars['css'], (array)$panel->css);
-            }
-        }
-        return $vars;
-    }
-
-    /**
-     * Load Panels used in the debug toolbar
-     *
-     * @param array $panels The panels.
-     * @param array $settings The settings.
-     * @return void
-     */
-    protected function _loadPanels($panels, $settings)
-    {
-        foreach ($panels as $panel) {
-            $className = ucfirst($panel) . 'Panel';
-            list($plugin, $className) = pluginSplit($className, true);
-
-            App::uses($className, $plugin . 'Panel');
-            if (!class_exists($className)) {
-                trigger_error(__d('debug_kit', 'Could not load DebugToolbar panel %s', $panel), E_USER_WARNING);
-                continue;
-            }
-            $panelObj = new $className($settings);
-            if ($panelObj instanceof DebugPanel) {
-                list(, $panel) = pluginSplit($panel);
-                $this->panels[Inflector::underscore($panel)] = $panelObj;
-            }
-        }
-    }
-
-    /**
-     * Save the current state of the toolbar varibles to the cache file.
-     *
-     * @param \Controller|object $controller Controller instance
-     * @param array $vars Vars to save.
-     * @return void
-     */
-    protected function _saveState(Controller $controller, $vars)
-    {
-        $config = Cache::config('debug_kit');
-        if (empty($config) || !isset($this->panels['history'])) {
-            return;
-        }
-        $history = Cache::read($this->cacheKey, 'debug_kit');
-        if (empty($history)) {
-            $history = array();
-        }
-        if (count($history) == $this->panels['history']->history) {
-            array_pop($history);
-        }
-
-        if (isset($vars['variables']['content'])) {
-            // Remove unserializable native objects.
-            array_walk_recursive($vars['variables']['content'], function (&$item) {
-                if (
-                    $item instanceof Closure ||
-                    $item instanceof PDO ||
-                    $item instanceof SimpleXmlElement
-                ) {
-                    $item = 'Unserializable object - ' . get_class($item);
-                } elseif ($item instanceof Exception) {
-                    $item = sprintf(
-                        'Unserializable object - %s. Error: %s in %s, line %s',
-                        get_class($item),
-                        $item,
-                        $item->getMessage(),
-                        $item->getFile(),
-                        $item->getLine()
-                    );
-                }
-                return $item;
-            });
-        }
-        unset($vars['history']);
-        array_unshift($history, $vars);
-        Cache::write($this->cacheKey, $history, 'debug_kit');
     }
 
 }

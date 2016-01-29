@@ -36,8 +36,7 @@ class CardsController extends AppController
         $numItems = 0;
         if (!$this->request->is('ajax')) {
             $totalItems = 1;
-        }
-        else{
+        } else {
             $totalItems = $this->passedArgs['pass'];
         }
         $this->set(compact('numItems'));

@@ -28,21 +28,6 @@ class MemcacheEngine extends CacheEngine
 {
 
     /**
-     * Contains the compiled group names
-     * (prefixed with the global configuration prefix)
-     *
-     * @var array
-     */
-    protected $_compiledGroupNames = array();
-
-    /**
-     * Memcache wrapper.
-     *
-     * @var Memcache
-     */
-    protected $_Memcache = null;
-
-    /**
      * Settings
      *
      *  - servers = string or array of memcache servers, default => 127.0.0.1. If an
@@ -52,6 +37,19 @@ class MemcacheEngine extends CacheEngine
      * @var array
      */
     public $settings = array();
+    /**
+     * Contains the compiled group names
+     * (prefixed with the global configuration prefix)
+     *
+     * @var array
+     */
+    protected $_compiledGroupNames = array();
+    /**
+     * Memcache wrapper.
+     *
+     * @var Memcache
+     */
+    protected $_Memcache = null;
 
     /**
      * Initialize the Cache Engine

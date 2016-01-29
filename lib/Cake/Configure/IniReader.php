@@ -127,6 +127,36 @@ class IniReader implements ConfigReaderInterface
     }
 
     /**
+     * Get file path
+     *
+     * @param string $key The identifier to write to. If the key has a . it will be treated
+     *  as a plugin prefix.
+     * @return string Full file path
+     */
+    protected function _getFilePath($key)
+    {
+        if (substr($key, -8) === '.ini.php') {
+            $key = substr($key, 0, -8);
+            list($plugin, $key) = pluginSplit($key);
+            $key .= '.ini.php';
+        } else {
+            if (substr($key, -4) === '.ini') {
+                $key = substr($key, 0, -4);
+            }
+            list($plugin, $key) = pluginSplit($key);
+            $key .= '.ini';
+        }
+
+        if ($plugin) {
+            $file = CakePlugin::path($plugin) . 'Config' . DS . $key;
+        } else {
+            $file = $this->_path . $key;
+        }
+
+        return $file;
+    }
+
+    /**
      * parses nested values out of keys.
      *
      * @param array $values Values to be exploded.
@@ -202,36 +232,6 @@ class IniReader implements ConfigReaderInterface
             return 'false';
         }
         return (string)$val;
-    }
-
-    /**
-     * Get file path
-     *
-     * @param string $key The identifier to write to. If the key has a . it will be treated
-     *  as a plugin prefix.
-     * @return string Full file path
-     */
-    protected function _getFilePath($key)
-    {
-        if (substr($key, -8) === '.ini.php') {
-            $key = substr($key, 0, -8);
-            list($plugin, $key) = pluginSplit($key);
-            $key .= '.ini.php';
-        } else {
-            if (substr($key, -4) === '.ini') {
-                $key = substr($key, 0, -4);
-            }
-            list($plugin, $key) = pluginSplit($key);
-            $key .= '.ini';
-        }
-
-        if ($plugin) {
-            $file = CakePlugin::path($plugin) . 'Config' . DS . $key;
-        } else {
-            $file = $this->_path . $key;
-        }
-
-        return $file;
     }
 
 }

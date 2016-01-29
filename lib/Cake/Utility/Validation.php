@@ -33,6 +33,13 @@ class Validation
 {
 
     /**
+     * Holds an array of errors messages set in this class.
+     * These are used for debugging purposes
+     *
+     * @var array
+     */
+    public static $errors = array();
+    /**
      * Some complex patterns needed in multiple places
      *
      * @var array
@@ -40,14 +47,6 @@ class Validation
     protected static $_pattern = array(
         'hostname' => '(?:[_\p{L}0-9][-_\p{L}0-9]*\.)*(?:[\p{L}0-9][-\p{L}0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})'
     );
-
-    /**
-     * Holds an array of errors messages set in this class.
-     * These are used for debugging purposes
-     *
-     * @var array
-     */
-    public static $errors = array();
 
     /**
      * Backwards compatibility wrapper for Validation::notBlank().
@@ -86,6 +85,21 @@ class Validation
     }
 
     /**
+     * Runs a regular expression match.
+     *
+     * @param string $check Value to check against the $regex expression
+     * @param string $regex Regular expression
+     * @return bool Success of match
+     */
+    protected static function _check($check, $regex)
+    {
+        if (is_string($regex) && is_scalar($check) && preg_match($regex, $check)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Checks that a string contains only integer or letters
      *
      * Returns true if string contains only integer or letters
@@ -105,6 +119,21 @@ class Validation
     }
 
     /**
+     * Alias of Validator::lengthBetween() for backwards compatibility.
+     *
+     * @param string $check Value to check for length
+     * @param int $min Minimum value in range (inclusive)
+     * @param int $max Maximum value in range (inclusive)
+     * @return bool Success
+     * @see Validator::lengthBetween()
+     * @deprecated Deprecated 2.6. Use Validator::lengthBetween() instead.
+     */
+    public static function between($check, $min, $max)
+    {
+        return static::lengthBetween($check, $min, $max);
+    }
+
+    /**
      * Checks that a string length is within s specified range.
      * Spaces are included in the character count.
      * Returns true is string matches value min, max, or between min and max,
@@ -118,21 +147,6 @@ class Validation
     {
         $length = mb_strlen($check);
         return ($length >= $min && $length <= $max);
-    }
-
-    /**
-     * Alias of Validator::lengthBetween() for backwards compatibility.
-     *
-     * @param string $check Value to check for length
-     * @param int $min Minimum value in range (inclusive)
-     * @param int $max Maximum value in range (inclusive)
-     * @return bool Success
-     * @see Validator::lengthBetween()
-     * @deprecated Deprecated 2.6. Use Validator::lengthBetween() instead.
-     */
-    public static function between($check, $min, $max)
-    {
-        return static::lengthBetween($check, $min, $max);
     }
 
     /**
@@ -228,64 +242,37 @@ class Validation
     }
 
     /**
-     * Used to compare 2 numeric values.
+     * Luhn algorithm
      *
-     * @param string|array $check1 if string is passed for a string must also be passed for $check2
-     *    used as an array it must be passed as array('check1' => value, 'operator' => 'value', 'check2' -> value)
-     * @param string $operator Can be either a word or operand
-     *    is greater >, is less <, greater or equal >=
-     *    less or equal <=, is less <, equal to ==, not equal !=
-     * @param int $check2 only needed if $check1 is a string
+     * @param string|array $check Value to check.
+     * @param bool $deep If true performs deep check.
      * @return bool Success
+     * @see http://en.wikipedia.org/wiki/Luhn_algorithm
      */
-    public static function comparison($check1, $operator = null, $check2 = null)
+    public static function luhn($check, $deep = false)
     {
-        if ((float)$check1 != $check1) {
+        if (!is_scalar($check)) {
             return false;
         }
-        $operator = str_replace(array(' ', "\t", "\n", "\r", "\0", "\x0B"), '', strtolower($operator));
-
-        switch ($operator) {
-            case 'isgreater':
-            case '>':
-                if ($check1 > $check2) {
-                    return true;
-                }
-                break;
-            case 'isless':
-            case '<':
-                if ($check1 < $check2) {
-                    return true;
-                }
-                break;
-            case 'greaterorequal':
-            case '>=':
-                if ($check1 >= $check2) {
-                    return true;
-                }
-                break;
-            case 'lessorequal':
-            case '<=':
-                if ($check1 <= $check2) {
-                    return true;
-                }
-                break;
-            case 'equalto':
-            case '==':
-                if ($check1 == $check2) {
-                    return true;
-                }
-                break;
-            case 'notequal':
-            case '!=':
-                if ($check1 != $check2) {
-                    return true;
-                }
-                break;
-            default:
-                static::$errors[] = __d('cake_dev', 'You must define the $operator parameter for %s', 'Validation::comparison()');
+        if ($deep !== true) {
+            return true;
         }
-        return false;
+        if ((int)$check === 0) {
+            return false;
+        }
+        $sum = 0;
+        $length = strlen($check);
+
+        for ($position = 1 - ($length % 2); $position < $length; $position += 2) {
+            $sum += $check[$position];
+        }
+
+        for ($position = ($length % 2); $position < $length; $position += 2) {
+            $number = $check[$position] * 2;
+            $sum += ($number < 10) ? $number : $number - 9;
+        }
+
+        return ($sum % 10 === 0);
     }
 
     /**
@@ -306,6 +293,30 @@ class Validation
             return false;
         }
         return static::_check($check, $regex);
+    }
+
+    /**
+     * Validates a datetime value
+     *
+     * All values matching the "date" core validation rule, and the "time" one will be valid
+     *
+     * @param string $check Value to check
+     * @param string|array $dateFormat Format of the date part. See Validation::date for more information.
+     * @param string $regex Regex for the date part. If a custom regular expression is used this is the only validation that will occur.
+     * @return bool True if the value is valid, false otherwise
+     * @see Validation::date
+     * @see Validation::time
+     */
+    public static function datetime($check, $dateFormat = 'ymd', $regex = null)
+    {
+        $valid = false;
+        $parts = explode(' ', $check);
+        if (!empty($parts) && count($parts) > 1) {
+            $time = array_pop($parts);
+            $date = implode(' ', $parts);
+            $valid = static::date($date, $dateFormat, $regex) && static::time($time);
+        }
+        return $valid;
     }
 
     /**
@@ -374,30 +385,6 @@ class Validation
             }
         }
         return false;
-    }
-
-    /**
-     * Validates a datetime value
-     *
-     * All values matching the "date" core validation rule, and the "time" one will be valid
-     *
-     * @param string $check Value to check
-     * @param string|array $dateFormat Format of the date part. See Validation::date for more information.
-     * @param string $regex Regex for the date part. If a custom regular expression is used this is the only validation that will occur.
-     * @return bool True if the value is valid, false otherwise
-     * @see Validation::date
-     * @see Validation::time
-     */
-    public static function datetime($check, $dateFormat = 'ymd', $regex = null)
-    {
-        $valid = false;
-        $parts = explode(' ', $check);
-        if (!empty($parts) && count($parts) > 1) {
-            $time = array_pop($parts);
-            $date = implode(' ', $parts);
-            $valid = static::date($date, $dateFormat, $regex) && static::time($time);
-        }
-        return $valid;
     }
 
     /**
@@ -713,6 +700,31 @@ class Validation
     }
 
     /**
+     * Attempts to pass unhandled Validation locales to a class starting with $classPrefix
+     * and ending with Validation. For example $classPrefix = 'nl', the class would be
+     * `NlValidation`.
+     *
+     * @param string $method The method to call on the other class.
+     * @param mixed $check The value to check or an array of parameters for the method to be called.
+     * @param string $classPrefix The prefix for the class to do the validation.
+     * @return mixed Return of Passed method, false on failure
+     */
+    protected static function _pass($method, $check, $classPrefix)
+    {
+        $className = ucwords($classPrefix) . 'Validation';
+        if (!class_exists($className)) {
+            trigger_error(__d('cake_dev', 'Could not find %s class, unable to complete validation.', $className), E_USER_WARNING);
+            return false;
+        }
+        if (!method_exists($className, $method)) {
+            trigger_error(__d('cake_dev', 'Method %s does not exist on %s unable to complete validation.', $method, $className), E_USER_WARNING);
+            return false;
+        }
+        $check = (array)$check;
+        return call_user_func_array(array($className, $method), $check);
+    }
+
+    /**
      * Checks that a given value is a valid postal code.
      *
      * @param string|array $check Value to check
@@ -834,6 +846,37 @@ class Validation
     }
 
     /**
+     * Lazily populate the IP address patterns used for validations
+     *
+     * @return void
+     */
+    protected static function _populateIp()
+    {
+        if (!isset(static::$_pattern['IPv6'])) {
+            $pattern = '((([0-9A-Fa-f]{1,4}:){7}(([0-9A-Fa-f]{1,4})|:))|(([0-9A-Fa-f]{1,4}:){6}';
+            $pattern .= '(:|((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})';
+            $pattern .= '|(:[0-9A-Fa-f]{1,4})))|(([0-9A-Fa-f]{1,4}:){5}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})';
+            $pattern .= '(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:)';
+            $pattern .= '{4}(:[0-9A-Fa-f]{1,4}){0,1}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2}))';
+            $pattern .= '{3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4}){0,2}';
+            $pattern .= '((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|';
+            $pattern .= '((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}){0,3}';
+            $pattern .= '((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2}))';
+            $pattern .= '{3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:)(:[0-9A-Fa-f]{1,4})';
+            $pattern .= '{0,4}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)';
+            $pattern .= '|((:[0-9A-Fa-f]{1,4}){1,2})))|(:(:[0-9A-Fa-f]{1,4}){0,5}((:((25[0-5]|2[0-4]';
+            $pattern .= '\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|((:[0-9A-Fa-f]{1,4})';
+            $pattern .= '{1,2})))|(((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})))(%.+)?';
+
+            static::$_pattern['IPv6'] = $pattern;
+        }
+        if (!isset(static::$_pattern['IPv4'])) {
+            $pattern = '(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])';
+            static::$_pattern['IPv4'] = $pattern;
+        }
+    }
+
+    /**
      * Checks if a value is in a given list. Comparison is case sensitive by default.
      *
      * @param string $check Value to check.
@@ -876,80 +919,6 @@ class Validation
     {
         $regex = '/^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[0-5][a-fA-F0-9]{3}-[089aAbB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$/';
         return static::_check($check, $regex);
-    }
-
-    /**
-     * Attempts to pass unhandled Validation locales to a class starting with $classPrefix
-     * and ending with Validation. For example $classPrefix = 'nl', the class would be
-     * `NlValidation`.
-     *
-     * @param string $method The method to call on the other class.
-     * @param mixed $check The value to check or an array of parameters for the method to be called.
-     * @param string $classPrefix The prefix for the class to do the validation.
-     * @return mixed Return of Passed method, false on failure
-     */
-    protected static function _pass($method, $check, $classPrefix)
-    {
-        $className = ucwords($classPrefix) . 'Validation';
-        if (!class_exists($className)) {
-            trigger_error(__d('cake_dev', 'Could not find %s class, unable to complete validation.', $className), E_USER_WARNING);
-            return false;
-        }
-        if (!method_exists($className, $method)) {
-            trigger_error(__d('cake_dev', 'Method %s does not exist on %s unable to complete validation.', $method, $className), E_USER_WARNING);
-            return false;
-        }
-        $check = (array)$check;
-        return call_user_func_array(array($className, $method), $check);
-    }
-
-    /**
-     * Runs a regular expression match.
-     *
-     * @param string $check Value to check against the $regex expression
-     * @param string $regex Regular expression
-     * @return bool Success of match
-     */
-    protected static function _check($check, $regex)
-    {
-        if (is_string($regex) && is_scalar($check) && preg_match($regex, $check)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Luhn algorithm
-     *
-     * @param string|array $check Value to check.
-     * @param bool $deep If true performs deep check.
-     * @return bool Success
-     * @see http://en.wikipedia.org/wiki/Luhn_algorithm
-     */
-    public static function luhn($check, $deep = false)
-    {
-        if (!is_scalar($check)) {
-            return false;
-        }
-        if ($deep !== true) {
-            return true;
-        }
-        if ((int)$check === 0) {
-            return false;
-        }
-        $sum = 0;
-        $length = strlen($check);
-
-        for ($position = 1 - ($length % 2); $position < $length; $position += 2) {
-            $sum += $check[$position];
-        }
-
-        for ($position = ($length % 2); $position < $length; $position += 2) {
-            $number = $check[$position] * 2;
-            $sum += ($number < 10) ? $number : $number - 9;
-        }
-
-        return ($sum % 10 === 0);
     }
 
     /**
@@ -1006,6 +975,67 @@ class Validation
     }
 
     /**
+     * Used to compare 2 numeric values.
+     *
+     * @param string|array $check1 if string is passed for a string must also be passed for $check2
+     *    used as an array it must be passed as array('check1' => value, 'operator' => 'value', 'check2' -> value)
+     * @param string $operator Can be either a word or operand
+     *    is greater >, is less <, greater or equal >=
+     *    less or equal <=, is less <, equal to ==, not equal !=
+     * @param int $check2 only needed if $check1 is a string
+     * @return bool Success
+     */
+    public static function comparison($check1, $operator = null, $check2 = null)
+    {
+        if ((float)$check1 != $check1) {
+            return false;
+        }
+        $operator = str_replace(array(' ', "\t", "\n", "\r", "\0", "\x0B"), '', strtolower($operator));
+
+        switch ($operator) {
+            case 'isgreater':
+            case '>':
+                if ($check1 > $check2) {
+                    return true;
+                }
+                break;
+            case 'isless':
+            case '<':
+                if ($check1 < $check2) {
+                    return true;
+                }
+                break;
+            case 'greaterorequal':
+            case '>=':
+                if ($check1 >= $check2) {
+                    return true;
+                }
+                break;
+            case 'lessorequal':
+            case '<=':
+                if ($check1 <= $check2) {
+                    return true;
+                }
+                break;
+            case 'equalto':
+            case '==':
+                if ($check1 == $check2) {
+                    return true;
+                }
+                break;
+            case 'notequal':
+            case '!=':
+                if ($check1 != $check2) {
+                    return true;
+                }
+                break;
+            default:
+                static::$errors[] = __d('cake_dev', 'You must define the $operator parameter for %s', 'Validation::comparison()');
+        }
+        return false;
+    }
+
+    /**
      * Checking for upload errors
      *
      * @param string|array $check Value to check.
@@ -1019,37 +1049,6 @@ class Validation
         }
 
         return (int)$check === UPLOAD_ERR_OK;
-    }
-
-    /**
-     * Lazily populate the IP address patterns used for validations
-     *
-     * @return void
-     */
-    protected static function _populateIp()
-    {
-        if (!isset(static::$_pattern['IPv6'])) {
-            $pattern = '((([0-9A-Fa-f]{1,4}:){7}(([0-9A-Fa-f]{1,4})|:))|(([0-9A-Fa-f]{1,4}:){6}';
-            $pattern .= '(:|((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})';
-            $pattern .= '|(:[0-9A-Fa-f]{1,4})))|(([0-9A-Fa-f]{1,4}:){5}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})';
-            $pattern .= '(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:)';
-            $pattern .= '{4}(:[0-9A-Fa-f]{1,4}){0,1}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2}))';
-            $pattern .= '{3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4}){0,2}';
-            $pattern .= '((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|';
-            $pattern .= '((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}){0,3}';
-            $pattern .= '((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2}))';
-            $pattern .= '{3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:)(:[0-9A-Fa-f]{1,4})';
-            $pattern .= '{0,4}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)';
-            $pattern .= '|((:[0-9A-Fa-f]{1,4}){1,2})))|(:(:[0-9A-Fa-f]{1,4}){0,5}((:((25[0-5]|2[0-4]';
-            $pattern .= '\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|((:[0-9A-Fa-f]{1,4})';
-            $pattern .= '{1,2})))|(((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})))(%.+)?';
-
-            static::$_pattern['IPv6'] = $pattern;
-        }
-        if (!isset(static::$_pattern['IPv4'])) {
-            $pattern = '(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])';
-            static::$_pattern['IPv4'] = $pattern;
-        }
     }
 
     /**

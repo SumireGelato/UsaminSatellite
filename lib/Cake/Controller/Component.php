@@ -41,26 +41,23 @@ class Component extends Object
 {
 
     /**
-     * Component collection class used to lazy load components.
-     *
-     * @var ComponentCollection
-     */
-    protected $_Collection;
-
-    /**
      * Settings for this Component
      *
      * @var array
      */
     public $settings = array();
-
     /**
      * Other Components this component uses.
      *
      * @var array
      */
     public $components = array();
-
+    /**
+     * Component collection class used to lazy load components.
+     *
+     * @var ComponentCollection
+     */
+    protected $_Collection;
     /**
      * A component lookup table used to lazy load component objects.
      *

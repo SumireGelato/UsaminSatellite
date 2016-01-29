@@ -117,6 +117,23 @@ class ToolbarComponentTestCase extends CakeTestCase
     }
 
     /**
+     * test Loading of panel classes
+     *
+     * @return void
+     */
+    public function testLoadPanels()
+    {
+        $this->_loadController();
+
+        $this->Controller->Toolbar->loadPanels(array('session', 'request'));
+        $this->assertInstanceOf('SessionPanel', $this->Controller->Toolbar->panels['session']);
+        $this->assertInstanceOf('RequestPanel', $this->Controller->Toolbar->panels['request']);
+
+        $this->Controller->Toolbar->loadPanels(array('history'), array('history' => 10));
+        $this->assertEquals($this->Controller->Toolbar->panels['history']->history, 10);
+    }
+
+    /**
      * loading test controller
      *
      * @param array $settings The settings.
@@ -132,23 +149,6 @@ class ToolbarComponentTestCase extends CakeTestCase
         $this->Controller->constructClasses();
         $this->Controller->Components->trigger('initialize', array($this->Controller));
         return $this->Controller;
-    }
-
-    /**
-     * test Loading of panel classes
-     *
-     * @return void
-     */
-    public function testLoadPanels()
-    {
-        $this->_loadController();
-
-        $this->Controller->Toolbar->loadPanels(array('session', 'request'));
-        $this->assertInstanceOf('SessionPanel', $this->Controller->Toolbar->panels['session']);
-        $this->assertInstanceOf('RequestPanel', $this->Controller->Toolbar->panels['request']);
-
-        $this->Controller->Toolbar->loadPanels(array('history'), array('history' => 10));
-        $this->assertEquals($this->Controller->Toolbar->panels['history']->history, 10);
     }
 
     /**

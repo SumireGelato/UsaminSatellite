@@ -224,45 +224,6 @@ class ContainableBehavior extends ModelBehavior
     }
 
     /**
-     * Unbinds all relations from a model except the specified ones. Calling this function without
-     * parameters unbinds all related models.
-     *
-     * @param Model $Model Model on which binding restriction is being applied
-     * @return void
-     * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/containable.html#using-containable
-     */
-    public function contain(Model $Model)
-    {
-        $args = func_get_args();
-        $contain = call_user_func_array('am', array_slice($args, 1));
-        $this->runtime[$Model->alias]['contain'] = $contain;
-    }
-
-    /**
-     * Permanently restore the original binding settings of given model, useful
-     * for restoring the bindings after using 'reset' => false as part of the
-     * contain call.
-     *
-     * @param Model $Model Model on which to reset bindings
-     * @return void
-     */
-    public function resetBindings(Model $Model)
-    {
-        if (!empty($Model->__backOriginalAssociation)) {
-            $Model->__backAssociation = $Model->__backOriginalAssociation;
-            unset($Model->__backOriginalAssociation);
-        }
-        $Model->resetAssociations();
-        if (!empty($Model->__backInnerAssociation)) {
-            $assocs = $Model->__backInnerAssociation;
-            $Model->__backInnerAssociation = array();
-            foreach ($assocs as $currentModel) {
-                $this->resetBindings($Model->$currentModel);
-            }
-        }
-    }
-
-    /**
      * Process containments for model.
      *
      * @param Model $Model Model on which binding restriction is being applied
@@ -367,6 +328,28 @@ class ContainableBehavior extends ModelBehavior
     }
 
     /**
+     * Build the map of containments
+     *
+     * @param array $containments Containments
+     * @return array Built containments
+     */
+    public function containmentsMap($containments)
+    {
+        $map = array();
+        foreach ($containments['models'] as $name => $model) {
+            $instance = $model['instance'];
+            foreach ($this->types as $type) {
+                foreach ($instance->{$type} as $assoc => $options) {
+                    if (isset($model['keep'][$assoc])) {
+                        $map[$name][$type] = isset($map[$name][$type]) ? array_merge($map[$name][$type], (array)$assoc) : (array)$assoc;
+                    }
+                }
+            }
+        }
+        return $map;
+    }
+
+    /**
      * Calculate needed fields to fetch the required bindings for the given model.
      *
      * @param Model $Model Model
@@ -415,25 +398,42 @@ class ContainableBehavior extends ModelBehavior
     }
 
     /**
-     * Build the map of containments
+     * Unbinds all relations from a model except the specified ones. Calling this function without
+     * parameters unbinds all related models.
      *
-     * @param array $containments Containments
-     * @return array Built containments
+     * @param Model $Model Model on which binding restriction is being applied
+     * @return void
+     * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/containable.html#using-containable
      */
-    public function containmentsMap($containments)
+    public function contain(Model $Model)
     {
-        $map = array();
-        foreach ($containments['models'] as $name => $model) {
-            $instance = $model['instance'];
-            foreach ($this->types as $type) {
-                foreach ($instance->{$type} as $assoc => $options) {
-                    if (isset($model['keep'][$assoc])) {
-                        $map[$name][$type] = isset($map[$name][$type]) ? array_merge($map[$name][$type], (array)$assoc) : (array)$assoc;
-                    }
-                }
+        $args = func_get_args();
+        $contain = call_user_func_array('am', array_slice($args, 1));
+        $this->runtime[$Model->alias]['contain'] = $contain;
+    }
+
+    /**
+     * Permanently restore the original binding settings of given model, useful
+     * for restoring the bindings after using 'reset' => false as part of the
+     * contain call.
+     *
+     * @param Model $Model Model on which to reset bindings
+     * @return void
+     */
+    public function resetBindings(Model $Model)
+    {
+        if (!empty($Model->__backOriginalAssociation)) {
+            $Model->__backAssociation = $Model->__backOriginalAssociation;
+            unset($Model->__backOriginalAssociation);
+        }
+        $Model->resetAssociations();
+        if (!empty($Model->__backInnerAssociation)) {
+            $assocs = $Model->__backInnerAssociation;
+            $Model->__backInnerAssociation = array();
+            foreach ($assocs as $currentModel) {
+                $this->resetBindings($Model->$currentModel);
             }
         }
-        return $map;
     }
 
 }

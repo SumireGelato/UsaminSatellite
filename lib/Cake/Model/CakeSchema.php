@@ -184,6 +184,83 @@ class CakeSchema extends Object
     }
 
     /**
+     * Attempts to require the schema file specified.
+     *
+     * @param string $path Filesystem path to the file.
+     * @param string $file Filesystem basename of the file.
+     * @return bool True when a file was successfully included, false on failure.
+     */
+    protected function _requireFile($path, $file)
+    {
+        if (file_exists($path . DS . $file) && is_file($path . DS . $file)) {
+            require_once $path . DS . $file;
+            return true;
+        } elseif (file_exists($path . DS . 'schema.php') && is_file($path . DS . 'schema.php')) {
+            require_once $path . DS . 'schema.php';
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Writes schema file from object or options.
+     *
+     * @param array|object $object Schema object or options array.
+     * @param array $options Schema object properties to override object.
+     * @return mixed False or string written to file.
+     */
+    public function write($object, $options = array())
+    {
+        if (is_object($object)) {
+            $object = get_object_vars($object);
+            $this->build($object);
+        }
+
+        if (is_array($object)) {
+            $options = $object;
+            unset($object);
+        }
+
+        extract(array_merge(
+            get_object_vars($this), $options
+        ));
+
+        $out = "class {$name}Schema extends CakeSchema {\n\n";
+
+        if ($path !== $this->path) {
+            $out .= "\tpublic \$path = '{$path}';\n\n";
+        }
+
+        if ($file !== $this->file) {
+            $out .= "\tpublic \$file = '{$file}';\n\n";
+        }
+
+        if ($connection !== 'default') {
+            $out .= "\tpublic \$connection = '{$connection}';\n\n";
+        }
+
+        $out .= "\tpublic function before(\$event = array()) {\n\t\treturn true;\n\t}\n\n\tpublic function after(\$event = array()) {\n\t}\n\n";
+
+        if (empty($tables)) {
+            $this->read();
+        }
+
+        foreach ($tables as $table => $fields) {
+            if (!is_numeric($table) && $table !== 'missing') {
+                $out .= $this->generateTable($table, $fields);
+            }
+        }
+        $out .= "}\n";
+
+        $file = new File($path . DS . $file, true);
+        $content = "<?php \n{$out}";
+        if ($file->write($content)) {
+            return $content;
+        }
+        return false;
+    }
+
+    /**
      * Reads database and creates schema tables.
      *
      * Options
@@ -347,61 +424,60 @@ class CakeSchema extends Object
     }
 
     /**
-     * Writes schema file from object or options.
+     * Trim the table prefix from the full table name, and return the prefix-less
+     * table.
      *
-     * @param array|object $object Schema object or options array.
-     * @param array $options Schema object properties to override object.
-     * @return mixed False or string written to file.
+     * @param string $prefix Table prefix.
+     * @param string $table Full table name.
+     * @return string Prefix-less table name.
      */
-    public function write($object, $options = array())
+    protected function _noPrefixTable($prefix, $table)
     {
-        if (is_object($object)) {
-            $object = get_object_vars($object);
-            $this->build($object);
-        }
+        return preg_replace('/^' . preg_quote($prefix) . '/', '', $table);
+    }
 
-        if (is_array($object)) {
-            $options = $object;
-            unset($object);
-        }
+    /**
+     * Formats Schema columns from Model Object.
+     *
+     * @param array &$Obj model object.
+     * @return array Formatted columns.
+     */
+    protected function _columns(&$Obj)
+    {
+        $db = $Obj->getDataSource();
+        $fields = $Obj->schema(true);
 
-        extract(array_merge(
-            get_object_vars($this), $options
-        ));
-
-        $out = "class {$name}Schema extends CakeSchema {\n\n";
-
-        if ($path !== $this->path) {
-            $out .= "\tpublic \$path = '{$path}';\n\n";
-        }
-
-        if ($file !== $this->file) {
-            $out .= "\tpublic \$file = '{$file}';\n\n";
-        }
-
-        if ($connection !== 'default') {
-            $out .= "\tpublic \$connection = '{$connection}';\n\n";
-        }
-
-        $out .= "\tpublic function before(\$event = array()) {\n\t\treturn true;\n\t}\n\n\tpublic function after(\$event = array()) {\n\t}\n\n";
-
-        if (empty($tables)) {
-            $this->read();
-        }
-
-        foreach ($tables as $table => $fields) {
-            if (!is_numeric($table) && $table !== 'missing') {
-                $out .= $this->generateTable($table, $fields);
+        $columns = array();
+        foreach ($fields as $name => $value) {
+            if ($Obj->primaryKey === $name) {
+                $value['key'] = 'primary';
             }
-        }
-        $out .= "}\n";
+            if (!isset($db->columns[$value['type']])) {
+                trigger_error(__d('cake_dev', 'Schema generation error: invalid column type %s for %s.%s does not exist in DBO', $value['type'], $Obj->name, $name), E_USER_NOTICE);
+                continue;
+            } else {
+                $defaultCol = $db->columns[$value['type']];
+                if (isset($defaultCol['limit']) && $defaultCol['limit'] == $value['length']) {
+                    unset($value['length']);
+                } elseif (isset($defaultCol['length']) && $defaultCol['length'] == $value['length']) {
+                    unset($value['length']);
+                }
+                unset($value['limit']);
+            }
 
-        $file = new File($path . DS . $file, true);
-        $content = "<?php \n{$out}";
-        if ($file->write($content)) {
-            return $content;
+            if (isset($value['default']) && ($value['default'] === '' || ($value['default'] === false && $value['type'] !== 'boolean'))) {
+                unset($value['default']);
+            }
+            if (empty($value['length'])) {
+                unset($value['length']);
+            }
+            if (empty($value['key'])) {
+                unset($value['key']);
+            }
+            $columns[$name] = $value;
         }
-        return false;
+
+        return $columns;
     }
 
     /**
@@ -447,6 +523,35 @@ class CakeSchema extends Object
         }
         $out .= "\n\t);\n\n";
         return $out;
+    }
+
+    /**
+     * Formats Schema columns from Model Object.
+     *
+     * @param array $values Options keys(type, null, default, key, length, extra).
+     * @return array Formatted values.
+     */
+    protected function _values($values)
+    {
+        $vals = array();
+        if (is_array($values)) {
+            foreach ($values as $key => $val) {
+                if (is_array($val)) {
+                    $vals[] = "'{$key}' => array(" . implode(", ", $this->_values($val)) . ")";
+                } else {
+                    $val = var_export($val, true);
+                    if ($val === 'NULL') {
+                        $val = 'null';
+                    }
+                    if (!is_numeric($key)) {
+                        $vals[] = "'{$key}' => {$val}";
+                    } else {
+                        $vals[] = "{$val}";
+                    }
+                }
+            }
+        }
+        return $vals;
     }
 
     /**
@@ -578,95 +683,6 @@ class CakeSchema extends Object
     }
 
     /**
-     * Formats Schema columns from Model Object.
-     *
-     * @param array $values Options keys(type, null, default, key, length, extra).
-     * @return array Formatted values.
-     */
-    protected function _values($values)
-    {
-        $vals = array();
-        if (is_array($values)) {
-            foreach ($values as $key => $val) {
-                if (is_array($val)) {
-                    $vals[] = "'{$key}' => array(" . implode(", ", $this->_values($val)) . ")";
-                } else {
-                    $val = var_export($val, true);
-                    if ($val === 'NULL') {
-                        $val = 'null';
-                    }
-                    if (!is_numeric($key)) {
-                        $vals[] = "'{$key}' => {$val}";
-                    } else {
-                        $vals[] = "{$val}";
-                    }
-                }
-            }
-        }
-        return $vals;
-    }
-
-    /**
-     * Formats Schema columns from Model Object.
-     *
-     * @param array &$Obj model object.
-     * @return array Formatted columns.
-     */
-    protected function _columns(&$Obj)
-    {
-        $db = $Obj->getDataSource();
-        $fields = $Obj->schema(true);
-
-        $columns = array();
-        foreach ($fields as $name => $value) {
-            if ($Obj->primaryKey === $name) {
-                $value['key'] = 'primary';
-            }
-            if (!isset($db->columns[$value['type']])) {
-                trigger_error(__d('cake_dev', 'Schema generation error: invalid column type %s for %s.%s does not exist in DBO', $value['type'], $Obj->name, $name), E_USER_NOTICE);
-                continue;
-            } else {
-                $defaultCol = $db->columns[$value['type']];
-                if (isset($defaultCol['limit']) && $defaultCol['limit'] == $value['length']) {
-                    unset($value['length']);
-                } elseif (isset($defaultCol['length']) && $defaultCol['length'] == $value['length']) {
-                    unset($value['length']);
-                }
-                unset($value['limit']);
-            }
-
-            if (isset($value['default']) && ($value['default'] === '' || ($value['default'] === false && $value['type'] !== 'boolean'))) {
-                unset($value['default']);
-            }
-            if (empty($value['length'])) {
-                unset($value['length']);
-            }
-            if (empty($value['key'])) {
-                unset($value['key']);
-            }
-            $columns[$name] = $value;
-        }
-
-        return $columns;
-    }
-
-    /**
-     * Compare two schema files table Parameters.
-     *
-     * @param array $new New indexes.
-     * @param array $old Old indexes.
-     * @return mixed False on failure, or an array of parameters to add & drop.
-     */
-    protected function _compareTableParameters($new, $old)
-    {
-        if (!is_array($new) || !is_array($old)) {
-            return false;
-        }
-        $change = $this->_arrayDiffAssoc($new, $old);
-        return $change;
-    }
-
-    /**
      * Compare two schema indexes.
      *
      * @param array $new New indexes.
@@ -719,35 +735,19 @@ class CakeSchema extends Object
     }
 
     /**
-     * Trim the table prefix from the full table name, and return the prefix-less
-     * table.
+     * Compare two schema files table Parameters.
      *
-     * @param string $prefix Table prefix.
-     * @param string $table Full table name.
-     * @return string Prefix-less table name.
+     * @param array $new New indexes.
+     * @param array $old Old indexes.
+     * @return mixed False on failure, or an array of parameters to add & drop.
      */
-    protected function _noPrefixTable($prefix, $table)
+    protected function _compareTableParameters($new, $old)
     {
-        return preg_replace('/^' . preg_quote($prefix) . '/', '', $table);
-    }
-
-    /**
-     * Attempts to require the schema file specified.
-     *
-     * @param string $path Filesystem path to the file.
-     * @param string $file Filesystem basename of the file.
-     * @return bool True when a file was successfully included, false on failure.
-     */
-    protected function _requireFile($path, $file)
-    {
-        if (file_exists($path . DS . $file) && is_file($path . DS . $file)) {
-            require_once $path . DS . $file;
-            return true;
-        } elseif (file_exists($path . DS . 'schema.php') && is_file($path . DS . 'schema.php')) {
-            require_once $path . DS . 'schema.php';
-            return true;
+        if (!is_array($new) || !is_array($old)) {
+            return false;
         }
-        return false;
+        $change = $this->_arrayDiffAssoc($new, $old);
+        return $change;
     }
 
 }

@@ -36,28 +36,6 @@ class FirePhpToolbarHelperTestCase extends CakeTestCase
 {
 
     /**
-     * setUp
-     *
-     * @return void
-     **/
-    public function setUp()
-    {
-        parent::setUp();
-
-        Router::connect('/:controller/:action');
-        Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
-        Router::parse('/');
-
-        $this->Controller = new Controller($this->getMock('CakeRequest'), new CakeResponse());
-        $this->View = new View($this->Controller);
-        $this->Toolbar = new ToolbarHelper($this->View, array('output' => 'DebugKit.FirePhpToolbar'));
-        $this->Toolbar->FirePhpToolbar = new FirePhpToolbarHelper($this->View);
-
-        $this->firecake = FireCake::getInstance('TestFireCake');
-        TestFireCake::reset();
-    }
-
-    /**
      * Start test - switch view paths
      *
      * @return void
@@ -80,6 +58,28 @@ class FirePhpToolbarHelperTestCase extends CakeTestCase
     public static function tearDownAfterClass()
     {
         App::build();
+    }
+
+    /**
+     * setUp
+     *
+     * @return void
+     **/
+    public function setUp()
+    {
+        parent::setUp();
+
+        Router::connect('/:controller/:action');
+        Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+        Router::parse('/');
+
+        $this->Controller = new Controller($this->getMock('CakeRequest'), new CakeResponse());
+        $this->View = new View($this->Controller);
+        $this->Toolbar = new ToolbarHelper($this->View, array('output' => 'DebugKit.FirePhpToolbar'));
+        $this->Toolbar->FirePhpToolbar = new FirePhpToolbarHelper($this->View);
+
+        $this->firecake = FireCake::getInstance('TestFireCake');
+        TestFireCake::reset();
     }
 
     /**

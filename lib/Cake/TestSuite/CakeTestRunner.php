@@ -68,25 +68,6 @@ class CakeTestRunner extends PHPUnit_TextUI_TestRunner
     }
 
 // @codingStandardsIgnoreStart PHPUnit overrides don't match CakePHP
-    /**
-     * Create the test result and splice on our code coverage reports.
-     *
-     * @return PHPUnit_Framework_TestResult
-     */
-    protected function createTestResult()
-    {
-        $result = new PHPUnit_Framework_TestResult;
-        if (!empty($this->_params['codeCoverage'])) {
-            if (method_exists($result, 'collectCodeCoverageInformation')) {
-                $result->collectCodeCoverageInformation(true);
-            }
-            if (method_exists($result, 'setCodeCoverage')) {
-                $result->setCodeCoverage(new PHP_CodeCoverage());
-            }
-        }
-        return $result;
-    }
-// @codingStandardsIgnoreEnd
 
     /**
      * Get the fixture manager class specified or use the default one.
@@ -109,6 +90,26 @@ class CakeTestRunner extends PHPUnit_TextUI_TestRunner
             return new AppFixtureManager();
         }
         return new CakeFixtureManager();
+    }
+// @codingStandardsIgnoreEnd
+
+    /**
+     * Create the test result and splice on our code coverage reports.
+     *
+     * @return PHPUnit_Framework_TestResult
+     */
+    protected function createTestResult()
+    {
+        $result = new PHPUnit_Framework_TestResult;
+        if (!empty($this->_params['codeCoverage'])) {
+            if (method_exists($result, 'collectCodeCoverageInformation')) {
+                $result->collectCodeCoverageInformation(true);
+            }
+            if (method_exists($result, 'setCodeCoverage')) {
+                $result->setCodeCoverage(new PHP_CodeCoverage());
+            }
+        }
+        return $result;
     }
 
 }

@@ -32,13 +32,6 @@ class FileEngine extends CacheEngine
 {
 
     /**
-     * Instance of SplFileObject class
-     *
-     * @var File
-     */
-    protected $_File = null;
-
-    /**
      * Settings
      *
      * - path = absolute path to cache directory, default => CACHE
@@ -50,7 +43,12 @@ class FileEngine extends CacheEngine
      * @see CacheEngine::__defaults
      */
     public $settings = array();
-
+    /**
+     * Instance of SplFileObject class
+     *
+     * @var File
+     */
+    protected $_File = null;
     /**
      * True unless FileEngine::__active(); fails
      *
@@ -93,6 +91,28 @@ class FileEngine extends CacheEngine
     }
 
     /**
+     * Determine is cache directory is writable
+     *
+     * @return bool
+     */
+    protected function _active()
+    {
+        $dir = new SplFileInfo($this->settings['path']);
+        if (Configure::read('debug')) {
+            $path = $dir->getPathname();
+            if (!is_dir($path)) {
+                mkdir($path, 0775, true);
+            }
+        }
+        if ($this->_init && !($dir->isDir() && $dir->isWritable())) {
+            $this->_init = false;
+            trigger_error(__d('cake_dev', '%s is not writable', $this->settings['path']), E_USER_WARNING);
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Garbage collection. Permanently remove all expired and deleted data
      *
      * @param int $expires [optional] An expires timestamp, invalidating all data before.
@@ -101,123 +121,6 @@ class FileEngine extends CacheEngine
     public function gc($expires = null)
     {
         return $this->clear(true);
-    }
-
-    /**
-     * Write data for key into cache
-     *
-     * @param string $key Identifier for the data
-     * @param mixed $data Data to be cached
-     * @param int $duration How long to cache the data, in seconds
-     * @return bool True if the data was successfully cached, false on failure
-     */
-    public function write($key, $data, $duration)
-    {
-        if ($data === '' || !$this->_init) {
-            return false;
-        }
-
-        if ($this->_setKey($key, true) === false) {
-            return false;
-        }
-
-        $lineBreak = "\n";
-
-        if ($this->settings['isWindows']) {
-            $lineBreak = "\r\n";
-        }
-
-        if (!empty($this->settings['serialize'])) {
-            if ($this->settings['isWindows']) {
-                $data = str_replace('\\', '\\\\\\\\', serialize($data));
-            } else {
-                $data = serialize($data);
-            }
-        }
-
-        $expires = time() + $duration;
-        $contents = $expires . $lineBreak . $data . $lineBreak;
-
-        if ($this->settings['lock']) {
-            $this->_File->flock(LOCK_EX);
-        }
-
-        $this->_File->rewind();
-        $success = $this->_File->ftruncate(0) && $this->_File->fwrite($contents) && $this->_File->fflush();
-
-        if ($this->settings['lock']) {
-            $this->_File->flock(LOCK_UN);
-        }
-
-        return $success;
-    }
-
-    /**
-     * Read a key from the cache
-     *
-     * @param string $key Identifier for the data
-     * @return mixed The cached data, or false if the data doesn't exist, has expired, or if there was an error fetching it
-     */
-    public function read($key)
-    {
-        if (!$this->_init || $this->_setKey($key) === false) {
-            return false;
-        }
-
-        if ($this->settings['lock']) {
-            $this->_File->flock(LOCK_SH);
-        }
-
-        $this->_File->rewind();
-        $time = time();
-        $cachetime = (int)$this->_File->current();
-
-        if ($cachetime !== false && ($cachetime < $time || ($time + $this->settings['duration']) < $cachetime)) {
-            if ($this->settings['lock']) {
-                $this->_File->flock(LOCK_UN);
-            }
-            return false;
-        }
-
-        $data = '';
-        $this->_File->next();
-        while ($this->_File->valid()) {
-            $data .= $this->_File->current();
-            $this->_File->next();
-        }
-
-        if ($this->settings['lock']) {
-            $this->_File->flock(LOCK_UN);
-        }
-
-        $data = trim($data);
-
-        if ($data !== '' && !empty($this->settings['serialize'])) {
-            if ($this->settings['isWindows']) {
-                $data = str_replace('\\\\\\\\', '\\', $data);
-            }
-            $data = unserialize((string)$data);
-        }
-        return $data;
-    }
-
-    /**
-     * Delete a key from the cache
-     *
-     * @param string $key Identifier for the data
-     * @return bool True if the value was successfully deleted, false if it didn't exist or couldn't be removed
-     */
-    public function delete($key)
-    {
-        if ($this->_setKey($key) === false || !$this->_init) {
-            return false;
-        }
-        $path = $this->_File->getRealPath();
-        $this->_File = null;
-
-        //@codingStandardsIgnoreStart
-        return @unlink($path);
-        //@codingStandardsIgnoreEnd
     }
 
     /**
@@ -310,29 +213,52 @@ class FileEngine extends CacheEngine
     }
 
     /**
-     * Not implemented
+     * Write data for key into cache
      *
-     * @param string $key The key to decrement
-     * @param int $offset The number to offset
-     * @return void
-     * @throws CacheException
+     * @param string $key Identifier for the data
+     * @param mixed $data Data to be cached
+     * @param int $duration How long to cache the data, in seconds
+     * @return bool True if the data was successfully cached, false on failure
      */
-    public function decrement($key, $offset = 1)
+    public function write($key, $data, $duration)
     {
-        throw new CacheException(__d('cake_dev', 'Files cannot be atomically decremented.'));
-    }
+        if ($data === '' || !$this->_init) {
+            return false;
+        }
 
-    /**
-     * Not implemented
-     *
-     * @param string $key The key to decrement
-     * @param int $offset The number to offset
-     * @return void
-     * @throws CacheException
-     */
-    public function increment($key, $offset = 1)
-    {
-        throw new CacheException(__d('cake_dev', 'Files cannot be atomically incremented.'));
+        if ($this->_setKey($key, true) === false) {
+            return false;
+        }
+
+        $lineBreak = "\n";
+
+        if ($this->settings['isWindows']) {
+            $lineBreak = "\r\n";
+        }
+
+        if (!empty($this->settings['serialize'])) {
+            if ($this->settings['isWindows']) {
+                $data = str_replace('\\', '\\\\\\\\', serialize($data));
+            } else {
+                $data = serialize($data);
+            }
+        }
+
+        $expires = time() + $duration;
+        $contents = $expires . $lineBreak . $data . $lineBreak;
+
+        if ($this->settings['lock']) {
+            $this->_File->flock(LOCK_EX);
+        }
+
+        $this->_File->rewind();
+        $success = $this->_File->ftruncate(0) && $this->_File->fwrite($contents) && $this->_File->fflush();
+
+        if ($this->settings['lock']) {
+            $this->_File->flock(LOCK_UN);
+        }
+
+        return $success;
     }
 
     /**
@@ -379,25 +305,97 @@ class FileEngine extends CacheEngine
     }
 
     /**
-     * Determine is cache directory is writable
+     * Read a key from the cache
      *
-     * @return bool
+     * @param string $key Identifier for the data
+     * @return mixed The cached data, or false if the data doesn't exist, has expired, or if there was an error fetching it
      */
-    protected function _active()
+    public function read($key)
     {
-        $dir = new SplFileInfo($this->settings['path']);
-        if (Configure::read('debug')) {
-            $path = $dir->getPathname();
-            if (!is_dir($path)) {
-                mkdir($path, 0775, true);
-            }
-        }
-        if ($this->_init && !($dir->isDir() && $dir->isWritable())) {
-            $this->_init = false;
-            trigger_error(__d('cake_dev', '%s is not writable', $this->settings['path']), E_USER_WARNING);
+        if (!$this->_init || $this->_setKey($key) === false) {
             return false;
         }
-        return true;
+
+        if ($this->settings['lock']) {
+            $this->_File->flock(LOCK_SH);
+        }
+
+        $this->_File->rewind();
+        $time = time();
+        $cachetime = (int)$this->_File->current();
+
+        if ($cachetime !== false && ($cachetime < $time || ($time + $this->settings['duration']) < $cachetime)) {
+            if ($this->settings['lock']) {
+                $this->_File->flock(LOCK_UN);
+            }
+            return false;
+        }
+
+        $data = '';
+        $this->_File->next();
+        while ($this->_File->valid()) {
+            $data .= $this->_File->current();
+            $this->_File->next();
+        }
+
+        if ($this->settings['lock']) {
+            $this->_File->flock(LOCK_UN);
+        }
+
+        $data = trim($data);
+
+        if ($data !== '' && !empty($this->settings['serialize'])) {
+            if ($this->settings['isWindows']) {
+                $data = str_replace('\\\\\\\\', '\\', $data);
+            }
+            $data = unserialize((string)$data);
+        }
+        return $data;
+    }
+
+    /**
+     * Delete a key from the cache
+     *
+     * @param string $key Identifier for the data
+     * @return bool True if the value was successfully deleted, false if it didn't exist or couldn't be removed
+     */
+    public function delete($key)
+    {
+        if ($this->_setKey($key) === false || !$this->_init) {
+            return false;
+        }
+        $path = $this->_File->getRealPath();
+        $this->_File = null;
+
+        //@codingStandardsIgnoreStart
+        return @unlink($path);
+        //@codingStandardsIgnoreEnd
+    }
+
+    /**
+     * Not implemented
+     *
+     * @param string $key The key to decrement
+     * @param int $offset The number to offset
+     * @return void
+     * @throws CacheException
+     */
+    public function decrement($key, $offset = 1)
+    {
+        throw new CacheException(__d('cake_dev', 'Files cannot be atomically decremented.'));
+    }
+
+    /**
+     * Not implemented
+     *
+     * @param string $key The key to decrement
+     * @param int $offset The number to offset
+     * @return void
+     * @throws CacheException
+     */
+    public function increment($key, $offset = 1)
+    {
+        throw new CacheException(__d('cake_dev', 'Files cannot be atomically incremented.'));
     }
 
     /**

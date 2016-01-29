@@ -54,16 +54,6 @@ class CacheHelper extends AppHelper
     protected $_counter = 0;
 
     /**
-     * Is CacheHelper enabled? should files + output be parsed.
-     *
-     * @return bool
-     */
-    protected function _enabled()
-    {
-        return $this->_View->cacheAction && (Configure::read('Cache.check') === true);
-    }
-
-    /**
      * Parses the view file and stores content for cache file building.
      *
      * @param string $viewFile View file name.
@@ -78,17 +68,13 @@ class CacheHelper extends AppHelper
     }
 
     /**
-     * Parses the layout file and stores content for cache file building.
+     * Is CacheHelper enabled? should files + output be parsed.
      *
-     * @param string $layoutFile Layout file name.
-     * @return void
+     * @return bool
      */
-    public function afterLayout($layoutFile)
+    protected function _enabled()
     {
-        if ($this->_enabled()) {
-            $this->_View->output = $this->cache($layoutFile, $this->_View->output);
-        }
-        $this->_View->output = preg_replace('/<!--\/?nocache-->/', '', $this->_View->output);
+        return $this->_View->cacheAction && (Configure::read('Cache.check') === true);
     }
 
     /**
@@ -105,6 +91,61 @@ class CacheHelper extends AppHelper
         $out = preg_replace_callback('/<!--nocache-->/', array($this, '_replaceSection'), $out);
         $this->_parseFile($file, $out);
         return $out;
+    }
+
+    /**
+     * Parse file searching for no cache tags
+     *
+     * @param string $file The filename that needs to be parsed.
+     * @param string $cache The cached content
+     * @return void
+     */
+    protected function _parseFile($file, $cache)
+    {
+        if (is_file($file)) {
+            $file = file_get_contents($file);
+        } elseif ($file = fileExistsInPath($file)) {
+            $file = file_get_contents($file);
+        }
+        preg_match_all('/(<!--nocache:\d{3}-->(?<=<!--nocache:\d{3}-->)[\\s\\S]*?(?=<!--\/nocache-->)<!--\/nocache-->)/i', $cache, $outputResult, PREG_PATTERN_ORDER);
+        preg_match_all('/(?<=<!--nocache-->)([\\s\\S]*?)(?=<!--\/nocache-->)/i', $file, $fileResult, PREG_PATTERN_ORDER);
+        $fileResult = $fileResult[0];
+        $outputResult = $outputResult[0];
+
+        if (!empty($this->_replace)) {
+            foreach ($outputResult as $i => $element) {
+                $index = array_search($element, $this->_match);
+                if ($index !== false) {
+                    unset($outputResult[$i]);
+                }
+            }
+            $outputResult = array_values($outputResult);
+        }
+
+        if (!empty($fileResult)) {
+            $i = 0;
+            foreach ($fileResult as $cacheBlock) {
+                if (isset($outputResult[$i])) {
+                    $this->_replace[] = $cacheBlock;
+                    $this->_match[] = $outputResult[$i];
+                }
+                $i++;
+            }
+        }
+    }
+
+    /**
+     * Parses the layout file and stores content for cache file building.
+     *
+     * @param string $layoutFile Layout file name.
+     * @return void
+     */
+    public function afterLayout($layoutFile)
+    {
+        if ($this->_enabled()) {
+            $this->_View->output = $this->cache($layoutFile, $this->_View->output);
+        }
+        $this->_View->output = preg_replace('/<!--\/?nocache-->/', '', $this->_View->output);
     }
 
     /**
@@ -175,72 +216,6 @@ class CacheHelper extends AppHelper
             $out = $this->_stripTags($out);
         }
         return $out;
-    }
-
-    /**
-     * Parse file searching for no cache tags
-     *
-     * @param string $file The filename that needs to be parsed.
-     * @param string $cache The cached content
-     * @return void
-     */
-    protected function _parseFile($file, $cache)
-    {
-        if (is_file($file)) {
-            $file = file_get_contents($file);
-        } elseif ($file = fileExistsInPath($file)) {
-            $file = file_get_contents($file);
-        }
-        preg_match_all('/(<!--nocache:\d{3}-->(?<=<!--nocache:\d{3}-->)[\\s\\S]*?(?=<!--\/nocache-->)<!--\/nocache-->)/i', $cache, $outputResult, PREG_PATTERN_ORDER);
-        preg_match_all('/(?<=<!--nocache-->)([\\s\\S]*?)(?=<!--\/nocache-->)/i', $file, $fileResult, PREG_PATTERN_ORDER);
-        $fileResult = $fileResult[0];
-        $outputResult = $outputResult[0];
-
-        if (!empty($this->_replace)) {
-            foreach ($outputResult as $i => $element) {
-                $index = array_search($element, $this->_match);
-                if ($index !== false) {
-                    unset($outputResult[$i]);
-                }
-            }
-            $outputResult = array_values($outputResult);
-        }
-
-        if (!empty($fileResult)) {
-            $i = 0;
-            foreach ($fileResult as $cacheBlock) {
-                if (isset($outputResult[$i])) {
-                    $this->_replace[] = $cacheBlock;
-                    $this->_match[] = $outputResult[$i];
-                }
-                $i++;
-            }
-        }
-    }
-
-    /**
-     * Munges the output from a view with cache tags, and numbers the sections.
-     * This helps solve issues with empty/duplicate content.
-     *
-     * @return string The content with cake:nocache tags replaced.
-     */
-    protected function _replaceSection()
-    {
-        $this->_counter += 1;
-        return sprintf('<!--nocache:%03d-->', $this->_counter);
-    }
-
-    /**
-     * Strip cake:nocache tags from a string. Since View::render()
-     * only removes un-numbered nocache tags, remove all the numbered ones.
-     * This is the complement to _replaceSection.
-     *
-     * @param string $content String to remove tags from.
-     * @return string String with tags removed.
-     */
-    protected function _stripTags($content)
-    {
-        return preg_replace('#<!--/?nocache(\:\d{3})?-->#', '', $content);
     }
 
     /**
@@ -347,6 +322,31 @@ class CacheHelper extends AppHelper
         $content = preg_replace("/(<\\?xml)/", "<?php echo '$1'; ?>", $content);
         $file .= $content;
         return cache('views' . DS . $cache, $file, $timestamp);
+    }
+
+    /**
+     * Strip cake:nocache tags from a string. Since View::render()
+     * only removes un-numbered nocache tags, remove all the numbered ones.
+     * This is the complement to _replaceSection.
+     *
+     * @param string $content String to remove tags from.
+     * @return string String with tags removed.
+     */
+    protected function _stripTags($content)
+    {
+        return preg_replace('#<!--/?nocache(\:\d{3})?-->#', '', $content);
+    }
+
+    /**
+     * Munges the output from a view with cache tags, and numbers the sections.
+     * This helps solve issues with empty/duplicate content.
+     *
+     * @return string The content with cake:nocache tags replaced.
+     */
+    protected function _replaceSection()
+    {
+        $this->_counter += 1;
+        return sprintf('<!--nocache:%03d-->', $this->_counter);
     }
 
 }

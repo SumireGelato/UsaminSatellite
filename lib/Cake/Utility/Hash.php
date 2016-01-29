@@ -31,124 +31,88 @@ class Hash
 {
 
     /**
-     * Get a single value specified by $path out of $data.
-     * Does not support the full dot notation feature set,
-     * but is faster for simple read operations.
+     * Insert $values into an array with the given $path. You can use
+     * `{n}` and `{s}` elements to insert $data multiple times.
      *
-     * @param array $data Array of data to operate on.
-     * @param string|array $path The path being searched for. Either a dot
-     *   separated string, or an array of path segments.
-     * @param mixed $default The return value when the path does not exist
-     * @throws InvalidArgumentException
-     * @return mixed The value fetched from the array, or null.
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::get
+     * @param array $data The data to insert into.
+     * @param string $path The path to insert at.
+     * @param mixed $values The values to insert.
+     * @return array The data with $values inserted.
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::insert
      */
-    public static function get(array $data, $path, $default = null)
+    public static function insert(array $data, $path, $values = null)
     {
-        if (empty($data) || $path === '' || $path === null) {
-            return $default;
-        }
-        if (is_string($path) || is_numeric($path)) {
-            $parts = explode('.', $path);
-        } else {
-            if (!is_array($path)) {
-                throw new InvalidArgumentException(__d('cake_dev',
-                    'Invalid Parameter %s, should be dot separated path or array.',
-                    $path
-                ));
-            }
-            $parts = $path;
-        }
-
-        foreach ($parts as $key) {
-            if (is_array($data) && isset($data[$key])) {
-                $data =& $data[$key];
-            } else {
-                return $default;
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Gets the values from an array matching the $path expression.
-     * The path expression is a dot separated expression, that can contain a set
-     * of patterns and expressions:
-     *
-     * - `{n}` Matches any numeric key, or integer.
-     * - `{s}` Matches any string key.
-     * - `{*}` Matches any value.
-     * - `Foo` Matches any key with the exact same value.
-     *
-     * There are a number of attribute operators:
-     *
-     *  - `=`, `!=` Equality.
-     *  - `>`, `<`, `>=`, `<=` Value comparison.
-     *  - `=/.../` Regular expression pattern match.
-     *
-     * Given a set of User array data, from a `$User->find('all')` call:
-     *
-     * - `1.User.name` Get the name of the user at index 1.
-     * - `{n}.User.name` Get the name of every user in the set of users.
-     * - `{n}.User[id]` Get the name of every user with an id key.
-     * - `{n}.User[id>=2]` Get the name of every user with an id key greater than or equal to 2.
-     * - `{n}.User[username=/^paul/]` Get User elements with username matching `^paul`.
-     *
-     * @param array $data The data to extract from.
-     * @param string $path The path to extract.
-     * @return array An array of the extracted values. Returns an empty array
-     *   if there are no matches.
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::extract
-     */
-    public static function extract(array $data, $path)
-    {
-        if (empty($path)) {
-            return $data;
-        }
-
-        // Simple paths.
-        if (!preg_match('/[{\[]/', $path)) {
-            return (array)static::get($data, $path);
-        }
-
         if (strpos($path, '[') === false) {
             $tokens = explode('.', $path);
         } else {
             $tokens = CakeText::tokenize($path, '.', '[', ']');
         }
 
-        $_key = '__set_item__';
-
-        $context = array($_key => array($data));
-
-        foreach ($tokens as $token) {
-            $next = array();
-
-            list($token, $conditions) = static::_splitConditions($token);
-
-            foreach ($context[$_key] as $item) {
-                foreach ((array)$item as $k => $v) {
-                    if (static::_matchToken($k, $token)) {
-                        $next[] = $v;
-                    }
-                }
-            }
-
-            // Filter for attributes.
-            if ($conditions) {
-                $filter = array();
-                foreach ($next as $item) {
-                    if (is_array($item) && static::_matches($item, $conditions)) {
-                        $filter[] = $item;
-                    }
-                }
-                $next = $filter;
-            }
-            $context = array($_key => $next);
-
+        if (strpos($path, '{') === false && strpos($path, '[') === false) {
+            return static::_simpleOp('insert', $data, $tokens, $values);
         }
-        return $context[$_key];
+
+        $token = array_shift($tokens);
+        $nextPath = implode('.', $tokens);
+
+        list($token, $conditions) = static::_splitConditions($token);
+
+        foreach ($data as $k => $v) {
+            if (static::_matchToken($k, $token)) {
+                if ($conditions && static::_matches($v, $conditions)) {
+                    $data[$k] = array_merge($v, $values);
+                    continue;
+                }
+                if (!$conditions) {
+                    $data[$k] = static::insert($v, $nextPath, $values);
+                }
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Perform a simple insert/remove operation.
+     *
+     * @param string $op The operation to do.
+     * @param array $data The data to operate on.
+     * @param array $path The path to work on.
+     * @param mixed $values The values to insert when doing inserts.
+     * @return array data.
+     */
+    protected static function _simpleOp($op, $data, $path, $values = null)
+    {
+        $_list =& $data;
+
+        $count = count($path);
+        $last = $count - 1;
+        foreach ($path as $i => $key) {
+            if ((is_numeric($key) && intval($key) > 0 || $key === '0') && strpos($key, '0') !== 0) {
+                $key = (int)$key;
+            }
+            if ($op === 'insert') {
+                if ($i === $last) {
+                    $_list[$key] = $values;
+                    return $data;
+                }
+                if (!isset($_list[$key])) {
+                    $_list[$key] = array();
+                }
+                $_list =& $_list[$key];
+                if (!is_array($_list)) {
+                    $_list = array();
+                }
+            } elseif ($op === 'remove') {
+                if ($i === $last) {
+                    unset($_list[$key]);
+                    return $data;
+                }
+                if (!isset($_list[$key])) {
+                    return $data;
+                }
+                $_list =& $_list[$key];
+            }
+        }
     }
 
     /**
@@ -249,91 +213,6 @@ class Hash
 
         }
         return true;
-    }
-
-    /**
-     * Insert $values into an array with the given $path. You can use
-     * `{n}` and `{s}` elements to insert $data multiple times.
-     *
-     * @param array $data The data to insert into.
-     * @param string $path The path to insert at.
-     * @param mixed $values The values to insert.
-     * @return array The data with $values inserted.
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::insert
-     */
-    public static function insert(array $data, $path, $values = null)
-    {
-        if (strpos($path, '[') === false) {
-            $tokens = explode('.', $path);
-        } else {
-            $tokens = CakeText::tokenize($path, '.', '[', ']');
-        }
-
-        if (strpos($path, '{') === false && strpos($path, '[') === false) {
-            return static::_simpleOp('insert', $data, $tokens, $values);
-        }
-
-        $token = array_shift($tokens);
-        $nextPath = implode('.', $tokens);
-
-        list($token, $conditions) = static::_splitConditions($token);
-
-        foreach ($data as $k => $v) {
-            if (static::_matchToken($k, $token)) {
-                if ($conditions && static::_matches($v, $conditions)) {
-                    $data[$k] = array_merge($v, $values);
-                    continue;
-                }
-                if (!$conditions) {
-                    $data[$k] = static::insert($v, $nextPath, $values);
-                }
-            }
-        }
-        return $data;
-    }
-
-    /**
-     * Perform a simple insert/remove operation.
-     *
-     * @param string $op The operation to do.
-     * @param array $data The data to operate on.
-     * @param array $path The path to work on.
-     * @param mixed $values The values to insert when doing inserts.
-     * @return array data.
-     */
-    protected static function _simpleOp($op, $data, $path, $values = null)
-    {
-        $_list =& $data;
-
-        $count = count($path);
-        $last = $count - 1;
-        foreach ($path as $i => $key) {
-            if ((is_numeric($key) && intval($key) > 0 || $key === '0') && strpos($key, '0') !== 0) {
-                $key = (int)$key;
-            }
-            if ($op === 'insert') {
-                if ($i === $last) {
-                    $_list[$key] = $values;
-                    return $data;
-                }
-                if (!isset($_list[$key])) {
-                    $_list[$key] = array();
-                }
-                $_list =& $_list[$key];
-                if (!is_array($_list)) {
-                    $_list = array();
-                }
-            } elseif ($op === 'remove') {
-                if ($i === $last) {
-                    unset($_list[$key]);
-                    return $data;
-                }
-                if (!isset($_list[$key])) {
-                    return $data;
-                }
-                $_list =& $_list[$key];
-            }
-        }
     }
 
     /**
@@ -501,6 +380,127 @@ class Hash
     }
 
     /**
+     * Gets the values from an array matching the $path expression.
+     * The path expression is a dot separated expression, that can contain a set
+     * of patterns and expressions:
+     *
+     * - `{n}` Matches any numeric key, or integer.
+     * - `{s}` Matches any string key.
+     * - `{*}` Matches any value.
+     * - `Foo` Matches any key with the exact same value.
+     *
+     * There are a number of attribute operators:
+     *
+     *  - `=`, `!=` Equality.
+     *  - `>`, `<`, `>=`, `<=` Value comparison.
+     *  - `=/.../` Regular expression pattern match.
+     *
+     * Given a set of User array data, from a `$User->find('all')` call:
+     *
+     * - `1.User.name` Get the name of the user at index 1.
+     * - `{n}.User.name` Get the name of every user in the set of users.
+     * - `{n}.User[id]` Get the name of every user with an id key.
+     * - `{n}.User[id>=2]` Get the name of every user with an id key greater than or equal to 2.
+     * - `{n}.User[username=/^paul/]` Get User elements with username matching `^paul`.
+     *
+     * @param array $data The data to extract from.
+     * @param string $path The path to extract.
+     * @return array An array of the extracted values. Returns an empty array
+     *   if there are no matches.
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::extract
+     */
+    public static function extract(array $data, $path)
+    {
+        if (empty($path)) {
+            return $data;
+        }
+
+        // Simple paths.
+        if (!preg_match('/[{\[]/', $path)) {
+            return (array)static::get($data, $path);
+        }
+
+        if (strpos($path, '[') === false) {
+            $tokens = explode('.', $path);
+        } else {
+            $tokens = CakeText::tokenize($path, '.', '[', ']');
+        }
+
+        $_key = '__set_item__';
+
+        $context = array($_key => array($data));
+
+        foreach ($tokens as $token) {
+            $next = array();
+
+            list($token, $conditions) = static::_splitConditions($token);
+
+            foreach ($context[$_key] as $item) {
+                foreach ((array)$item as $k => $v) {
+                    if (static::_matchToken($k, $token)) {
+                        $next[] = $v;
+                    }
+                }
+            }
+
+            // Filter for attributes.
+            if ($conditions) {
+                $filter = array();
+                foreach ($next as $item) {
+                    if (is_array($item) && static::_matches($item, $conditions)) {
+                        $filter[] = $item;
+                    }
+                }
+                $next = $filter;
+            }
+            $context = array($_key => $next);
+
+        }
+        return $context[$_key];
+    }
+
+    /**
+     * Get a single value specified by $path out of $data.
+     * Does not support the full dot notation feature set,
+     * but is faster for simple read operations.
+     *
+     * @param array $data Array of data to operate on.
+     * @param string|array $path The path being searched for. Either a dot
+     *   separated string, or an array of path segments.
+     * @param mixed $default The return value when the path does not exist
+     * @throws InvalidArgumentException
+     * @return mixed The value fetched from the array, or null.
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::get
+     */
+    public static function get(array $data, $path, $default = null)
+    {
+        if (empty($data) || $path === '' || $path === null) {
+            return $default;
+        }
+        if (is_string($path) || is_numeric($path)) {
+            $parts = explode('.', $path);
+        } else {
+            if (!is_array($path)) {
+                throw new InvalidArgumentException(__d('cake_dev',
+                    'Invalid Parameter %s, should be dot separated path or array.',
+                    $path
+                ));
+            }
+            $parts = $path;
+        }
+
+        foreach ($parts as $key) {
+            if (is_array($data) && isset($data[$key])) {
+                $data =& $data[$key];
+            } else {
+                return $default;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Determines if one array contains the exact keys and values of another.
      *
      * @param array $data The data to search through.
@@ -577,20 +577,6 @@ class Hash
             }
         }
         return array_filter($data, $callback);
-    }
-
-    /**
-     * Callback function for filtering.
-     *
-     * @param array $var Array to filter.
-     * @return bool
-     */
-    protected static function _filter($var)
-    {
-        if ($var === 0 || $var === '0' || !empty($var)) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -1128,6 +1114,20 @@ class Hash
             }
         }
         return array_values($return);
+    }
+
+    /**
+     * Callback function for filtering.
+     *
+     * @param array $var Array to filter.
+     * @return bool
+     */
+    protected static function _filter($var)
+    {
+        if ($var === 0 || $var === '0' || !empty($var)) {
+            return true;
+        }
+        return false;
     }
 
 }

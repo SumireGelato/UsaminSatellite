@@ -114,17 +114,6 @@ class CakeLog
     protected static $_levelMap;
 
     /**
-     * initialize ObjectCollection
-     *
-     * @return void
-     */
-    protected static function _init()
-    {
-        static::$_levels = static::defaultLevels();
-        static::$_Collection = new LogEngineCollection();
-    }
-
-    /**
      * Configure and add a new logging stream to CakeLog
      * You can use add loggers from app/Log/Engine use app.loggername, or any
      * plugin/Log/Engine using plugin.loggername.
@@ -204,6 +193,29 @@ class CakeLog
     }
 
     /**
+     * initialize ObjectCollection
+     *
+     * @return void
+     */
+    protected static function _init()
+    {
+        static::$_levels = static::defaultLevels();
+        static::$_Collection = new LogEngineCollection();
+    }
+
+    /**
+     * Reset log levels to the original value
+     *
+     * @return array Default log levels
+     */
+    public static function defaultLevels()
+    {
+        static::$_levelMap = static::$_defaultLevels;
+        static::$_levels = array_flip(static::$_levelMap);
+        return static::$_levels;
+    }
+
+    /**
      * Returns the keynames of the currently active streams
      *
      * @return array Array of configured log streams.
@@ -277,18 +289,6 @@ class CakeLog
             static::$_levels = $levels;
         }
         static::$_levelMap = array_flip(static::$_levels);
-        return static::$_levels;
-    }
-
-    /**
-     * Reset log levels to the original value
-     *
-     * @return array Default log levels
-     */
-    public static function defaultLevels()
-    {
-        static::$_levelMap = static::$_defaultLevels;
-        static::$_levels = array_flip(static::$_levelMap);
         return static::$_levels;
     }
 
@@ -383,6 +383,19 @@ class CakeLog
     }
 
     /**
+     * Convenience method to log emergency messages
+     *
+     * @param string $message log message
+     * @param string|array $scope The scope(s) a log message is being created in.
+     *    See CakeLog::config() for more information on logging scopes.
+     * @return bool Success
+     */
+    public static function emergency($message, $scope = array())
+    {
+        return static::write(static::$_levelMap['emergency'], $message, $scope);
+    }
+
+    /**
      * Writes the given message and type to all of the configured log adapters.
      * Configured adapters are passed both the $type and $message variables. $type
      * is one of the following strings/values.
@@ -456,19 +469,6 @@ class CakeLog
             }
         }
         return $logged;
-    }
-
-    /**
-     * Convenience method to log emergency messages
-     *
-     * @param string $message log message
-     * @param string|array $scope The scope(s) a log message is being created in.
-     *    See CakeLog::config() for more information on logging scopes.
-     * @return bool Success
-     */
-    public static function emergency($message, $scope = array())
-    {
-        return static::write(static::$_levelMap['emergency'], $message, $scope);
     }
 
     /**

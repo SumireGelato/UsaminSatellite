@@ -32,26 +32,23 @@ abstract class BaseCoverageReport
 {
 
     /**
-     * coverage data
-     *
-     * @var string
-     */
-    protected $_rawCoverage;
-
-    /**
      * is the test an app test
      *
      * @var string
      */
     public $appTest = false;
-
     /**
      * is the test a plugin test
      *
      * @var string
      */
     public $pluginTest = false;
-
+    /**
+     * coverage data
+     *
+     * @var string
+     */
+    protected $_rawCoverage;
     /**
      * Array of test case file names. Used to do basename() matching with
      * files that have coverage to decide which results to show on page load.
@@ -136,6 +133,23 @@ abstract class BaseCoverageReport
     }
 
     /**
+     * Generates report to display.
+     *
+     * @return string compiled html report.
+     */
+    abstract public function report();
+
+    /**
+     * Generates an coverage 'diff' for $file based on $coverageData.
+     *
+     * @param string $filename Name of the file having coverage generated
+     * @param array $fileLines File data as an array. See file() for how to get one of these.
+     * @param array $coverageData Array of coverage data to use to generate HTML diffs with
+     * @return string prepared report for a single file.
+     */
+    abstract public function generateDiff($filename, $fileLines, $coverageData);
+
+    /**
      * Calculates how many lines are covered and what the total number of executable lines is.
      *
      * Handles both PHPUnit3.5 and 3.6 formats.
@@ -168,22 +182,5 @@ abstract class BaseCoverageReport
         }
         return array($covered, $total);
     }
-
-    /**
-     * Generates report to display.
-     *
-     * @return string compiled html report.
-     */
-    abstract public function report();
-
-    /**
-     * Generates an coverage 'diff' for $file based on $coverageData.
-     *
-     * @param string $filename Name of the file having coverage generated
-     * @param array $fileLines File data as an array. See file() for how to get one of these.
-     * @param array $coverageData Array of coverage data to use to generate HTML diffs with
-     * @return string prepared report for a single file.
-     */
-    abstract public function generateDiff($filename, $fileLines, $coverageData);
 
 }

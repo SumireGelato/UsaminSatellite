@@ -80,23 +80,6 @@ class PhpReader implements ConfigReaderInterface
     }
 
     /**
-     * Converts the provided $data into a string of PHP code that can
-     * be used saved into a file and loaded later.
-     *
-     * @param string $key The identifier to write to. If the key has a . it will be treated
-     *  as a plugin prefix.
-     * @param array $data Data to dump.
-     * @return int Bytes saved.
-     */
-    public function dump($key, $data)
-    {
-        $contents = '<?php' . "\n" . '$config = ' . var_export($data, true) . ';';
-
-        $filename = $this->_getFilePath($key);
-        return file_put_contents($filename, $contents);
-    }
-
-    /**
      * Get file path
      *
      * @param string $key The identifier to write to. If the key has a . it will be treated
@@ -118,6 +101,23 @@ class PhpReader implements ConfigReaderInterface
         }
 
         return $file;
+    }
+
+    /**
+     * Converts the provided $data into a string of PHP code that can
+     * be used saved into a file and loaded later.
+     *
+     * @param string $key The identifier to write to. If the key has a . it will be treated
+     *  as a plugin prefix.
+     * @param array $data Data to dump.
+     * @return int Bytes saved.
+     */
+    public function dump($key, $data)
+    {
+        $contents = '<?php' . "\n" . '$config = ' . var_export($data, true) . ';';
+
+        $filename = $this->_getFilePath($key);
+        return file_put_contents($filename, $contents);
     }
 
 }

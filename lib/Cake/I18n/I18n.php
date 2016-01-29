@@ -30,63 +30,53 @@ class I18n
 {
 
     /**
-     * Instance of the L10n class for localization
+     * Constant for LC_ALL.
      *
-     * @var L10n
+     * @var int
      */
-    public $l10n = null;
-
+    const LC_ALL = 0;
+    /**
+     * Constant for LC_COLLATE.
+     *
+     * @var int
+     */
+    const LC_COLLATE = 1;
+    /**
+     * Constant for LC_CTYPE.
+     *
+     * @var int
+     */
+    const LC_CTYPE = 2;
+    /**
+     * Constant for LC_MONETARY.
+     *
+     * @var int
+     */
+    const LC_MONETARY = 3;
+    /**
+     * Constant for LC_NUMERIC.
+     *
+     * @var int
+     */
+    const LC_NUMERIC = 4;
+    /**
+     * Constant for LC_TIME.
+     *
+     * @var int
+     */
+    const LC_TIME = 5;
+    /**
+     * Constant for LC_MESSAGES.
+     *
+     * @var int
+     */
+    const LC_MESSAGES = 6;
     /**
      * Default domain of translation
      *
      * @var string
      */
     public static $defaultDomain = 'default';
-
-    /**
-     * Current domain of translation
-     *
-     * @var string
-     */
-    public $domain = null;
-
-    /**
-     * Current category of translation
-     *
-     * @var string
-     */
-    public $category = 'LC_MESSAGES';
-
-    /**
-     * Current language used for translations
-     *
-     * @var string
-     */
-    protected $_lang = null;
-
-    /**
-     * Translation strings for a specific domain read from the .mo or .po files
-     *
-     * @var array
-     */
-    protected $_domains = array();
-
-    /**
-     * Set to true when I18N::_bindTextDomain() is called for the first time.
-     * If a translation file is found it is set to false again
-     *
-     * @var bool
-     */
-    protected $_noLocale = false;
-
-    /**
-     * Translation categories
-     *
-     * @var array
-     */
-    protected $_categories = array(
-        'LC_ALL', 'LC_COLLATE', 'LC_CTYPE', 'LC_MONETARY', 'LC_NUMERIC', 'LC_TIME', 'LC_MESSAGES'
-    );
 
     /**
      * Constants for the translation categories.
@@ -102,54 +92,50 @@ class I18n
      * hardcoded integers.
      */
     /**
-     * Constant for LC_ALL.
+     * Instance of the L10n class for localization
      *
-     * @var int
+     * @var L10n
      */
-    const LC_ALL = 0;
-
+    public $l10n = null;
     /**
-     * Constant for LC_COLLATE.
+     * Current domain of translation
      *
-     * @var int
+     * @var string
      */
-    const LC_COLLATE = 1;
-
+    public $domain = null;
     /**
-     * Constant for LC_CTYPE.
+     * Current category of translation
      *
-     * @var int
+     * @var string
      */
-    const LC_CTYPE = 2;
-
+    public $category = 'LC_MESSAGES';
     /**
-     * Constant for LC_MONETARY.
+     * Current language used for translations
      *
-     * @var int
+     * @var string
      */
-    const LC_MONETARY = 3;
-
+    protected $_lang = null;
     /**
-     * Constant for LC_NUMERIC.
+     * Translation strings for a specific domain read from the .mo or .po files
      *
-     * @var int
+     * @var array
      */
-    const LC_NUMERIC = 4;
-
+    protected $_domains = array();
     /**
-     * Constant for LC_TIME.
+     * Set to true when I18N::_bindTextDomain() is called for the first time.
+     * If a translation file is found it is set to false again
      *
-     * @var int
+     * @var bool
      */
-    const LC_TIME = 5;
-
+    protected $_noLocale = false;
     /**
-     * Constant for LC_MESSAGES.
+     * Translation categories
      *
-     * @var int
+     * @var array
      */
-    const LC_MESSAGES = 6;
-
+    protected $_categories = array(
+        'LC_ALL', 'LC_COLLATE', 'LC_CTYPE', 'LC_MONETARY', 'LC_NUMERIC', 'LC_TIME', 'LC_MESSAGES'
+    );
     /**
      * Escape string
      *
@@ -163,20 +149,6 @@ class I18n
     public function __construct()
     {
         $this->l10n = new L10n();
-    }
-
-    /**
-     * Return a static instance of the I18n class
-     *
-     * @return I18n
-     */
-    public static function getInstance()
-    {
-        static $instance = array();
-        if (!$instance) {
-            $instance[0] = new I18n();
-        }
-        return $instance[0];
     }
 
     /**
@@ -295,85 +267,17 @@ class I18n
     }
 
     /**
-     * Clears the domains internal data array. Useful for testing i18n.
+     * Return a static instance of the I18n class
      *
-     * @return void
+     * @return I18n
      */
-    public static function clear()
+    public static function getInstance()
     {
-        $self = I18n::getInstance();
-        $self->_domains = array();
-    }
-
-    /**
-     * Get the loaded domains cache.
-     *
-     * @return array
-     */
-    public static function domains()
-    {
-        $self = I18n::getInstance();
-        return $self->_domains;
-    }
-
-    /**
-     * Attempts to find the plural form of a string.
-     *
-     * @param string $header Type
-     * @param int $n Number
-     * @return int plural match
-     * @link http://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html
-     * @link https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localization_and_Plurals#List_of_Plural_Rules
-     */
-    protected function _pluralGuess($header, $n)
-    {
-        if (!is_string($header) || $header === "nplurals=1;plural=0;" || !isset($header[0])) {
-            return 0;
+        static $instance = array();
+        if (!$instance) {
+            $instance[0] = new I18n();
         }
-
-        if ($header === "nplurals=2;plural=n!=1;") {
-            return $n != 1 ? 1 : 0;
-        } elseif ($header === "nplurals=2;plural=n>1;") {
-            return $n > 1 ? 1 : 0;
-        }
-
-        if (strpos($header, "plurals=3")) {
-            if (strpos($header, "100!=11")) {
-                if (strpos($header, "10<=4")) {
-                    return $n % 10 == 1 && $n % 100 != 11 ? 0 : ($n % 10 >= 2 && $n % 10 <= 4 && ($n % 100 < 10 || $n % 100 >= 20) ? 1 : 2);
-                } elseif (strpos($header, "100<10")) {
-                    return $n % 10 == 1 && $n % 100 != 11 ? 0 : ($n % 10 >= 2 && ($n % 100 < 10 || $n % 100 >= 20) ? 1 : 2);
-                }
-                return $n % 10 == 1 && $n % 100 != 11 ? 0 : ($n != 0 ? 1 : 2);
-            } elseif (strpos($header, "n==2")) {
-                return $n == 1 ? 0 : ($n == 2 ? 1 : 2);
-            } elseif (strpos($header, "n==0")) {
-                return $n == 1 ? 0 : ($n == 0 || ($n % 100 > 0 && $n % 100 < 20) ? 1 : 2);
-            } elseif (strpos($header, "n>=2")) {
-                return $n == 1 ? 0 : ($n >= 2 && $n <= 4 ? 1 : 2);
-            } elseif (strpos($header, "10>=2")) {
-                return $n == 1 ? 0 : ($n % 10 >= 2 && $n % 10 <= 4 && ($n % 100 < 10 || $n % 100 >= 20) ? 1 : 2);
-            }
-            return $n % 10 == 1 ? 0 : ($n % 10 == 2 ? 1 : 2);
-        } elseif (strpos($header, "plurals=4")) {
-            if (strpos($header, "100==2")) {
-                return $n % 100 == 1 ? 0 : ($n % 100 == 2 ? 1 : ($n % 100 == 3 || $n % 100 == 4 ? 2 : 3));
-            } elseif (strpos($header, "n>=3")) {
-                return $n == 1 ? 0 : ($n == 2 ? 1 : ($n == 0 || ($n >= 3 && $n <= 10) ? 2 : 3));
-            } elseif (strpos($header, "100>=1")) {
-                return $n == 1 ? 0 : ($n == 0 || ($n % 100 >= 1 && $n % 100 <= 10) ? 1 : ($n % 100 >= 11 && $n % 100 <= 20 ? 2 : 3));
-            }
-        } elseif (strpos($header, "plurals=5")) {
-            return $n == 1 ? 0 : ($n == 2 ? 1 : ($n >= 3 && $n <= 6 ? 2 : ($n >= 7 && $n <= 10 ? 3 : 4)));
-        } elseif (strpos($header, "plurals=6")) {
-            return $n == 0 ? 0 :
-                ($n == 1 ? 1 :
-                    ($n == 2 ? 2 :
-                        ($n % 100 >= 3 && $n % 100 <= 10 ? 3 :
-                            ($n % 100 >= 11 ? 4 : 5))));
-        }
-
-        return 0;
+        return $instance[0];
     }
 
     /**
@@ -479,6 +383,75 @@ class I18n
         }
 
         return $domain;
+    }
+
+    /**
+     * Parses a locale definition file following the POSIX standard
+     *
+     * @param string $filename Locale definition filename
+     * @return mixed Array of definitions on success or false on failure
+     */
+    public static function loadLocaleDefinition($filename)
+    {
+        if (!$file = fopen($filename, 'r')) {
+            return false;
+        }
+
+        $definitions = array();
+        $comment = '#';
+        $escape = '\\';
+        $currentToken = false;
+        $value = '';
+        $_this = I18n::getInstance();
+        while ($line = fgets($file)) {
+            $line = trim($line);
+            if (empty($line) || $line[0] === $comment) {
+                continue;
+            }
+            $parts = preg_split("/[[:space:]]+/", $line);
+            if ($parts[0] === 'comment_char') {
+                $comment = $parts[1];
+                continue;
+            }
+            if ($parts[0] === 'escape_char') {
+                $escape = $parts[1];
+                continue;
+            }
+            $count = count($parts);
+            if ($count === 2) {
+                $currentToken = $parts[0];
+                $value = $parts[1];
+            } elseif ($count === 1) {
+                $value = is_array($value) ? $parts[0] : $value . $parts[0];
+            } else {
+                continue;
+            }
+
+            $len = strlen($value) - 1;
+            if ($value[$len] === $escape) {
+                $value = substr($value, 0, $len);
+                continue;
+            }
+
+            $mustEscape = array($escape . ',', $escape . ';', $escape . '<', $escape . '>', $escape . $escape);
+            $replacements = array_map('crc32', $mustEscape);
+            $value = str_replace($mustEscape, $replacements, $value);
+            $value = explode(';', $value);
+            $_this->_escape = $escape;
+            foreach ($value as $i => $val) {
+                $val = trim($val, '"');
+                $val = preg_replace_callback('/(?:<)?(.[^>]*)(?:>)?/', array(&$_this, '_parseLiteralValue'), $val);
+                $val = str_replace($replacements, $mustEscape, $val);
+                $value[$i] = $val;
+            }
+            if (count($value) === 1) {
+                $definitions[$currentToken] = array_pop($value);
+            } else {
+                $definitions[$currentToken] = $value;
+            }
+        }
+
+        return $definitions;
     }
 
     /**
@@ -619,72 +592,102 @@ class I18n
     }
 
     /**
-     * Parses a locale definition file following the POSIX standard
+     * Returns a Time format definition from corresponding domain
      *
-     * @param string $filename Locale definition filename
-     * @return mixed Array of definitions on success or false on failure
+     * @param string $format Format to be translated
+     * @param string $domain Domain where format is stored
+     * @return mixed translated format string if only value or array of translated strings for corresponding format.
      */
-    public static function loadLocaleDefinition($filename)
+    protected function _translateTime($format, $domain)
     {
-        if (!$file = fopen($filename, 'r')) {
-            return false;
-        }
-
-        $definitions = array();
-        $comment = '#';
-        $escape = '\\';
-        $currentToken = false;
-        $value = '';
-        $_this = I18n::getInstance();
-        while ($line = fgets($file)) {
-            $line = trim($line);
-            if (empty($line) || $line[0] === $comment) {
-                continue;
-            }
-            $parts = preg_split("/[[:space:]]+/", $line);
-            if ($parts[0] === 'comment_char') {
-                $comment = $parts[1];
-                continue;
-            }
-            if ($parts[0] === 'escape_char') {
-                $escape = $parts[1];
-                continue;
-            }
-            $count = count($parts);
-            if ($count === 2) {
-                $currentToken = $parts[0];
-                $value = $parts[1];
-            } elseif ($count === 1) {
-                $value = is_array($value) ? $parts[0] : $value . $parts[0];
-            } else {
-                continue;
-            }
-
-            $len = strlen($value) - 1;
-            if ($value[$len] === $escape) {
-                $value = substr($value, 0, $len);
-                continue;
-            }
-
-            $mustEscape = array($escape . ',', $escape . ';', $escape . '<', $escape . '>', $escape . $escape);
-            $replacements = array_map('crc32', $mustEscape);
-            $value = str_replace($mustEscape, $replacements, $value);
-            $value = explode(';', $value);
-            $_this->_escape = $escape;
-            foreach ($value as $i => $val) {
-                $val = trim($val, '"');
-                $val = preg_replace_callback('/(?:<)?(.[^>]*)(?:>)?/', array(&$_this, '_parseLiteralValue'), $val);
-                $val = str_replace($replacements, $mustEscape, $val);
-                $value[$i] = $val;
-            }
-            if (count($value) === 1) {
-                $definitions[$currentToken] = array_pop($value);
-            } else {
-                $definitions[$currentToken] = $value;
+        if (!empty($this->_domains[$domain][$this->_lang]['LC_TIME'][$format])) {
+            if (($trans = $this->_domains[$domain][$this->_lang][$this->category][$format])) {
+                return $trans;
             }
         }
+        return $format;
+    }
 
-        return $definitions;
+    /**
+     * Attempts to find the plural form of a string.
+     *
+     * @param string $header Type
+     * @param int $n Number
+     * @return int plural match
+     * @link http://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html
+     * @link https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localization_and_Plurals#List_of_Plural_Rules
+     */
+    protected function _pluralGuess($header, $n)
+    {
+        if (!is_string($header) || $header === "nplurals=1;plural=0;" || !isset($header[0])) {
+            return 0;
+        }
+
+        if ($header === "nplurals=2;plural=n!=1;") {
+            return $n != 1 ? 1 : 0;
+        } elseif ($header === "nplurals=2;plural=n>1;") {
+            return $n > 1 ? 1 : 0;
+        }
+
+        if (strpos($header, "plurals=3")) {
+            if (strpos($header, "100!=11")) {
+                if (strpos($header, "10<=4")) {
+                    return $n % 10 == 1 && $n % 100 != 11 ? 0 : ($n % 10 >= 2 && $n % 10 <= 4 && ($n % 100 < 10 || $n % 100 >= 20) ? 1 : 2);
+                } elseif (strpos($header, "100<10")) {
+                    return $n % 10 == 1 && $n % 100 != 11 ? 0 : ($n % 10 >= 2 && ($n % 100 < 10 || $n % 100 >= 20) ? 1 : 2);
+                }
+                return $n % 10 == 1 && $n % 100 != 11 ? 0 : ($n != 0 ? 1 : 2);
+            } elseif (strpos($header, "n==2")) {
+                return $n == 1 ? 0 : ($n == 2 ? 1 : 2);
+            } elseif (strpos($header, "n==0")) {
+                return $n == 1 ? 0 : ($n == 0 || ($n % 100 > 0 && $n % 100 < 20) ? 1 : 2);
+            } elseif (strpos($header, "n>=2")) {
+                return $n == 1 ? 0 : ($n >= 2 && $n <= 4 ? 1 : 2);
+            } elseif (strpos($header, "10>=2")) {
+                return $n == 1 ? 0 : ($n % 10 >= 2 && $n % 10 <= 4 && ($n % 100 < 10 || $n % 100 >= 20) ? 1 : 2);
+            }
+            return $n % 10 == 1 ? 0 : ($n % 10 == 2 ? 1 : 2);
+        } elseif (strpos($header, "plurals=4")) {
+            if (strpos($header, "100==2")) {
+                return $n % 100 == 1 ? 0 : ($n % 100 == 2 ? 1 : ($n % 100 == 3 || $n % 100 == 4 ? 2 : 3));
+            } elseif (strpos($header, "n>=3")) {
+                return $n == 1 ? 0 : ($n == 2 ? 1 : ($n == 0 || ($n >= 3 && $n <= 10) ? 2 : 3));
+            } elseif (strpos($header, "100>=1")) {
+                return $n == 1 ? 0 : ($n == 0 || ($n % 100 >= 1 && $n % 100 <= 10) ? 1 : ($n % 100 >= 11 && $n % 100 <= 20 ? 2 : 3));
+            }
+        } elseif (strpos($header, "plurals=5")) {
+            return $n == 1 ? 0 : ($n == 2 ? 1 : ($n >= 3 && $n <= 6 ? 2 : ($n >= 7 && $n <= 10 ? 3 : 4)));
+        } elseif (strpos($header, "plurals=6")) {
+            return $n == 0 ? 0 :
+                ($n == 1 ? 1 :
+                    ($n == 2 ? 2 :
+                        ($n % 100 >= 3 && $n % 100 <= 10 ? 3 :
+                            ($n % 100 >= 11 ? 4 : 5))));
+        }
+
+        return 0;
+    }
+
+    /**
+     * Clears the domains internal data array. Useful for testing i18n.
+     *
+     * @return void
+     */
+    public static function clear()
+    {
+        $self = I18n::getInstance();
+        $self->_domains = array();
+    }
+
+    /**
+     * Get the loaded domains cache.
+     *
+     * @return array
+     */
+    public static function domains()
+    {
+        $self = I18n::getInstance();
+        return $self->_domains;
     }
 
     /**
@@ -738,23 +741,6 @@ class I18n
             return Multibyte::ascii(array(hexdec($match[1])));
         }
         return $string;
-    }
-
-    /**
-     * Returns a Time format definition from corresponding domain
-     *
-     * @param string $format Format to be translated
-     * @param string $domain Domain where format is stored
-     * @return mixed translated format string if only value or array of translated strings for corresponding format.
-     */
-    protected function _translateTime($format, $domain)
-    {
-        if (!empty($this->_domains[$domain][$this->_lang]['LC_TIME'][$format])) {
-            if (($trans = $this->_domains[$domain][$this->_lang][$this->category][$format])) {
-                return $trans;
-            }
-        }
-        return $format;
     }
 
 }

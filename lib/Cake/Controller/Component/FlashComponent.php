@@ -53,6 +53,33 @@ class FlashComponent extends Component
     }
 
     /**
+     * Magic method for verbose flash methods based on element names.
+     *
+     * For example: $this->Flash->success('My message') would use the
+     * success.ctp element under `app/View/Element/Flash` for rendering the
+     * flash message.
+     *
+     * @param string $name Element name to use.
+     * @param array $args Parameters to pass when calling `FlashComponent::set()`.
+     * @return void
+     * @throws InternalErrorException If missing the flash message.
+     */
+    public function __call($name, $args)
+    {
+        $options = array('element' => Inflector::underscore($name));
+
+        if (count($args) < 1) {
+            throw new InternalErrorException('Flash message missing.');
+        }
+
+        if (!empty($args[1])) {
+            $options += (array)$args[1];
+        }
+
+        $this->set($args[0], $options);
+    }
+
+    /**
      * Used to set a session variable that can be used to output messages in the view.
      *
      * In your controller: $this->Flash->set('This has been saved');
@@ -91,32 +118,5 @@ class FlashComponent extends Component
             'element' => $options['element'],
             'params' => $options['params']
         ));
-    }
-
-    /**
-     * Magic method for verbose flash methods based on element names.
-     *
-     * For example: $this->Flash->success('My message') would use the
-     * success.ctp element under `app/View/Element/Flash` for rendering the
-     * flash message.
-     *
-     * @param string $name Element name to use.
-     * @param array $args Parameters to pass when calling `FlashComponent::set()`.
-     * @return void
-     * @throws InternalErrorException If missing the flash message.
-     */
-    public function __call($name, $args)
-    {
-        $options = array('element' => Inflector::underscore($name));
-
-        if (count($args) < 1) {
-            throw new InternalErrorException('Flash message missing.');
-        }
-
-        if (!empty($args[1])) {
-            $options += (array)$args[1];
-        }
-
-        $this->set($args[0], $options);
     }
 }

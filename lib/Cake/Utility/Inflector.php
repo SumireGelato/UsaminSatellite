@@ -264,28 +264,6 @@ class Inflector
     protected static $_initialState = array();
 
     /**
-     * Cache inflected values, and return if already available
-     *
-     * @param string $type Inflection type
-     * @param string $key Original value
-     * @param string $value Inflected value
-     * @return string Inflected value, from cache
-     */
-    protected static function _cache($type, $key, $value = false)
-    {
-        $key = '_' . $key;
-        $type = '_' . $type;
-        if ($value !== false) {
-            static::$_cache[$type][$key] = $value;
-            return $value;
-        }
-        if (!isset(static::$_cache[$type][$key])) {
-            return false;
-        }
-        return static::$_cache[$type][$key];
-    }
-
-    /**
      * Clears Inflectors inflected value caches. And resets the inflection
      * rules to the initial values.
      *
@@ -366,6 +344,44 @@ class Inflector
     }
 
     /**
+     * Returns corresponding table name for given model $className. ("people" for the model class "Person").
+     *
+     * @param string $className Name of class to get database table name for
+     * @return string Name of the database table for given class
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::tableize
+     */
+    public static function tableize($className)
+    {
+        if (!($result = static::_cache(__FUNCTION__, $className))) {
+            $result = Inflector::pluralize(Inflector::underscore($className));
+            static::_cache(__FUNCTION__, $className, $result);
+        }
+        return $result;
+    }
+
+    /**
+     * Cache inflected values, and return if already available
+     *
+     * @param string $type Inflection type
+     * @param string $key Original value
+     * @param string $value Inflected value
+     * @return string Inflected value, from cache
+     */
+    protected static function _cache($type, $key, $value = false)
+    {
+        $key = '_' . $key;
+        $type = '_' . $type;
+        if ($value !== false) {
+            static::$_cache[$type][$key] = $value;
+            return $value;
+        }
+        if (!isset(static::$_cache[$type][$key])) {
+            return false;
+        }
+        return static::$_cache[$type][$key];
+    }
+
+    /**
      * Return $word in plural form.
      *
      * @param string $word Word in singular
@@ -409,6 +425,76 @@ class Inflector
                 return static::$_cache['pluralize'][$word];
             }
         }
+    }
+
+    /**
+     * Returns the given camelCasedWord as an underscored_word.
+     *
+     * @param string $camelCasedWord Camel-cased word to be "underscorized"
+     * @return string Underscore-syntaxed version of the $camelCasedWord
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::underscore
+     */
+    public static function underscore($camelCasedWord)
+    {
+        if (!($result = static::_cache(__FUNCTION__, $camelCasedWord))) {
+            $underscoredWord = preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $camelCasedWord);
+            $result = mb_strtolower($underscoredWord);
+            static::_cache(__FUNCTION__, $camelCasedWord, $result);
+        }
+        return $result;
+    }
+
+    /**
+     * Returns Cake model class name ("Person" for the database table "people".) for given database table.
+     *
+     * @param string $tableName Name of database table to get class name for
+     * @return string Class name
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::classify
+     */
+    public static function classify($tableName)
+    {
+        if (!($result = static::_cache(__FUNCTION__, $tableName))) {
+            $result = Inflector::camelize(Inflector::singularize($tableName));
+            static::_cache(__FUNCTION__, $tableName, $result);
+        }
+        return $result;
+    }
+
+    /**
+     * Returns the given lower_case_and_underscored_word as a CamelCased word.
+     *
+     * @param string $lowerCaseAndUnderscoredWord Word to camelize
+     * @return string Camelized word. LikeThis.
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::camelize
+     */
+    public static function camelize($lowerCaseAndUnderscoredWord)
+    {
+        if (!($result = static::_cache(__FUNCTION__, $lowerCaseAndUnderscoredWord))) {
+            $result = str_replace(' ', '', Inflector::humanize($lowerCaseAndUnderscoredWord));
+            static::_cache(__FUNCTION__, $lowerCaseAndUnderscoredWord, $result);
+        }
+        return $result;
+    }
+
+    /**
+     * Returns the given underscored_word_group as a Human Readable Word Group.
+     * (Underscores are replaced by spaces and capitalized following words.)
+     *
+     * @param string $lowerCaseAndUnderscoredWord String to be made more readable
+     * @return string Human-readable string
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::humanize
+     */
+    public static function humanize($lowerCaseAndUnderscoredWord)
+    {
+        if (!($result = static::_cache(__FUNCTION__, $lowerCaseAndUnderscoredWord))) {
+            $result = explode(' ', str_replace('_', ' ', $lowerCaseAndUnderscoredWord));
+            foreach ($result as &$word) {
+                $word = mb_strtoupper(mb_substr($word, 0, 1)) . mb_substr($word, 1);
+            }
+            $result = implode(' ', $result);
+            static::_cache(__FUNCTION__, $lowerCaseAndUnderscoredWord, $result);
+        }
+        return $result;
     }
 
     /**
@@ -463,92 +549,6 @@ class Inflector
         }
         static::$_cache['singularize'][$word] = $word;
         return $word;
-    }
-
-    /**
-     * Returns the given lower_case_and_underscored_word as a CamelCased word.
-     *
-     * @param string $lowerCaseAndUnderscoredWord Word to camelize
-     * @return string Camelized word. LikeThis.
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::camelize
-     */
-    public static function camelize($lowerCaseAndUnderscoredWord)
-    {
-        if (!($result = static::_cache(__FUNCTION__, $lowerCaseAndUnderscoredWord))) {
-            $result = str_replace(' ', '', Inflector::humanize($lowerCaseAndUnderscoredWord));
-            static::_cache(__FUNCTION__, $lowerCaseAndUnderscoredWord, $result);
-        }
-        return $result;
-    }
-
-    /**
-     * Returns the given camelCasedWord as an underscored_word.
-     *
-     * @param string $camelCasedWord Camel-cased word to be "underscorized"
-     * @return string Underscore-syntaxed version of the $camelCasedWord
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::underscore
-     */
-    public static function underscore($camelCasedWord)
-    {
-        if (!($result = static::_cache(__FUNCTION__, $camelCasedWord))) {
-            $underscoredWord = preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $camelCasedWord);
-            $result = mb_strtolower($underscoredWord);
-            static::_cache(__FUNCTION__, $camelCasedWord, $result);
-        }
-        return $result;
-    }
-
-    /**
-     * Returns the given underscored_word_group as a Human Readable Word Group.
-     * (Underscores are replaced by spaces and capitalized following words.)
-     *
-     * @param string $lowerCaseAndUnderscoredWord String to be made more readable
-     * @return string Human-readable string
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::humanize
-     */
-    public static function humanize($lowerCaseAndUnderscoredWord)
-    {
-        if (!($result = static::_cache(__FUNCTION__, $lowerCaseAndUnderscoredWord))) {
-            $result = explode(' ', str_replace('_', ' ', $lowerCaseAndUnderscoredWord));
-            foreach ($result as &$word) {
-                $word = mb_strtoupper(mb_substr($word, 0, 1)) . mb_substr($word, 1);
-            }
-            $result = implode(' ', $result);
-            static::_cache(__FUNCTION__, $lowerCaseAndUnderscoredWord, $result);
-        }
-        return $result;
-    }
-
-    /**
-     * Returns corresponding table name for given model $className. ("people" for the model class "Person").
-     *
-     * @param string $className Name of class to get database table name for
-     * @return string Name of the database table for given class
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::tableize
-     */
-    public static function tableize($className)
-    {
-        if (!($result = static::_cache(__FUNCTION__, $className))) {
-            $result = Inflector::pluralize(Inflector::underscore($className));
-            static::_cache(__FUNCTION__, $className, $result);
-        }
-        return $result;
-    }
-
-    /**
-     * Returns Cake model class name ("Person" for the database table "people".) for given database table.
-     *
-     * @param string $tableName Name of database table to get class name for
-     * @return string Class name
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::classify
-     */
-    public static function classify($tableName)
-    {
-        if (!($result = static::_cache(__FUNCTION__, $tableName))) {
-            $result = Inflector::camelize(Inflector::singularize($tableName));
-            static::_cache(__FUNCTION__, $tableName, $result);
-        }
-        return $result;
     }
 
     /**

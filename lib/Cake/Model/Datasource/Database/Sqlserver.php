@@ -32,56 +32,30 @@ class Sqlserver extends DboSource
 {
 
     /**
+     * Magic column name used to provide pagination support for SQLServer 2008
+     * which lacks proper limit/offset support.
+     *
+     * @var string
+     */
+    const ROW_COUNTER = '_cake_page_rownum_';
+    /**
      * Driver description
      *
      * @var string
      */
     public $description = "SQL Server DBO Driver";
-
     /**
      * Starting quote character for quoted identifiers
      *
      * @var string
      */
     public $startQuote = "[";
-
     /**
      * Ending quote character for quoted identifiers
      *
      * @var string
      */
     public $endQuote = "]";
-
-    /**
-     * Creates a map between field aliases and numeric indexes. Workaround for the
-     * SQL Server driver's 30-character column name limitation.
-     *
-     * @var array
-     */
-    protected $_fieldMappings = array();
-
-    /**
-     * Storing the last affected value
-     *
-     * @var mixed
-     */
-    protected $_lastAffected = false;
-
-    /**
-     * Base configuration settings for MS SQL driver
-     *
-     * @var array
-     */
-    protected $_baseConfig = array(
-        'persistent' => true,
-        'host' => 'localhost\SQLEXPRESS',
-        'login' => '',
-        'password' => '',
-        'database' => 'cake',
-        'schema' => '',
-        'flags' => array()
-    );
-
     /**
      * MS SQL column definition
      *
@@ -104,14 +78,33 @@ class Sqlserver extends DboSource
         'binary' => array('name' => 'varbinary'),
         'boolean' => array('name' => 'bit')
     );
-
     /**
-     * Magic column name used to provide pagination support for SQLServer 2008
-     * which lacks proper limit/offset support.
+     * Creates a map between field aliases and numeric indexes. Workaround for the
+     * SQL Server driver's 30-character column name limitation.
      *
-     * @var string
+     * @var array
      */
-    const ROW_COUNTER = '_cake_page_rownum_';
+    protected $_fieldMappings = array();
+    /**
+     * Storing the last affected value
+     *
+     * @var mixed
+     */
+    protected $_lastAffected = false;
+    /**
+     * Base configuration settings for MS SQL driver
+     *
+     * @var array
+     */
+    protected $_baseConfig = array(
+        'persistent' => true,
+        'host' => 'localhost\SQLEXPRESS',
+        'login' => '',
+        'password' => '',
+        'database' => 'cake',
+        'schema' => '',
+        'flags' => array()
+    );
 
     /**
      * Connects to the database using options in the given configuration array.
@@ -157,6 +150,43 @@ class Sqlserver extends DboSource
     }
 
     /**
+     * Executes given SQL statement.
+     *
+     * @param string $sql SQL statement
+     * @param array $params list of params to be bound to query (supported only in select)
+     * @param array $prepareOptions Options to be used in the prepare statement
+     * @return mixed PDOStatement if query executes with no problem, true as the result of a successful, false on error
+     * query returning no rows, such as a CREATE statement, false otherwise
+     * @throws PDOException
+     */
+    protected function _execute($sql, $params = array(), $prepareOptions = array())
+    {
+        $this->_lastAffected = false;
+        $sql = trim($sql);
+        if (strncasecmp($sql, 'SELECT', 6) === 0 || preg_match('/^EXEC(?:UTE)?\s/mi', $sql) > 0) {
+            $prepareOptions += array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL);
+            return parent::_execute($sql, $params, $prepareOptions);
+        }
+        try {
+            $this->_lastAffected = $this->_connection->exec($sql);
+            if ($this->_lastAffected === false) {
+                $this->_results = null;
+                $error = $this->_connection->errorInfo();
+                $this->error = $error[2];
+                return false;
+            }
+            return true;
+        } catch (PDOException $e) {
+            if (isset($query->queryString)) {
+                $e->queryString = $query->queryString;
+            } else {
+                $e->queryString = $sql;
+            }
+            throw $e;
+        }
+    }
+
+    /**
      * Check that PDO SQL Server is installed/loaded
      *
      * @return bool
@@ -193,82 +223,6 @@ class Sqlserver extends DboSource
         $result->closeCursor();
         parent::listSources($tables);
         return $tables;
-    }
-
-    /**
-     * Returns an array of the fields in given table name.
-     *
-     * @param Model|string $model Model object to describe, or a string table name.
-     * @return array Fields in table. Keys are name and type
-     * @throws CakeException
-     */
-    public function describe($model)
-    {
-        $table = $this->fullTableName($model, false, false);
-        $fulltable = $this->fullTableName($model, false, true);
-
-        $cache = parent::describe($fulltable);
-        if ($cache) {
-            return $cache;
-        }
-
-        $fields = array();
-        $schema = is_object($model) ? $model->schemaName : false;
-
-        $cols = $this->_execute(
-            "SELECT
-				COLUMN_NAME as Field,
-				DATA_TYPE as Type,
-				COL_LENGTH('" . ($schema ? $fulltable : $table) . "', COLUMN_NAME) as Length,
-				IS_NULLABLE As [Null],
-				COLUMN_DEFAULT as [Default],
-				COLUMNPROPERTY(OBJECT_ID('" . ($schema ? $fulltable : $table) . "'), COLUMN_NAME, 'IsIdentity') as [Key],
-				NUMERIC_SCALE as Size
-			FROM INFORMATION_SCHEMA.COLUMNS
-			WHERE TABLE_NAME = '" . $table . "'" . ($schema ? " AND TABLE_SCHEMA = '" . $schema . "'" : '')
-        );
-
-        if (!$cols) {
-            throw new CakeException(__d('cake_dev', 'Could not describe table for %s', $table));
-        }
-
-        while ($column = $cols->fetch(PDO::FETCH_OBJ)) {
-            $field = $column->Field;
-            $fields[$field] = array(
-                'type' => $this->column($column),
-                'null' => ($column->Null === 'YES' ? true : false),
-                'default' => $column->Default,
-                'length' => $this->length($column),
-                'key' => ($column->Key == '1') ? 'primary' : false
-            );
-
-            if ($fields[$field]['default'] === 'null') {
-                $fields[$field]['default'] = null;
-            }
-            if ($fields[$field]['default'] !== null) {
-                $fields[$field]['default'] = preg_replace(
-                    "/^[(]{1,2}'?([^')]*)?'?[)]{1,2}$/",
-                    "$1",
-                    $fields[$field]['default']
-                );
-                $this->value($fields[$field]['default'], $fields[$field]['type']);
-            }
-
-            if ($fields[$field]['key'] !== false && $fields[$field]['type'] === 'integer') {
-                $fields[$field]['length'] = 11;
-            } elseif ($fields[$field]['key'] === false) {
-                unset($fields[$field]['key']);
-            }
-            if (in_array($fields[$field]['type'], array('date', 'time', 'datetime', 'timestamp'))) {
-                $fields[$field]['length'] = null;
-            }
-            if ($fields[$field]['type'] === 'float' && !empty($column->Size)) {
-                $fields[$field]['length'] = $fields[$field]['length'] . ',' . $column->Size;
-            }
-        }
-        $this->_cacheDescription($table, $fields);
-        $cols->closeCursor();
-        return $fields;
     }
 
     /**
@@ -371,50 +325,96 @@ class Sqlserver extends DboSource
     }
 
     /**
-     * Generates and executes an SQL UPDATE statement for given model, fields, and values.
-     * Removes Identity (primary key) column from update data before returning to parent.
+     * Makes sure it will return the primary key
      *
-     * @param Model $model The model to update.
-     * @param array $fields The fields to set.
-     * @param array $values The values to set.
-     * @param mixed $conditions The conditions to use.
-     * @return array
+     * @param Model|string $model Model instance of table name
+     * @return string
      */
-    public function update(Model $model, $fields = array(), $values = null, $conditions = null)
+    protected function _getPrimaryKey($model)
     {
-        if (!empty($values)) {
-            $fields = array_combine($fields, $values);
+        $schema = $this->describe($model);
+        foreach ($schema as $field => $props) {
+            if (isset($props['key']) && $props['key'] === 'primary') {
+                return $field;
+            }
         }
-        if (isset($fields[$model->primaryKey])) {
-            unset($fields[$model->primaryKey]);
-        }
-        if (empty($fields)) {
-            return true;
-        }
-        return parent::update($model, array_keys($fields), array_values($fields), $conditions);
+        return null;
     }
 
     /**
-     * Returns a limit statement in the correct format for the particular database.
+     * Returns an array of the fields in given table name.
      *
-     * @param int $limit Limit of results returned
-     * @param int $offset Offset from which to start results
-     * @return string SQL limit/offset statement
+     * @param Model|string $model Model object to describe, or a string table name.
+     * @return array Fields in table. Keys are name and type
+     * @throws CakeException
      */
-    public function limit($limit, $offset = null)
+    public function describe($model)
     {
-        if ($limit) {
-            $rt = '';
-            if (!strpos(strtolower($limit), 'top') || strpos(strtolower($limit), 'top') === 0) {
-                $rt = ' TOP';
-            }
-            $rt .= sprintf(' %u', $limit);
-            if (is_int($offset) && $offset > 0) {
-                $rt = sprintf(' OFFSET %u ROWS FETCH FIRST %u ROWS ONLY', $offset, $limit);
-            }
-            return $rt;
+        $table = $this->fullTableName($model, false, false);
+        $fulltable = $this->fullTableName($model, false, true);
+
+        $cache = parent::describe($fulltable);
+        if ($cache) {
+            return $cache;
         }
-        return null;
+
+        $fields = array();
+        $schema = is_object($model) ? $model->schemaName : false;
+
+        $cols = $this->_execute(
+            "SELECT
+				COLUMN_NAME as Field,
+				DATA_TYPE as Type,
+				COL_LENGTH('" . ($schema ? $fulltable : $table) . "', COLUMN_NAME) as Length,
+				IS_NULLABLE As [Null],
+				COLUMN_DEFAULT as [Default],
+				COLUMNPROPERTY(OBJECT_ID('" . ($schema ? $fulltable : $table) . "'), COLUMN_NAME, 'IsIdentity') as [Key],
+				NUMERIC_SCALE as Size
+			FROM INFORMATION_SCHEMA.COLUMNS
+			WHERE TABLE_NAME = '" . $table . "'" . ($schema ? " AND TABLE_SCHEMA = '" . $schema . "'" : '')
+        );
+
+        if (!$cols) {
+            throw new CakeException(__d('cake_dev', 'Could not describe table for %s', $table));
+        }
+
+        while ($column = $cols->fetch(PDO::FETCH_OBJ)) {
+            $field = $column->Field;
+            $fields[$field] = array(
+                'type' => $this->column($column),
+                'null' => ($column->Null === 'YES' ? true : false),
+                'default' => $column->Default,
+                'length' => $this->length($column),
+                'key' => ($column->Key == '1') ? 'primary' : false
+            );
+
+            if ($fields[$field]['default'] === 'null') {
+                $fields[$field]['default'] = null;
+            }
+            if ($fields[$field]['default'] !== null) {
+                $fields[$field]['default'] = preg_replace(
+                    "/^[(]{1,2}'?([^')]*)?'?[)]{1,2}$/",
+                    "$1",
+                    $fields[$field]['default']
+                );
+                $this->value($fields[$field]['default'], $fields[$field]['type']);
+            }
+
+            if ($fields[$field]['key'] !== false && $fields[$field]['type'] === 'integer') {
+                $fields[$field]['length'] = 11;
+            } elseif ($fields[$field]['key'] === false) {
+                unset($fields[$field]['key']);
+            }
+            if (in_array($fields[$field]['type'], array('date', 'time', 'datetime', 'timestamp'))) {
+                $fields[$field]['length'] = null;
+            }
+            if ($fields[$field]['type'] === 'float' && !empty($column->Size)) {
+                $fields[$field]['length'] = $fields[$field]['length'] . ',' . $column->Size;
+            }
+        }
+        $this->_cacheDescription($table, $fields);
+        $cols->closeCursor();
+        return $fields;
     }
 
     /**
@@ -491,6 +491,83 @@ class Sqlserver extends DboSource
             return $length->Length;
         }
         return parent::length($length);
+    }
+
+    /**
+     * Returns a quoted and escaped string of $data for use in an SQL statement.
+     *
+     * @param string $data String to be prepared for use in an SQL statement
+     * @param string $column The column into which this data will be inserted
+     * @param bool $null Column allows NULL values
+     * @return string Quoted and escaped data
+     */
+    public function value($data, $column = null, $null = true)
+    {
+        if ($data === null || is_array($data) || is_object($data)) {
+            return parent::value($data, $column, $null);
+        }
+        if (in_array($data, array('{$__cakeID__$}', '{$__cakeForeignKey__$}'), true)) {
+            return $data;
+        }
+
+        if (empty($column)) {
+            $column = $this->introspectType($data);
+        }
+
+        switch ($column) {
+            case 'string':
+            case 'text':
+                return 'N' . $this->_connection->quote($data, PDO::PARAM_STR);
+            default:
+                return parent::value($data, $column, $null);
+        }
+    }
+
+    /**
+     * Generates and executes an SQL UPDATE statement for given model, fields, and values.
+     * Removes Identity (primary key) column from update data before returning to parent.
+     *
+     * @param Model $model The model to update.
+     * @param array $fields The fields to set.
+     * @param array $values The values to set.
+     * @param mixed $conditions The conditions to use.
+     * @return array
+     */
+    public function update(Model $model, $fields = array(), $values = null, $conditions = null)
+    {
+        if (!empty($values)) {
+            $fields = array_combine($fields, $values);
+        }
+        if (isset($fields[$model->primaryKey])) {
+            unset($fields[$model->primaryKey]);
+        }
+        if (empty($fields)) {
+            return true;
+        }
+        return parent::update($model, array_keys($fields), array_values($fields), $conditions);
+    }
+
+    /**
+     * Returns a limit statement in the correct format for the particular database.
+     *
+     * @param int $limit Limit of results returned
+     * @param int $offset Offset from which to start results
+     * @return string SQL limit/offset statement
+     */
+    public function limit($limit, $offset = null)
+    {
+        if ($limit) {
+            $rt = '';
+            if (!strpos(strtolower($limit), 'top') || strpos(strtolower($limit), 'top') === 0) {
+                $rt = ' TOP';
+            }
+            $rt .= sprintf(' %u', $limit);
+            if (is_int($offset) && $offset > 0) {
+                $rt = sprintf(' OFFSET %u ROWS FETCH FIRST %u ROWS ONLY', $offset, $limit);
+            }
+            return $rt;
+        }
+        return null;
     }
 
     /**
@@ -589,36 +666,6 @@ class Sqlserver extends DboSource
                 return trim("CREATE TABLE {$table} (\n{$columns});\n{$indexes}");
             default:
                 return parent::renderStatement($type, $data);
-        }
-    }
-
-    /**
-     * Returns a quoted and escaped string of $data for use in an SQL statement.
-     *
-     * @param string $data String to be prepared for use in an SQL statement
-     * @param string $column The column into which this data will be inserted
-     * @param bool $null Column allows NULL values
-     * @return string Quoted and escaped data
-     */
-    public function value($data, $column = null, $null = true)
-    {
-        if ($data === null || is_array($data) || is_object($data)) {
-            return parent::value($data, $column, $null);
-        }
-        if (in_array($data, array('{$__cakeID__$}', '{$__cakeForeignKey__$}'), true)) {
-            return $data;
-        }
-
-        if (empty($column)) {
-            $column = $this->introspectType($data);
-        }
-
-        switch ($column) {
-            case 'string':
-            case 'text':
-                return 'N' . $this->_connection->quote($data, PDO::PARAM_STR);
-            default:
-                return parent::value($data, $column, $null);
         }
     }
 
@@ -748,23 +795,6 @@ class Sqlserver extends DboSource
     }
 
     /**
-     * Makes sure it will return the primary key
-     *
-     * @param Model|string $model Model instance of table name
-     * @return string
-     */
-    protected function _getPrimaryKey($model)
-    {
-        $schema = $this->describe($model);
-        foreach ($schema as $field => $props) {
-            if (isset($props['key']) && $props['key'] === 'primary') {
-                return $field;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Returns number of affected rows in previous database operation. If no previous operation exists,
      * this returns false.
      *
@@ -781,40 +811,13 @@ class Sqlserver extends DboSource
     }
 
     /**
-     * Executes given SQL statement.
+     * Gets the schema name
      *
-     * @param string $sql SQL statement
-     * @param array $params list of params to be bound to query (supported only in select)
-     * @param array $prepareOptions Options to be used in the prepare statement
-     * @return mixed PDOStatement if query executes with no problem, true as the result of a successful, false on error
-     * query returning no rows, such as a CREATE statement, false otherwise
-     * @throws PDOException
+     * @return string The schema name
      */
-    protected function _execute($sql, $params = array(), $prepareOptions = array())
+    public function getSchemaName()
     {
-        $this->_lastAffected = false;
-        $sql = trim($sql);
-        if (strncasecmp($sql, 'SELECT', 6) === 0 || preg_match('/^EXEC(?:UTE)?\s/mi', $sql) > 0) {
-            $prepareOptions += array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL);
-            return parent::_execute($sql, $params, $prepareOptions);
-        }
-        try {
-            $this->_lastAffected = $this->_connection->exec($sql);
-            if ($this->_lastAffected === false) {
-                $this->_results = null;
-                $error = $this->_connection->errorInfo();
-                $this->error = $error[2];
-                return false;
-            }
-            return true;
-        } catch (PDOException $e) {
-            if (isset($query->queryString)) {
-                $e->queryString = $query->queryString;
-            } else {
-                $e->queryString = $sql;
-            }
-            throw $e;
-        }
+        return $this->config['schema'];
     }
 
     /**
@@ -826,16 +829,6 @@ class Sqlserver extends DboSource
     protected function _dropTable($table)
     {
         return "IF OBJECT_ID('" . $this->fullTableName($table, false) . "', 'U') IS NOT NULL DROP TABLE " . $this->fullTableName($table) . ";";
-    }
-
-    /**
-     * Gets the schema name
-     *
-     * @return string The schema name
-     */
-    public function getSchemaName()
-    {
-        return $this->config['schema'];
     }
 
 }

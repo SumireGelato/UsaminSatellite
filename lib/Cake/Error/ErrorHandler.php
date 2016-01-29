@@ -142,6 +142,29 @@ class ErrorHandler
     }
 
     /**
+     * Handles exception logging
+     *
+     * @param Exception $exception The exception to render.
+     * @param array $config An array of configuration for logging.
+     * @return bool
+     */
+    protected static function _log(Exception $exception, $config)
+    {
+        if (empty($config['log'])) {
+            return false;
+        }
+
+        if (!empty($config['skipLog'])) {
+            foreach ((array)$config['skipLog'] as $class) {
+                if ($exception instanceof $class) {
+                    return false;
+                }
+            }
+        }
+        return CakeLog::write(LOG_ERR, static::_getMessage($exception));
+    }
+
+    /**
      * Generates a formatted error message
      *
      * @param Exception $exception Exception instance
@@ -167,29 +190,6 @@ class ErrorHandler
         }
         $message .= "\nStack Trace:\n" . $exception->getTraceAsString();
         return $message;
-    }
-
-    /**
-     * Handles exception logging
-     *
-     * @param Exception $exception The exception to render.
-     * @param array $config An array of configuration for logging.
-     * @return bool
-     */
-    protected static function _log(Exception $exception, $config)
-    {
-        if (empty($config['log'])) {
-            return false;
-        }
-
-        if (!empty($config['skipLog'])) {
-            foreach ((array)$config['skipLog'] as $class) {
-                if ($exception instanceof $class) {
-                    return false;
-                }
-            }
-        }
-        return CakeLog::write(LOG_ERR, static::_getMessage($exception));
     }
 
     /**
@@ -252,47 +252,6 @@ class ErrorHandler
     }
 
     /**
-     * Generate an error page when some fatal error happens.
-     *
-     * @param int $code Code of error
-     * @param string $description Error description
-     * @param string $file File on which error occurred
-     * @param int $line Line that triggered the error
-     * @return bool
-     * @throws FatalErrorException If the Exception renderer threw an exception during rendering, and debug > 0.
-     * @throws InternalErrorException If the Exception renderer threw an exception during rendering, and debug is 0.
-     */
-    public static function handleFatalError($code, $description, $file, $line)
-    {
-        $logMessage = 'Fatal Error (' . $code . '): ' . $description . ' in [' . $file . ', line ' . $line . ']';
-        CakeLog::write(LOG_ERR, $logMessage);
-
-        $exceptionHandler = Configure::read('Exception.handler');
-        if (!is_callable($exceptionHandler)) {
-            return false;
-        }
-
-        if (ob_get_level()) {
-            ob_end_clean();
-        }
-
-        if (Configure::read('debug')) {
-            $exception = new FatalErrorException($description, 500, $file, $line);
-        } else {
-            $exception = new InternalErrorException();
-        }
-
-        if (static::$_bailExceptionRendering) {
-            static::$_bailExceptionRendering = false;
-            throw $exception;
-        }
-
-        call_user_func($exceptionHandler, $exception);
-
-        return false;
-    }
-
-    /**
      * Map an error code into an Error word, and log location.
      *
      * @param int $code Error code to map
@@ -333,6 +292,47 @@ class ErrorHandler
                 break;
         }
         return array($error, $log);
+    }
+
+    /**
+     * Generate an error page when some fatal error happens.
+     *
+     * @param int $code Code of error
+     * @param string $description Error description
+     * @param string $file File on which error occurred
+     * @param int $line Line that triggered the error
+     * @return bool
+     * @throws FatalErrorException If the Exception renderer threw an exception during rendering, and debug > 0.
+     * @throws InternalErrorException If the Exception renderer threw an exception during rendering, and debug is 0.
+     */
+    public static function handleFatalError($code, $description, $file, $line)
+    {
+        $logMessage = 'Fatal Error (' . $code . '): ' . $description . ' in [' . $file . ', line ' . $line . ']';
+        CakeLog::write(LOG_ERR, $logMessage);
+
+        $exceptionHandler = Configure::read('Exception.handler');
+        if (!is_callable($exceptionHandler)) {
+            return false;
+        }
+
+        if (ob_get_level()) {
+            ob_end_clean();
+        }
+
+        if (Configure::read('debug')) {
+            $exception = new FatalErrorException($description, 500, $file, $line);
+        } else {
+            $exception = new InternalErrorException();
+        }
+
+        if (static::$_bailExceptionRendering) {
+            static::$_bailExceptionRendering = false;
+            throw $exception;
+        }
+
+        call_user_func($exceptionHandler, $exception);
+
+        return false;
     }
 
 }

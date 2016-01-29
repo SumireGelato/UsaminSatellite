@@ -70,17 +70,6 @@ class Security
     }
 
     /**
-     * Validate authorization hash.
-     *
-     * @param string $authKey Authorization hash
-     * @return bool Success
-     */
-    public static function validateAuthKey($authKey)
-    {
-        return true;
-    }
-
-    /**
      * Create a hash from string using given method or fallback on next available method.
      *
      * #### Using Blowfish
@@ -139,6 +128,65 @@ class Security
             return hash($type, $string);
         }
         return md5($string);
+    }
+
+    /**
+     * One way encryption using php's crypt() function. To use blowfish hashing see ``Security::hash()``
+     *
+     * @param string $password The string to be encrypted.
+     * @param mixed $salt false to generate a new salt or an existing salt.
+     * @return string The hashed string or an empty string on error.
+     */
+    protected static function _crypt($password, $salt = false)
+    {
+        if ($salt === false) {
+            $salt = static::_salt(22);
+            $salt = vsprintf('$2a$%02d$%s', array(static::$hashCost, $salt));
+        }
+
+        $invalidCipher = (
+            strpos($salt, '$2y$') !== 0 &&
+            strpos($salt, '$2x$') !== 0 &&
+            strpos($salt, '$2a$') !== 0
+        );
+        if ($salt === true || $invalidCipher || strlen($salt) < 29) {
+            trigger_error(__d(
+                'cake_dev',
+                'Invalid salt: %s for %s Please visit http://www.php.net/crypt and read the appropriate section for building %s salts.',
+                array($salt, 'blowfish', 'blowfish')
+            ), E_USER_WARNING);
+            return '';
+        }
+        return crypt($password, $salt);
+    }
+
+    /**
+     * Generates a pseudo random salt suitable for use with php's crypt() function.
+     * The salt length should not exceed 27. The salt will be composed of
+     * [./0-9A-Za-z]{$length}.
+     *
+     * @param int $length The length of the returned salt
+     * @return string The generated salt
+     */
+    protected static function _salt($length = 22)
+    {
+        $salt = str_replace(
+            array('+', '='),
+            '.',
+            base64_encode(sha1(uniqid(Configure::read('Security.salt'), true), true))
+        );
+        return substr($salt, 0, $length);
+    }
+
+    /**
+     * Validate authorization hash.
+     *
+     * @param string $authKey Authorization hash
+     * @return bool Success
+     */
+    public static function validateAuthKey($authKey)
+    {
+        return true;
     }
 
     /**
@@ -254,54 +302,6 @@ class Security
         $iv = substr($text, 0, $ivSize);
         $text = substr($text, $ivSize + 2);
         return rtrim(mcrypt_decrypt($algorithm, $cryptKey, $text, $mode, $iv), "\0");
-    }
-
-    /**
-     * Generates a pseudo random salt suitable for use with php's crypt() function.
-     * The salt length should not exceed 27. The salt will be composed of
-     * [./0-9A-Za-z]{$length}.
-     *
-     * @param int $length The length of the returned salt
-     * @return string The generated salt
-     */
-    protected static function _salt($length = 22)
-    {
-        $salt = str_replace(
-            array('+', '='),
-            '.',
-            base64_encode(sha1(uniqid(Configure::read('Security.salt'), true), true))
-        );
-        return substr($salt, 0, $length);
-    }
-
-    /**
-     * One way encryption using php's crypt() function. To use blowfish hashing see ``Security::hash()``
-     *
-     * @param string $password The string to be encrypted.
-     * @param mixed $salt false to generate a new salt or an existing salt.
-     * @return string The hashed string or an empty string on error.
-     */
-    protected static function _crypt($password, $salt = false)
-    {
-        if ($salt === false) {
-            $salt = static::_salt(22);
-            $salt = vsprintf('$2a$%02d$%s', array(static::$hashCost, $salt));
-        }
-
-        $invalidCipher = (
-            strpos($salt, '$2y$') !== 0 &&
-            strpos($salt, '$2x$') !== 0 &&
-            strpos($salt, '$2a$') !== 0
-        );
-        if ($salt === true || $invalidCipher || strlen($salt) < 29) {
-            trigger_error(__d(
-                'cake_dev',
-                'Invalid salt: %s for %s Please visit http://www.php.net/crypt and read the appropriate section for building %s salts.',
-                array($salt, 'blowfish', 'blowfish')
-            ), E_USER_WARNING);
-            return '';
-        }
-        return crypt($password, $salt);
     }
 
     /**

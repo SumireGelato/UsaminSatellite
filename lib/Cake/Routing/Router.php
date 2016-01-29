@@ -42,19 +42,53 @@ class Router
 {
 
     /**
+     * Regular expression for action names
+     *
+     * @var string
+     */
+    const ACTION = 'index|show|add|create|edit|update|remove|del|delete|view|item';
+    /**
+     * Regular expression for years
+     *
+     * @var string
+     */
+    const YEAR = '[12][0-9]{3}';
+    /**
+     * Regular expression for months
+     *
+     * @var string
+     */
+    const MONTH = '0[1-9]|1[012]';
+    /**
+     * Regular expression for days
+     *
+     * @var string
+     */
+    const DAY = '0[1-9]|[12][0-9]|3[01]';
+    /**
+     * Regular expression for auto increment IDs
+     *
+     * @var string
+     */
+    const ID = '[0-9]+';
+    /**
+     * Regular expression for UUIDs
+     *
+     * @var string
+     */
+    const UUID = '[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}';
+    /**
      * Array of routes connected with Router::connect()
      *
      * @var array
      */
     public static $routes = array();
-
     /**
      * Have routes been loaded
      *
      * @var bool
      */
     public static $initialized = false;
-
     /**
      * Contains the base string that will be applied to all generated URLs
      * For example `https://example.com`
@@ -62,7 +96,6 @@ class Router
      * @var string
      */
     protected static $_fullBaseUrl;
-
     /**
      * List of action prefixes used in connected routes.
      * Includes admin prefix
@@ -70,63 +103,18 @@ class Router
      * @var array
      */
     protected static $_prefixes = array();
-
     /**
      * Directive for Router to parse out file extensions for mapping to Content-types.
      *
      * @var bool
      */
     protected static $_parseExtensions = false;
-
     /**
      * List of valid extensions to parse from a URL. If null, any extension is allowed.
      *
      * @var array
      */
     protected static $_validExtensions = array();
-
-    /**
-     * Regular expression for action names
-     *
-     * @var string
-     */
-    const ACTION = 'index|show|add|create|edit|update|remove|del|delete|view|item';
-
-    /**
-     * Regular expression for years
-     *
-     * @var string
-     */
-    const YEAR = '[12][0-9]{3}';
-
-    /**
-     * Regular expression for months
-     *
-     * @var string
-     */
-    const MONTH = '0[1-9]|1[012]';
-
-    /**
-     * Regular expression for days
-     *
-     * @var string
-     */
-    const DAY = '0[1-9]|[12][0-9]|3[01]';
-
-    /**
-     * Regular expression for auto increment IDs
-     *
-     * @var string
-     */
-    const ID = '[0-9]+';
-
-    /**
-     * Regular expression for UUIDs
-     *
-     * @var string
-     */
-    const UUID = '[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}';
-
     /**
      * Named expressions
      *
@@ -239,19 +227,6 @@ class Router
     }
 
     /**
-     * Sets the Routing prefixes.
-     *
-     * @return void
-     */
-    protected static function _setPrefixes()
-    {
-        $routing = Configure::read('Routing');
-        if (!empty($routing['prefixes'])) {
-            static::$_prefixes = array_merge(static::$_prefixes, (array)$routing['prefixes']);
-        }
-    }
-
-    /**
      * Gets the named route elements for use in app/Config/routes.php
      *
      * @return array Named route elements
@@ -275,6 +250,48 @@ class Router
             return static::$_resourceMap;
         }
         static::$_resourceMap = $resourceMap;
+    }
+
+    /**
+     * Connects a new redirection Route in the router.
+     *
+     * Redirection routes are different from normal routes as they perform an actual
+     * header redirection if a match is found. The redirection can occur within your
+     * application or redirect to an outside location.
+     *
+     * Examples:
+     *
+     * `Router::redirect('/home/*', array('controller' => 'posts', 'action' => 'view'), array('persist' => true));`
+     *
+     * Redirects /home/* to /posts/view and passes the parameters to /posts/view. Using an array as the
+     * redirect destination allows you to use other routes to define where a URL string should be redirected to.
+     *
+     * `Router::redirect('/posts/*', 'http://google.com', array('status' => 302));`
+     *
+     * Redirects /posts/* to http://google.com with a HTTP status of 302
+     *
+     * ### Options:
+     *
+     * - `status` Sets the HTTP status (default 301)
+     * - `persist` Passes the params to the redirected route, if it can. This is useful with greedy routes,
+     *   routes that end in `*` are greedy. As you can remap URLs and not loose any passed/named args.
+     *
+     * @param string $route A string describing the template of the route
+     * @param array $url A URL to redirect to. Can be a string or a CakePHP array-based URL
+     * @param array $options An array matching the named elements in the route to regular expressions which that
+     *   element should match. Also contains additional parameters such as which routed parameters should be
+     *   shifted into the passed arguments. As well as supplying patterns for routing parameters.
+     * @see routes
+     * @return array Array of routes
+     */
+    public static function redirect($route, $url, $options = array())
+    {
+        App::uses('RedirectRoute', 'Routing/Route');
+        $options['routeClass'] = 'RedirectRoute';
+        if (is_string($url)) {
+            $url = array('redirect' => $url);
+        }
+        return static::connect($route, $url, $options);
     }
 
     /**
@@ -383,48 +400,6 @@ class Router
         }
         static::$routes[] = new $routeClass($route, $defaults, $options);
         return static::$routes;
-    }
-
-    /**
-     * Connects a new redirection Route in the router.
-     *
-     * Redirection routes are different from normal routes as they perform an actual
-     * header redirection if a match is found. The redirection can occur within your
-     * application or redirect to an outside location.
-     *
-     * Examples:
-     *
-     * `Router::redirect('/home/*', array('controller' => 'posts', 'action' => 'view'), array('persist' => true));`
-     *
-     * Redirects /home/* to /posts/view and passes the parameters to /posts/view. Using an array as the
-     * redirect destination allows you to use other routes to define where a URL string should be redirected to.
-     *
-     * `Router::redirect('/posts/*', 'http://google.com', array('status' => 302));`
-     *
-     * Redirects /posts/* to http://google.com with a HTTP status of 302
-     *
-     * ### Options:
-     *
-     * - `status` Sets the HTTP status (default 301)
-     * - `persist` Passes the params to the redirected route, if it can. This is useful with greedy routes,
-     *   routes that end in `*` are greedy. As you can remap URLs and not loose any passed/named args.
-     *
-     * @param string $route A string describing the template of the route
-     * @param array $url A URL to redirect to. Can be a string or a CakePHP array-based URL
-     * @param array $options An array matching the named elements in the route to regular expressions which that
-     *   element should match. Also contains additional parameters such as which routed parameters should be
-     *   shifted into the passed arguments. As well as supplying patterns for routing parameters.
-     * @see routes
-     * @return array Array of routes
-     */
-    public static function redirect($route, $url, $options = array())
-    {
-        App::uses('RedirectRoute', 'Routing/Route');
-        $options['routeClass'] = 'RedirectRoute';
-        if (is_string($url)) {
-            $url = array('redirect' => $url);
-        }
-        return static::connect($route, $url, $options);
     }
 
     /**
@@ -643,6 +618,17 @@ class Router
     }
 
     /**
+     * Loads route configuration
+     *
+     * @return void
+     */
+    protected static function _loadRoutes()
+    {
+        static::$initialized = true;
+        include APP . 'Config' . DS . 'routes.php';
+    }
+
+    /**
      * Parses a file extension out of a URL, if Router::parseExtensions() is enabled.
      *
      * @param string $url URL.
@@ -712,18 +698,19 @@ class Router
     }
 
     /**
-     * Gets the current request object, or the first one.
+     * Gets URL parameter by name
      *
-     * @param bool $current True to get the current request object, or false to get the first one.
-     * @return CakeRequest|null Null if stack is empty.
+     * @param string $name Parameter name
+     * @param bool $current Current parameter, useful when using requestAction
+     * @return string|null Parameter value
      */
-    public static function getRequest($current = false)
+    public static function getParam($name = 'controller', $current = false)
     {
-        if ($current) {
-            $i = count(static::$_requests) - 1;
-            return isset(static::$_requests[$i]) ? static::$_requests[$i] : null;
+        $params = Router::getParams($current);
+        if (isset($params[$name])) {
+            return $params[$name];
         }
-        return isset(static::$_requests[0]) ? static::$_requests[0] : null;
+        return null;
     }
 
     /**
@@ -741,22 +728,6 @@ class Router
             return static::$_requests[0]->params;
         }
         return array();
-    }
-
-    /**
-     * Gets URL parameter by name
-     *
-     * @param string $name Parameter name
-     * @param bool $current Current parameter, useful when using requestAction
-     * @return string|null Parameter value
-     */
-    public static function getParam($name = 'controller', $current = false)
-    {
-        $params = Router::getParams($current);
-        if (isset($params[$name])) {
-            return $params[$name];
-        }
-        return null;
     }
 
     /**
@@ -798,6 +769,19 @@ class Router
     }
 
     /**
+     * Sets the Routing prefixes.
+     *
+     * @return void
+     */
+    protected static function _setPrefixes()
+    {
+        $routing = Configure::read('Routing');
+        if (!empty($routing['prefixes'])) {
+            static::$_prefixes = array_merge(static::$_prefixes, (array)$routing['prefixes']);
+        }
+    }
+
+    /**
      * Promote a route (by default, the last one added) to the beginning of the list
      *
      * @param int $which A zero-based array index representing the route to move. For example,
@@ -816,6 +800,44 @@ class Router
         unset(static::$routes[$which]);
         array_unshift(static::$routes, $route);
         return true;
+    }
+
+    /**
+     * Reverses a parsed parameter array into a string.
+     *
+     * Works similarly to Router::url(), but since parsed URL's contain additional
+     * 'pass' and 'named' as well as 'url.url' keys. Those keys need to be specially
+     * handled in order to reverse a params array into a string URL.
+     *
+     * This will strip out 'autoRender', 'bare', 'requested', and 'return' param names as those
+     * are used for CakePHP internals and should not normally be part of an output URL.
+     *
+     * @param CakeRequest|array $params The params array or CakeRequest object that needs to be reversed.
+     * @param bool $full Set to true to include the full URL including the protocol when reversing
+     *     the URL.
+     * @return string The string that is the reversed result of the array
+     */
+    public static function reverse($params, $full = false)
+    {
+        if ($params instanceof CakeRequest) {
+            $url = $params->query;
+            $params = $params->params;
+        } else {
+            $url = $params['url'];
+        }
+        $pass = isset($params['pass']) ? $params['pass'] : array();
+        $named = isset($params['named']) ? $params['named'] : array();
+
+        unset(
+            $params['pass'], $params['named'], $params['paging'], $params['models'], $params['url'], $url['url'],
+            $params['autoRender'], $params['bare'], $params['requested'], $params['return'],
+            $params['_Token']
+        );
+        $params = array_merge($params, $pass, $named);
+        if (!empty($url)) {
+            $params['?'] = $url;
+        }
+        return Router::url($params, $full);
     }
 
     /**
@@ -1113,44 +1135,6 @@ class Router
     }
 
     /**
-     * Reverses a parsed parameter array into a string.
-     *
-     * Works similarly to Router::url(), but since parsed URL's contain additional
-     * 'pass' and 'named' as well as 'url.url' keys. Those keys need to be specially
-     * handled in order to reverse a params array into a string URL.
-     *
-     * This will strip out 'autoRender', 'bare', 'requested', and 'return' param names as those
-     * are used for CakePHP internals and should not normally be part of an output URL.
-     *
-     * @param CakeRequest|array $params The params array or CakeRequest object that needs to be reversed.
-     * @param bool $full Set to true to include the full URL including the protocol when reversing
-     *     the URL.
-     * @return string The string that is the reversed result of the array
-     */
-    public static function reverse($params, $full = false)
-    {
-        if ($params instanceof CakeRequest) {
-            $url = $params->query;
-            $params = $params->params;
-        } else {
-            $url = $params['url'];
-        }
-        $pass = isset($params['pass']) ? $params['pass'] : array();
-        $named = isset($params['named']) ? $params['named'] : array();
-
-        unset(
-            $params['pass'], $params['named'], $params['paging'], $params['models'], $params['url'], $url['url'],
-            $params['autoRender'], $params['bare'], $params['requested'], $params['return'],
-            $params['_Token']
-        );
-        $params = array_merge($params, $pass, $named);
-        if (!empty($url)) {
-            $params['?'] = $url;
-        }
-        return Router::url($params, $full);
-    }
-
-    /**
      * Normalizes a URL for purposes of comparison.
      *
      * Will strip the base path off and replace any double /'s.
@@ -1183,6 +1167,21 @@ class Router
             return '/';
         }
         return $url;
+    }
+
+    /**
+     * Gets the current request object, or the first one.
+     *
+     * @param bool $current True to get the current request object, or false to get the first one.
+     * @return CakeRequest|null Null if stack is empty.
+     */
+    public static function getRequest($current = false)
+    {
+        if ($current) {
+            $i = count(static::$_requests) - 1;
+            return isset(static::$_requests[$i]) ? static::$_requests[$i] : null;
+        }
+        return isset(static::$_requests[0]) ? static::$_requests[0] : null;
     }
 
     /**
@@ -1254,23 +1253,6 @@ class Router
     }
 
     /**
-     * Get the list of extensions that can be parsed by Router.
-     *
-     * To initially set extensions use `Router::parseExtensions()`
-     * To add more see `setExtensions()`
-     *
-     * @return array Array of extensions Router is configured to parse.
-     */
-    public static function extensions()
-    {
-        if (!static::$initialized) {
-            static::_loadRoutes();
-        }
-
-        return static::$_validExtensions;
-    }
-
-    /**
      * Set/add valid extensions.
      *
      * To have the extensions parsed you still need to call `Router::parseExtensions()`
@@ -1291,14 +1273,20 @@ class Router
     }
 
     /**
-     * Loads route configuration
+     * Get the list of extensions that can be parsed by Router.
      *
-     * @return void
+     * To initially set extensions use `Router::parseExtensions()`
+     * To add more see `setExtensions()`
+     *
+     * @return array Array of extensions Router is configured to parse.
      */
-    protected static function _loadRoutes()
+    public static function extensions()
     {
-        static::$initialized = true;
-        include APP . 'Config' . DS . 'routes.php';
+        if (!static::$initialized) {
+            static::_loadRoutes();
+        }
+
+        return static::$_validExtensions;
     }
 
 }

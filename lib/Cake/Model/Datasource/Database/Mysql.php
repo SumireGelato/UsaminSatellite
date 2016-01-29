@@ -34,50 +34,18 @@ class Mysql extends DboSource
      * @var string
      */
     public $description = "MySQL DBO Driver";
-
-    /**
-     * Base configuration settings for MySQL driver
-     *
-     * @var array
-     */
-    protected $_baseConfig = array(
-        'persistent' => true,
-        'host' => 'localhost',
-        'login' => 'root',
-        'password' => '',
-        'database' => 'cake',
-        'port' => '3306',
-        'flags' => array()
-    );
-
-    /**
-     * Reference to the PDO object connection
-     *
-     * @var PDO
-     */
-    protected $_connection = null;
-
     /**
      * Start quote
      *
      * @var string
      */
     public $startQuote = "`";
-
     /**
      * End quote
      *
      * @var string
      */
     public $endQuote = "`";
-
-    /**
-     * use alias for update and delete. Set to true if version >= 4.1
-     *
-     * @var bool
-     */
-    protected $_useAlias = true;
-
     /**
      * List of engine specific additional field parameters used on table creating
      *
@@ -94,7 +62,6 @@ class Mysql extends DboSource
             'types' => array('integer', 'float', 'decimal', 'biginteger')
         )
     );
-
     /**
      * List of table engine specific parameters used on table creating
      *
@@ -106,7 +73,6 @@ class Mysql extends DboSource
         'engine' => array('value' => 'ENGINE', 'quote' => false, 'join' => '=', 'column' => 'Engine'),
         'comment' => array('value' => 'COMMENT', 'quote' => true, 'join' => '=', 'column' => 'Comment'),
     );
-
     /**
      * MySQL column definition
      *
@@ -127,7 +93,32 @@ class Mysql extends DboSource
         'binary' => array('name' => 'blob'),
         'boolean' => array('name' => 'tinyint', 'limit' => '1')
     );
-
+    /**
+     * Base configuration settings for MySQL driver
+     *
+     * @var array
+     */
+    protected $_baseConfig = array(
+        'persistent' => true,
+        'host' => 'localhost',
+        'login' => 'root',
+        'password' => '',
+        'database' => 'cake',
+        'port' => '3306',
+        'flags' => array()
+    );
+    /**
+     * Reference to the PDO object connection
+     *
+     * @var PDO
+     */
+    protected $_connection = null;
+    /**
+     * use alias for update and delete. Set to true if version >= 4.1
+     *
+     * @var bool
+     */
+    protected $_useAlias = true;
     /**
      * Mapping of collation names to character set names
      *
@@ -302,34 +293,6 @@ class Mysql extends DboSource
     }
 
     /**
-     * Query charset by collation
-     *
-     * @param string $name Collation name
-     * @return string Character set name
-     */
-    public function getCharsetName($name)
-    {
-        if ((bool)version_compare($this->getVersion(), "5", "<")) {
-            return false;
-        }
-        if (isset($this->_charsets[$name])) {
-            return $this->_charsets[$name];
-        }
-        $r = $this->_execute(
-            'SELECT CHARACTER_SET_NAME FROM INFORMATION_SCHEMA.COLLATIONS WHERE COLLATION_NAME = ?',
-            array($name)
-        );
-        $cols = $r->fetch(PDO::FETCH_ASSOC);
-
-        if (isset($cols['CHARACTER_SET_NAME'])) {
-            $this->_charsets[$name] = $cols['CHARACTER_SET_NAME'];
-        } else {
-            $this->_charsets[$name] = false;
-        }
-        return $this->_charsets[$name];
-    }
-
-    /**
      * Returns an array of the fields in given table name.
      *
      * @param Model|string $model Name of database table to inspect or model instance
@@ -382,6 +345,103 @@ class Mysql extends DboSource
         $this->_cacheDescription($key, $fields);
         $cols->closeCursor();
         return $fields;
+    }
+
+    /**
+     * Converts database-layer column types to basic types
+     *
+     * @param string $real Real database-layer column type (i.e. "varchar(255)")
+     * @return string Abstract column type (i.e. "string")
+     */
+    public function column($real)
+    {
+        if (is_array($real)) {
+            $col = $real['name'];
+            if (isset($real['limit'])) {
+                $col .= '(' . $real['limit'] . ')';
+            }
+            return $col;
+        }
+
+        $col = str_replace(')', '', $real);
+        $limit = $this->length($real);
+        if (strpos($col, '(') !== false) {
+            list($col, $vals) = explode('(', $col);
+        }
+
+        if (in_array($col, array('date', 'time', 'datetime', 'timestamp'))) {
+            return $col;
+        }
+        if (($col === 'tinyint' && $limit === 1) || $col === 'boolean') {
+            return 'boolean';
+        }
+        if (strpos($col, 'bigint') !== false || $col === 'bigint') {
+            return 'biginteger';
+        }
+        if (strpos($col, 'int') !== false) {
+            return 'integer';
+        }
+        if (strpos($col, 'char') !== false || $col === 'tinytext') {
+            return 'string';
+        }
+        if (strpos($col, 'text') !== false) {
+            return 'text';
+        }
+        if (strpos($col, 'blob') !== false || $col === 'binary') {
+            return 'binary';
+        }
+        if (strpos($col, 'float') !== false || strpos($col, 'double') !== false) {
+            return 'float';
+        }
+        if (strpos($col, 'decimal') !== false || strpos($col, 'numeric') !== false) {
+            return 'decimal';
+        }
+        if (strpos($col, 'enum') !== false) {
+            return "enum($vals)";
+        }
+        if (strpos($col, 'set') !== false) {
+            return "set($vals)";
+        }
+        return 'text';
+    }
+
+    /**
+     * Check if column type is unsigned
+     *
+     * @param string $real Real database-layer column type (i.e. "varchar(255)")
+     * @return bool True if column is unsigned, false otherwise
+     */
+    protected function _unsigned($real)
+    {
+        return strpos(strtolower($real), 'unsigned') !== false;
+    }
+
+    /**
+     * Query charset by collation
+     *
+     * @param string $name Collation name
+     * @return string Character set name
+     */
+    public function getCharsetName($name)
+    {
+        if ((bool)version_compare($this->getVersion(), "5", "<")) {
+            return false;
+        }
+        if (isset($this->_charsets[$name])) {
+            return $this->_charsets[$name];
+        }
+        $r = $this->_execute(
+            'SELECT CHARACTER_SET_NAME FROM INFORMATION_SCHEMA.COLLATIONS WHERE COLLATION_NAME = ?',
+            array($name)
+        );
+        $cols = $r->fetch(PDO::FETCH_ASSOC);
+
+        if (isset($cols['CHARACTER_SET_NAME'])) {
+            $this->_charsets[$name] = $cols['CHARACTER_SET_NAME'];
+        } else {
+            $this->_charsets[$name] = false;
+        }
+        return $this->_charsets[$name];
     }
 
     /**
@@ -596,29 +656,33 @@ class Mysql extends DboSource
     }
 
     /**
-     * Generate a "drop table" statement for the given table
+     * Generate MySQL index alteration statements for a table.
      *
-     * @param type $table Name of the table to drop
-     * @return string Drop table SQL statement
+     * @param string $table Table to alter indexes for
+     * @param array $indexes Indexes to add and drop
+     * @return array Index alteration statements
      */
-    protected function _dropTable($table)
+    protected function _alterIndexes($table, $indexes)
     {
-        return 'DROP TABLE IF EXISTS ' . $this->fullTableName($table) . ";";
-    }
-
-    /**
-     * Generate MySQL table parameter alteration statements for a table.
-     *
-     * @param string $table Table to alter parameters for.
-     * @param array $parameters Parameters to add & drop.
-     * @return array Array of table property alteration statements.
-     */
-    protected function _alterTableParameters($table, $parameters)
-    {
-        if (isset($parameters['change'])) {
-            return $this->buildTableParameters($parameters['change']);
+        $alter = array();
+        if (isset($indexes['drop'])) {
+            foreach ($indexes['drop'] as $name => $value) {
+                $out = 'DROP ';
+                if ($name === 'PRIMARY') {
+                    $out .= 'PRIMARY KEY';
+                } else {
+                    $out .= 'KEY ' . $this->startQuote . $name . $this->endQuote;
+                }
+                $alter[] = $out;
+            }
         }
-        return array();
+        if (isset($indexes['add'])) {
+            $add = $this->buildIndex($indexes['add']);
+            foreach ($add as $index) {
+                $alter[] = 'ADD ' . $index;
+            }
+        }
+        return $alter;
     }
 
     /**
@@ -675,36 +739,6 @@ class Mysql extends DboSource
     }
 
     /**
-     * Generate MySQL index alteration statements for a table.
-     *
-     * @param string $table Table to alter indexes for
-     * @param array $indexes Indexes to add and drop
-     * @return array Index alteration statements
-     */
-    protected function _alterIndexes($table, $indexes)
-    {
-        $alter = array();
-        if (isset($indexes['drop'])) {
-            foreach ($indexes['drop'] as $name => $value) {
-                $out = 'DROP ';
-                if ($name === 'PRIMARY') {
-                    $out .= 'PRIMARY KEY';
-                } else {
-                    $out .= 'KEY ' . $this->startQuote . $name . $this->endQuote;
-                }
-                $alter[] = $out;
-            }
-        }
-        if (isset($indexes['add'])) {
-            $add = $this->buildIndex($indexes['add']);
-            foreach ($add as $index) {
-                $alter[] = 'ADD ' . $index;
-            }
-        }
-        return $alter;
-    }
-
-    /**
      * Format length for text indexes
      *
      * @param array $lengths An array of lengths for a single index
@@ -720,6 +754,21 @@ class Mysql extends DboSource
             return '';
         }
         return '(' . $lengths[$column] . ')';
+    }
+
+    /**
+     * Generate MySQL table parameter alteration statements for a table.
+     *
+     * @param string $table Table to alter parameters for.
+     * @param array $parameters Parameters to add & drop.
+     * @return array Array of table property alteration statements.
+     */
+    protected function _alterTableParameters($table, $parameters)
+    {
+        if (isset($parameters['change'])) {
+            return $this->buildTableParameters($parameters['change']);
+        }
+        return array();
     }
 
     /**
@@ -759,64 +808,6 @@ class Mysql extends DboSource
     }
 
     /**
-     * Converts database-layer column types to basic types
-     *
-     * @param string $real Real database-layer column type (i.e. "varchar(255)")
-     * @return string Abstract column type (i.e. "string")
-     */
-    public function column($real)
-    {
-        if (is_array($real)) {
-            $col = $real['name'];
-            if (isset($real['limit'])) {
-                $col .= '(' . $real['limit'] . ')';
-            }
-            return $col;
-        }
-
-        $col = str_replace(')', '', $real);
-        $limit = $this->length($real);
-        if (strpos($col, '(') !== false) {
-            list($col, $vals) = explode('(', $col);
-        }
-
-        if (in_array($col, array('date', 'time', 'datetime', 'timestamp'))) {
-            return $col;
-        }
-        if (($col === 'tinyint' && $limit === 1) || $col === 'boolean') {
-            return 'boolean';
-        }
-        if (strpos($col, 'bigint') !== false || $col === 'bigint') {
-            return 'biginteger';
-        }
-        if (strpos($col, 'int') !== false) {
-            return 'integer';
-        }
-        if (strpos($col, 'char') !== false || $col === 'tinytext') {
-            return 'string';
-        }
-        if (strpos($col, 'text') !== false) {
-            return 'text';
-        }
-        if (strpos($col, 'blob') !== false || $col === 'binary') {
-            return 'binary';
-        }
-        if (strpos($col, 'float') !== false || strpos($col, 'double') !== false) {
-            return 'float';
-        }
-        if (strpos($col, 'decimal') !== false || strpos($col, 'numeric') !== false) {
-            return 'decimal';
-        }
-        if (strpos($col, 'enum') !== false) {
-            return "enum($vals)";
-        }
-        if (strpos($col, 'set') !== false) {
-            return "set($vals)";
-        }
-        return 'text';
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function value($data, $column = null, $null = true)
@@ -849,14 +840,14 @@ class Mysql extends DboSource
     }
 
     /**
-     * Check if column type is unsigned
+     * Generate a "drop table" statement for the given table
      *
-     * @param string $real Real database-layer column type (i.e. "varchar(255)")
-     * @return bool True if column is unsigned, false otherwise
+     * @param type $table Name of the table to drop
+     * @return string Drop table SQL statement
      */
-    protected function _unsigned($real)
+    protected function _dropTable($table)
     {
-        return strpos(strtolower($real), 'unsigned') !== false;
+        return 'DROP TABLE IF EXISTS ' . $this->fullTableName($table) . ";";
     }
 
 }

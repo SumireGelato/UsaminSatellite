@@ -31,25 +31,23 @@ class AclComponent extends Component
 {
 
     /**
-     * Instance of an ACL class
-     *
-     * @var AclInterface
-     */
-    protected $_Instance = null;
-
-    /**
      * Aro object.
      *
      * @var string
      */
     public $Aro;
-
     /**
      * Aco object
      *
      * @var string
      */
     public $Aco;
+    /**
+     * Instance of an ACL class
+     *
+     * @var AclInterface
+     */
+    protected $_Instance = null;
 
     /**
      * Constructor. Will return an instance of the correct ACL class as defined in `Configure::read('Acl.classname')`

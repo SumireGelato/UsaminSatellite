@@ -94,6 +94,24 @@ class TextHelper extends AppHelper
     }
 
     /**
+     * Convert all links and email addresses to HTML links.
+     *
+     * ### Options
+     *
+     * - `escape` Control HTML escaping of input. Defaults to true.
+     *
+     * @param string $text Text
+     * @param array $options Array of HTML options, and options listed above.
+     * @return string The text with links
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/text.html#TextHelper::autoLink
+     */
+    public function autoLink($text, $options = array())
+    {
+        $text = $this->autoLinkUrls($text, $options);
+        return $this->autoLinkEmails($text, array_merge($options, array('escape' => false)));
+    }
+
+    /**
      * Adds links (<a href=....) to a given text, by finding text that begins with
      * strings like http:// and ftp://.
      *
@@ -129,20 +147,6 @@ class TextHelper extends AppHelper
     }
 
     /**
-     * Saves the placeholder for a string, for later use. This gets around double
-     * escaping content in URL's.
-     *
-     * @param array $matches An array of regexp matches.
-     * @return string Replaced values.
-     */
-    protected function _insertPlaceHolder($matches)
-    {
-        $key = md5($matches[0]);
-        $this->_placeholders[$key] = $matches[0];
-        return $key;
-    }
-
-    /**
      * Replace placeholders with links.
      *
      * @param string $text The text to operate on.
@@ -158,23 +162,6 @@ class TextHelper extends AppHelper
                 $url = 'http://' . $url;
             }
             $replace[$hash] = $this->Html->link($link, $url, $htmlOptions);
-        }
-        return strtr($text, $replace);
-    }
-
-    /**
-     * Links email addresses
-     *
-     * @param string $text The text to operate on
-     * @param array $options An array of options to use for the HTML.
-     * @return string
-     * @see TextHelper::autoLinkEmails()
-     */
-    protected function _linkEmails($text, $options)
-    {
-        $replace = array();
-        foreach ($this->_placeholders as $hash => $url) {
-            $replace[$hash] = $this->Html->link($url, 'mailto:' . $url, $options);
         }
         return strtr($text, $replace);
     }
@@ -209,21 +196,20 @@ class TextHelper extends AppHelper
     }
 
     /**
-     * Convert all links and email addresses to HTML links.
+     * Links email addresses
      *
-     * ### Options
-     *
-     * - `escape` Control HTML escaping of input. Defaults to true.
-     *
-     * @param string $text Text
-     * @param array $options Array of HTML options, and options listed above.
-     * @return string The text with links
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/text.html#TextHelper::autoLink
+     * @param string $text The text to operate on
+     * @param array $options An array of options to use for the HTML.
+     * @return string
+     * @see TextHelper::autoLinkEmails()
      */
-    public function autoLink($text, $options = array())
+    protected function _linkEmails($text, $options)
     {
-        $text = $this->autoLinkUrls($text, $options);
-        return $this->autoLinkEmails($text, array_merge($options, array('escape' => false)));
+        $replace = array();
+        foreach ($this->_placeholders as $hash => $url) {
+            $replace[$hash] = $this->Html->link($url, 'mailto:' . $url, $options);
+        }
+        return strtr($text, $replace);
     }
 
     /**
@@ -356,6 +342,20 @@ class TextHelper extends AppHelper
     public function toList($list, $and = null, $separator = ', ')
     {
         return $this->_engine->toList($list, $and, $separator);
+    }
+
+    /**
+     * Saves the placeholder for a string, for later use. This gets around double
+     * escaping content in URL's.
+     *
+     * @param array $matches An array of regexp matches.
+     * @return string Replaced values.
+     */
+    protected function _insertPlaceHolder($matches)
+    {
+        $key = md5($matches[0]);
+        $this->_placeholders[$key] = $matches[0];
+        return $key;
     }
 
 }

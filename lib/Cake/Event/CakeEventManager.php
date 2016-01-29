@@ -56,30 +56,6 @@ class CakeEventManager
     protected $_isGlobal = false;
 
     /**
-     * Returns the globally available instance of a CakeEventManager
-     * this is used for dispatching events attached from outside the scope
-     * other managers were created. Usually for creating hook systems or inter-class
-     * communication
-     *
-     * If called with the first parameter, it will be set as the globally available instance
-     *
-     * @param CakeEventManager $manager Optional event manager instance.
-     * @return CakeEventManager the global event manager
-     */
-    public static function instance($manager = null)
-    {
-        if ($manager instanceof CakeEventManager) {
-            static::$_generalManager = $manager;
-        }
-        if (empty(static::$_generalManager)) {
-            static::$_generalManager = new CakeEventManager();
-        }
-
-        static::$_generalManager->_isGlobal = true;
-        return static::$_generalManager;
-    }
-
-    /**
      * Adds a new listener to an event. Listeners
      *
      * @param callback|CakeEventListener $callable PHP valid callback type or instance of CakeEventListener to be called
@@ -305,5 +281,29 @@ class CakeEventManager
             return array();
         }
         return $this->_listeners[$eventKey];
+    }
+
+    /**
+     * Returns the globally available instance of a CakeEventManager
+     * this is used for dispatching events attached from outside the scope
+     * other managers were created. Usually for creating hook systems or inter-class
+     * communication
+     *
+     * If called with the first parameter, it will be set as the globally available instance
+     *
+     * @param CakeEventManager $manager Optional event manager instance.
+     * @return CakeEventManager the global event manager
+     */
+    public static function instance($manager = null)
+    {
+        if ($manager instanceof CakeEventManager) {
+            static::$_generalManager = $manager;
+        }
+        if (empty(static::$_generalManager)) {
+            static::$_generalManager = new CakeEventManager();
+        }
+
+        static::$_generalManager->_isGlobal = true;
+        return static::$_generalManager;
     }
 }

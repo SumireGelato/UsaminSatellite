@@ -38,15 +38,6 @@ class PaginatorHelper extends AppHelper
      * @var array
      */
     public $helpers = array('Html');
-
-    /**
-     * The class used for 'Ajax' pagination links. Defaults to JsHelper. You should make sure
-     * that JsHelper is defined as a helper before PaginatorHelper, if you want to customize the JsHelper.
-     *
-     * @var string
-     */
-    protected $_ajaxHelperClass = 'Js';
-
     /**
      * Holds the default options for pagination links
      *
@@ -75,6 +66,13 @@ class PaginatorHelper extends AppHelper
     public $options = array(
         'convertKeys' => array('page', 'limit', 'sort', 'direction')
     );
+    /**
+     * The class used for 'Ajax' pagination links. Defaults to JsHelper. You should make sure
+     * that JsHelper is defined as a helper before PaginatorHelper, if you want to customize the JsHelper.
+     *
+     * @var string
+     */
+    protected $_ajaxHelperClass = 'Js';
 
     /**
      * Constructor for the helper. Sets up the helper that is used for creating 'AJAX' links.
@@ -120,6 +118,23 @@ class PaginatorHelper extends AppHelper
     }
 
     /**
+     * Convenience access to any of the paginator params.
+     *
+     * @param string $key Key of the paginator params array to retrieve.
+     * @param string $model Optional model name. Uses the default if none is specified.
+     * @return mixed Content of the requested param.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::params
+     */
+    public function param($key, $model = null)
+    {
+        $params = $this->params($model);
+        if (!isset($params[$key])) {
+            return null;
+        }
+        return $params[$key];
+    }
+
+    /**
      * Gets the current paging parameters from the resultset for the given model
      *
      * @param string $model Optional model name. Uses the default if none is specified.
@@ -145,20 +160,21 @@ class PaginatorHelper extends AppHelper
     }
 
     /**
-     * Convenience access to any of the paginator params.
+     * Gets the default model of the paged sets
      *
-     * @param string $key Key of the paginator params array to retrieve.
-     * @param string $model Optional model name. Uses the default if none is specified.
-     * @return mixed Content of the requested param.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::params
+     * @return string|null Model name or null if the pagination isn't initialized.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::defaultModel
      */
-    public function param($key, $model = null)
+    public function defaultModel()
     {
-        $params = $this->params($model);
-        if (!isset($params[$key])) {
+        if ($this->_defaultModel) {
+            return $this->_defaultModel;
+        }
+        if (empty($this->request->params['paging'])) {
             return null;
         }
-        return $params[$key];
+        list($this->_defaultModel) = array_keys($this->request->params['paging']);
+        return $this->_defaultModel;
     }
 
     /**
@@ -217,6 +233,173 @@ class PaginatorHelper extends AppHelper
     }
 
     /**
+     * Generates a "previous" link for a set of paged records
+     *
+     * ### Options:
+     *
+     * - `url` Allows sending routing parameters such as controllers, actions or passed arguments.
+     * - `tag` The tag wrapping tag you want to use, defaults to 'span'. Set this to false to disable this option
+     * - `escape` Whether you want the contents html entity encoded, defaults to true
+     * - `model` The model to use, defaults to PaginatorHelper::defaultModel()
+     * - `disabledTag` Tag to use instead of A tag when there is no previous page
+     *
+     * @param string $title Title for the link. Defaults to '<< Previous'.
+     * @param array $options Options for pagination link. See #options for list of keys.
+     * @param string $disabledTitle Title when the link is disabled.
+     * @param array $disabledOptions Options for the disabled pagination link. See #options for list of keys.
+     * @return string A "previous" link or $disabledTitle text if the link is disabled.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::prev
+     */
+    public function prev($title = '<< Previous', $options = array(), $disabledTitle = null, $disabledOptions = array())
+    {
+        $defaults = array(
+            'rel' => 'prev'
+        );
+        $options = (array)$options + $defaults;
+        return $this->_pagingLink('Prev', $title, $options, $disabledTitle, $disabledOptions);
+    }
+
+    /**
+     * Protected method for generating prev/next links
+     *
+     * @param string $which Link type: 'Prev', 'Next'.
+     * @param string $title Link title.
+     * @param array $options Options list.
+     * @param string $disabledTitle Disabled link title.
+     * @param array $disabledOptions Disabled link options.
+     * @return string
+     */
+    protected function _pagingLink($which, $title = null, $options = array(), $disabledTitle = null, $disabledOptions = array())
+    {
+        $check = 'has' . $which;
+        $_defaults = array(
+            'url' => array(), 'step' => 1, 'escape' => true, 'model' => null,
+            'tag' => 'span', 'class' => strtolower($which), 'disabledTag' => null
+        );
+        $options = (array)$options + $_defaults;
+        $paging = $this->params($options['model']);
+        if (empty($disabledOptions)) {
+            $disabledOptions = $options;
+        }
+
+        if (!$this->{$check}($options['model']) && (!empty($disabledTitle) || !empty($disabledOptions))) {
+            if (!empty($disabledTitle) && $disabledTitle !== true) {
+                $title = $disabledTitle;
+            }
+            $options = (array)$disabledOptions + array_intersect_key($options, $_defaults) + $_defaults;
+        } elseif (!$this->{$check}($options['model'])) {
+            return '';
+        }
+
+        foreach (array_keys($_defaults) as $key) {
+            ${$key} = $options[$key];
+            unset($options[$key]);
+        }
+
+        if ($this->{$check}($model)) {
+            $url = array_merge(
+                array('page' => $paging['page'] + ($which === 'Prev' ? $step * -1 : $step)),
+                $url
+            );
+            if ($tag === false) {
+                return $this->link(
+                    $title,
+                    $url,
+                    compact('escape', 'model', 'class') + $options
+                );
+            }
+            $link = $this->link($title, $url, compact('escape', 'model') + $options);
+            return $this->Html->tag($tag, $link, compact('class'));
+        }
+        unset($options['rel']);
+        if (!$tag) {
+            if ($disabledTag) {
+                $tag = $disabledTag;
+                $disabledTag = null;
+            } else {
+                $tag = $_defaults['tag'];
+            }
+        }
+        if ($disabledTag) {
+            $title = $this->Html->tag($disabledTag, $title, compact('escape') + $options);
+            return $this->Html->tag($tag, $title, compact('class'));
+        }
+        return $this->Html->tag($tag, $title, compact('escape', 'class') + $options);
+    }
+
+    /**
+     * Generates a plain or Ajax link with pagination parameters
+     *
+     * ### Options
+     *
+     * - `update` The Id of the DOM element you wish to update. Creates Ajax enabled links
+     *    with the AjaxHelper.
+     * - `escape` Whether you want the contents html entity encoded, defaults to true
+     * - `model` The model to use, defaults to PaginatorHelper::defaultModel()
+     *
+     * @param string $title Title for the link.
+     * @param string|array $url URL for the action. See Router::url()
+     * @param array $options Options for the link. See #options for list of keys.
+     * @return string A link with pagination parameters.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::link
+     */
+    public function link($title, $url = array(), $options = array())
+    {
+        $options += array('model' => null, 'escape' => true);
+        $model = $options['model'];
+        unset($options['model']);
+
+        if (!empty($this->options)) {
+            $options += $this->options;
+        }
+        if (isset($options['url'])) {
+            $url = array_merge((array)$options['url'], (array)$url);
+            unset($options['url']);
+        }
+        unset($options['convertKeys']);
+
+        $url = $this->url($url, true, $model);
+
+        $obj = isset($options['update']) ? $this->_ajaxHelperClass : 'Html';
+        return $this->{$obj}->link($title, $url, $options);
+    }
+
+    /**
+     * Merges passed URL options with current pagination state to generate a pagination URL.
+     *
+     * @param array $options Pagination/URL options array
+     * @param bool $asArray Return the URL as an array, or a URI string
+     * @param string $model Which model to paginate on
+     * @return mixed By default, returns a full pagination URL string for use in non-standard contexts (i.e. JavaScript)
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::url
+     */
+    public function url($options = array(), $asArray = false, $model = null)
+    {
+        $paging = $this->params($model);
+        $url = array_merge(array_filter($paging['options']), $options);
+
+        if (isset($url['order'])) {
+            $sort = $direction = null;
+            if (is_array($url['order'])) {
+                list($sort, $direction) = array($this->sortKey($model, $url), current($url['order']));
+            }
+            unset($url['order']);
+            $url = array_merge($url, compact('sort', 'direction'));
+        }
+        $url = $this->_convertUrlKeys($url, $paging['paramType']);
+        if (!empty($url['page']) && $url['page'] == 1) {
+            $url['page'] = null;
+        }
+        if (!empty($url['?']['page']) && $url['?']['page'] == 1) {
+            unset($url['?']['page']);
+        }
+        if ($asArray) {
+            return $url;
+        }
+        return parent::url($url);
+    }
+
+    /**
      * Gets the current key by which the recordset is sorted
      *
      * @param string $model Optional model name. Uses the default if none is specified.
@@ -244,62 +427,27 @@ class PaginatorHelper extends AppHelper
     }
 
     /**
-     * Gets the current direction the recordset is sorted
+     * Converts the keys being used into the format set by options.paramType
      *
-     * @param string $model Optional model name. Uses the default if none is specified.
-     * @param array $options Options for pagination links. See #options for list of keys.
-     * @return string The direction by which the recordset is being sorted, or
-     *  null if the results are not currently sorted.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::sortDir
+     * @param array $url Array of URL params to convert
+     * @param string $type Keys type.
+     * @return array converted URL params.
      */
-    public function sortDir($model = null, $options = array())
+    protected function _convertUrlKeys($url, $type)
     {
-        $dir = null;
-
-        if (empty($options)) {
-            $params = $this->params($model);
-            $options = $params['options'];
+        if ($type === 'named') {
+            return $url;
         }
-
-        if (isset($options['direction'])) {
-            $dir = strtolower($options['direction']);
-        } elseif (isset($options['order']) && is_array($options['order'])) {
-            $dir = strtolower(current($options['order']));
-        } elseif (isset($params['order']) && is_array($params['order'])) {
-            $dir = strtolower(current($params['order']));
+        if (!isset($url['?'])) {
+            $url['?'] = array();
         }
-
-        if ($dir === 'desc') {
-            return 'desc';
+        foreach ($this->options['convertKeys'] as $key) {
+            if (isset($url[$key])) {
+                $url['?'][$key] = $url[$key];
+                unset($url[$key]);
+            }
         }
-        return 'asc';
-    }
-
-    /**
-     * Generates a "previous" link for a set of paged records
-     *
-     * ### Options:
-     *
-     * - `url` Allows sending routing parameters such as controllers, actions or passed arguments.
-     * - `tag` The tag wrapping tag you want to use, defaults to 'span'. Set this to false to disable this option
-     * - `escape` Whether you want the contents html entity encoded, defaults to true
-     * - `model` The model to use, defaults to PaginatorHelper::defaultModel()
-     * - `disabledTag` Tag to use instead of A tag when there is no previous page
-     *
-     * @param string $title Title for the link. Defaults to '<< Previous'.
-     * @param array $options Options for pagination link. See #options for list of keys.
-     * @param string $disabledTitle Title when the link is disabled.
-     * @param array $disabledOptions Options for the disabled pagination link. See #options for list of keys.
-     * @return string A "previous" link or $disabledTitle text if the link is disabled.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::prev
-     */
-    public function prev($title = '<< Previous', $options = array(), $disabledTitle = null, $disabledOptions = array())
-    {
-        $defaults = array(
-            'rel' => 'prev'
-        );
-        $options = (array)$options + $defaults;
-        return $this->_pagingLink('Prev', $title, $options, $disabledTitle, $disabledOptions);
+        return $url;
     }
 
     /**
@@ -400,191 +548,35 @@ class PaginatorHelper extends AppHelper
     }
 
     /**
-     * Generates a plain or Ajax link with pagination parameters
-     *
-     * ### Options
-     *
-     * - `update` The Id of the DOM element you wish to update. Creates Ajax enabled links
-     *    with the AjaxHelper.
-     * - `escape` Whether you want the contents html entity encoded, defaults to true
-     * - `model` The model to use, defaults to PaginatorHelper::defaultModel()
-     *
-     * @param string $title Title for the link.
-     * @param string|array $url URL for the action. See Router::url()
-     * @param array $options Options for the link. See #options for list of keys.
-     * @return string A link with pagination parameters.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::link
-     */
-    public function link($title, $url = array(), $options = array())
-    {
-        $options += array('model' => null, 'escape' => true);
-        $model = $options['model'];
-        unset($options['model']);
-
-        if (!empty($this->options)) {
-            $options += $this->options;
-        }
-        if (isset($options['url'])) {
-            $url = array_merge((array)$options['url'], (array)$url);
-            unset($options['url']);
-        }
-        unset($options['convertKeys']);
-
-        $url = $this->url($url, true, $model);
-
-        $obj = isset($options['update']) ? $this->_ajaxHelperClass : 'Html';
-        return $this->{$obj}->link($title, $url, $options);
-    }
-
-    /**
-     * Merges passed URL options with current pagination state to generate a pagination URL.
-     *
-     * @param array $options Pagination/URL options array
-     * @param bool $asArray Return the URL as an array, or a URI string
-     * @param string $model Which model to paginate on
-     * @return mixed By default, returns a full pagination URL string for use in non-standard contexts (i.e. JavaScript)
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::url
-     */
-    public function url($options = array(), $asArray = false, $model = null)
-    {
-        $paging = $this->params($model);
-        $url = array_merge(array_filter($paging['options']), $options);
-
-        if (isset($url['order'])) {
-            $sort = $direction = null;
-            if (is_array($url['order'])) {
-                list($sort, $direction) = array($this->sortKey($model, $url), current($url['order']));
-            }
-            unset($url['order']);
-            $url = array_merge($url, compact('sort', 'direction'));
-        }
-        $url = $this->_convertUrlKeys($url, $paging['paramType']);
-        if (!empty($url['page']) && $url['page'] == 1) {
-            $url['page'] = null;
-        }
-        if (!empty($url['?']['page']) && $url['?']['page'] == 1) {
-            unset($url['?']['page']);
-        }
-        if ($asArray) {
-            return $url;
-        }
-        return parent::url($url);
-    }
-
-    /**
-     * Converts the keys being used into the format set by options.paramType
-     *
-     * @param array $url Array of URL params to convert
-     * @param string $type Keys type.
-     * @return array converted URL params.
-     */
-    protected function _convertUrlKeys($url, $type)
-    {
-        if ($type === 'named') {
-            return $url;
-        }
-        if (!isset($url['?'])) {
-            $url['?'] = array();
-        }
-        foreach ($this->options['convertKeys'] as $key) {
-            if (isset($url[$key])) {
-                $url['?'][$key] = $url[$key];
-                unset($url[$key]);
-            }
-        }
-        return $url;
-    }
-
-    /**
-     * Protected method for generating prev/next links
-     *
-     * @param string $which Link type: 'Prev', 'Next'.
-     * @param string $title Link title.
-     * @param array $options Options list.
-     * @param string $disabledTitle Disabled link title.
-     * @param array $disabledOptions Disabled link options.
-     * @return string
-     */
-    protected function _pagingLink($which, $title = null, $options = array(), $disabledTitle = null, $disabledOptions = array())
-    {
-        $check = 'has' . $which;
-        $_defaults = array(
-            'url' => array(), 'step' => 1, 'escape' => true, 'model' => null,
-            'tag' => 'span', 'class' => strtolower($which), 'disabledTag' => null
-        );
-        $options = (array)$options + $_defaults;
-        $paging = $this->params($options['model']);
-        if (empty($disabledOptions)) {
-            $disabledOptions = $options;
-        }
-
-        if (!$this->{$check}($options['model']) && (!empty($disabledTitle) || !empty($disabledOptions))) {
-            if (!empty($disabledTitle) && $disabledTitle !== true) {
-                $title = $disabledTitle;
-            }
-            $options = (array)$disabledOptions + array_intersect_key($options, $_defaults) + $_defaults;
-        } elseif (!$this->{$check}($options['model'])) {
-            return '';
-        }
-
-        foreach (array_keys($_defaults) as $key) {
-            ${$key} = $options[$key];
-            unset($options[$key]);
-        }
-
-        if ($this->{$check}($model)) {
-            $url = array_merge(
-                array('page' => $paging['page'] + ($which === 'Prev' ? $step * -1 : $step)),
-                $url
-            );
-            if ($tag === false) {
-                return $this->link(
-                    $title,
-                    $url,
-                    compact('escape', 'model', 'class') + $options
-                );
-            }
-            $link = $this->link($title, $url, compact('escape', 'model') + $options);
-            return $this->Html->tag($tag, $link, compact('class'));
-        }
-        unset($options['rel']);
-        if (!$tag) {
-            if ($disabledTag) {
-                $tag = $disabledTag;
-                $disabledTag = null;
-            } else {
-                $tag = $_defaults['tag'];
-            }
-        }
-        if ($disabledTag) {
-            $title = $this->Html->tag($disabledTag, $title, compact('escape') + $options);
-            return $this->Html->tag($tag, $title, compact('class'));
-        }
-        return $this->Html->tag($tag, $title, compact('escape', 'class') + $options);
-    }
-
-    /**
-     * Returns true if the given result set is not at the first page
+     * Gets the current direction the recordset is sorted
      *
      * @param string $model Optional model name. Uses the default if none is specified.
-     * @return bool True if the result set is not at the first page.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::hasPrev
+     * @param array $options Options for pagination links. See #options for list of keys.
+     * @return string The direction by which the recordset is being sorted, or
+     *  null if the results are not currently sorted.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::sortDir
      */
-    public function hasPrev($model = null)
+    public function sortDir($model = null, $options = array())
     {
-        return $this->_hasPage($model, 'prev');
-    }
+        $dir = null;
 
-    /**
-     * Returns true if the given result set is not at the last page
-     *
-     * @param string $model Optional model name. Uses the default if none is specified.
-     * @return bool True if the result set is not at the last page.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::hasNext
-     */
-    public function hasNext($model = null)
-    {
-        return $this->_hasPage($model, 'next');
+        if (empty($options)) {
+            $params = $this->params($model);
+            $options = $params['options'];
+        }
+
+        if (isset($options['direction'])) {
+            $dir = strtolower($options['direction']);
+        } elseif (isset($options['order']) && is_array($options['order'])) {
+            $dir = strtolower(current($options['order']));
+        } elseif (isset($params['order']) && is_array($params['order'])) {
+            $dir = strtolower(current($params['order']));
+        }
+
+        if ($dir === 'desc') {
+            return 'desc';
+        }
+        return 'asc';
     }
 
     /**
@@ -603,37 +595,6 @@ class PaginatorHelper extends AppHelper
         }
         $paging = $this->params($model);
         return $page <= $paging['pageCount'];
-    }
-
-    /**
-     * Does $model have $page in its range?
-     *
-     * @param string $model Model name to get parameters for.
-     * @param int $page Page number you are checking.
-     * @return bool Whether model has $page
-     */
-    protected function _hasPage($model, $page)
-    {
-        $params = $this->params($model);
-        return !empty($params) && $params[$page . 'Page'];
-    }
-
-    /**
-     * Gets the default model of the paged sets
-     *
-     * @return string|null Model name or null if the pagination isn't initialized.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::defaultModel
-     */
-    public function defaultModel()
-    {
-        if ($this->_defaultModel) {
-            return $this->_defaultModel;
-        }
-        if (empty($this->request->params['paging'])) {
-            return null;
-        }
-        list($this->_defaultModel) = array_keys($this->request->params['paging']);
-        return $this->_defaultModel;
     }
 
     /**
@@ -1036,6 +997,43 @@ class PaginatorHelper extends AppHelper
             $options['block'] = __FUNCTION__;
         }
         $this->_View->append($options['block'], $out);
+    }
+
+    /**
+     * Returns true if the given result set is not at the first page
+     *
+     * @param string $model Optional model name. Uses the default if none is specified.
+     * @return bool True if the result set is not at the first page.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::hasPrev
+     */
+    public function hasPrev($model = null)
+    {
+        return $this->_hasPage($model, 'prev');
+    }
+
+    /**
+     * Does $model have $page in its range?
+     *
+     * @param string $model Model name to get parameters for.
+     * @param int $page Page number you are checking.
+     * @return bool Whether model has $page
+     */
+    protected function _hasPage($model, $page)
+    {
+        $params = $this->params($model);
+        return !empty($params) && $params[$page . 'Page'];
+    }
+
+    /**
+     * Returns true if the given result set is not at the last page
+     *
+     * @param string $model Optional model name. Uses the default if none is specified.
+     * @return bool True if the result set is not at the last page.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::hasNext
+     */
+    public function hasNext($model = null)
+    {
+        return $this->_hasPage($model, 'next');
     }
 
 }

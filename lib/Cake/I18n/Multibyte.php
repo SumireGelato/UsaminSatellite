@@ -46,6 +46,133 @@ class Multibyte
     protected static $_table = null;
 
     /**
+     * Find position of first occurrence of a case-insensitive string.
+     *
+     * @param string $haystack The string from which to get the position of the first occurrence of $needle.
+     * @param string $needle The string to find in $haystack.
+     * @param int $offset The position in $haystack to start searching.
+     * @return int|bool The numeric position of the first occurrence of $needle in the $haystack string,
+     *    or false if $needle is not found.
+     */
+    public static function stripos($haystack, $needle, $offset = 0)
+    {
+        if (Multibyte::checkMultibyte($haystack)) {
+            $haystack = Multibyte::strtoupper($haystack);
+            $needle = Multibyte::strtoupper($needle);
+            return Multibyte::strpos($haystack, $needle, $offset);
+        }
+        return stripos($haystack, $needle, $offset);
+    }
+
+    /**
+     * Check the $string for multibyte characters
+     *
+     * @param string $string Value to test.
+     * @return bool
+     */
+    public static function checkMultibyte($string)
+    {
+        $length = strlen($string);
+
+        for ($i = 0; $i < $length; $i++) {
+            $value = ord(($string[$i]));
+            if ($value > 128) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Make a string uppercase
+     *
+     * @param string $string The string being uppercased.
+     * @return string with all alphabetic characters converted to uppercase.
+     */
+    public static function strtoupper($string)
+    {
+        $utf8Map = Multibyte::utf8($string);
+
+        $length = count($utf8Map);
+        $replaced = array();
+        $upperCase = array();
+
+        for ($i = 0; $i < $length; $i++) {
+            $char = $utf8Map[$i];
+
+            if ($char < 128) {
+                $str = strtoupper(chr($char));
+                $strlen = strlen($str);
+                for ($ii = 0; $ii < $strlen; $ii++) {
+                    $upper = ord(substr($str, $ii, 1));
+                }
+                $upperCase[] = $upper;
+                $matched = true;
+
+            } else {
+                $matched = false;
+                $keys = static::_find($char);
+                $keyCount = count($keys);
+
+                if (!empty($keys)) {
+                    foreach ($keys as $key => $value) {
+                        $matched = false;
+                        $replace = 0;
+                        if ($length > 1 && count($keys[$key]['lower']) > 1) {
+                            $j = 0;
+
+                            for ($ii = 0, $count = count($keys[$key]['lower']); $ii < $count; $ii++) {
+                                $nextChar = $utf8Map[$i + $ii];
+
+                                if (isset($nextChar) && ($nextChar == $keys[$key]['lower'][$j + $ii])) {
+                                    $replace++;
+                                }
+                            }
+                            if ($replace == $count) {
+                                $upperCase[] = $keys[$key]['upper'];
+                                $replaced = array_merge($replaced, array_values($keys[$key]['lower']));
+                                $matched = true;
+                                break 1;
+                            }
+                        } elseif ($length > 1 && $keyCount > 1) {
+                            $j = 0;
+                            for ($ii = 1; $ii < $keyCount; $ii++) {
+                                $nextChar = $utf8Map[$i + $ii - 1];
+
+                                if (in_array($nextChar, $keys[$ii]['lower'])) {
+
+                                    for ($jj = 0, $count = count($keys[$ii]['lower']); $jj < $count; $jj++) {
+                                        $nextChar = $utf8Map[$i + $jj];
+
+                                        if (isset($nextChar) && ($nextChar == $keys[$ii]['lower'][$j + $jj])) {
+                                            $replace++;
+                                        }
+                                    }
+                                    if ($replace == $count) {
+                                        $upperCase[] = $keys[$ii]['upper'];
+                                        $replaced = array_merge($replaced, array_values($keys[$ii]['lower']));
+                                        $matched = true;
+                                        break 2;
+                                    }
+                                }
+                            }
+                        }
+                        if ($keys[$key]['lower'][0] == $char) {
+                            $upperCase[] = $keys[$key]['upper'];
+                            $matched = true;
+                            break 1;
+                        }
+                    }
+                }
+            }
+            if ($matched === false && !in_array($char, $replaced, true)) {
+                $upperCase[] = $char;
+            }
+        }
+        return Multibyte::ascii($upperCase);
+    }
+
+    /**
      * Converts a multibyte character string
      * to the decimal value of the character
      *
@@ -86,6 +213,95 @@ class Multibyte
     }
 
     /**
+     * Find the related code folding values for $char
+     *
+     * @param int $char decimal value of character
+     * @param string $type Type 'lower' or 'upper'. Defaults to 'lower'.
+     * @return array
+     */
+    protected static function _find($char, $type = 'lower')
+    {
+        $found = array();
+        if (!isset(static::$_codeRange[$char])) {
+            $range = static::_codepoint($char);
+            if ($range === false) {
+                return array();
+            }
+            if (!Configure::configured('_cake_core_')) {
+                App::uses('PhpReader', 'Configure');
+                Configure::config('_cake_core_', new PhpReader(CAKE . 'Config' . DS));
+            }
+            Configure::load('unicode' . DS . 'casefolding' . DS . $range, '_cake_core_');
+            static::$_caseFold[$range] = Configure::read($range);
+            Configure::delete($range);
+        }
+
+        if (!static::$_codeRange[$char]) {
+            return array();
+        }
+        static::$_table = static::$_codeRange[$char];
+        $count = count(static::$_caseFold[static::$_table]);
+
+        for ($i = 0; $i < $count; $i++) {
+            if ($type === 'lower' && static::$_caseFold[static::$_table][$i][$type][0] === $char) {
+                $found[] = static::$_caseFold[static::$_table][$i];
+            } elseif ($type === 'upper' && static::$_caseFold[static::$_table][$i][$type] === $char) {
+                $found[] = static::$_caseFold[static::$_table][$i];
+            }
+        }
+        return $found;
+    }
+
+    /**
+     * Return the Code points range for Unicode characters
+     *
+     * @param int $decimal Decimal value.
+     * @return string
+     */
+    protected static function _codepoint($decimal)
+    {
+        if ($decimal > 128 && $decimal < 256) {
+            $return = '0080_00ff'; // Latin-1 Supplement
+        } elseif ($decimal < 384) {
+            $return = '0100_017f'; // Latin Extended-A
+        } elseif ($decimal < 592) {
+            $return = '0180_024F'; // Latin Extended-B
+        } elseif ($decimal < 688) {
+            $return = '0250_02af'; // IPA Extensions
+        } elseif ($decimal >= 880 && $decimal < 1024) {
+            $return = '0370_03ff'; // Greek and Coptic
+        } elseif ($decimal < 1280) {
+            $return = '0400_04ff'; // Cyrillic
+        } elseif ($decimal < 1328) {
+            $return = '0500_052f'; // Cyrillic Supplement
+        } elseif ($decimal < 1424) {
+            $return = '0530_058f'; // Armenian
+        } elseif ($decimal >= 7680 && $decimal < 7936) {
+            $return = '1e00_1eff'; // Latin Extended Additional
+        } elseif ($decimal < 8192) {
+            $return = '1f00_1fff'; // Greek Extended
+        } elseif ($decimal >= 8448 && $decimal < 8528) {
+            $return = '2100_214f'; // Letterlike Symbols
+        } elseif ($decimal < 8592) {
+            $return = '2150_218f'; // Number Forms
+        } elseif ($decimal >= 9312 && $decimal < 9472) {
+            $return = '2460_24ff'; // Enclosed Alphanumerics
+        } elseif ($decimal >= 11264 && $decimal < 11360) {
+            $return = '2c00_2c5f'; // Glagolitic
+        } elseif ($decimal < 11392) {
+            $return = '2c60_2c7f'; // Latin Extended-C
+        } elseif ($decimal < 11520) {
+            $return = '2c80_2cff'; // Coptic
+        } elseif ($decimal >= 65280 && $decimal < 65520) {
+            $return = 'ff00_ffef'; // Halfwidth and Fullwidth Forms
+        } else {
+            $return = false;
+        }
+        static::$_codeRange[$decimal] = $return;
+        return $return;
+    }
+
+    /**
      * Converts the decimal value of a multibyte character string
      * to a string
      *
@@ -112,22 +328,47 @@ class Multibyte
     }
 
     /**
-     * Find position of first occurrence of a case-insensitive string.
+     * Find position of first occurrence of a string.
      *
-     * @param string $haystack The string from which to get the position of the first occurrence of $needle.
-     * @param string $needle The string to find in $haystack.
-     * @param int $offset The position in $haystack to start searching.
-     * @return int|bool The numeric position of the first occurrence of $needle in the $haystack string,
-     *    or false if $needle is not found.
+     * @param string $haystack The string being checked.
+     * @param string $needle The position counted from the beginning of haystack.
+     * @param int $offset The search offset. If it is not specified, 0 is used.
+     * @return int|bool The numeric position of the first occurrence of $needle in the $haystack string.
+     *    If $needle is not found, it returns false.
      */
-    public static function stripos($haystack, $needle, $offset = 0)
+    public static function strpos($haystack, $needle, $offset = 0)
     {
         if (Multibyte::checkMultibyte($haystack)) {
-            $haystack = Multibyte::strtoupper($haystack);
-            $needle = Multibyte::strtoupper($needle);
-            return Multibyte::strpos($haystack, $needle, $offset);
+            $found = false;
+
+            $haystack = Multibyte::utf8($haystack);
+            $haystackCount = count($haystack);
+
+            $needle = Multibyte::utf8($needle);
+            $needleCount = count($needle);
+
+            $position = $offset;
+
+            while (($found === false) && ($position < $haystackCount)) {
+                if (isset($needle[0]) && $needle[0] === $haystack[$position]) {
+                    for ($i = 1; $i < $needleCount; $i++) {
+                        if ($needle[$i] !== $haystack[$position + $i]) {
+                            break;
+                        }
+                    }
+                    if ($i === $needleCount) {
+                        $found = true;
+                        $position--;
+                    }
+                }
+                $position++;
+            }
+            if ($found) {
+                return $position;
+            }
+            return false;
         }
-        return stripos($haystack, $needle, $offset);
+        return strpos($haystack, $needle, $offset);
     }
 
     /**
@@ -205,50 +446,6 @@ class Multibyte
             return count($string);
         }
         return strlen($string);
-    }
-
-    /**
-     * Find position of first occurrence of a string.
-     *
-     * @param string $haystack The string being checked.
-     * @param string $needle The position counted from the beginning of haystack.
-     * @param int $offset The search offset. If it is not specified, 0 is used.
-     * @return int|bool The numeric position of the first occurrence of $needle in the $haystack string.
-     *    If $needle is not found, it returns false.
-     */
-    public static function strpos($haystack, $needle, $offset = 0)
-    {
-        if (Multibyte::checkMultibyte($haystack)) {
-            $found = false;
-
-            $haystack = Multibyte::utf8($haystack);
-            $haystackCount = count($haystack);
-
-            $needle = Multibyte::utf8($needle);
-            $needleCount = count($needle);
-
-            $position = $offset;
-
-            while (($found === false) && ($position < $haystackCount)) {
-                if (isset($needle[0]) && $needle[0] === $haystack[$position]) {
-                    for ($i = 1; $i < $needleCount; $i++) {
-                        if ($needle[$i] !== $haystack[$position + $i]) {
-                            break;
-                        }
-                    }
-                    if ($i === $needleCount) {
-                        $found = true;
-                        $position--;
-                    }
-                }
-                $position++;
-            }
-            if ($found) {
-                return $position;
-            }
-            return false;
-        }
-        return strpos($haystack, $needle, $offset);
     }
 
     /**
@@ -583,95 +780,6 @@ class Multibyte
     }
 
     /**
-     * Make a string uppercase
-     *
-     * @param string $string The string being uppercased.
-     * @return string with all alphabetic characters converted to uppercase.
-     */
-    public static function strtoupper($string)
-    {
-        $utf8Map = Multibyte::utf8($string);
-
-        $length = count($utf8Map);
-        $replaced = array();
-        $upperCase = array();
-
-        for ($i = 0; $i < $length; $i++) {
-            $char = $utf8Map[$i];
-
-            if ($char < 128) {
-                $str = strtoupper(chr($char));
-                $strlen = strlen($str);
-                for ($ii = 0; $ii < $strlen; $ii++) {
-                    $upper = ord(substr($str, $ii, 1));
-                }
-                $upperCase[] = $upper;
-                $matched = true;
-
-            } else {
-                $matched = false;
-                $keys = static::_find($char);
-                $keyCount = count($keys);
-
-                if (!empty($keys)) {
-                    foreach ($keys as $key => $value) {
-                        $matched = false;
-                        $replace = 0;
-                        if ($length > 1 && count($keys[$key]['lower']) > 1) {
-                            $j = 0;
-
-                            for ($ii = 0, $count = count($keys[$key]['lower']); $ii < $count; $ii++) {
-                                $nextChar = $utf8Map[$i + $ii];
-
-                                if (isset($nextChar) && ($nextChar == $keys[$key]['lower'][$j + $ii])) {
-                                    $replace++;
-                                }
-                            }
-                            if ($replace == $count) {
-                                $upperCase[] = $keys[$key]['upper'];
-                                $replaced = array_merge($replaced, array_values($keys[$key]['lower']));
-                                $matched = true;
-                                break 1;
-                            }
-                        } elseif ($length > 1 && $keyCount > 1) {
-                            $j = 0;
-                            for ($ii = 1; $ii < $keyCount; $ii++) {
-                                $nextChar = $utf8Map[$i + $ii - 1];
-
-                                if (in_array($nextChar, $keys[$ii]['lower'])) {
-
-                                    for ($jj = 0, $count = count($keys[$ii]['lower']); $jj < $count; $jj++) {
-                                        $nextChar = $utf8Map[$i + $jj];
-
-                                        if (isset($nextChar) && ($nextChar == $keys[$ii]['lower'][$j + $jj])) {
-                                            $replace++;
-                                        }
-                                    }
-                                    if ($replace == $count) {
-                                        $upperCase[] = $keys[$ii]['upper'];
-                                        $replaced = array_merge($replaced, array_values($keys[$ii]['lower']));
-                                        $matched = true;
-                                        break 2;
-                                    }
-                                }
-                            }
-                        }
-                        if ($keys[$key]['lower'][0] == $char) {
-                            $upperCase[] = $keys[$key]['upper'];
-                            $matched = true;
-                            break 1;
-                        }
-                    }
-                }
-            }
-            if ($matched === false && !in_array($char, $replaced, true)) {
-                $upperCase[] = $char;
-            }
-        }
-        return Multibyte::ascii($upperCase);
-    }
-
-    /**
      * Count the number of substring occurrences
      *
      * @param string $haystack The string being checked.
@@ -786,114 +894,6 @@ class Multibyte
             $string = preg_replace('/' . preg_quote($spacer) . '$/', '', $string);
         }
         return $start . $string . $end;
-    }
-
-    /**
-     * Return the Code points range for Unicode characters
-     *
-     * @param int $decimal Decimal value.
-     * @return string
-     */
-    protected static function _codepoint($decimal)
-    {
-        if ($decimal > 128 && $decimal < 256) {
-            $return = '0080_00ff'; // Latin-1 Supplement
-        } elseif ($decimal < 384) {
-            $return = '0100_017f'; // Latin Extended-A
-        } elseif ($decimal < 592) {
-            $return = '0180_024F'; // Latin Extended-B
-        } elseif ($decimal < 688) {
-            $return = '0250_02af'; // IPA Extensions
-        } elseif ($decimal >= 880 && $decimal < 1024) {
-            $return = '0370_03ff'; // Greek and Coptic
-        } elseif ($decimal < 1280) {
-            $return = '0400_04ff'; // Cyrillic
-        } elseif ($decimal < 1328) {
-            $return = '0500_052f'; // Cyrillic Supplement
-        } elseif ($decimal < 1424) {
-            $return = '0530_058f'; // Armenian
-        } elseif ($decimal >= 7680 && $decimal < 7936) {
-            $return = '1e00_1eff'; // Latin Extended Additional
-        } elseif ($decimal < 8192) {
-            $return = '1f00_1fff'; // Greek Extended
-        } elseif ($decimal >= 8448 && $decimal < 8528) {
-            $return = '2100_214f'; // Letterlike Symbols
-        } elseif ($decimal < 8592) {
-            $return = '2150_218f'; // Number Forms
-        } elseif ($decimal >= 9312 && $decimal < 9472) {
-            $return = '2460_24ff'; // Enclosed Alphanumerics
-        } elseif ($decimal >= 11264 && $decimal < 11360) {
-            $return = '2c00_2c5f'; // Glagolitic
-        } elseif ($decimal < 11392) {
-            $return = '2c60_2c7f'; // Latin Extended-C
-        } elseif ($decimal < 11520) {
-            $return = '2c80_2cff'; // Coptic
-        } elseif ($decimal >= 65280 && $decimal < 65520) {
-            $return = 'ff00_ffef'; // Halfwidth and Fullwidth Forms
-        } else {
-            $return = false;
-        }
-        static::$_codeRange[$decimal] = $return;
-        return $return;
-    }
-
-    /**
-     * Find the related code folding values for $char
-     *
-     * @param int $char decimal value of character
-     * @param string $type Type 'lower' or 'upper'. Defaults to 'lower'.
-     * @return array
-     */
-    protected static function _find($char, $type = 'lower')
-    {
-        $found = array();
-        if (!isset(static::$_codeRange[$char])) {
-            $range = static::_codepoint($char);
-            if ($range === false) {
-                return array();
-            }
-            if (!Configure::configured('_cake_core_')) {
-                App::uses('PhpReader', 'Configure');
-                Configure::config('_cake_core_', new PhpReader(CAKE . 'Config' . DS));
-            }
-            Configure::load('unicode' . DS . 'casefolding' . DS . $range, '_cake_core_');
-            static::$_caseFold[$range] = Configure::read($range);
-            Configure::delete($range);
-        }
-
-        if (!static::$_codeRange[$char]) {
-            return array();
-        }
-        static::$_table = static::$_codeRange[$char];
-        $count = count(static::$_caseFold[static::$_table]);
-
-        for ($i = 0; $i < $count; $i++) {
-            if ($type === 'lower' && static::$_caseFold[static::$_table][$i][$type][0] === $char) {
-                $found[] = static::$_caseFold[static::$_table][$i];
-            } elseif ($type === 'upper' && static::$_caseFold[static::$_table][$i][$type] === $char) {
-                $found[] = static::$_caseFold[static::$_table][$i];
-            }
-        }
-        return $found;
-    }
-
-    /**
-     * Check the $string for multibyte characters
-     *
-     * @param string $string Value to test.
-     * @return bool
-     */
-    public static function checkMultibyte($string)
-    {
-        $length = strlen($string);
-
-        for ($i = 0; $i < $length; $i++) {
-            $value = ord(($string[$i]));
-            if ($value > 128) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

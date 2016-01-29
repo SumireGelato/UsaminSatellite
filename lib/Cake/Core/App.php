@@ -126,42 +126,6 @@ class App
      * @var bool
      */
     public static $return = false;
-
-    /**
-     * Holds key/value pairs of $type => file path.
-     *
-     * @var array
-     */
-    protected static $_map = array();
-
-    /**
-     * Holds and key => value array of object types.
-     *
-     * @var array
-     */
-    protected static $_objects = array();
-
-    /**
-     * Holds the location of each class
-     *
-     * @var array
-     */
-    protected static $_classMap = array();
-
-    /**
-     * Holds the possible paths for each package name
-     *
-     * @var array
-     */
-    protected static $_packages = array();
-
-    /**
-     * Holds the templates for each customizable package path in the application
-     *
-     * @var array
-     */
-    protected static $_packageFormat = array();
-
     /**
      * Maps an old style CakePHP class type to the corresponding package
      *
@@ -181,21 +145,6 @@ class App
         'plugins' => 'Plugin',
         'locales' => 'Locale'
     );
-
-    /**
-     * Indicates whether the class cache should be stored again because of an addition to it
-     *
-     * @var bool
-     */
-    protected static $_cacheChange = false;
-
-    /**
-     * Indicates whether the object cache should be stored again because of an addition to it
-     *
-     * @var bool
-     */
-    protected static $_objectCacheChange = false;
-
     /**
      * Indicates the the Application is in the bootstrapping process. Used to better cache
      * loaded classes while the cache libraries have not been yet initialized
@@ -203,44 +152,48 @@ class App
      * @var bool
      */
     public static $bootstrapping = false;
-
     /**
-     * Used to read information stored path
+     * Holds key/value pairs of $type => file path.
      *
-     * Usage:
-     *
-     * `App::path('Model'); will return all paths for models`
-     *
-     * `App::path('Model/Datasource', 'MyPlugin'); will return the path for datasources under the 'MyPlugin' plugin`
-     *
-     * @param string $type type of path
-     * @param string $plugin name of plugin
-     * @return array
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::path
+     * @var array
      */
-    public static function path($type, $plugin = null)
-    {
-        if (!empty(static::$legacy[$type])) {
-            $type = static::$legacy[$type];
-        }
-
-        if (!empty($plugin)) {
-            $path = array();
-            $pluginPath = CakePlugin::path($plugin);
-            $packageFormat = static::_packageFormat();
-            if (!empty($packageFormat[$type])) {
-                foreach ($packageFormat[$type] as $f) {
-                    $path[] = sprintf($f, $pluginPath);
-                }
-            }
-            return $path;
-        }
-
-        if (!isset(static::$_packages[$type])) {
-            return array();
-        }
-        return static::$_packages[$type];
-    }
+    protected static $_map = array();
+    /**
+     * Holds and key => value array of object types.
+     *
+     * @var array
+     */
+    protected static $_objects = array();
+    /**
+     * Holds the location of each class
+     *
+     * @var array
+     */
+    protected static $_classMap = array();
+    /**
+     * Holds the possible paths for each package name
+     *
+     * @var array
+     */
+    protected static $_packages = array();
+    /**
+     * Holds the templates for each customizable package path in the application
+     *
+     * @var array
+     */
+    protected static $_packageFormat = array();
+    /**
+     * Indicates whether the class cache should be stored again because of an addition to it
+     *
+     * @var bool
+     */
+    protected static $_cacheChange = false;
+    /**
+     * Indicates whether the object cache should be stored again because of an addition to it
+     *
+     * @var bool
+     */
+    protected static $_objectCacheChange = false;
 
     /**
      * Get all the currently loaded paths from App. Useful for inspecting
@@ -356,61 +309,6 @@ class App
     }
 
     /**
-     * Gets the path that a plugin is on. Searches through the defined plugin paths.
-     *
-     * Usage:
-     *
-     * `App::pluginPath('MyPlugin'); will return the full path to 'MyPlugin' plugin'`
-     *
-     * @param string $plugin CamelCased/lower_cased plugin name to find the path of.
-     * @return string full path to the plugin.
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::pluginPath
-     * @deprecated 3.0.0 Use `CakePlugin::path()` instead.
-     */
-    public static function pluginPath($plugin)
-    {
-        return CakePlugin::path($plugin);
-    }
-
-    /**
-     * Finds the path that a theme is on. Searches through the defined theme paths.
-     *
-     * Usage:
-     *
-     * `App::themePath('MyTheme'); will return the full path to the 'MyTheme' theme`
-     *
-     * @param string $theme theme name to find the path of.
-     * @return string full path to the theme.
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::themePath
-     */
-    public static function themePath($theme)
-    {
-        $themeDir = 'Themed' . DS . Inflector::camelize($theme);
-        foreach (static::$_packages['View'] as $path) {
-            if (is_dir($path . $themeDir)) {
-                return $path . $themeDir . DS;
-            }
-        }
-        return static::$_packages['View'][0] . $themeDir . DS;
-    }
-
-    /**
-     * Returns the full path to a package inside the CakePHP core
-     *
-     * Usage:
-     *
-     * `App::core('Cache/Engine'); will return the full path to the cache engines package`
-     *
-     * @param string $type Package type.
-     * @return array full path to package
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::core
-     */
-    public static function core($type)
-    {
-        return array(CAKE . str_replace('/', DS, $type) . DS);
-    }
-
-    /**
      * Returns an array of objects of the given type.
      *
      * Example usage:
@@ -512,23 +410,169 @@ class App
     }
 
     /**
-     * Declares a package for a class. This package location will be used
-     * by the automatic class loader if the class is tried to be used
+     * Used to read information stored path
      *
      * Usage:
      *
-     * `App::uses('MyCustomController', 'Controller');` will setup the class to be found under Controller package
+     * `App::path('Model'); will return all paths for models`
      *
-     * `App::uses('MyHelper', 'MyPlugin.View/Helper');` will setup the helper class to be found in plugin's helper package
+     * `App::path('Model/Datasource', 'MyPlugin'); will return the path for datasources under the 'MyPlugin' plugin`
      *
-     * @param string $className the name of the class to configure package for
-     * @param string $location the package name
-     * @return void
-     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::uses
+     * @param string $type type of path
+     * @param string $plugin name of plugin
+     * @return array
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::path
      */
-    public static function uses($className, $location)
+    public static function path($type, $plugin = null)
     {
-        static::$_classMap[$className] = $location;
+        if (!empty(static::$legacy[$type])) {
+            $type = static::$legacy[$type];
+        }
+
+        if (!empty($plugin)) {
+            $path = array();
+            $pluginPath = CakePlugin::path($plugin);
+            $packageFormat = static::_packageFormat();
+            if (!empty($packageFormat[$type])) {
+                foreach ($packageFormat[$type] as $f) {
+                    $path[] = sprintf($f, $pluginPath);
+                }
+            }
+            return $path;
+        }
+
+        if (!isset(static::$_packages[$type])) {
+            return array();
+        }
+        return static::$_packages[$type];
+    }
+
+    /**
+     * Sets then returns the templates for each customizable package path
+     *
+     * @return array templates for each customizable package path
+     */
+    protected static function _packageFormat()
+    {
+        if (empty(static::$_packageFormat)) {
+            static::$_packageFormat = array(
+                'Model' => array(
+                    '%s' . 'Model' . DS
+                ),
+                'Model/Behavior' => array(
+                    '%s' . 'Model' . DS . 'Behavior' . DS
+                ),
+                'Model/Datasource' => array(
+                    '%s' . 'Model' . DS . 'Datasource' . DS
+                ),
+                'Model/Datasource/Database' => array(
+                    '%s' . 'Model' . DS . 'Datasource' . DS . 'Database' . DS
+                ),
+                'Model/Datasource/Session' => array(
+                    '%s' . 'Model' . DS . 'Datasource' . DS . 'Session' . DS
+                ),
+                'Controller' => array(
+                    '%s' . 'Controller' . DS
+                ),
+                'Controller/Component' => array(
+                    '%s' . 'Controller' . DS . 'Component' . DS
+                ),
+                'Controller/Component/Auth' => array(
+                    '%s' . 'Controller' . DS . 'Component' . DS . 'Auth' . DS
+                ),
+                'Controller/Component/Acl' => array(
+                    '%s' . 'Controller' . DS . 'Component' . DS . 'Acl' . DS
+                ),
+                'View' => array(
+                    '%s' . 'View' . DS
+                ),
+                'View/Helper' => array(
+                    '%s' . 'View' . DS . 'Helper' . DS
+                ),
+                'Console' => array(
+                    '%s' . 'Console' . DS
+                ),
+                'Console/Command' => array(
+                    '%s' . 'Console' . DS . 'Command' . DS
+                ),
+                'Console/Command/Task' => array(
+                    '%s' . 'Console' . DS . 'Command' . DS . 'Task' . DS
+                ),
+                'Lib' => array(
+                    '%s' . 'Lib' . DS
+                ),
+                'Locale' => array(
+                    '%s' . 'Locale' . DS
+                ),
+                'Vendor' => array(
+                    '%s' . 'Vendor' . DS,
+                    ROOT . DS . 'vendors' . DS,
+                    dirname(dirname(CAKE)) . DS . 'vendors' . DS
+                ),
+                'Plugin' => array(
+                    APP . 'Plugin' . DS,
+                    ROOT . DS . 'plugins' . DS,
+                    dirname(dirname(CAKE)) . DS . 'plugins' . DS
+                )
+            );
+        }
+
+        return static::$_packageFormat;
+    }
+
+    /**
+     * Gets the path that a plugin is on. Searches through the defined plugin paths.
+     *
+     * Usage:
+     *
+     * `App::pluginPath('MyPlugin'); will return the full path to 'MyPlugin' plugin'`
+     *
+     * @param string $plugin CamelCased/lower_cased plugin name to find the path of.
+     * @return string full path to the plugin.
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::pluginPath
+     * @deprecated 3.0.0 Use `CakePlugin::path()` instead.
+     */
+    public static function pluginPath($plugin)
+    {
+        return CakePlugin::path($plugin);
+    }
+
+    /**
+     * Finds the path that a theme is on. Searches through the defined theme paths.
+     *
+     * Usage:
+     *
+     * `App::themePath('MyTheme'); will return the full path to the 'MyTheme' theme`
+     *
+     * @param string $theme theme name to find the path of.
+     * @return string full path to the theme.
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::themePath
+     */
+    public static function themePath($theme)
+    {
+        $themeDir = 'Themed' . DS . Inflector::camelize($theme);
+        foreach (static::$_packages['View'] as $path) {
+            if (is_dir($path . $themeDir)) {
+                return $path . $themeDir . DS;
+            }
+        }
+        return static::$_packages['View'][0] . $themeDir . DS;
+    }
+
+    /**
+     * Returns the full path to a package inside the CakePHP core
+     *
+     * Usage:
+     *
+     * `App::core('Cache/Engine'); will return the full path to the cache engines package`
+     *
+     * @param string $type Package type.
+     * @return array full path to package
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::core
+     */
+    public static function core($type)
+    {
+        return array(CAKE . str_replace('/', DS, $type) . DS);
     }
 
     /**
@@ -579,6 +623,47 @@ class App
         }
 
         return false;
+    }
+
+    /**
+     * Returns a file's complete path.
+     *
+     * @param string $name unique name
+     * @param string $plugin camelized if object is from a plugin, the name of the plugin
+     * @return mixed file path if found, false otherwise
+     */
+    protected static function _mapped($name, $plugin = null)
+    {
+        $key = $name;
+        if ($plugin) {
+            $key = 'plugin.' . $name;
+        }
+        return isset(static::$_map[$key]) ? static::$_map[$key] : false;
+    }
+
+    /**
+     * Maps the $name to the $file.
+     *
+     * @param string $file full path to file
+     * @param string $name unique name for this map
+     * @param string $plugin camelized if object is from a plugin, the name of the plugin
+     * @return void
+     */
+    protected static function _map($file, $name, $plugin = null)
+    {
+        $key = $name;
+        if ($plugin) {
+            $key = 'plugin.' . $name;
+        }
+        if ($plugin && empty(static::$_map[$name])) {
+            static::$_map[$key] = $file;
+        }
+        if (!$plugin && empty(static::$_map['plugin.' . $name])) {
+            static::$_map[$key] = $file;
+        }
+        if (!static::$bootstrapping) {
+            static::$_cacheChange = true;
+        }
     }
 
     /**
@@ -707,6 +792,26 @@ class App
     }
 
     /**
+     * Declares a package for a class. This package location will be used
+     * by the automatic class loader if the class is tried to be used
+     *
+     * Usage:
+     *
+     * `App::uses('MyCustomController', 'Controller');` will setup the class to be found under Controller package
+     *
+     * `App::uses('MyHelper', 'MyPlugin.View/Helper');` will setup the helper class to be found in plugin's helper package
+     *
+     * @param string $className the name of the class to configure package for
+     * @param string $location the package name
+     * @return void
+     * @link http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#App::uses
+     */
+    public static function uses($className, $location)
+    {
+        static::$_classMap[$className] = $location;
+    }
+
+    /**
      * Helper function to include single files
      *
      * @param string $name unique name of the file for identifying it inside the application
@@ -791,120 +896,6 @@ class App
     {
         static::$_map += (array)Cache::read('file_map', '_cake_core_');
         register_shutdown_function(array('App', 'shutdown'));
-    }
-
-    /**
-     * Maps the $name to the $file.
-     *
-     * @param string $file full path to file
-     * @param string $name unique name for this map
-     * @param string $plugin camelized if object is from a plugin, the name of the plugin
-     * @return void
-     */
-    protected static function _map($file, $name, $plugin = null)
-    {
-        $key = $name;
-        if ($plugin) {
-            $key = 'plugin.' . $name;
-        }
-        if ($plugin && empty(static::$_map[$name])) {
-            static::$_map[$key] = $file;
-        }
-        if (!$plugin && empty(static::$_map['plugin.' . $name])) {
-            static::$_map[$key] = $file;
-        }
-        if (!static::$bootstrapping) {
-            static::$_cacheChange = true;
-        }
-    }
-
-    /**
-     * Returns a file's complete path.
-     *
-     * @param string $name unique name
-     * @param string $plugin camelized if object is from a plugin, the name of the plugin
-     * @return mixed file path if found, false otherwise
-     */
-    protected static function _mapped($name, $plugin = null)
-    {
-        $key = $name;
-        if ($plugin) {
-            $key = 'plugin.' . $name;
-        }
-        return isset(static::$_map[$key]) ? static::$_map[$key] : false;
-    }
-
-    /**
-     * Sets then returns the templates for each customizable package path
-     *
-     * @return array templates for each customizable package path
-     */
-    protected static function _packageFormat()
-    {
-        if (empty(static::$_packageFormat)) {
-            static::$_packageFormat = array(
-                'Model' => array(
-                    '%s' . 'Model' . DS
-                ),
-                'Model/Behavior' => array(
-                    '%s' . 'Model' . DS . 'Behavior' . DS
-                ),
-                'Model/Datasource' => array(
-                    '%s' . 'Model' . DS . 'Datasource' . DS
-                ),
-                'Model/Datasource/Database' => array(
-                    '%s' . 'Model' . DS . 'Datasource' . DS . 'Database' . DS
-                ),
-                'Model/Datasource/Session' => array(
-                    '%s' . 'Model' . DS . 'Datasource' . DS . 'Session' . DS
-                ),
-                'Controller' => array(
-                    '%s' . 'Controller' . DS
-                ),
-                'Controller/Component' => array(
-                    '%s' . 'Controller' . DS . 'Component' . DS
-                ),
-                'Controller/Component/Auth' => array(
-                    '%s' . 'Controller' . DS . 'Component' . DS . 'Auth' . DS
-                ),
-                'Controller/Component/Acl' => array(
-                    '%s' . 'Controller' . DS . 'Component' . DS . 'Acl' . DS
-                ),
-                'View' => array(
-                    '%s' . 'View' . DS
-                ),
-                'View/Helper' => array(
-                    '%s' . 'View' . DS . 'Helper' . DS
-                ),
-                'Console' => array(
-                    '%s' . 'Console' . DS
-                ),
-                'Console/Command' => array(
-                    '%s' . 'Console' . DS . 'Command' . DS
-                ),
-                'Console/Command/Task' => array(
-                    '%s' . 'Console' . DS . 'Command' . DS . 'Task' . DS
-                ),
-                'Lib' => array(
-                    '%s' . 'Lib' . DS
-                ),
-                'Locale' => array(
-                    '%s' . 'Locale' . DS
-                ),
-                'Vendor' => array(
-                    '%s' . 'Vendor' . DS,
-                    ROOT . DS . 'vendors' . DS,
-                    dirname(dirname(CAKE)) . DS . 'vendors' . DS
-                ),
-                'Plugin' => array(
-                    APP . 'Plugin' . DS,
-                    ROOT . DS . 'plugins' . DS,
-                    dirname(dirname(CAKE)) . DS . 'plugins' . DS
-                )
-            );
-        }
-
-        return static::$_packageFormat;
     }
 
     /**

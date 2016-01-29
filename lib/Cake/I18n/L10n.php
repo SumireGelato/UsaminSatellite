@@ -497,6 +497,36 @@ class L10n
     }
 
     /**
+     * Attempts to find catalog record for requested language
+     *
+     * @param string|array $language string requested language, array of requested languages, or null for whole catalog
+     * @return array|bool array catalog record for requested language, array of catalog records, whole catalog,
+     *    or false when language doesn't exist
+     */
+    public function catalog($language = null)
+    {
+        if (is_array($language)) {
+            $result = array();
+            foreach ($language as $_language) {
+                if ($_result = $this->catalog($_language)) {
+                    $result[$_language] = $_result;
+                }
+            }
+            return $result;
+        }
+        if (is_string($language)) {
+            if (isset($this->_l10nCatalog[$language])) {
+                return $this->_l10nCatalog[$language];
+            }
+            if (isset($this->_l10nMap[$language]) && isset($this->_l10nCatalog[$this->_l10nMap[$language]])) {
+                return $this->_l10nCatalog[$this->_l10nMap[$language]];
+            }
+            return false;
+        }
+        return $this->_l10nCatalog;
+    }
+
+    /**
      * Attempts to find the locale settings based on the HTTP_ACCEPT_LANGUAGE variable
      *
      * @return bool Success
@@ -548,36 +578,6 @@ class L10n
             return false;
         }
         return $this->_l10nMap;
-    }
-
-    /**
-     * Attempts to find catalog record for requested language
-     *
-     * @param string|array $language string requested language, array of requested languages, or null for whole catalog
-     * @return array|bool array catalog record for requested language, array of catalog records, whole catalog,
-     *    or false when language doesn't exist
-     */
-    public function catalog($language = null)
-    {
-        if (is_array($language)) {
-            $result = array();
-            foreach ($language as $_language) {
-                if ($_result = $this->catalog($_language)) {
-                    $result[$_language] = $_result;
-                }
-            }
-            return $result;
-        }
-        if (is_string($language)) {
-            if (isset($this->_l10nCatalog[$language])) {
-                return $this->_l10nCatalog[$language];
-            }
-            if (isset($this->_l10nMap[$language]) && isset($this->_l10nCatalog[$this->_l10nMap[$language]])) {
-                return $this->_l10nCatalog[$this->_l10nMap[$language]];
-            }
-            return false;
-        }
-        return $this->_l10nCatalog;
     }
 
 }

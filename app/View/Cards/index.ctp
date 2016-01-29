@@ -48,12 +48,12 @@ if (!$this->request->is('ajax'))
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <?php if ($card['Card']['type'] == 'Cool') { ?>
-                    <div class="panel-heading cool" role="tab" id="<?php echo "heading" . $totalItems; ?>">
-                <?php } elseif ($card['Card']['type'] == 'Cute') { ?>
+                <div class="panel-heading cool" role="tab" id="<?php echo "heading" . $totalItems; ?>">
+                    <?php } elseif ($card['Card']['type'] == 'Cute') { ?>
                     <div class="panel-heading cute" role="tab" id="<?php echo "heading" . $totalItems; ?>">
-                <?php } else { ?>
-                    <div class="panel-heading passion" role="tab" id="<?php echo "heading" . $totalItems; ?>">
-                        <?php } ?>
+                        <?php } else { ?>
+                        <div class="panel-heading passion" role="tab" id="<?php echo "heading" . $totalItems; ?>">
+                            <?php } ?>
 
                             <a id="cardArt" class="collapsed" role="button" data-toggle="collapse"
                                data-parent="#accordion"
@@ -97,39 +97,63 @@ if (!$this->request->is('ajax'))
                                 <hr>
                                 <div class="row">
                                     <div class="col-xs-6">
-                                        <p><span style="font-weight: bold">Rarity: </span><?php echo $card['Card']['rarity']; ?></p>
+                                        <p><span
+                                                style="font-weight: bold">Rarity: </span><?php echo $card['Card']['rarity']; ?>
+                                        </p>
                                     </div>
                                     <div class="col-xs-6">
-                                        <?php switch($card['Card']['type']) {
+                                        <?php switch ($card['Card']['type']) {
                                             case "Cute":
-                                                echo '<p><span style="font-weight: bold">Type: </span>'.
-                                                    $this->Html->image('cute.png', array('height'=>'10%','width'=>'10%', 'style'=>'padding-bottom:5px')).' '.
-                                                    $card['Card']['type'].'</p>';
+                                                echo '<p><span style="font-weight: bold">Type: </span>' .
+                                                    $this->Html->image('cute.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                                                    $card['Card']['type'] . '</p>';
                                                 break;
                                             case "Cool":
-                                                echo '<p><span style="font-weight: bold">Type: </span>'.
-                                                    $this->Html->image('cool.png', array('height'=>'10%','width'=>'10%', 'style'=>'padding-bottom:5px')).' '.
-                                                    $card['Card']['type'].'</p>';
+                                                echo '<p><span style="font-weight: bold">Type: </span>' .
+                                                    $this->Html->image('cool.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                                                    $card['Card']['type'] . '</p>';
                                                 break;
                                             case "Passion":
-                                                echo '<p><span style="font-weight: bold">Type: </span>'.
-                                                    $this->Html->image('passion.png', array('height'=>'10%','width'=>'10%', 'style'=>'padding-bottom:5px')).' '.
-                                                    $card['Card']['type'].'</p>';
+                                                echo '<p><span style="font-weight: bold">Type: </span>' .
+                                                    $this->Html->image('passion.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                                                    $card['Card']['type'] . '</p>';
                                                 break;
-                                        }?>
+                                        } ?>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="btn-group" data-toggle="buttons">
-                                            <label class="btn btn-primary active">
-                                                <input type="radio" name="options" id="option1" autocomplete="off"
-                                                       checked>Regular
-                                            </label>
-                                            <label class="btn btn-primary">
-                                                <input type="radio" name="options" id="option2" autocomplete="off">Awakened
-                                            </label>
+                                            <?php switch ($card['Card']['type']) {
+                                                case "Cute":
+                                                    ?>
+                                                    <label class="btn btn-cute active">
+                                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
+                                                    </label>
+                                                    <label class="btn btn-cute">
+                                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                    </label>
+                                                    <?php break;
+                                                case "Cool":
+                                                    ?>
+                                                    <label class="btn btn-cool active">
+                                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
+                                                    </label>
+                                                    <label class="btn btn-cool">
+                                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                    </label>
+                                                    <?php break;
+                                                case "Passion":
+                                                    ?>
+                                                    <label class="btn btn-passion active">
+                                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
+                                                    </label>
+                                                    <label class="btn btn-passion">
+                                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                    </label>
+                                                    <?php break;
+                                            } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -138,15 +162,35 @@ if (!$this->request->is('ajax'))
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <div class="btn-group" data-toggle="buttons">
-                                                <label class="btn btn-primary active">
-                                                    <input type="radio" name="options" id="option1" autocomplete="off"
-                                                           checked>Level
-                                                    1
-                                                </label>
-                                                <label class="btn btn-primary">
-                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level
-                                                    80
-                                                </label>
+                                                <?php switch ($card['Card']['type']) {
+                                                    case "Cute":
+                                                        ?>
+                                                        <label class="btn btn-cute active">
+                                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
+                                                        </label>
+                                                        <label class="btn btn-cute">
+                                                            <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                        </label>
+                                                        <?php break;
+                                                    case "Cool":
+                                                        ?>
+                                                        <label class="btn btn-cool active">
+                                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
+                                                        </label>
+                                                        <label class="btn btn-cool">
+                                                            <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                        </label>
+                                                        <?php break;
+                                                    case "Passion":
+                                                        ?>
+                                                        <label class="btn btn-passion active">
+                                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
+                                                        </label>
+                                                        <label class="btn btn-passion">
+                                                            <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                        </label>
+                                                        <?php break;
+                                                } ?>
                                             </div>
                                         </div>
                                     </div>

@@ -202,6 +202,28 @@ class Configure
     }
 
     /**
+     * Set the error and exception handlers.
+     *
+     * @param array $error The Error handling configuration.
+     * @param array $exception The exception handling configuration.
+     * @return void
+     */
+    protected static function _setErrorHandlers($error, $exception)
+    {
+        $level = -1;
+        if (isset($error['level'])) {
+            error_reporting($error['level']);
+            $level = $error['level'];
+        }
+        if (!empty($error['handler'])) {
+            set_error_handler($error['handler'], $level);
+        }
+        if (!empty($exception['handler'])) {
+            set_exception_handler($exception['handler']);
+        }
+    }
+
+    /**
      * Used to read and delete a variable from Configure.
      *
      * This is primarily used during bootstrapping to move configuration data
@@ -256,25 +278,6 @@ class Configure
     public static function delete($var)
     {
         static::$_values = Hash::remove(static::$_values, $var);
-    }
-
-    /**
-     * Add a new reader to Configure. Readers allow you to read configuration
-     * files in various formats/storage locations. CakePHP comes with two built-in readers
-     * PhpReader and IniReader. You can also implement your own reader classes in your application.
-     *
-     * To add a new reader to Configure:
-     *
-     * `Configure::config('ini', new IniReader());`
-     *
-     * @param string $name The name of the reader being configured. This alias is used later to
-     *   read values from a specific reader.
-     * @param ConfigReaderInterface $reader The reader to append.
-     * @return void
-     */
-    public static function config($name, ConfigReaderInterface $reader)
-    {
-        static::$_readers[$name] = $reader;
     }
 
     /**
@@ -353,6 +356,44 @@ class Configure
     }
 
     /**
+     * Get the configured reader. Internally used by `Configure::load()` and `Configure::dump()`
+     * Will create new PhpReader for default if not configured yet.
+     *
+     * @param string $config The name of the configured adapter
+     * @return mixed Reader instance or false
+     */
+    protected static function _getReader($config)
+    {
+        if (!isset(static::$_readers[$config])) {
+            if ($config !== 'default') {
+                return false;
+            }
+            App::uses('PhpReader', 'Configure');
+            static::config($config, new PhpReader());
+        }
+        return static::$_readers[$config];
+    }
+
+    /**
+     * Add a new reader to Configure. Readers allow you to read configuration
+     * files in various formats/storage locations. CakePHP comes with two built-in readers
+     * PhpReader and IniReader. You can also implement your own reader classes in your application.
+     *
+     * To add a new reader to Configure:
+     *
+     * `Configure::config('ini', new IniReader());`
+     *
+     * @param string $name The name of the reader being configured. This alias is used later to
+     *   read values from a specific reader.
+     * @param ConfigReaderInterface $reader The reader to append.
+     * @return void
+     */
+    public static function config($name, ConfigReaderInterface $reader)
+    {
+        static::$_readers[$name] = $reader;
+    }
+
+    /**
      * Dump data currently in Configure into $key. The serialization format
      * is decided by the config reader attached as $config. For example, if the
      * 'default' adapter is a PhpReader, the generated file will be a PHP
@@ -391,25 +432,6 @@ class Configure
             $values = array_intersect_key($values, array_flip($keys));
         }
         return (bool)$reader->dump($key, $values);
-    }
-
-    /**
-     * Get the configured reader. Internally used by `Configure::load()` and `Configure::dump()`
-     * Will create new PhpReader for default if not configured yet.
-     *
-     * @param string $config The name of the configured adapter
-     * @return mixed Reader instance or false
-     */
-    protected static function _getReader($config)
-    {
-        if (!isset(static::$_readers[$config])) {
-            if ($config !== 'default') {
-                return false;
-            }
-            App::uses('PhpReader', 'Configure');
-            static::config($config, new PhpReader());
-        }
-        return static::$_readers[$config];
     }
 
     /**
@@ -472,28 +494,6 @@ class Configure
     {
         static::$_values = array();
         return true;
-    }
-
-    /**
-     * Set the error and exception handlers.
-     *
-     * @param array $error The Error handling configuration.
-     * @param array $exception The exception handling configuration.
-     * @return void
-     */
-    protected static function _setErrorHandlers($error, $exception)
-    {
-        $level = -1;
-        if (isset($error['level'])) {
-            error_reporting($error['level']);
-            $level = $error['level'];
-        }
-        if (!empty($error['handler'])) {
-            set_error_handler($error['handler'], $level);
-        }
-        if (!empty($exception['handler'])) {
-            set_exception_handler($exception['handler']);
-        }
     }
 
 }

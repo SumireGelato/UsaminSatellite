@@ -93,59 +93,6 @@ class HttpSocketResponse implements ArrayAccess
     }
 
     /**
-     * Body content
-     *
-     * @return string
-     */
-    public function body()
-    {
-        return (string)$this->body;
-    }
-
-    /**
-     * Get header in case insensitive
-     *
-     * @param string $name Header name.
-     * @param array $headers Headers to format.
-     * @return mixed String if header exists or null
-     */
-    public function getHeader($name, $headers = null)
-    {
-        if (!is_array($headers)) {
-            $headers =& $this->headers;
-        }
-        if (isset($headers[$name])) {
-            return $headers[$name];
-        }
-        foreach ($headers as $key => $value) {
-            if (strcasecmp($key, $name) === 0) {
-                return $value;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * If return is 200 (OK)
-     *
-     * @return bool
-     */
-    public function isOk()
-    {
-        return in_array($this->code, array(200, 201, 202, 203, 204, 205, 206));
-    }
-
-    /**
-     * If return is a valid 3xx (Redirection)
-     *
-     * @return bool
-     */
-    public function isRedirect()
-    {
-        return in_array($this->code, array(301, 302, 303, 307)) && $this->getHeader('Location') !== null;
-    }
-
-    /**
      * Parses the given message and breaks it down in parts.
      *
      * @param string $message Message to parse
@@ -189,82 +136,6 @@ class HttpSocketResponse implements ArrayAccess
     }
 
     /**
-     * Generic function to decode a $body with a given $encoding. Returns either an array with the keys
-     * 'body' and 'header' or false on failure.
-     *
-     * @param string $body A string containing the body to decode.
-     * @param string|bool $encoding Can be false in case no encoding is being used, or a string representing the encoding.
-     * @return mixed Array of response headers and body or false.
-     */
-    protected function _decodeBody($body, $encoding = 'chunked')
-    {
-        if (!is_string($body)) {
-            return false;
-        }
-        if (empty($encoding)) {
-            return array('body' => $body, 'header' => false);
-        }
-        $decodeMethod = '_decode' . Inflector::camelize(str_replace('-', '_', $encoding)) . 'Body';
-
-        if (!is_callable(array(&$this, $decodeMethod))) {
-            return array('body' => $body, 'header' => false);
-        }
-        return $this->{$decodeMethod}($body);
-    }
-
-    /**
-     * Decodes a chunked message $body and returns either an array with the keys 'body' and 'header' or false as
-     * a result.
-     *
-     * @param string $body A string containing the chunked body to decode.
-     * @return mixed Array of response headers and body or false.
-     * @throws SocketException
-     */
-    protected function _decodeChunkedBody($body)
-    {
-        if (!is_string($body)) {
-            return false;
-        }
-
-        $decodedBody = null;
-        $chunkLength = null;
-
-        while ($chunkLength !== 0) {
-            if (!preg_match('/^([0-9a-f]+)[ ]*(?:;(.+)=(.+))?(?:\r\n|\n)/iU', $body, $match)) {
-                // Handle remaining invalid data as one big chunk.
-                preg_match('/^(.*?)\r\n/', $body, $invalidMatch);
-                $length = isset($invalidMatch[1]) ? strlen($invalidMatch[1]) : 0;
-                $match = array(
-                    0 => '',
-                    1 => dechex($length)
-                );
-            }
-            $chunkSize = 0;
-            $hexLength = 0;
-            if (isset($match[0])) {
-                $chunkSize = $match[0];
-            }
-            if (isset($match[1])) {
-                $hexLength = $match[1];
-            }
-
-            $chunkLength = hexdec($hexLength);
-            $body = substr($body, strlen($chunkSize));
-
-            $decodedBody .= substr($body, 0, $chunkLength);
-            if ($chunkLength) {
-                $body = substr($body, $chunkLength + strlen("\r\n"));
-            }
-        }
-
-        $entityHeader = false;
-        if (!empty($body)) {
-            $entityHeader = $this->_parseHeader($body);
-        }
-        return array('body' => $decodedBody, 'header' => $entityHeader);
-    }
-
-    /**
      * Parses an array based header.
      *
      * @param array $header Header as an indexed array (field => value)
@@ -296,6 +167,95 @@ class HttpSocketResponse implements ArrayAccess
             }
         }
         return $header;
+    }
+
+    /**
+     * Unescapes a given $token according to RFC 2616 (HTTP 1.1 specs)
+     *
+     * @param string $token Token to unescape.
+     * @param array $chars Characters to unescape.
+     * @return string Unescaped token
+     */
+    protected function _unescapeToken($token, $chars = null)
+    {
+        $regex = '/"([' . implode('', $this->_tokenEscapeChars(true, $chars)) . '])"/';
+        $token = preg_replace($regex, '\\1', $token);
+        return $token;
+    }
+
+    /**
+     * Gets escape chars according to RFC 2616 (HTTP 1.1 specs).
+     *
+     * @param bool $hex True to get them as HEX values, false otherwise.
+     * @param array $chars Characters to uescape.
+     * @return array Escape chars
+     */
+    protected function _tokenEscapeChars($hex = true, $chars = null)
+    {
+        if (!empty($chars)) {
+            $escape = $chars;
+        } else {
+            $escape = array('"', "(", ")", "<", ">", "@", ",", ";", ":", "\\", "/", "[", "]", "?", "=", "{", "}", " ");
+            for ($i = 0; $i <= 31; $i++) {
+                $escape[] = chr($i);
+            }
+            $escape[] = chr(127);
+        }
+
+        if (!$hex) {
+            return $escape;
+        }
+        foreach ($escape as $key => $char) {
+            $escape[$key] = '\\x' . str_pad(dechex(ord($char)), 2, '0', STR_PAD_LEFT);
+        }
+        return $escape;
+    }
+
+    /**
+     * Get header in case insensitive
+     *
+     * @param string $name Header name.
+     * @param array $headers Headers to format.
+     * @return mixed String if header exists or null
+     */
+    public function getHeader($name, $headers = null)
+    {
+        if (!is_array($headers)) {
+            $headers =& $this->headers;
+        }
+        if (isset($headers[$name])) {
+            return $headers[$name];
+        }
+        foreach ($headers as $key => $value) {
+            if (strcasecmp($key, $name) === 0) {
+                return $value;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Generic function to decode a $body with a given $encoding. Returns either an array with the keys
+     * 'body' and 'header' or false on failure.
+     *
+     * @param string $body A string containing the body to decode.
+     * @param string|bool $encoding Can be false in case no encoding is being used, or a string representing the encoding.
+     * @return mixed Array of response headers and body or false.
+     */
+    protected function _decodeBody($body, $encoding = 'chunked')
+    {
+        if (!is_string($body)) {
+            return false;
+        }
+        if (empty($encoding)) {
+            return array('body' => $body, 'header' => false);
+        }
+        $decodeMethod = '_decode' . Inflector::camelize(str_replace('-', '_', $encoding)) . 'Body';
+
+        if (!is_callable(array(&$this, $decodeMethod))) {
+            return array('body' => $body, 'header' => false);
+        }
+        return $this->{$decodeMethod}($body);
     }
 
     /**
@@ -341,45 +301,23 @@ class HttpSocketResponse implements ArrayAccess
     }
 
     /**
-     * Unescapes a given $token according to RFC 2616 (HTTP 1.1 specs)
+     * If return is 200 (OK)
      *
-     * @param string $token Token to unescape.
-     * @param array $chars Characters to unescape.
-     * @return string Unescaped token
+     * @return bool
      */
-    protected function _unescapeToken($token, $chars = null)
+    public function isOk()
     {
-        $regex = '/"([' . implode('', $this->_tokenEscapeChars(true, $chars)) . '])"/';
-        $token = preg_replace($regex, '\\1', $token);
-        return $token;
+        return in_array($this->code, array(200, 201, 202, 203, 204, 205, 206));
     }
 
     /**
-     * Gets escape chars according to RFC 2616 (HTTP 1.1 specs).
+     * If return is a valid 3xx (Redirection)
      *
-     * @param bool $hex True to get them as HEX values, false otherwise.
-     * @param array $chars Characters to uescape.
-     * @return array Escape chars
+     * @return bool
      */
-    protected function _tokenEscapeChars($hex = true, $chars = null)
+    public function isRedirect()
     {
-        if (!empty($chars)) {
-            $escape = $chars;
-        } else {
-            $escape = array('"', "(", ")", "<", ">", "@", ",", ";", ":", "\\", "/", "[", "]", "?", "=", "{", "}", " ");
-            for ($i = 0; $i <= 31; $i++) {
-                $escape[] = chr($i);
-            }
-            $escape[] = chr(127);
-        }
-
-        if (!$hex) {
-            return $escape;
-        }
-        foreach ($escape as $key => $char) {
-            $escape[$key] = '\\x' . str_pad(dechex(ord($char)), 2, '0', STR_PAD_LEFT);
-        }
-        return $escape;
+        return in_array($this->code, array(301, 302, 303, 307)) && $this->getHeader('Location') !== null;
     }
 
     /**
@@ -460,6 +398,68 @@ class HttpSocketResponse implements ArrayAccess
     public function __toString()
     {
         return $this->body();
+    }
+
+    /**
+     * Body content
+     *
+     * @return string
+     */
+    public function body()
+    {
+        return (string)$this->body;
+    }
+
+    /**
+     * Decodes a chunked message $body and returns either an array with the keys 'body' and 'header' or false as
+     * a result.
+     *
+     * @param string $body A string containing the chunked body to decode.
+     * @return mixed Array of response headers and body or false.
+     * @throws SocketException
+     */
+    protected function _decodeChunkedBody($body)
+    {
+        if (!is_string($body)) {
+            return false;
+        }
+
+        $decodedBody = null;
+        $chunkLength = null;
+
+        while ($chunkLength !== 0) {
+            if (!preg_match('/^([0-9a-f]+)[ ]*(?:;(.+)=(.+))?(?:\r\n|\n)/iU', $body, $match)) {
+                // Handle remaining invalid data as one big chunk.
+                preg_match('/^(.*?)\r\n/', $body, $invalidMatch);
+                $length = isset($invalidMatch[1]) ? strlen($invalidMatch[1]) : 0;
+                $match = array(
+                    0 => '',
+                    1 => dechex($length)
+                );
+            }
+            $chunkSize = 0;
+            $hexLength = 0;
+            if (isset($match[0])) {
+                $chunkSize = $match[0];
+            }
+            if (isset($match[1])) {
+                $hexLength = $match[1];
+            }
+
+            $chunkLength = hexdec($hexLength);
+            $body = substr($body, strlen($chunkSize));
+
+            $decodedBody .= substr($body, 0, $chunkLength);
+            if ($chunkLength) {
+                $body = substr($body, $chunkLength + strlen("\r\n"));
+            }
+        }
+
+        $entityHeader = false;
+        if (!empty($body)) {
+            $entityHeader = $this->_parseHeader($body);
+        }
+        return array('body' => $decodedBody, 'header' => $entityHeader);
     }
 
 }

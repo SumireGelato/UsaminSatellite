@@ -49,18 +49,6 @@ class Sqlite extends DboSource
      * @var string
      */
     public $endQuote = '"';
-
-    /**
-     * Base configuration settings for SQLite3 driver
-     *
-     * @var array
-     */
-    protected $_baseConfig = array(
-        'persistent' => false,
-        'database' => null,
-        'flags' => array()
-    );
-
     /**
      * SQLite3 column definition
      *
@@ -81,7 +69,6 @@ class Sqlite extends DboSource
         'binary' => array('name' => 'blob'),
         'boolean' => array('name' => 'boolean')
     );
-
     /**
      * List of engine specific additional field parameters used on table creating
      *
@@ -98,6 +85,16 @@ class Sqlite extends DboSource
                 'BINARY', 'NOCASE', 'RTRIM'
             )
         ),
+    );
+    /**
+     * Base configuration settings for SQLite3 driver
+     *
+     * @var array
+     */
+    protected $_baseConfig = array(
+        'persistent' => false,
+        'database' => null,
+        'flags' => array()
     );
 
     /**
@@ -133,33 +130,6 @@ class Sqlite extends DboSource
     public function enabled()
     {
         return in_array('sqlite', PDO::getAvailableDrivers());
-    }
-
-    /**
-     * Returns an array of tables in the database. If there are no tables, an error is raised and the application exits.
-     *
-     * @param mixed $data Unused.
-     * @return array Array of table names in the database
-     */
-    public function listSources($data = null)
-    {
-        $cache = parent::listSources();
-        if ($cache) {
-            return $cache;
-        }
-
-        $result = $this->fetchAll("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;", false);
-
-        if (!$result || empty($result)) {
-            return array();
-        }
-
-        $tables = array();
-        foreach ($result as $table) {
-            $tables[] = $table[0]['name'];
-        }
-        parent::listSources($tables);
-        return $tables;
     }
 
     /**
@@ -202,45 +172,6 @@ class Sqlite extends DboSource
         $result->closeCursor();
         $this->_cacheDescription($table, $fields);
         return $fields;
-    }
-
-    /**
-     * Generates and executes an SQL UPDATE statement for given model, fields, and values.
-     *
-     * @param Model $model The model instance to update.
-     * @param array $fields The fields to update.
-     * @param array $values The values to set columns to.
-     * @param mixed $conditions array of conditions to use.
-     * @return array
-     */
-    public function update(Model $model, $fields = array(), $values = null, $conditions = null)
-    {
-        if (empty($values) && !empty($fields)) {
-            foreach ($fields as $field => $value) {
-                if (strpos($field, $model->alias . '.') !== false) {
-                    unset($fields[$field]);
-                    $field = str_replace($model->alias . '.', "", $field);
-                    $field = str_replace($model->alias . '.', "", $field);
-                    $fields[$field] = $value;
-                }
-            }
-        }
-        return parent::update($model, $fields, $values, $conditions);
-    }
-
-    /**
-     * Deletes all the records in a table and resets the count of the auto-incrementing
-     * primary key, where applicable.
-     *
-     * @param string|Model $table A string or model class representing the table to be truncated
-     * @return bool SQL TRUNCATE TABLE statement, false if not applicable.
-     */
-    public function truncate($table)
-    {
-        if (in_array('sqlite_sequence', $this->listSources())) {
-            $this->_execute('DELETE FROM sqlite_sequence where name=' . $this->startQuote . $this->fullTableName($table, false, false) . $this->endQuote);
-        }
-        return $this->execute('DELETE FROM ' . $this->fullTableName($table));
     }
 
     /**
@@ -290,6 +221,72 @@ class Sqlite extends DboSource
             return 'decimal';
         }
         return 'text';
+    }
+
+    /**
+     * Generates and executes an SQL UPDATE statement for given model, fields, and values.
+     *
+     * @param Model $model The model instance to update.
+     * @param array $fields The fields to update.
+     * @param array $values The values to set columns to.
+     * @param mixed $conditions array of conditions to use.
+     * @return array
+     */
+    public function update(Model $model, $fields = array(), $values = null, $conditions = null)
+    {
+        if (empty($values) && !empty($fields)) {
+            foreach ($fields as $field => $value) {
+                if (strpos($field, $model->alias . '.') !== false) {
+                    unset($fields[$field]);
+                    $field = str_replace($model->alias . '.', "", $field);
+                    $field = str_replace($model->alias . '.', "", $field);
+                    $fields[$field] = $value;
+                }
+            }
+        }
+        return parent::update($model, $fields, $values, $conditions);
+    }
+
+    /**
+     * Deletes all the records in a table and resets the count of the auto-incrementing
+     * primary key, where applicable.
+     *
+     * @param string|Model $table A string or model class representing the table to be truncated
+     * @return bool SQL TRUNCATE TABLE statement, false if not applicable.
+     */
+    public function truncate($table)
+    {
+        if (in_array('sqlite_sequence', $this->listSources())) {
+            $this->_execute('DELETE FROM sqlite_sequence where name=' . $this->startQuote . $this->fullTableName($table, false, false) . $this->endQuote);
+        }
+        return $this->execute('DELETE FROM ' . $this->fullTableName($table));
+    }
+
+    /**
+     * Returns an array of tables in the database. If there are no tables, an error is raised and the application exits.
+     *
+     * @param mixed $data Unused.
+     * @return array Array of table names in the database
+     */
+    public function listSources($data = null)
+    {
+        $cache = parent::listSources();
+        if ($cache) {
+            return $cache;
+        }
+
+        $result = $this->fetchAll("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;", false);
+
+        if (!$result || empty($result)) {
+            return array();
+        }
+
+        $tables = array();
+        foreach ($result as $table) {
+            $tables[] = $table[0]['name'];
+        }
+        parent::listSources($tables);
+        return $tables;
     }
 
     /**
@@ -579,17 +576,6 @@ class Sqlite extends DboSource
     }
 
     /**
-     * Generate a "drop table" statement for the given table
-     *
-     * @param type $table Name of the table to drop
-     * @return string Drop table SQL statement
-     */
-    protected function _dropTable($table)
-    {
-        return 'DROP TABLE IF EXISTS ' . $this->fullTableName($table) . ";";
-    }
-
-    /**
      * Gets the schema name
      *
      * @return string The schema name
@@ -607,6 +593,17 @@ class Sqlite extends DboSource
     public function nestedTransactionSupported()
     {
         return $this->useNestedTransactions && version_compare($this->getVersion(), '3.6.8', '>=');
+    }
+
+    /**
+     * Generate a "drop table" statement for the given table
+     *
+     * @param type $table Name of the table to drop
+     * @return string Drop table SQL statement
+     */
+    protected function _dropTable($table)
+    {
+        return 'DROP TABLE IF EXISTS ' . $this->fullTableName($table) . ";";
     }
 
 }

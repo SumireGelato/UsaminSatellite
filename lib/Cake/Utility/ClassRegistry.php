@@ -55,20 +55,6 @@ class ClassRegistry
     protected $_config = array();
 
     /**
-     * Return a singleton instance of the ClassRegistry.
-     *
-     * @return ClassRegistry instance
-     */
-    public static function getInstance()
-    {
-        static $instance = array();
-        if (!$instance) {
-            $instance[0] = new ClassRegistry();
-        }
-        return $instance[0];
-    }
-
-    /**
      * Loads a class, registers the object in the registry and returns instance of the object. ClassRegistry::init()
      * is used as a factory for models, and handle correct injecting of settings, that assist in testing.
      *
@@ -199,6 +185,106 @@ class ClassRegistry
     }
 
     /**
+     * Return a singleton instance of the ClassRegistry.
+     *
+     * @return ClassRegistry instance
+     */
+    public static function getInstance()
+    {
+        static $instance = array();
+        if (!$instance) {
+            $instance[0] = new ClassRegistry();
+        }
+        return $instance[0];
+    }
+
+    /**
+     * Checks to see if $alias is a duplicate $class Object
+     *
+     * @param string $alias Alias to check.
+     * @param string $class Class name.
+     * @return bool
+     */
+    protected function &_duplicate($alias, $class)
+    {
+        $duplicate = false;
+        if ($this->isKeySet($alias)) {
+            $model = $this->getObject($alias);
+            if (is_object($model) && ($model instanceof $class || $model->alias === $class)) {
+                $duplicate = $model;
+            }
+            unset($model);
+        }
+        return $duplicate;
+    }
+
+    /**
+     * Returns true if given key is present in the ClassRegistry.
+     *
+     * @param string $key Key to look for
+     * @return bool true if key exists in registry, false otherwise
+     */
+    public static function isKeySet($key)
+    {
+        $_this = ClassRegistry::getInstance();
+        $key = Inflector::underscore($key);
+
+        return isset($_this->_objects[$key]) || isset($_this->_map[$key]);
+    }
+
+    /**
+     * Return object which corresponds to given key.
+     *
+     * @param string $key Key of object to look for
+     * @return mixed Object stored in registry or boolean false if the object does not exist.
+     */
+    public static function getObject($key)
+    {
+        $_this = ClassRegistry::getInstance();
+        $key = Inflector::underscore($key);
+        $return = false;
+        if (isset($_this->_objects[$key])) {
+            $return = $_this->_objects[$key];
+        } else {
+            $key = $_this->_getMap($key);
+            if (isset($_this->_objects[$key])) {
+                $return = $_this->_objects[$key];
+            }
+        }
+        return $return;
+    }
+
+    /**
+     * Return the name of a class in the registry.
+     *
+     * @param string $key Key to find in map
+     * @return string Mapped value
+     */
+    protected function _getMap($key)
+    {
+        if (isset($this->_map[$key])) {
+            return $this->_map[$key];
+        }
+    }
+
+    /**
+     * Add a key name pair to the registry to map name to class in the registry.
+     *
+     * @param string $key Key to include in map
+     * @param string $name Key that is being mapped
+     * @return void
+     */
+    public static function map($key, $name)
+    {
+        $_this = ClassRegistry::getInstance();
+        $key = Inflector::underscore($key);
+        $name = Inflector::underscore($name);
+        if (!isset($_this->_map[$key])) {
+            $_this->_map[$key] = $name;
+        }
+    }
+
+    /**
      * Add $object to the registry, associating it with the name $key.
      *
      * @param string $key Key for the object in registry
@@ -232,20 +318,6 @@ class ClassRegistry
     }
 
     /**
-     * Returns true if given key is present in the ClassRegistry.
-     *
-     * @param string $key Key to look for
-     * @return bool true if key exists in registry, false otherwise
-     */
-    public static function isKeySet($key)
-    {
-        $_this = ClassRegistry::getInstance();
-        $key = Inflector::underscore($key);
-
-        return isset($_this->_objects[$key]) || isset($_this->_map[$key]);
-    }
-
-    /**
      * Get all keys from the registry.
      *
      * @return array Set of keys stored in registry
@@ -253,28 +325,6 @@ class ClassRegistry
     public static function keys()
     {
         return array_keys(ClassRegistry::getInstance()->_objects);
-    }
-
-    /**
-     * Return object which corresponds to given key.
-     *
-     * @param string $key Key of object to look for
-     * @return mixed Object stored in registry or boolean false if the object does not exist.
-     */
-    public static function getObject($key)
-    {
-        $_this = ClassRegistry::getInstance();
-        $key = Inflector::underscore($key);
-        $return = false;
-        if (isset($_this->_objects[$key])) {
-            $return = $_this->_objects[$key];
-        } else {
-            $key = $_this->_getMap($key);
-            if (isset($_this->_objects[$key])) {
-                $return = $_this->_objects[$key];
-            }
-        }
-        return $return;
     }
 
     /**
@@ -305,43 +355,6 @@ class ClassRegistry
     }
 
     /**
-     * Checks to see if $alias is a duplicate $class Object
-     *
-     * @param string $alias Alias to check.
-     * @param string $class Class name.
-     * @return bool
-     */
-    protected function &_duplicate($alias, $class)
-    {
-        $duplicate = false;
-        if ($this->isKeySet($alias)) {
-            $model = $this->getObject($alias);
-            if (is_object($model) && ($model instanceof $class || $model->alias === $class)) {
-                $duplicate = $model;
-            }
-            unset($model);
-        }
-        return $duplicate;
-    }
-
-    /**
-     * Add a key name pair to the registry to map name to class in the registry.
-     *
-     * @param string $key Key to include in map
-     * @param string $name Key that is being mapped
-     * @return void
-     */
-    public static function map($key, $name)
-    {
-        $_this = ClassRegistry::getInstance();
-        $key = Inflector::underscore($key);
-        $name = Inflector::underscore($name);
-        if (!isset($_this->_map[$key])) {
-            $_this->_map[$key] = $name;
-        }
-    }
-
-    /**
      * Get all keys from the map in the registry.
      *
      * @return array Keys of registry's map
@@ -349,19 +362,6 @@ class ClassRegistry
     public static function mapKeys()
     {
         return array_keys(ClassRegistry::getInstance()->_map);
-    }
-
-    /**
-     * Return the name of a class in the registry.
-     *
-     * @param string $key Key to find in map
-     * @return string Mapped value
-     */
-    protected function _getMap($key)
-    {
-        if (isset($this->_map[$key])) {
-            return $this->_map[$key];
-        }
     }
 
     /**

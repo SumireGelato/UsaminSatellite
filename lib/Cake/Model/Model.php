@@ -111,14 +111,6 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/model-attributes.html#primarykey
      */
     public $primaryKey = null;
-
-    /**
-     * Field-by-field table metadata.
-     *
-     * @var array
-     */
-    protected $_schema = null;
-
     /**
      * List of validation rules. It must be an array with the field name as key and using
      * as value one of the following possibilities
@@ -211,21 +203,18 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/data-validation.html
      */
     public $validate = array();
-
     /**
      * List of validation errors.
      *
      * @var array
      */
     public $validationErrors = array();
-
     /**
      * Name of the validation string domain to use when translating validation errors.
      *
      * @var string
      */
     public $validationDomain = null;
-
     /**
      * Database table prefix for tables in model.
      *
@@ -233,14 +222,12 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/model-attributes.html#tableprefix
      */
     public $tablePrefix = null;
-
     /**
      * Plugin model belongs to.
      *
      * @var string
      */
     public $plugin = null;
-
     /**
      * Name of the model.
      *
@@ -248,21 +235,18 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/model-attributes.html#name
      */
     public $name = null;
-
     /**
      * Alias name for model.
      *
      * @var string
      */
     public $alias = null;
-
     /**
      * List of table names included in the model description. Used for associations.
      *
      * @var array
      */
     public $tableToModel = array();
-
     /**
      * Whether or not to cache queries for this model. This enables in-memory
      * caching only, the results are not stored beyond the current request.
@@ -271,7 +255,6 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/model-attributes.html#cachequeries
      */
     public $cacheQueries = false;
-
     /**
      * Detailed list of belongsTo associations.
      *
@@ -318,7 +301,6 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/associations-linking-models-together.html#belongsto
      */
     public $belongsTo = array();
-
     /**
      * Detailed list of hasOne associations.
      *
@@ -361,7 +343,6 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/associations-linking-models-together.html#hasone
      */
     public $hasOne = array();
-
     /**
      * Detailed list of hasMany associations.
      *
@@ -410,7 +391,6 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/associations-linking-models-together.html#hasmany
      */
     public $hasMany = array();
-
     /**
      * Detailed list of hasAndBelongsToMany associations.
      *
@@ -471,7 +451,6 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/associations-linking-models-together.html#hasandbelongstomany-habtm
      */
     public $hasAndBelongsToMany = array();
-
     /**
      * List of behaviors to load when the model object is initialized. Settings can be
      * passed to behaviors by using the behavior name as index. Eg:
@@ -482,35 +461,30 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/behaviors.html#using-behaviors
      */
     public $actsAs = null;
-
     /**
      * Holds the Behavior objects currently bound to this model.
      *
      * @var BehaviorCollection
      */
     public $Behaviors = null;
-
     /**
      * Whitelist of fields allowed to be saved.
      *
      * @var array
      */
     public $whitelist = array();
-
     /**
      * Whether or not to cache sources for this model.
      *
      * @var bool
      */
     public $cacheSources = true;
-
     /**
      * Type of find query currently executing.
      *
      * @var string
      */
     public $findQueryType = null;
-
     /**
      * Number of associations to recurse through during find calls. Fetches only
      * the first level by default.
@@ -519,7 +493,6 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/model-attributes.html#recursive
      */
     public $recursive = 1;
-
     /**
      * The column name(s) and direction(s) to order find results by default.
      *
@@ -530,7 +503,6 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/model-attributes.html#order
      */
     public $order = null;
-
     /**
      * Array of virtual fields this model has. Virtual fields are aliased
      * SQL expressions. Fields added to this property will be read as other fields in a model
@@ -544,42 +516,18 @@ class Model extends Object implements CakeEventListener
      * @link http://book.cakephp.org/2.0/en/models/model-attributes.html#virtualfields
      */
     public $virtualFields = array();
-
-    /**
-     * Default list of association keys.
-     *
-     * @var array
-     */
-    protected $_associationKeys = array(
-        'belongsTo' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'counterCache'),
-        'hasOne' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'dependent'),
-        'hasMany' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'limit', 'offset', 'dependent', 'exclusive', 'finderQuery', 'counterQuery'),
-        'hasAndBelongsToMany' => array('className', 'joinTable', 'with', 'foreignKey', 'associationForeignKey', 'conditions', 'fields', 'order', 'limit', 'offset', 'unique', 'finderQuery')
-    );
-
-    /**
-     * Holds provided/generated association key names and other data for all associations.
-     *
-     * @var array
-     */
-    protected $_associations = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
-
-// @codingStandardsIgnoreStart
-
     /**
      * Holds model associations temporarily to allow for dynamic (un)binding.
      *
      * @var array
      */
     public $__backAssociation = array();
-
     /**
      * Back inner association
      *
      * @var array
      */
     public $__backInnerAssociation = array();
-
     /**
      * Back original association
      *
@@ -587,13 +535,13 @@ class Model extends Object implements CakeEventListener
      */
     public $__backOriginalAssociation = array();
 
+// @codingStandardsIgnoreStart
     /**
      * Back containable association
      *
      * @var array
      */
     public $__backContainableAssociation = array();
-
     /**
      * Safe update mode
      * If true, this prevents Model::save() from generating a query with WHERE 1 = 1 on race condition.
@@ -601,9 +549,6 @@ class Model extends Object implements CakeEventListener
      * @var bool
      */
     public $__safeUpdateMode = false;
-
-// @codingStandardsIgnoreEnd
-
     /**
      * If true, afterFind will be passed consistent formatted $results in case of $primary is false.
      * The format will be such as the following.
@@ -622,22 +567,6 @@ class Model extends Object implements CakeEventListener
      * @var bool
      */
     public $useConsistentAfterFind = true;
-
-    /**
-     * The ID of the model record that was last inserted.
-     *
-     * @var int
-     */
-    protected $_insertID = null;
-
-    /**
-     * Has the datasource been configured.
-     *
-     * @var bool
-     * @see Model::getDataSource
-     */
-    protected $_sourceConfigured = false;
-
     /**
      * List of valid finder method options, supplied as the first parameter to find().
      *
@@ -647,7 +576,44 @@ class Model extends Object implements CakeEventListener
         'all' => true, 'first' => true, 'count' => true,
         'neighbors' => true, 'list' => true, 'threaded' => true
     );
+    /**
+     * Field-by-field table metadata.
+     *
+     * @var array
+     */
+    protected $_schema = null;
 
+// @codingStandardsIgnoreEnd
+    /**
+     * Default list of association keys.
+     *
+     * @var array
+     */
+    protected $_associationKeys = array(
+        'belongsTo' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'counterCache'),
+        'hasOne' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'dependent'),
+        'hasMany' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'limit', 'offset', 'dependent', 'exclusive', 'finderQuery', 'counterQuery'),
+        'hasAndBelongsToMany' => array('className', 'joinTable', 'with', 'foreignKey', 'associationForeignKey', 'conditions', 'fields', 'order', 'limit', 'offset', 'unique', 'finderQuery')
+    );
+    /**
+     * Holds provided/generated association key names and other data for all associations.
+     *
+     * @var array
+     */
+    protected $_associations = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
+    /**
+     * The ID of the model record that was last inserted.
+     *
+     * @var int
+     */
+    protected $_insertID = null;
+    /**
+     * Has the datasource been configured.
+     *
+     * @var bool
+     * @see Model::getDataSource
+     */
+    protected $_sourceConfigured = false;
     /**
      * Instance of the CakeEventManager this model is using
      * to dispatch inner events.
@@ -777,6 +743,108 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
+     * Create a set of associations.
+     *
+     * @return void
+     */
+    protected function _createLinks()
+    {
+        foreach ($this->_associations as $type) {
+            $association =& $this->{$type};
+
+            if (!is_array($association)) {
+                $association = explode(',', $association);
+
+                foreach ($association as $i => $className) {
+                    $className = trim($className);
+                    unset ($association[$i]);
+                    $association[$className] = array();
+                }
+            }
+
+            if (!empty($association)) {
+                foreach ($association as $assoc => $value) {
+                    $plugin = null;
+
+                    if (is_numeric($assoc)) {
+                        unset($association[$assoc]);
+                        $assoc = $value;
+                        $value = array();
+
+                        if (strpos($assoc, '.') !== false) {
+                            list($plugin, $assoc) = pluginSplit($assoc, true);
+                            $association[$assoc] = array('className' => $plugin . $assoc);
+                        } else {
+                            $association[$assoc] = $value;
+                        }
+                    }
+
+                    $this->_generateAssociation($type, $assoc);
+                }
+            }
+        }
+    }
+
+    /**
+     * Build an array-based association from string.
+     *
+     * @param string $type 'belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany'
+     * @param string $assocKey Association key.
+     * @return void
+     */
+    protected function _generateAssociation($type, $assocKey)
+    {
+        $class = $assocKey;
+        $dynamicWith = false;
+        $assoc =& $this->{$type}[$assocKey];
+
+        foreach ($this->_associationKeys[$type] as $key) {
+            if (!isset($assoc[$key]) || $assoc[$key] === null) {
+                $data = '';
+
+                switch ($key) {
+                    case 'fields':
+                        $data = '';
+                        break;
+
+                    case 'foreignKey':
+                        $data = (($type === 'belongsTo') ? Inflector::underscore($assocKey) : Inflector::singularize($this->table)) . '_id';
+                        break;
+
+                    case 'associationForeignKey':
+                        $data = Inflector::singularize($this->{$class}->table) . '_id';
+                        break;
+
+                    case 'with':
+                        $data = Inflector::camelize(Inflector::singularize($assoc['joinTable']));
+                        $dynamicWith = true;
+                        break;
+
+                    case 'joinTable':
+                        $tables = array($this->table, $this->{$class}->table);
+                        sort($tables);
+                        $data = $tables[0] . '_' . $tables[1];
+                        break;
+
+                    case 'className':
+                        $data = $class;
+                        break;
+
+                    case 'unique':
+                        $data = true;
+                        break;
+                }
+
+                $assoc[$key] = $data;
+            }
+
+            if ($dynamicWith) {
+                $assoc['dynamicWith'] = true;
+            }
+        }
+    }
+
+    /**
      * Returns a list of all events that will fire in the model during it's lifecycle.
      * You can override this function to add your own listener callbacks
      *
@@ -797,24 +865,6 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Returns the CakeEventManager manager instance that is handling any callbacks.
-     * You can use this instance to register any new listeners or callbacks to the
-     * model events, or create your own events and trigger them at will.
-     *
-     * @return CakeEventManager
-     */
-    public function getEventManager()
-    {
-        if (empty($this->_eventManager)) {
-            $this->_eventManager = new CakeEventManager();
-            $this->_eventManager->attach($this->Behaviors);
-            $this->_eventManager->attach($this);
-        }
-
-        return $this->_eventManager;
-    }
-
-    /**
      * Handles custom method calls, like findBy<field> for DB models,
      * and custom RPC calls for remote data sources.
      *
@@ -830,6 +880,90 @@ class Model extends Object implements CakeEventListener
         }
 
         return $this->getDataSource()->query($method, $params, $this);
+    }
+
+    /**
+     * Gets the DataSource to which this model is bound.
+     *
+     * @return DataSource A DataSource object
+     */
+    public function getDataSource()
+    {
+        if (!$this->_sourceConfigured && $this->useTable !== false) {
+            $this->_sourceConfigured = true;
+            $this->setSource($this->useTable);
+        }
+
+        return ConnectionManager::getDataSource($this->useDbConfig);
+    }
+
+    /**
+     * Sets a custom table for your model class. Used by your controller to select a database table.
+     *
+     * @param string $tableName Name of the custom table
+     * @throws MissingTableException when database table $tableName is not found on data source
+     * @return void
+     */
+    public function setSource($tableName)
+    {
+        $this->setDataSource($this->useDbConfig);
+        $db = ConnectionManager::getDataSource($this->useDbConfig);
+
+        if (method_exists($db, 'listSources')) {
+            $restore = $db->cacheSources;
+            $db->cacheSources = ($restore && $this->cacheSources);
+            $sources = $db->listSources();
+            $db->cacheSources = $restore;
+
+            if (is_array($sources) && !in_array(strtolower($this->tablePrefix . $tableName), array_map('strtolower', $sources))) {
+                throw new MissingTableException(array(
+                    'table' => $this->tablePrefix . $tableName,
+                    'class' => $this->alias,
+                    'ds' => $this->useDbConfig,
+                ));
+            }
+
+            if ($sources) {
+                $this->_schema = null;
+            }
+        }
+
+        $this->table = $this->useTable = $tableName;
+        $this->tableToModel[$this->table] = $this->alias;
+    }
+
+    /**
+     * Sets the DataSource to which this model is bound.
+     *
+     * @param string $dataSource The name of the DataSource, as defined in app/Config/database.php
+     * @return void
+     * @throws MissingConnectionException
+     */
+    public function setDataSource($dataSource = null)
+    {
+        $oldConfig = $this->useDbConfig;
+
+        if ($dataSource) {
+            $this->useDbConfig = $dataSource;
+        }
+
+        $db = ConnectionManager::getDataSource($this->useDbConfig);
+        if (!empty($oldConfig) && isset($db->config['prefix'])) {
+            $oldDb = ConnectionManager::getDataSource($oldConfig);
+
+            if (!isset($this->tablePrefix) || (!isset($oldDb->config['prefix']) || $this->tablePrefix === $oldDb->config['prefix'])) {
+                $this->tablePrefix = $db->config['prefix'];
+            }
+        } elseif (isset($db->config['prefix'])) {
+            $this->tablePrefix = $db->config['prefix'];
+        }
+
+        $schema = $db->getSchemaName();
+        $defaultProperties = get_class_vars(get_class($this));
+        if (isset($defaultProperties['schemaName'])) {
+            $schema = $defaultProperties['schemaName'];
+        }
+        $this->schemaName = $schema;
     }
 
     /**
@@ -903,6 +1037,43 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
+     * Protected helper method to create associated models of a given class.
+     *
+     * @param string $assoc Association name
+     * @param string $className Class name
+     * @param string $plugin name of the plugin where $className is located
+     *    examples: public $hasMany = array('Assoc' => array('className' => 'ModelName'));
+     *                    usage: $this->Assoc->modelMethods();
+     *
+     *                public $hasMany = array('ModelName');
+     *                    usage: $this->ModelName->modelMethods();
+     * @return void
+     */
+    protected function _constructLinkedModel($assoc, $className = null, $plugin = null)
+    {
+        if (empty($className)) {
+            $className = $assoc;
+        }
+
+        if (!isset($this->{$assoc}) || $this->{$assoc}->name !== $className) {
+            if ($plugin) {
+                $plugin .= '.';
+            }
+
+            $model = array('class' => $plugin . $className, 'alias' => $assoc);
+            $this->{$assoc} = ClassRegistry::init($model);
+
+            if ($plugin) {
+                ClassRegistry::addObject($plugin . $className, $this->{$assoc});
+            }
+
+            if ($assoc) {
+                $this->tableToModel[$this->{$assoc}->table] = $assoc;
+            }
+        }
+    }
+
+    /**
      * Returns the value of the requested variable if it can be set by __isset()
      *
      * @param string $name variable requested for it's value or reference
@@ -926,6 +1097,96 @@ class Model extends Object implements CakeEventListener
         if (isset($this->{$name})) {
             return $this->{$name};
         }
+    }
+
+    /**
+     * Returns true if the supplied field exists in the model's database table.
+     *
+     * @param string|array $name Name of field to look for, or an array of names
+     * @param bool $checkVirtual checks if the field is declared as virtual
+     * @return mixed If $name is a string, returns a boolean indicating whether the field exists.
+     *               If $name is an array of field names, returns the first field that exists,
+     *               or false if none exist.
+     */
+    public function hasField($name, $checkVirtual = false)
+    {
+        if (is_array($name)) {
+            foreach ($name as $n) {
+                if ($this->hasField($n, $checkVirtual)) {
+                    return $n;
+                }
+            }
+
+            return false;
+        }
+
+        if ($checkVirtual && !empty($this->virtualFields) && $this->isVirtualField($name)) {
+            return true;
+        }
+
+        if (empty($this->_schema)) {
+            $this->schema();
+        }
+
+        if ($this->_schema) {
+            return isset($this->_schema[$name]);
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if the supplied field is a model Virtual Field
+     *
+     * @param string $field Name of field to look for
+     * @return bool indicating whether the field exists as a model virtual field.
+     */
+    public function isVirtualField($field)
+    {
+        if (empty($this->virtualFields) || !is_string($field)) {
+            return false;
+        }
+
+        if (isset($this->virtualFields[$field])) {
+            return true;
+        }
+
+        if (strpos($field, '.') !== false) {
+            list($model, $field) = explode('.', $field);
+            if ($model === $this->alias && isset($this->virtualFields[$field])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns an array of table metadata (column names and types) from the database.
+     * $field => keys(type, null, default, key, length, extra)
+     *
+     * @param bool|string $field Set to true to reload schema, or a string to return a specific field
+     * @return array|null Array of table metadata
+     */
+    public function schema($field = false)
+    {
+        if ($this->useTable !== false && (!is_array($this->_schema) || $field === true)) {
+            $db = $this->getDataSource();
+            $db->cacheSources = ($this->cacheSources && $db->cacheSources);
+            if (method_exists($db, 'describe')) {
+                $this->_schema = $db->describe($this);
+            }
+        }
+
+        if (!is_string($field)) {
+            return $this->_schema;
+        }
+
+        if (isset($this->_schema[$field])) {
+            return $this->_schema[$field];
+        }
+
+        return null;
     }
 
     /**
@@ -1018,177 +1279,113 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Create a set of associations.
+     * Returns an associative array of field names and column types.
      *
-     * @return void
+     * @return array Field types indexed by field name
      */
-    protected function _createLinks()
+    public function getColumnTypes()
     {
-        foreach ($this->_associations as $type) {
-            $association =& $this->{$type};
-
-            if (!is_array($association)) {
-                $association = explode(',', $association);
-
-                foreach ($association as $i => $className) {
-                    $className = trim($className);
-                    unset ($association[$i]);
-                    $association[$className] = array();
-                }
-            }
-
-            if (!empty($association)) {
-                foreach ($association as $assoc => $value) {
-                    $plugin = null;
-
-                    if (is_numeric($assoc)) {
-                        unset($association[$assoc]);
-                        $assoc = $value;
-                        $value = array();
-
-                        if (strpos($assoc, '.') !== false) {
-                            list($plugin, $assoc) = pluginSplit($assoc, true);
-                            $association[$assoc] = array('className' => $plugin . $assoc);
-                        } else {
-                            $association[$assoc] = $value;
-                        }
-                    }
-
-                    $this->_generateAssociation($type, $assoc);
-                }
-            }
+        $columns = $this->schema();
+        if (empty($columns)) {
+            trigger_error(__d('cake_dev', '(Model::getColumnTypes) Unable to build model field data. If you are using a model without a database table, try implementing schema()'), E_USER_WARNING);
         }
+
+        $cols = array();
+        foreach ($columns as $field => $values) {
+            $cols[$field] = $values['type'];
+        }
+
+        return $cols;
     }
 
     /**
-     * Protected helper method to create associated models of a given class.
+     * Check that a method is callable on a model. This will check both the model's own methods, its
+     * inherited methods and methods that could be callable through behaviors.
      *
-     * @param string $assoc Association name
-     * @param string $className Class name
-     * @param string $plugin name of the plugin where $className is located
-     *    examples: public $hasMany = array('Assoc' => array('className' => 'ModelName'));
-     *                    usage: $this->Assoc->modelMethods();
-     *
-     *                public $hasMany = array('ModelName');
-     *                    usage: $this->ModelName->modelMethods();
-     * @return void
+     * @param string $method The method to be called.
+     * @return bool True on method being callable.
      */
-    protected function _constructLinkedModel($assoc, $className = null, $plugin = null)
+    public function hasMethod($method)
     {
-        if (empty($className)) {
-            $className = $assoc;
+        if (method_exists($this, $method)) {
+            return true;
         }
 
-        if (!isset($this->{$assoc}) || $this->{$assoc}->name !== $className) {
-            if ($plugin) {
-                $plugin .= '.';
-            }
-
-            $model = array('class' => $plugin . $className, 'alias' => $assoc);
-            $this->{$assoc} = ClassRegistry::init($model);
-
-            if ($plugin) {
-                ClassRegistry::addObject($plugin . $className, $this->{$assoc});
-            }
-
-            if ($assoc) {
-                $this->tableToModel[$this->{$assoc}->table] = $assoc;
-            }
-        }
+        return $this->Behaviors->hasMethod($method);
     }
 
     /**
-     * Build an array-based association from string.
+     * Returns the expression for a model virtual field
      *
-     * @param string $type 'belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany'
-     * @param string $assocKey Association key.
-     * @return void
+     * @param string $field Name of field to look for
+     * @return mixed If $field is string expression bound to virtual field $field
+     *    If $field is null, returns an array of all model virtual fields
+     *    or false if none $field exist.
      */
-    protected function _generateAssociation($type, $assocKey)
+    public function getVirtualField($field = null)
     {
-        $class = $assocKey;
-        $dynamicWith = false;
-        $assoc =& $this->{$type}[$assocKey];
+        if (!$field) {
+            return empty($this->virtualFields) ? false : $this->virtualFields;
+        }
 
-        foreach ($this->_associationKeys[$type] as $key) {
-            if (!isset($assoc[$key]) || $assoc[$key] === null) {
-                $data = '';
+        if ($this->isVirtualField($field)) {
+            if (strpos($field, '.') !== false) {
+                list(, $field) = pluginSplit($field);
+            }
 
-                switch ($key) {
-                    case 'fields':
-                        $data = '';
-                        break;
+            return $this->virtualFields[$field];
+        }
 
-                    case 'foreignKey':
-                        $data = (($type === 'belongsTo') ? Inflector::underscore($assocKey) : Inflector::singularize($this->table)) . '_id';
-                        break;
+        return false;
+    }
 
-                    case 'associationForeignKey':
-                        $data = Inflector::singularize($this->{$class}->table) . '_id';
-                        break;
+    /**
+     * This function is a convenient wrapper class to create(false) and, as the name suggests, clears the id, data, and validation errors.
+     *
+     * @return bool Always true upon success
+     * @see Model::create()
+     */
+    public function clear()
+    {
+        $this->create(false);
+        return true;
+    }
 
-                    case 'with':
-                        $data = Inflector::camelize(Inflector::singularize($assoc['joinTable']));
-                        $dynamicWith = true;
-                        break;
+    /**
+     * Initializes the model for writing a new record, loading the default values
+     * for those fields that are not defined in $data, and clearing previous validation errors.
+     * Especially helpful for saving data in loops.
+     *
+     * @param bool|array $data Optional data array to assign to the model after it is created. If null or false,
+     *   schema data defaults are not merged.
+     * @param bool $filterKey If true, overwrites any primary key input with an empty value
+     * @return array The current Model::data; after merging $data and/or defaults from database
+     * @link http://book.cakephp.org/2.0/en/models/saving-your-data.html#model-create-array-data-array
+     */
+    public function create($data = array(), $filterKey = false)
+    {
+        $defaults = array();
+        $this->id = false;
+        $this->data = array();
+        $this->validationErrors = array();
 
-                    case 'joinTable':
-                        $tables = array($this->table, $this->{$class}->table);
-                        sort($tables);
-                        $data = $tables[0] . '_' . $tables[1];
-                        break;
-
-                    case 'className':
-                        $data = $class;
-                        break;
-
-                    case 'unique':
-                        $data = true;
-                        break;
+        if ($data !== null && $data !== false) {
+            $schema = (array)$this->schema();
+            foreach ($schema as $field => $properties) {
+                if ($this->primaryKey !== $field && isset($properties['default']) && $properties['default'] !== '') {
+                    $defaults[$field] = $properties['default'];
                 }
-
-                $assoc[$key] = $data;
             }
 
-            if ($dynamicWith) {
-                $assoc['dynamicWith'] = true;
-            }
-        }
-    }
-
-    /**
-     * Sets a custom table for your model class. Used by your controller to select a database table.
-     *
-     * @param string $tableName Name of the custom table
-     * @throws MissingTableException when database table $tableName is not found on data source
-     * @return void
-     */
-    public function setSource($tableName)
-    {
-        $this->setDataSource($this->useDbConfig);
-        $db = ConnectionManager::getDataSource($this->useDbConfig);
-
-        if (method_exists($db, 'listSources')) {
-            $restore = $db->cacheSources;
-            $db->cacheSources = ($restore && $this->cacheSources);
-            $sources = $db->listSources();
-            $db->cacheSources = $restore;
-
-            if (is_array($sources) && !in_array(strtolower($this->tablePrefix . $tableName), array_map('strtolower', $sources))) {
-                throw new MissingTableException(array(
-                    'table' => $this->tablePrefix . $tableName,
-                    'class' => $this->alias,
-                    'ds' => $this->useDbConfig,
-                ));
-            }
-
-            if ($sources) {
-                $this->_schema = null;
-            }
+            $this->set($defaults);
+            $this->set($data);
         }
 
-        $this->table = $this->useTable = $tableName;
-        $this->tableToModel[$this->table] = $this->alias;
+        if ($filterKey) {
+            $this->set($this->primaryKey, false);
+        }
+
+        return $this->data;
     }
 
     /**
@@ -1257,6 +1454,28 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
+     * Normalize `Xml::toArray()` to use in `Model::save()`
+     *
+     * @param array $xml XML as array
+     * @return array
+     */
+    protected function _normalizeXmlData(array $xml)
+    {
+        $return = array();
+        foreach ($xml as $key => $value) {
+            if (is_array($value)) {
+                $return[Inflector::camelize($key)] = $this->_normalizeXmlData($value);
+            } elseif ($key[0] === '@') {
+                $return[substr($key, 1)] = $value;
+            } else {
+                $return[$key] = $value;
+            }
+        }
+
+        return $return;
+    }
+
+    /**
      * Move values to alias
      *
      * @param array $data Data.
@@ -1278,25 +1497,54 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Normalize `Xml::toArray()` to use in `Model::save()`
+     * Gets all the models with which this model is associated.
      *
-     * @param array $xml XML as array
-     * @return array
+     * @param string $type Only result associations of this type
+     * @return array|null Associations
      */
-    protected function _normalizeXmlData(array $xml)
+    public function getAssociated($type = null)
     {
-        $return = array();
-        foreach ($xml as $key => $value) {
-            if (is_array($value)) {
-                $return[Inflector::camelize($key)] = $this->_normalizeXmlData($value);
-            } elseif ($key[0] === '@') {
-                $return[substr($key, 1)] = $value;
-            } else {
-                $return[$key] = $value;
+        if (!$type) {
+            $associated = array();
+            foreach ($this->_associations as $assoc) {
+                if (!empty($this->{$assoc})) {
+                    $models = array_keys($this->{$assoc});
+                    foreach ($models as $m) {
+                        $associated[$m] = $assoc;
+                    }
+                }
             }
+
+            return $associated;
         }
 
-        return $return;
+        if (in_array($type, $this->_associations)) {
+            if (empty($this->{$type})) {
+                return array();
+            }
+
+            return array_keys($this->{$type});
+        }
+
+        $assoc = array_merge(
+            $this->hasOne,
+            $this->hasMany,
+            $this->belongsTo,
+            $this->hasAndBelongsToMany
+        );
+
+        if (array_key_exists($type, $assoc)) {
+            foreach ($this->_associations as $a) {
+                if (isset($this->{$a}[$type])) {
+                    $assoc[$type]['association'] = $a;
+                    break;
+                }
+            }
+
+            return $assoc[$type];
+        }
+
+        return null;
     }
 
     /**
@@ -1393,54 +1641,6 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Returns an array of table metadata (column names and types) from the database.
-     * $field => keys(type, null, default, key, length, extra)
-     *
-     * @param bool|string $field Set to true to reload schema, or a string to return a specific field
-     * @return array|null Array of table metadata
-     */
-    public function schema($field = false)
-    {
-        if ($this->useTable !== false && (!is_array($this->_schema) || $field === true)) {
-            $db = $this->getDataSource();
-            $db->cacheSources = ($this->cacheSources && $db->cacheSources);
-            if (method_exists($db, 'describe')) {
-                $this->_schema = $db->describe($this);
-            }
-        }
-
-        if (!is_string($field)) {
-            return $this->_schema;
-        }
-
-        if (isset($this->_schema[$field])) {
-            return $this->_schema[$field];
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns an associative array of field names and column types.
-     *
-     * @return array Field types indexed by field name
-     */
-    public function getColumnTypes()
-    {
-        $columns = $this->schema();
-        if (empty($columns)) {
-            trigger_error(__d('cake_dev', '(Model::getColumnTypes) Unable to build model field data. If you are using a model without a database table, try implementing schema()'), E_USER_WARNING);
-        }
-
-        $cols = array();
-        foreach ($columns as $field => $values) {
-            $cols[$field] = $values['type'];
-        }
-
-        return $cols;
-    }
-
-    /**
      * Returns the column type of a column in the model.
      *
      * @param string $column The name of the model column
@@ -1473,158 +1673,6 @@ class Model extends Object implements CakeEventListener
         }
 
         return null;
-    }
-
-    /**
-     * Returns true if the supplied field exists in the model's database table.
-     *
-     * @param string|array $name Name of field to look for, or an array of names
-     * @param bool $checkVirtual checks if the field is declared as virtual
-     * @return mixed If $name is a string, returns a boolean indicating whether the field exists.
-     *               If $name is an array of field names, returns the first field that exists,
-     *               or false if none exist.
-     */
-    public function hasField($name, $checkVirtual = false)
-    {
-        if (is_array($name)) {
-            foreach ($name as $n) {
-                if ($this->hasField($n, $checkVirtual)) {
-                    return $n;
-                }
-            }
-
-            return false;
-        }
-
-        if ($checkVirtual && !empty($this->virtualFields) && $this->isVirtualField($name)) {
-            return true;
-        }
-
-        if (empty($this->_schema)) {
-            $this->schema();
-        }
-
-        if ($this->_schema) {
-            return isset($this->_schema[$name]);
-        }
-
-        return false;
-    }
-
-    /**
-     * Check that a method is callable on a model. This will check both the model's own methods, its
-     * inherited methods and methods that could be callable through behaviors.
-     *
-     * @param string $method The method to be called.
-     * @return bool True on method being callable.
-     */
-    public function hasMethod($method)
-    {
-        if (method_exists($this, $method)) {
-            return true;
-        }
-
-        return $this->Behaviors->hasMethod($method);
-    }
-
-    /**
-     * Returns true if the supplied field is a model Virtual Field
-     *
-     * @param string $field Name of field to look for
-     * @return bool indicating whether the field exists as a model virtual field.
-     */
-    public function isVirtualField($field)
-    {
-        if (empty($this->virtualFields) || !is_string($field)) {
-            return false;
-        }
-
-        if (isset($this->virtualFields[$field])) {
-            return true;
-        }
-
-        if (strpos($field, '.') !== false) {
-            list($model, $field) = explode('.', $field);
-            if ($model === $this->alias && isset($this->virtualFields[$field])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns the expression for a model virtual field
-     *
-     * @param string $field Name of field to look for
-     * @return mixed If $field is string expression bound to virtual field $field
-     *    If $field is null, returns an array of all model virtual fields
-     *    or false if none $field exist.
-     */
-    public function getVirtualField($field = null)
-    {
-        if (!$field) {
-            return empty($this->virtualFields) ? false : $this->virtualFields;
-        }
-
-        if ($this->isVirtualField($field)) {
-            if (strpos($field, '.') !== false) {
-                list(, $field) = pluginSplit($field);
-            }
-
-            return $this->virtualFields[$field];
-        }
-
-        return false;
-    }
-
-    /**
-     * Initializes the model for writing a new record, loading the default values
-     * for those fields that are not defined in $data, and clearing previous validation errors.
-     * Especially helpful for saving data in loops.
-     *
-     * @param bool|array $data Optional data array to assign to the model after it is created. If null or false,
-     *   schema data defaults are not merged.
-     * @param bool $filterKey If true, overwrites any primary key input with an empty value
-     * @return array The current Model::data; after merging $data and/or defaults from database
-     * @link http://book.cakephp.org/2.0/en/models/saving-your-data.html#model-create-array-data-array
-     */
-    public function create($data = array(), $filterKey = false)
-    {
-        $defaults = array();
-        $this->id = false;
-        $this->data = array();
-        $this->validationErrors = array();
-
-        if ($data !== null && $data !== false) {
-            $schema = (array)$this->schema();
-            foreach ($schema as $field => $properties) {
-                if ($this->primaryKey !== $field && isset($properties['default']) && $properties['default'] !== '') {
-                    $defaults[$field] = $properties['default'];
-                }
-            }
-
-            $this->set($defaults);
-            $this->set($data);
-        }
-
-        if ($filterKey) {
-            $this->set($this->primaryKey, false);
-        }
-
-        return $this->data;
-    }
-
-    /**
-     * This function is a convenient wrapper class to create(false) and, as the name suggests, clears the id, data, and validation errors.
-     *
-     * @return bool Always true upon success
-     * @see Model::create()
-     */
-    public function clear()
-    {
-        $this->create(false);
-        return true;
     }
 
     /**
@@ -1663,46 +1711,268 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Returns the content of a single field given the supplied conditions,
-     * of the first record in the supplied order.
+     * Queries the datasource and returns a result set array.
      *
-     * @param string $name The name of the field to get.
-     * @param array $conditions SQL conditions (defaults to NULL).
-     * @param string $order SQL ORDER BY fragment.
-     * @return string|false Field content, or false if not found.
-     * @link http://book.cakephp.org/2.0/en/models/retrieving-your-data.html#model-field
+     * Used to perform find operations, where the first argument is type of find operation to perform
+     * (all / first / count / neighbors / list / threaded),
+     * second parameter options for finding (indexed array, including: 'conditions', 'limit',
+     * 'recursive', 'page', 'fields', 'offset', 'order', 'callbacks')
+     *
+     * Eg:
+     * ```
+     * $model->find('all', array(
+     *   'conditions' => array('name' => 'Thomas Anderson'),
+     *   'fields' => array('name', 'email'),
+     *   'order' => 'field3 DESC',
+     *   'recursive' => 2,
+     *   'group' => 'type',
+     *   'callbacks' => false,
+     * ));
+     * ```
+     *
+     * In addition to the standard query keys above, you can provide Datasource, and behavior specific
+     * keys. For example, when using a SQL based datasource you can use the joins key to specify additional
+     * joins that should be part of the query.
+     *
+     * ```
+     * $model->find('all', array(
+     *   'conditions' => array('name' => 'Thomas Anderson'),
+     *   'joins' => array(
+     *     array(
+     *       'alias' => 'Thought',
+     *       'table' => 'thoughts',
+     *       'type' => 'LEFT',
+     *       'conditions' => '`Thought`.`person_id` = `Person`.`id`'
+     *     )
+     *   )
+     * ));
+     * ```
+     *
+     * ### Disabling callbacks
+     *
+     * The `callbacks` key allows you to disable or specify the callbacks that should be run. To
+     * disable beforeFind & afterFind callbacks set `'callbacks' => false` in your options. You can
+     * also set the callbacks option to 'before' or 'after' to enable only the specified callback.
+     *
+     * ### Adding new find types
+     *
+     * Behaviors and find types can also define custom finder keys which are passed into find().
+     * See the documentation for custom find types
+     * (http://book.cakephp.org/2.0/en/models/retrieving-your-data.html#creating-custom-find-types)
+     * for how to implement custom find types.
+     *
+     * Specifying 'fields' for notation 'list':
+     *
+     * - If no fields are specified, then 'id' is used for key and 'model->displayField' is used for value.
+     * - If a single field is specified, 'id' is used for key and specified field is used for value.
+     * - If three fields are specified, they are used (in order) for key, value and group.
+     * - Otherwise, first and second fields are used for key and value.
+     *
+     * Note: find(list) + database views have issues with MySQL 5.0. Try upgrading to MySQL 5.1 if you
+     * have issues with database views.
+     *
+     * Note: find(count) has its own return values.
+     *
+     * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
+     * @param array $query Option fields (conditions / fields / joins / limit / offset / order / page / group / callbacks)
+     * @return array|null Array of records, or Null on failure.
+     * @link http://book.cakephp.org/2.0/en/models/retrieving-your-data.html
      */
-    public function field($name, $conditions = null, $order = null)
+    public function find($type = 'first', $query = array())
     {
-        if ($conditions === null && $this->id !== false) {
-            $conditions = array($this->alias . '.' . $this->primaryKey => $this->id);
+        $this->findQueryType = $type;
+        $this->id = $this->getID();
+
+        $query = $this->buildQuery($type, $query);
+        if ($query === null) {
+            return null;
         }
 
-        $recursive = $this->recursive;
-        if ($this->recursive >= 1) {
-            $recursive = -1;
-        }
+        return $this->_readDataSource($type, $query);
+    }
 
-        $fields = $name;
-        $data = $this->find('first', compact('conditions', 'fields', 'order', 'recursive'));
-        if (!$data) {
+    /**
+     * Returns the current record's ID
+     *
+     * @param int $list Index on which the composed ID is located
+     * @return mixed The ID of the current record, false if no ID
+     */
+    public function getID($list = 0)
+    {
+        if (empty($this->id) || (is_array($this->id) && isset($this->id[0]) && empty($this->id[0]))) {
             return false;
         }
 
-        if (strpos($name, '.') === false) {
-            if (isset($data[$this->alias][$name])) {
-                return $data[$this->alias][$name];
+        if (!is_array($this->id)) {
+            return $this->id;
+        }
+
+        if (isset($this->id[$list]) && !empty($this->id[$list])) {
+            return $this->id[$list];
+        }
+
+        if (isset($this->id[$list])) {
+            return false;
+        }
+
+        return current($this->id);
+    }
+
+    /**
+     * Builds the query array that is used by the data source to generate the query to fetch the data.
+     *
+     * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
+     * @param array $query Option fields (conditions / fields / joins / limit / offset / order / page / group / callbacks)
+     * @return array|null Query array or null if it could not be build for some reasons
+     * @triggers Model.beforeFind $this, array($query)
+     * @see Model::find()
+     */
+    public function buildQuery($type = 'first', $query = array())
+    {
+        $query = array_merge(
+            array(
+                'conditions' => null, 'fields' => null, 'joins' => array(), 'limit' => null,
+                'offset' => null, 'order' => null, 'page' => 1, 'group' => null, 'callbacks' => true,
+            ),
+            (array)$query
+        );
+
+        if ($this->findMethods[$type] === true) {
+            $query = $this->{'_find' . ucfirst($type)}('before', $query);
+        }
+
+        if (!is_numeric($query['page']) || (int)$query['page'] < 1) {
+            $query['page'] = 1;
+        }
+
+        if ($query['page'] > 1 && !empty($query['limit'])) {
+            $query['offset'] = ($query['page'] - 1) * $query['limit'];
+        }
+
+        if ($query['order'] === null && $this->order !== null) {
+            $query['order'] = $this->order;
+        }
+
+        $query['order'] = array($query['order']);
+
+        if ($query['callbacks'] === true || $query['callbacks'] === 'before') {
+            $event = new CakeEvent('Model.beforeFind', $this, array($query));
+            list($event->break, $event->breakOn, $event->modParams) = array(true, array(false, null), 0);
+            $this->getEventManager()->dispatch($event);
+
+            if ($event->isStopped()) {
+                return null;
             }
-        } else {
-            $name = explode('.', $name);
-            if (isset($data[$name[0]][$name[1]])) {
-                return $data[$name[0]][$name[1]];
+
+            $query = $event->result === true ? $event->data[0] : $event->result;
+        }
+
+        return $query;
+    }
+
+    /**
+     * Returns the CakeEventManager manager instance that is handling any callbacks.
+     * You can use this instance to register any new listeners or callbacks to the
+     * model events, or create your own events and trigger them at will.
+     *
+     * @return CakeEventManager
+     */
+    public function getEventManager()
+    {
+        if (empty($this->_eventManager)) {
+            $this->_eventManager = new CakeEventManager();
+            $this->_eventManager->attach($this->Behaviors);
+            $this->_eventManager->attach($this);
+        }
+
+        return $this->_eventManager;
+    }
+
+    /**
+     * Read from the datasource
+     *
+     * Model::_readDataSource() is used by all find() calls to read from the data source and can be overloaded to allow
+     * caching of datasource calls.
+     *
+     * ```
+     * protected function _readDataSource($type, $query) {
+     *        $cacheName = md5(json_encode($query));
+     *        $cache = Cache::read($cacheName, 'cache-config-name');
+     *        if ($cache !== false) {
+     *            return $cache;
+     *        }
+     *
+     *        $results = parent::_readDataSource($type, $query);
+     *        Cache::write($cacheName, $results, 'cache-config-name');
+     *        return $results;
+     * }
+     * ```
+     *
+     * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
+     * @param array $query Option fields (conditions / fields / joins / limit / offset / order / page / group / callbacks)
+     * @return array
+     */
+    protected function _readDataSource($type, $query)
+    {
+        $results = $this->getDataSource()->read($this, $query);
+        $this->resetAssociations();
+
+        if ($query['callbacks'] === true || $query['callbacks'] === 'after') {
+            $results = $this->_filterResults($results);
+        }
+
+        $this->findQueryType = null;
+
+        if ($this->findMethods[$type] === true) {
+            return $this->{'_find' . ucfirst($type)}('after', $query, $results);
+        }
+    }
+
+    /**
+     * This resets the association arrays for the model back
+     * to those originally defined in the model. Normally called at the end
+     * of each call to Model::find()
+     *
+     * @return bool Success
+     */
+    public function resetAssociations()
+    {
+        if (!empty($this->__backAssociation)) {
+            foreach ($this->_associations as $type) {
+                if (isset($this->__backAssociation[$type])) {
+                    $this->{$type} = $this->__backAssociation[$type];
+                }
+            }
+
+            $this->__backAssociation = array();
+        }
+
+        foreach ($this->_associations as $type) {
+            foreach ($this->{$type} as $key => $name) {
+                if (property_exists($this, $key) && !empty($this->{$key}->__backAssociation)) {
+                    $this->{$key}->resetAssociations();
+                }
             }
         }
 
-        if (isset($data[0]) && count($data[0]) > 0) {
-            return array_shift($data[0]);
-        }
+        $this->__backAssociation = array();
+        return true;
+    }
+
+    /**
+     * Passes query results through model and behavior afterFind() methods.
+     *
+     * @param array $results Results to filter
+     * @param bool $primary If this is the primary model results (results from model where the find operation was performed)
+     * @return array Set of filtered results
+     * @triggers Model.afterFind $this, array($results, $primary)
+     */
+    protected function _filterResults($results, $primary = true)
+    {
+        $event = new CakeEvent('Model.afterFind', $this, array($results, $primary));
+        $event->modParams = 0;
+        $this->getEventManager()->dispatch($event);
+        return $event->result;
     }
 
     /**
@@ -2006,6 +2276,102 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
+     * Returns true if a record with particular ID exists.
+     *
+     * If $id is not passed it calls `Model::getID()` to obtain the current record ID,
+     * and then performs a `Model::find('count')` on the currently configured datasource
+     * to ascertain the existence of the record in persistent storage.
+     *
+     * @param int|string $id ID of record to check for existence
+     * @return bool True if such a record exists
+     */
+    public function exists($id = null)
+    {
+        if ($id === null) {
+            $id = $this->getID();
+        }
+
+        if ($id === false) {
+            return false;
+        }
+
+        if ($this->useTable === false) {
+            return false;
+        }
+
+        return (bool)$this->find('count', array(
+            'conditions' => array(
+                $this->alias . '.' . $this->primaryKey => $id
+            ),
+            'recursive' => -1,
+            'callbacks' => false
+        ));
+    }
+
+    /**
+     * Returns true if all fields pass validation. Will validate hasAndBelongsToMany associations
+     * that use the 'with' key as well. Since _saveMulti is incapable of exiting a save operation.
+     *
+     * Will validate the currently set data. Use Model::set() or Model::create() to set the active data.
+     *
+     * @param array $options An optional array of custom options to be made available in the beforeValidate callback
+     * @return bool True if there are no errors
+     */
+    public function validates($options = array())
+    {
+        return $this->validator()->validates($options);
+    }
+
+    /**
+     * Returns an instance of a model validator for this class
+     *
+     * @param ModelValidator $instance Model validator instance.
+     *  If null a new ModelValidator instance will be made using current model object
+     * @return ModelValidator
+     */
+    public function validator(ModelValidator $instance = null)
+    {
+        if ($instance) {
+            $this->_validator = $instance;
+        } elseif (!$this->_validator) {
+            $this->_validator = new ModelValidator($this);
+        }
+
+        return $this->_validator;
+    }
+
+    /**
+     * Helper method for `Model::updateCounterCache()`. Checks the fields to be updated for
+     *
+     * @param array $data The fields of the record that will be updated
+     * @return array Returns updated foreign key values, along with an 'old' key containing the old
+     *     values, or empty if no foreign keys are updated.
+     */
+    protected function _prepareUpdateFields($data)
+    {
+        $foreignKeys = array();
+        foreach ($this->belongsTo as $assoc => $info) {
+            if (isset($info['counterCache']) && $info['counterCache']) {
+                $foreignKeys[$assoc] = $info['foreignKey'];
+            }
+        }
+
+        $included = array_intersect($foreignKeys, array_keys($data));
+
+        if (empty($included) || empty($this->id)) {
+            return array();
+        }
+
+        $old = $this->find('first', array(
+            'conditions' => array($this->alias . '.' . $this->primaryKey => $this->id),
+            'fields' => array_values($included),
+            'recursive' => -1
+        ));
+
+        return array_merge($data, array('old' => $old[$this->alias]));
+    }
+
+    /**
      * Check if the passed in field is a UUID field
      *
      * @param string $field the field to check
@@ -2015,6 +2381,155 @@ class Model extends Object implements CakeEventListener
     {
         $field = $this->schema($field);
         return $field['length'] == 36 && in_array($field['type'], array('string', 'binary'));
+    }
+
+    /**
+     * Updates the counter cache of belongsTo associations after a save or delete operation
+     *
+     * @param array $keys Optional foreign key data, defaults to the information $this->data
+     * @param bool $created True if a new record was created, otherwise only associations with
+     *   'counterScope' defined get updated
+     * @return void
+     */
+    public function updateCounterCache($keys = array(), $created = false)
+    {
+        if (empty($keys) && isset($this->data[$this->alias])) {
+            $keys = $this->data[$this->alias];
+        }
+        $keys['old'] = isset($keys['old']) ? $keys['old'] : array();
+
+        foreach ($this->belongsTo as $parent => $assoc) {
+            if (empty($assoc['counterCache'])) {
+                continue;
+            }
+
+            $Model = $this->{$parent};
+
+            if (!is_array($assoc['counterCache'])) {
+                if (isset($assoc['counterScope'])) {
+                    $assoc['counterCache'] = array($assoc['counterCache'] => $assoc['counterScope']);
+                } else {
+                    $assoc['counterCache'] = array($assoc['counterCache'] => array());
+                }
+            }
+
+            $foreignKey = $assoc['foreignKey'];
+            $fkQuoted = $this->escapeField($assoc['foreignKey']);
+
+            foreach ($assoc['counterCache'] as $field => $conditions) {
+                if (!is_string($field)) {
+                    $field = Inflector::underscore($this->alias) . '_count';
+                }
+
+                if (!$Model->hasField($field)) {
+                    continue;
+                }
+
+                if ($conditions === true) {
+                    $conditions = array();
+                } else {
+                    $conditions = (array)$conditions;
+                }
+
+                if (!array_key_exists($foreignKey, $keys)) {
+                    $keys[$foreignKey] = $this->field($foreignKey);
+                }
+
+                $recursive = (empty($conditions) ? -1 : 0);
+
+                if (isset($keys['old'][$foreignKey]) && $keys['old'][$foreignKey] != $keys[$foreignKey]) {
+                    $conditions[$fkQuoted] = $keys['old'][$foreignKey];
+                    $count = (int)$this->find('count', compact('conditions', 'recursive'));
+
+                    $Model->updateAll(
+                        array($field => $count),
+                        array($Model->escapeField() => $keys['old'][$foreignKey])
+                    );
+                }
+
+                $conditions[$fkQuoted] = $keys[$foreignKey];
+
+                if ($recursive === 0) {
+                    $conditions = array_merge($conditions, (array)$conditions);
+                }
+
+                $count = (int)$this->find('count', compact('conditions', 'recursive'));
+
+                $Model->updateAll(
+                    array($field => $count),
+                    array($Model->escapeField() => $keys[$foreignKey])
+                );
+            }
+        }
+    }
+
+    /**
+     * Escapes the field name and prepends the model name. Escaping is done according to the
+     * current database driver's rules.
+     *
+     * @param string $field Field to escape (e.g: id)
+     * @param string $alias Alias for the model (e.g: Post)
+     * @return string The name of the escaped field for this Model (i.e. id becomes `Post`.`id`).
+     */
+    public function escapeField($field = null, $alias = null)
+    {
+        if (empty($alias)) {
+            $alias = $this->alias;
+        }
+
+        if (empty($field)) {
+            $field = $this->primaryKey;
+        }
+
+        $db = $this->getDataSource();
+        if (strpos($field, $db->name($alias) . '.') === 0) {
+            return $field;
+        }
+
+        return $db->name($alias . '.' . $field);
+    }
+
+    /**
+     * Returns the content of a single field given the supplied conditions,
+     * of the first record in the supplied order.
+     *
+     * @param string $name The name of the field to get.
+     * @param array $conditions SQL conditions (defaults to NULL).
+     * @param string $order SQL ORDER BY fragment.
+     * @return string|false Field content, or false if not found.
+     * @link http://book.cakephp.org/2.0/en/models/retrieving-your-data.html#model-field
+     */
+    public function field($name, $conditions = null, $order = null)
+    {
+        if ($conditions === null && $this->id !== false) {
+            $conditions = array($this->alias . '.' . $this->primaryKey => $this->id);
+        }
+
+        $recursive = $this->recursive;
+        if ($this->recursive >= 1) {
+            $recursive = -1;
+        }
+
+        $fields = $name;
+        $data = $this->find('first', compact('conditions', 'fields', 'order', 'recursive'));
+        if (!$data) {
+            return false;
+        }
+
+        if (strpos($name, '.') === false) {
+            if (isset($data[$this->alias][$name])) {
+                return $data[$this->alias][$name];
+            }
+        } else {
+            $name = explode('.', $name);
+            if (isset($data[$name[0]][$name[1]])) {
+                return $data[$name[0]][$name[1]];
+            }
+        }
+
+        if (isset($data[0]) && count($data[0]) > 0) {
+            return array_shift($data[0]);
+        }
     }
 
     /**
@@ -2151,114 +2666,61 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Updates the counter cache of belongsTo associations after a save or delete operation
+     * Gets the name and fields to be used by a join model. This allows specifying join fields
+     * in the association definition.
      *
-     * @param array $keys Optional foreign key data, defaults to the information $this->data
-     * @param bool $created True if a new record was created, otherwise only associations with
-     *   'counterScope' defined get updated
-     * @return void
+     * @param string|array $assoc The model to be joined
+     * @param array $keys Any join keys which must be merged with the keys queried
+     * @return array
      */
-    public function updateCounterCache($keys = array(), $created = false)
+    public function joinModel($assoc, $keys = array())
     {
-        if (empty($keys) && isset($this->data[$this->alias])) {
-            $keys = $this->data[$this->alias];
+        if (is_string($assoc)) {
+            list(, $assoc) = pluginSplit($assoc);
+            return array($assoc, array_keys($this->{$assoc}->schema()));
         }
-        $keys['old'] = isset($keys['old']) ? $keys['old'] : array();
 
-        foreach ($this->belongsTo as $parent => $assoc) {
-            if (empty($assoc['counterCache'])) {
-                continue;
-            }
-
-            $Model = $this->{$parent};
-
-            if (!is_array($assoc['counterCache'])) {
-                if (isset($assoc['counterScope'])) {
-                    $assoc['counterCache'] = array($assoc['counterCache'] => $assoc['counterScope']);
-                } else {
-                    $assoc['counterCache'] = array($assoc['counterCache'] => array());
-                }
-            }
-
-            $foreignKey = $assoc['foreignKey'];
-            $fkQuoted = $this->escapeField($assoc['foreignKey']);
-
-            foreach ($assoc['counterCache'] as $field => $conditions) {
-                if (!is_string($field)) {
-                    $field = Inflector::underscore($this->alias) . '_count';
-                }
-
-                if (!$Model->hasField($field)) {
-                    continue;
-                }
-
-                if ($conditions === true) {
-                    $conditions = array();
-                } else {
-                    $conditions = (array)$conditions;
-                }
-
-                if (!array_key_exists($foreignKey, $keys)) {
-                    $keys[$foreignKey] = $this->field($foreignKey);
-                }
-
-                $recursive = (empty($conditions) ? -1 : 0);
-
-                if (isset($keys['old'][$foreignKey]) && $keys['old'][$foreignKey] != $keys[$foreignKey]) {
-                    $conditions[$fkQuoted] = $keys['old'][$foreignKey];
-                    $count = (int)$this->find('count', compact('conditions', 'recursive'));
-
-                    $Model->updateAll(
-                        array($field => $count),
-                        array($Model->escapeField() => $keys['old'][$foreignKey])
-                    );
-                }
-
-                $conditions[$fkQuoted] = $keys[$foreignKey];
-
-                if ($recursive === 0) {
-                    $conditions = array_merge($conditions, (array)$conditions);
-                }
-
-                $count = (int)$this->find('count', compact('conditions', 'recursive'));
-
-                $Model->updateAll(
-                    array($field => $count),
-                    array($Model->escapeField() => $keys[$foreignKey])
-                );
-            }
+        if (is_array($assoc)) {
+            $with = key($assoc);
+            return array($with, array_unique(array_merge($assoc[$with], $keys)));
         }
+
+        trigger_error(
+            __d('cake_dev', 'Invalid join model settings in %s. The association parameter has the wrong type, expecting a string or array, but was passed type: %s', $this->alias, gettype($assoc)),
+            E_USER_WARNING
+        );
     }
 
     /**
-     * Helper method for `Model::updateCounterCache()`. Checks the fields to be updated for
+     * Clears cache for this model.
      *
-     * @param array $data The fields of the record that will be updated
-     * @return array Returns updated foreign key values, along with an 'old' key containing the old
-     *     values, or empty if no foreign keys are updated.
+     * @param string $type If null this deletes cached views if Cache.check is true
+     *     Will be used to allow deleting query cache also
+     * @return mixed True on delete, null otherwise
      */
-    protected function _prepareUpdateFields($data)
+    protected function _clearCache($type = null)
     {
-        $foreignKeys = array();
-        foreach ($this->belongsTo as $assoc => $info) {
-            if (isset($info['counterCache']) && $info['counterCache']) {
-                $foreignKeys[$assoc] = $info['foreignKey'];
+        if ($type !== null || Configure::read('Cache.check') !== true) {
+            return;
+        }
+        $pluralized = Inflector::pluralize($this->alias);
+        $assoc = array(
+            strtolower($pluralized),
+            Inflector::underscore($pluralized)
+        );
+        foreach ($this->_associations as $association) {
+            foreach ($this->{$association} as $className) {
+                $pluralizedAssociation = Inflector::pluralize($className['className']);
+                if (!in_array(strtolower($pluralizedAssociation), $assoc)) {
+                    $assoc = array_merge($assoc, array(
+                        strtolower($pluralizedAssociation),
+                        Inflector::underscore($pluralizedAssociation)
+                    ));
+                }
             }
         }
-
-        $included = array_intersect($foreignKeys, array_keys($data));
-
-        if (empty($included) || empty($this->id)) {
-            return array();
-        }
-
-        $old = $this->find('first', array(
-            'conditions' => array($this->alias . '.' . $this->primaryKey => $this->id),
-            'fields' => array_values($included),
-            'recursive' => -1
-        ));
-
-        return array_merge($data, array('old' => $old[$this->alias]));
+        clearCache(array_unique($assoc));
+        return true;
     }
 
     /**
@@ -2312,6 +2774,30 @@ class Model extends Object implements CakeEventListener
         }
 
         return $this->saveAssociated($data, $options);
+    }
+
+    /**
+     * Validates multiple individual records for a single model
+     *
+     * #### Options
+     *
+     * - `atomic`: If true (default), returns boolean. If false returns array.
+     * - `fieldList`: Equivalent to the $fieldList parameter in Model::save()
+     * - `deep`: If set to true, all associated data will be validated as well.
+     *
+     * Warning: This method could potentially change the passed argument `$data`,
+     * If you do not want this to happen, make a copy of `$data` before passing it
+     * to this method
+     *
+     * @param array &$data Record data to validate. This should be a numerically-indexed array
+     * @param array $options Options to use when validating record data (see above), See also $options of validates().
+     * @return bool|array If atomic: True on success, or false on failure.
+     *    Otherwise: array similar to the $data array passed, but values are set to true/false
+     *    depending on whether each record validated successfully.
+     */
+    public function validateMany(&$data, $options = array())
+    {
+        return $this->validator()->validateMany($data, $options);
     }
 
     /**
@@ -2416,30 +2902,6 @@ class Model extends Object implements CakeEventListener
             }
             throw $e;
         }
-    }
-
-    /**
-     * Validates multiple individual records for a single model
-     *
-     * #### Options
-     *
-     * - `atomic`: If true (default), returns boolean. If false returns array.
-     * - `fieldList`: Equivalent to the $fieldList parameter in Model::save()
-     * - `deep`: If set to true, all associated data will be validated as well.
-     *
-     * Warning: This method could potentially change the passed argument `$data`,
-     * If you do not want this to happen, make a copy of `$data` before passing it
-     * to this method
-     *
-     * @param array &$data Record data to validate. This should be a numerically-indexed array
-     * @param array $options Options to use when validating record data (see above), See also $options of validates().
-     * @return bool|array If atomic: True on success, or false on failure.
-     *    Otherwise: array similar to the $data array passed, but values are set to true/false
-     *    depending on whether each record validated successfully.
-     */
-    public function validateMany(&$data, $options = array())
-    {
-        return $this->validator()->validateMany($data, $options);
     }
 
     /**
@@ -2641,6 +3103,30 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
+     * Validates a single record, as well as all its directly associated records.
+     *
+     * #### Options
+     *
+     * - `atomic`: If true (default), returns boolean. If false returns array.
+     * - `fieldList`: Equivalent to the $fieldList parameter in Model::save()
+     * - `deep`: If set to true, not only directly associated data , but deeper nested associated data is validated as well.
+     *
+     * Warning: This method could potentially change the passed argument `$data`,
+     * If you do not want this to happen, make a copy of `$data` before passing it
+     * to this method
+     *
+     * @param array &$data Record data to validate. This should be an array indexed by association name.
+     * @param array $options Options to use when validating record data (see above), See also $options of validates().
+     * @return array|bool If atomic: True on success, or false on failure.
+     *    Otherwise: array similar to the $data array passed, but values are set to true/false
+     *    depending on whether each record validated successfully.
+     */
+    public function validateAssociated(&$data, $options = array())
+    {
+        return $this->validator()->validateAssociated($data, $options);
+    }
+
+    /**
      * Helper method for saveAll() and friends, to add foreign key to fieldlist
      *
      * @param string $key fieldname to be added to list
@@ -2668,30 +3154,6 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Validates a single record, as well as all its directly associated records.
-     *
-     * #### Options
-     *
-     * - `atomic`: If true (default), returns boolean. If false returns array.
-     * - `fieldList`: Equivalent to the $fieldList parameter in Model::save()
-     * - `deep`: If set to true, not only directly associated data , but deeper nested associated data is validated as well.
-     *
-     * Warning: This method could potentially change the passed argument `$data`,
-     * If you do not want this to happen, make a copy of `$data` before passing it
-     * to this method
-     *
-     * @param array &$data Record data to validate. This should be an array indexed by association name.
-     * @param array $options Options to use when validating record data (see above), See also $options of validates().
-     * @return array|bool If atomic: True on success, or false on failure.
-     *    Otherwise: array similar to the $data array passed, but values are set to true/false
-     *    depending on whether each record validated successfully.
-     */
-    public function validateAssociated(&$data, $options = array())
-    {
-        return $this->validator()->validateAssociated($data, $options);
-    }
-
-    /**
      * Updates multiple model records based on a set of conditions.
      *
      * @param array $fields Set of fields and values, indexed by fields.
@@ -2703,6 +3165,64 @@ class Model extends Object implements CakeEventListener
     public function updateAll($fields, $conditions = true)
     {
         return $this->getDataSource()->update($this, $fields, null, $conditions);
+    }
+
+    /**
+     * Deletes multiple model records based on a set of conditions.
+     *
+     * @param mixed $conditions Conditions to match
+     * @param bool $cascade Set to true to delete records that depend on this record
+     * @param bool $callbacks Run callbacks
+     * @return bool True on success, false on failure
+     * @link http://book.cakephp.org/2.0/en/models/deleting-data.html#deleteall
+     */
+    public function deleteAll($conditions, $cascade = true, $callbacks = false)
+    {
+        if (empty($conditions)) {
+            return false;
+        }
+
+        $db = $this->getDataSource();
+
+        if (!$cascade && !$callbacks) {
+            return $db->delete($this, $conditions);
+        }
+
+        $ids = $this->find('all', array_merge(array(
+                'fields' => "{$this->alias}.{$this->primaryKey}",
+                'order' => false,
+                'group' => "{$this->alias}.{$this->primaryKey}",
+                'recursive' => 0), compact('conditions'))
+        );
+
+        if ($ids === false || $ids === null) {
+            return false;
+        }
+
+        $ids = Hash::extract($ids, "{n}.{$this->alias}.{$this->primaryKey}");
+        if (empty($ids)) {
+            return true;
+        }
+
+        if ($callbacks) {
+            $_id = $this->id;
+            $result = true;
+            foreach ($ids as $id) {
+                $result = $result && $this->delete($id, $cascade);
+            }
+
+            $this->id = $_id;
+            return $result;
+        }
+
+        foreach ($ids as $id) {
+            $this->_deleteLinks($id);
+            if ($cascade) {
+                $this->_deleteDependent($id, $cascade);
+            }
+        }
+
+        return $db->delete($this, array($this->alias . '.' . $this->primaryKey => $ids));
     }
 
     /**
@@ -2852,64 +3372,6 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Deletes multiple model records based on a set of conditions.
-     *
-     * @param mixed $conditions Conditions to match
-     * @param bool $cascade Set to true to delete records that depend on this record
-     * @param bool $callbacks Run callbacks
-     * @return bool True on success, false on failure
-     * @link http://book.cakephp.org/2.0/en/models/deleting-data.html#deleteall
-     */
-    public function deleteAll($conditions, $cascade = true, $callbacks = false)
-    {
-        if (empty($conditions)) {
-            return false;
-        }
-
-        $db = $this->getDataSource();
-
-        if (!$cascade && !$callbacks) {
-            return $db->delete($this, $conditions);
-        }
-
-        $ids = $this->find('all', array_merge(array(
-                'fields' => "{$this->alias}.{$this->primaryKey}",
-                'order' => false,
-                'group' => "{$this->alias}.{$this->primaryKey}",
-                'recursive' => 0), compact('conditions'))
-        );
-
-        if ($ids === false || $ids === null) {
-            return false;
-        }
-
-        $ids = Hash::extract($ids, "{n}.{$this->alias}.{$this->primaryKey}");
-        if (empty($ids)) {
-            return true;
-        }
-
-        if ($callbacks) {
-            $_id = $this->id;
-            $result = true;
-            foreach ($ids as $id) {
-                $result = $result && $this->delete($id, $cascade);
-            }
-
-            $this->id = $_id;
-            return $result;
-        }
-
-        foreach ($ids as $id) {
-            $this->_deleteLinks($id);
-            if ($cascade) {
-                $this->_deleteDependent($id, $cascade);
-            }
-        }
-
-        return $db->delete($this, array($this->alias . '.' . $this->primaryKey => $ids));
-    }
-
-    /**
      * Collects foreign keys from associations.
      *
      * @param string $type Association type.
@@ -2929,39 +3391,6 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Returns true if a record with particular ID exists.
-     *
-     * If $id is not passed it calls `Model::getID()` to obtain the current record ID,
-     * and then performs a `Model::find('count')` on the currently configured datasource
-     * to ascertain the existence of the record in persistent storage.
-     *
-     * @param int|string $id ID of record to check for existence
-     * @return bool True if such a record exists
-     */
-    public function exists($id = null)
-    {
-        if ($id === null) {
-            $id = $this->getID();
-        }
-
-        if ($id === false) {
-            return false;
-        }
-
-        if ($this->useTable === false) {
-            return false;
-        }
-
-        return (bool)$this->find('count', array(
-            'conditions' => array(
-                $this->alias . '.' . $this->primaryKey => $id
-            ),
-            'recursive' => -1,
-            'callbacks' => false
-        ));
-    }
-
-    /**
      * Returns true if a record that meets given conditions exists.
      *
      * @param array $conditions SQL conditions array
@@ -2973,176 +3402,302 @@ class Model extends Object implements CakeEventListener
     }
 
     /**
-     * Queries the datasource and returns a result set array.
+     * Returns false if any fields passed match any (by default, all if $or = false) of their matching values.
      *
-     * Used to perform find operations, where the first argument is type of find operation to perform
-     * (all / first / count / neighbors / list / threaded),
-     * second parameter options for finding (indexed array, including: 'conditions', 'limit',
-     * 'recursive', 'page', 'fields', 'offset', 'order', 'callbacks')
+     * Can be used as a validation method. When used as a validation method, the `$or` parameter
+     * contains an array of fields to be validated.
      *
-     * Eg:
-     * ```
-     * $model->find('all', array(
-     *   'conditions' => array('name' => 'Thomas Anderson'),
-     *   'fields' => array('name', 'email'),
-     *   'order' => 'field3 DESC',
-     *   'recursive' => 2,
-     *   'group' => 'type',
-     *   'callbacks' => false,
-     * ));
-     * ```
-     *
-     * In addition to the standard query keys above, you can provide Datasource, and behavior specific
-     * keys. For example, when using a SQL based datasource you can use the joins key to specify additional
-     * joins that should be part of the query.
-     *
-     * ```
-     * $model->find('all', array(
-     *   'conditions' => array('name' => 'Thomas Anderson'),
-     *   'joins' => array(
-     *     array(
-     *       'alias' => 'Thought',
-     *       'table' => 'thoughts',
-     *       'type' => 'LEFT',
-     *       'conditions' => '`Thought`.`person_id` = `Person`.`id`'
-     *     )
-     *   )
-     * ));
-     * ```
-     *
-     * ### Disabling callbacks
-     *
-     * The `callbacks` key allows you to disable or specify the callbacks that should be run. To
-     * disable beforeFind & afterFind callbacks set `'callbacks' => false` in your options. You can
-     * also set the callbacks option to 'before' or 'after' to enable only the specified callback.
-     *
-     * ### Adding new find types
-     *
-     * Behaviors and find types can also define custom finder keys which are passed into find().
-     * See the documentation for custom find types
-     * (http://book.cakephp.org/2.0/en/models/retrieving-your-data.html#creating-custom-find-types)
-     * for how to implement custom find types.
-     *
-     * Specifying 'fields' for notation 'list':
-     *
-     * - If no fields are specified, then 'id' is used for key and 'model->displayField' is used for value.
-     * - If a single field is specified, 'id' is used for key and specified field is used for value.
-     * - If three fields are specified, they are used (in order) for key, value and group.
-     * - Otherwise, first and second fields are used for key and value.
-     *
-     * Note: find(list) + database views have issues with MySQL 5.0. Try upgrading to MySQL 5.1 if you
-     * have issues with database views.
-     *
-     * Note: find(count) has its own return values.
-     *
-     * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
-     * @param array $query Option fields (conditions / fields / joins / limit / offset / order / page / group / callbacks)
-     * @return array|null Array of records, or Null on failure.
-     * @link http://book.cakephp.org/2.0/en/models/retrieving-your-data.html
+     * @param array $fields Field/value pairs to search (if no values specified, they are pulled from $this->data)
+     * @param bool|array $or If false, all fields specified must match in order for a false return value
+     * @return bool False if any records matching any fields are found
      */
-    public function find($type = 'first', $query = array())
+    public function isUnique($fields, $or = true)
     {
-        $this->findQueryType = $type;
-        $this->id = $this->getID();
-
-        $query = $this->buildQuery($type, $query);
-        if ($query === null) {
-            return null;
+        if (is_array($or)) {
+            $isRule = (
+                array_key_exists('rule', $or) &&
+                array_key_exists('required', $or) &&
+                array_key_exists('message', $or)
+            );
+            if (!$isRule) {
+                $args = func_get_args();
+                $fields = $args[1];
+                $or = isset($args[2]) ? $args[2] : true;
+            }
+        }
+        if (!is_array($fields)) {
+            $fields = func_get_args();
+            $fieldCount = count($fields) - 1;
+            if (is_bool($fields[$fieldCount])) {
+                $or = $fields[$fieldCount];
+                unset($fields[$fieldCount]);
+            }
         }
 
-        return $this->_readDataSource($type, $query);
-    }
+        foreach ($fields as $field => $value) {
+            if (is_numeric($field)) {
+                unset($fields[$field]);
 
-    /**
-     * Read from the datasource
-     *
-     * Model::_readDataSource() is used by all find() calls to read from the data source and can be overloaded to allow
-     * caching of datasource calls.
-     *
-     * ```
-     * protected function _readDataSource($type, $query) {
-     *        $cacheName = md5(json_encode($query));
-     *        $cache = Cache::read($cacheName, 'cache-config-name');
-     *        if ($cache !== false) {
-     *            return $cache;
-     *        }
-     *
-     *        $results = parent::_readDataSource($type, $query);
-     *        Cache::write($cacheName, $results, 'cache-config-name');
-     *        return $results;
-     * }
-     * ```
-     *
-     * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
-     * @param array $query Option fields (conditions / fields / joins / limit / offset / order / page / group / callbacks)
-     * @return array
-     */
-    protected function _readDataSource($type, $query)
-    {
-        $results = $this->getDataSource()->read($this, $query);
-        $this->resetAssociations();
-
-        if ($query['callbacks'] === true || $query['callbacks'] === 'after') {
-            $results = $this->_filterResults($results);
-        }
-
-        $this->findQueryType = null;
-
-        if ($this->findMethods[$type] === true) {
-            return $this->{'_find' . ucfirst($type)}('after', $query, $results);
-        }
-    }
-
-    /**
-     * Builds the query array that is used by the data source to generate the query to fetch the data.
-     *
-     * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
-     * @param array $query Option fields (conditions / fields / joins / limit / offset / order / page / group / callbacks)
-     * @return array|null Query array or null if it could not be build for some reasons
-     * @triggers Model.beforeFind $this, array($query)
-     * @see Model::find()
-     */
-    public function buildQuery($type = 'first', $query = array())
-    {
-        $query = array_merge(
-            array(
-                'conditions' => null, 'fields' => null, 'joins' => array(), 'limit' => null,
-                'offset' => null, 'order' => null, 'page' => 1, 'group' => null, 'callbacks' => true,
-            ),
-            (array)$query
-        );
-
-        if ($this->findMethods[$type] === true) {
-            $query = $this->{'_find' . ucfirst($type)}('before', $query);
-        }
-
-        if (!is_numeric($query['page']) || (int)$query['page'] < 1) {
-            $query['page'] = 1;
-        }
-
-        if ($query['page'] > 1 && !empty($query['limit'])) {
-            $query['offset'] = ($query['page'] - 1) * $query['limit'];
-        }
-
-        if ($query['order'] === null && $this->order !== null) {
-            $query['order'] = $this->order;
-        }
-
-        $query['order'] = array($query['order']);
-
-        if ($query['callbacks'] === true || $query['callbacks'] === 'before') {
-            $event = new CakeEvent('Model.beforeFind', $this, array($query));
-            list($event->break, $event->breakOn, $event->modParams) = array(true, array(false, null), 0);
-            $this->getEventManager()->dispatch($event);
-
-            if ($event->isStopped()) {
-                return null;
+                $field = $value;
+                $value = null;
+                if (isset($this->data[$this->alias][$field])) {
+                    $value = $this->data[$this->alias][$field];
+                }
             }
 
-            $query = $event->result === true ? $event->data[0] : $event->result;
+            if (strpos($field, '.') === false) {
+                unset($fields[$field]);
+                $fields[$this->alias . '.' . $field] = $value;
+            }
         }
 
-        return $query;
+        if ($or) {
+            $fields = array('or' => $fields);
+        }
+
+        if (!empty($this->id)) {
+            $fields[$this->alias . '.' . $this->primaryKey . ' !='] = $this->id;
+        }
+
+        return !$this->find('count', array('conditions' => $fields, 'recursive' => -1));
+    }
+
+    /**
+     * Returns a resultset for a given SQL statement. Custom SQL queries should be performed with this method.
+     *
+     * The method can options 2nd and 3rd parameters.
+     *
+     * - 2nd param: Either a boolean to control query caching or an array of parameters
+     *    for use with prepared statement placeholders.
+     * - 3rd param: If 2nd argument is provided, a boolean flag for enabling/disabled
+     *   query caching.
+     *
+     * @param string $sql SQL statement
+     * @return mixed Resultset array or boolean indicating success / failure depending on the query executed
+     * @link http://book.cakephp.org/2.0/en/models/retrieving-your-data.html#model-query
+     */
+    public function query($sql)
+    {
+        $params = func_get_args();
+        $db = $this->getDataSource();
+        return call_user_func_array(array(&$db, 'query'), $params);
+    }
+
+    /**
+     * Returns an array of fields that have failed the validation of the current model.
+     *
+     * Additionally it populates the validationErrors property of the model with the same array.
+     *
+     * @param array|string $options An optional array of custom options to be made available in the beforeValidate callback
+     * @return array Array of invalid fields and their error messages
+     * @see Model::validates()
+     */
+    public function invalidFields($options = array())
+    {
+        return $this->validator()->errors($options);
+    }
+
+    /**
+     * Marks a field as invalid, optionally setting the name of validation
+     * rule (in case of multiple validation for field) that was broken.
+     *
+     * @param string $field The name of the field to invalidate
+     * @param mixed $value Name of validation rule that was not failed, or validation message to
+     *    be returned. If no validation key is provided, defaults to true.
+     * @return void
+     */
+    public function invalidate($field, $value = true)
+    {
+        $this->validator()->invalidate($field, $value);
+    }
+
+    /**
+     * Returns true if given field name is a foreign key in this model.
+     *
+     * @param string $field Returns true if the input string ends in "_id"
+     * @return bool True if the field is a foreign key listed in the belongsTo array.
+     */
+    public function isForeignKey($field)
+    {
+        $foreignKeys = array();
+        if (!empty($this->belongsTo)) {
+            foreach ($this->belongsTo as $data) {
+                $foreignKeys[] = $data['foreignKey'];
+            }
+        }
+
+        return in_array($field, $foreignKeys);
+    }
+
+    /**
+     * Returns the ID of the last record this model inserted.
+     *
+     * @return mixed Last inserted ID
+     */
+    public function getLastInsertID()
+    {
+        return $this->getInsertID();
+    }
+
+    /**
+     * Returns the ID of the last record this model inserted.
+     *
+     * @return mixed Last inserted ID
+     */
+    public function getInsertID()
+    {
+        return $this->_insertID;
+    }
+
+    /**
+     * Sets the ID of the last record this model inserted
+     *
+     * @param int|string $id Last inserted ID
+     * @return void
+     */
+    public function setInsertID($id)
+    {
+        $this->_insertID = $id;
+    }
+
+    /**
+     * Returns the number of rows returned from the last query.
+     *
+     * @return int Number of rows
+     */
+    public function getNumRows()
+    {
+        return $this->getDataSource()->lastNumRows();
+    }
+
+    /**
+     * Returns the number of rows affected by the last query.
+     *
+     * @return int Number of rows
+     */
+    public function getAffectedRows()
+    {
+        return $this->getDataSource()->lastAffected();
+    }
+
+    /**
+     * Get associations
+     *
+     * @return array
+     */
+    public function associations()
+    {
+        return $this->_associations;
+    }
+
+    /**
+     * Called before each find operation. Return false if you want to halt the find
+     * call, otherwise return the (modified) query data.
+     *
+     * @param array $query Data used to execute this query, i.e. conditions, order, etc.
+     * @return mixed true if the operation should continue, false if it should abort; or, modified
+     *  $query to continue with new $query
+     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforefind
+     */
+    public function beforeFind($query)
+    {
+        return true;
+    }
+
+    /**
+     * Called after each find operation. Can be used to modify any results returned by find().
+     * Return value should be the (modified) results.
+     *
+     * @param mixed $results The results of the find operation
+     * @param bool $primary Whether this model is being queried directly (vs. being queried as an association)
+     * @return mixed Result of the find operation
+     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#afterfind
+     */
+    public function afterFind($results, $primary = false)
+    {
+        return $results;
+    }
+
+    /**
+     * Called before each save operation, after validation. Return a non-true result
+     * to halt the save.
+     *
+     * @param array $options Options passed from Model::save().
+     * @return bool True if the operation should continue, false if it should abort
+     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforesave
+     * @see Model::save()
+     */
+    public function beforeSave($options = array())
+    {
+        return true;
+    }
+
+    /**
+     * Called after each successful save operation.
+     *
+     * @param bool $created True if this save created a new record
+     * @param array $options Options passed from Model::save().
+     * @return void
+     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#aftersave
+     * @see Model::save()
+     */
+    public function afterSave($created, $options = array())
+    {
+    }
+
+    /**
+     * Called before every deletion operation.
+     *
+     * @param bool $cascade If true records that depend on this record will also be deleted
+     * @return bool True if the operation should continue, false if it should abort
+     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforedelete
+     */
+    public function beforeDelete($cascade = true)
+    {
+        return true;
+    }
+
+    /**
+     * Called after every deletion operation.
+     *
+     * @return void
+     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#afterdelete
+     */
+    public function afterDelete()
+    {
+    }
+
+    /**
+     * Called during validation operations, before validation. Please note that custom
+     * validation rules can be defined in $validate.
+     *
+     * @param array $options Options passed from Model::save().
+     * @return bool True if validate operation should continue, false to abort
+     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
+     * @see Model::save()
+     */
+    public function beforeValidate($options = array())
+    {
+        return true;
+    }
+
+    /**
+     * Called after data has been checked for errors
+     *
+     * @return void
+     */
+    public function afterValidate()
+    {
+    }
+
+    /**
+     * Called when a DataSource-level error occurs.
+     *
+     * @return void
+     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#onerror
+     */
+    public function onError()
+    {
     }
 
     /**
@@ -3387,595 +3942,6 @@ class Model extends Object implements CakeEventListener
             'idPath' => '{n}.' . $this->alias . '.' . $this->primaryKey,
             'parentPath' => '{n}.' . $this->alias . '.' . $parent
         ));
-    }
-
-    /**
-     * Passes query results through model and behavior afterFind() methods.
-     *
-     * @param array $results Results to filter
-     * @param bool $primary If this is the primary model results (results from model where the find operation was performed)
-     * @return array Set of filtered results
-     * @triggers Model.afterFind $this, array($results, $primary)
-     */
-    protected function _filterResults($results, $primary = true)
-    {
-        $event = new CakeEvent('Model.afterFind', $this, array($results, $primary));
-        $event->modParams = 0;
-        $this->getEventManager()->dispatch($event);
-        return $event->result;
-    }
-
-    /**
-     * This resets the association arrays for the model back
-     * to those originally defined in the model. Normally called at the end
-     * of each call to Model::find()
-     *
-     * @return bool Success
-     */
-    public function resetAssociations()
-    {
-        if (!empty($this->__backAssociation)) {
-            foreach ($this->_associations as $type) {
-                if (isset($this->__backAssociation[$type])) {
-                    $this->{$type} = $this->__backAssociation[$type];
-                }
-            }
-
-            $this->__backAssociation = array();
-        }
-
-        foreach ($this->_associations as $type) {
-            foreach ($this->{$type} as $key => $name) {
-                if (property_exists($this, $key) && !empty($this->{$key}->__backAssociation)) {
-                    $this->{$key}->resetAssociations();
-                }
-            }
-        }
-
-        $this->__backAssociation = array();
-        return true;
-    }
-
-    /**
-     * Returns false if any fields passed match any (by default, all if $or = false) of their matching values.
-     *
-     * Can be used as a validation method. When used as a validation method, the `$or` parameter
-     * contains an array of fields to be validated.
-     *
-     * @param array $fields Field/value pairs to search (if no values specified, they are pulled from $this->data)
-     * @param bool|array $or If false, all fields specified must match in order for a false return value
-     * @return bool False if any records matching any fields are found
-     */
-    public function isUnique($fields, $or = true)
-    {
-        if (is_array($or)) {
-            $isRule = (
-                array_key_exists('rule', $or) &&
-                array_key_exists('required', $or) &&
-                array_key_exists('message', $or)
-            );
-            if (!$isRule) {
-                $args = func_get_args();
-                $fields = $args[1];
-                $or = isset($args[2]) ? $args[2] : true;
-            }
-        }
-        if (!is_array($fields)) {
-            $fields = func_get_args();
-            $fieldCount = count($fields) - 1;
-            if (is_bool($fields[$fieldCount])) {
-                $or = $fields[$fieldCount];
-                unset($fields[$fieldCount]);
-            }
-        }
-
-        foreach ($fields as $field => $value) {
-            if (is_numeric($field)) {
-                unset($fields[$field]);
-
-                $field = $value;
-                $value = null;
-                if (isset($this->data[$this->alias][$field])) {
-                    $value = $this->data[$this->alias][$field];
-                }
-            }
-
-            if (strpos($field, '.') === false) {
-                unset($fields[$field]);
-                $fields[$this->alias . '.' . $field] = $value;
-            }
-        }
-
-        if ($or) {
-            $fields = array('or' => $fields);
-        }
-
-        if (!empty($this->id)) {
-            $fields[$this->alias . '.' . $this->primaryKey . ' !='] = $this->id;
-        }
-
-        return !$this->find('count', array('conditions' => $fields, 'recursive' => -1));
-    }
-
-    /**
-     * Returns a resultset for a given SQL statement. Custom SQL queries should be performed with this method.
-     *
-     * The method can options 2nd and 3rd parameters.
-     *
-     * - 2nd param: Either a boolean to control query caching or an array of parameters
-     *    for use with prepared statement placeholders.
-     * - 3rd param: If 2nd argument is provided, a boolean flag for enabling/disabled
-     *   query caching.
-     *
-     * @param string $sql SQL statement
-     * @return mixed Resultset array or boolean indicating success / failure depending on the query executed
-     * @link http://book.cakephp.org/2.0/en/models/retrieving-your-data.html#model-query
-     */
-    public function query($sql)
-    {
-        $params = func_get_args();
-        $db = $this->getDataSource();
-        return call_user_func_array(array(&$db, 'query'), $params);
-    }
-
-    /**
-     * Returns true if all fields pass validation. Will validate hasAndBelongsToMany associations
-     * that use the 'with' key as well. Since _saveMulti is incapable of exiting a save operation.
-     *
-     * Will validate the currently set data. Use Model::set() or Model::create() to set the active data.
-     *
-     * @param array $options An optional array of custom options to be made available in the beforeValidate callback
-     * @return bool True if there are no errors
-     */
-    public function validates($options = array())
-    {
-        return $this->validator()->validates($options);
-    }
-
-    /**
-     * Returns an array of fields that have failed the validation of the current model.
-     *
-     * Additionally it populates the validationErrors property of the model with the same array.
-     *
-     * @param array|string $options An optional array of custom options to be made available in the beforeValidate callback
-     * @return array Array of invalid fields and their error messages
-     * @see Model::validates()
-     */
-    public function invalidFields($options = array())
-    {
-        return $this->validator()->errors($options);
-    }
-
-    /**
-     * Marks a field as invalid, optionally setting the name of validation
-     * rule (in case of multiple validation for field) that was broken.
-     *
-     * @param string $field The name of the field to invalidate
-     * @param mixed $value Name of validation rule that was not failed, or validation message to
-     *    be returned. If no validation key is provided, defaults to true.
-     * @return void
-     */
-    public function invalidate($field, $value = true)
-    {
-        $this->validator()->invalidate($field, $value);
-    }
-
-    /**
-     * Returns true if given field name is a foreign key in this model.
-     *
-     * @param string $field Returns true if the input string ends in "_id"
-     * @return bool True if the field is a foreign key listed in the belongsTo array.
-     */
-    public function isForeignKey($field)
-    {
-        $foreignKeys = array();
-        if (!empty($this->belongsTo)) {
-            foreach ($this->belongsTo as $data) {
-                $foreignKeys[] = $data['foreignKey'];
-            }
-        }
-
-        return in_array($field, $foreignKeys);
-    }
-
-    /**
-     * Escapes the field name and prepends the model name. Escaping is done according to the
-     * current database driver's rules.
-     *
-     * @param string $field Field to escape (e.g: id)
-     * @param string $alias Alias for the model (e.g: Post)
-     * @return string The name of the escaped field for this Model (i.e. id becomes `Post`.`id`).
-     */
-    public function escapeField($field = null, $alias = null)
-    {
-        if (empty($alias)) {
-            $alias = $this->alias;
-        }
-
-        if (empty($field)) {
-            $field = $this->primaryKey;
-        }
-
-        $db = $this->getDataSource();
-        if (strpos($field, $db->name($alias) . '.') === 0) {
-            return $field;
-        }
-
-        return $db->name($alias . '.' . $field);
-    }
-
-    /**
-     * Returns the current record's ID
-     *
-     * @param int $list Index on which the composed ID is located
-     * @return mixed The ID of the current record, false if no ID
-     */
-    public function getID($list = 0)
-    {
-        if (empty($this->id) || (is_array($this->id) && isset($this->id[0]) && empty($this->id[0]))) {
-            return false;
-        }
-
-        if (!is_array($this->id)) {
-            return $this->id;
-        }
-
-        if (isset($this->id[$list]) && !empty($this->id[$list])) {
-            return $this->id[$list];
-        }
-
-        if (isset($this->id[$list])) {
-            return false;
-        }
-
-        return current($this->id);
-    }
-
-    /**
-     * Returns the ID of the last record this model inserted.
-     *
-     * @return mixed Last inserted ID
-     */
-    public function getLastInsertID()
-    {
-        return $this->getInsertID();
-    }
-
-    /**
-     * Returns the ID of the last record this model inserted.
-     *
-     * @return mixed Last inserted ID
-     */
-    public function getInsertID()
-    {
-        return $this->_insertID;
-    }
-
-    /**
-     * Sets the ID of the last record this model inserted
-     *
-     * @param int|string $id Last inserted ID
-     * @return void
-     */
-    public function setInsertID($id)
-    {
-        $this->_insertID = $id;
-    }
-
-    /**
-     * Returns the number of rows returned from the last query.
-     *
-     * @return int Number of rows
-     */
-    public function getNumRows()
-    {
-        return $this->getDataSource()->lastNumRows();
-    }
-
-    /**
-     * Returns the number of rows affected by the last query.
-     *
-     * @return int Number of rows
-     */
-    public function getAffectedRows()
-    {
-        return $this->getDataSource()->lastAffected();
-    }
-
-    /**
-     * Sets the DataSource to which this model is bound.
-     *
-     * @param string $dataSource The name of the DataSource, as defined in app/Config/database.php
-     * @return void
-     * @throws MissingConnectionException
-     */
-    public function setDataSource($dataSource = null)
-    {
-        $oldConfig = $this->useDbConfig;
-
-        if ($dataSource) {
-            $this->useDbConfig = $dataSource;
-        }
-
-        $db = ConnectionManager::getDataSource($this->useDbConfig);
-        if (!empty($oldConfig) && isset($db->config['prefix'])) {
-            $oldDb = ConnectionManager::getDataSource($oldConfig);
-
-            if (!isset($this->tablePrefix) || (!isset($oldDb->config['prefix']) || $this->tablePrefix === $oldDb->config['prefix'])) {
-                $this->tablePrefix = $db->config['prefix'];
-            }
-        } elseif (isset($db->config['prefix'])) {
-            $this->tablePrefix = $db->config['prefix'];
-        }
-
-        $schema = $db->getSchemaName();
-        $defaultProperties = get_class_vars(get_class($this));
-        if (isset($defaultProperties['schemaName'])) {
-            $schema = $defaultProperties['schemaName'];
-        }
-        $this->schemaName = $schema;
-    }
-
-    /**
-     * Gets the DataSource to which this model is bound.
-     *
-     * @return DataSource A DataSource object
-     */
-    public function getDataSource()
-    {
-        if (!$this->_sourceConfigured && $this->useTable !== false) {
-            $this->_sourceConfigured = true;
-            $this->setSource($this->useTable);
-        }
-
-        return ConnectionManager::getDataSource($this->useDbConfig);
-    }
-
-    /**
-     * Get associations
-     *
-     * @return array
-     */
-    public function associations()
-    {
-        return $this->_associations;
-    }
-
-    /**
-     * Gets all the models with which this model is associated.
-     *
-     * @param string $type Only result associations of this type
-     * @return array|null Associations
-     */
-    public function getAssociated($type = null)
-    {
-        if (!$type) {
-            $associated = array();
-            foreach ($this->_associations as $assoc) {
-                if (!empty($this->{$assoc})) {
-                    $models = array_keys($this->{$assoc});
-                    foreach ($models as $m) {
-                        $associated[$m] = $assoc;
-                    }
-                }
-            }
-
-            return $associated;
-        }
-
-        if (in_array($type, $this->_associations)) {
-            if (empty($this->{$type})) {
-                return array();
-            }
-
-            return array_keys($this->{$type});
-        }
-
-        $assoc = array_merge(
-            $this->hasOne,
-            $this->hasMany,
-            $this->belongsTo,
-            $this->hasAndBelongsToMany
-        );
-
-        if (array_key_exists($type, $assoc)) {
-            foreach ($this->_associations as $a) {
-                if (isset($this->{$a}[$type])) {
-                    $assoc[$type]['association'] = $a;
-                    break;
-                }
-            }
-
-            return $assoc[$type];
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets the name and fields to be used by a join model. This allows specifying join fields
-     * in the association definition.
-     *
-     * @param string|array $assoc The model to be joined
-     * @param array $keys Any join keys which must be merged with the keys queried
-     * @return array
-     */
-    public function joinModel($assoc, $keys = array())
-    {
-        if (is_string($assoc)) {
-            list(, $assoc) = pluginSplit($assoc);
-            return array($assoc, array_keys($this->{$assoc}->schema()));
-        }
-
-        if (is_array($assoc)) {
-            $with = key($assoc);
-            return array($with, array_unique(array_merge($assoc[$with], $keys)));
-        }
-
-        trigger_error(
-            __d('cake_dev', 'Invalid join model settings in %s. The association parameter has the wrong type, expecting a string or array, but was passed type: %s', $this->alias, gettype($assoc)),
-            E_USER_WARNING
-        );
-    }
-
-    /**
-     * Called before each find operation. Return false if you want to halt the find
-     * call, otherwise return the (modified) query data.
-     *
-     * @param array $query Data used to execute this query, i.e. conditions, order, etc.
-     * @return mixed true if the operation should continue, false if it should abort; or, modified
-     *  $query to continue with new $query
-     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforefind
-     */
-    public function beforeFind($query)
-    {
-        return true;
-    }
-
-    /**
-     * Called after each find operation. Can be used to modify any results returned by find().
-     * Return value should be the (modified) results.
-     *
-     * @param mixed $results The results of the find operation
-     * @param bool $primary Whether this model is being queried directly (vs. being queried as an association)
-     * @return mixed Result of the find operation
-     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#afterfind
-     */
-    public function afterFind($results, $primary = false)
-    {
-        return $results;
-    }
-
-    /**
-     * Called before each save operation, after validation. Return a non-true result
-     * to halt the save.
-     *
-     * @param array $options Options passed from Model::save().
-     * @return bool True if the operation should continue, false if it should abort
-     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforesave
-     * @see Model::save()
-     */
-    public function beforeSave($options = array())
-    {
-        return true;
-    }
-
-    /**
-     * Called after each successful save operation.
-     *
-     * @param bool $created True if this save created a new record
-     * @param array $options Options passed from Model::save().
-     * @return void
-     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#aftersave
-     * @see Model::save()
-     */
-    public function afterSave($created, $options = array())
-    {
-    }
-
-    /**
-     * Called before every deletion operation.
-     *
-     * @param bool $cascade If true records that depend on this record will also be deleted
-     * @return bool True if the operation should continue, false if it should abort
-     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforedelete
-     */
-    public function beforeDelete($cascade = true)
-    {
-        return true;
-    }
-
-    /**
-     * Called after every deletion operation.
-     *
-     * @return void
-     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#afterdelete
-     */
-    public function afterDelete()
-    {
-    }
-
-    /**
-     * Called during validation operations, before validation. Please note that custom
-     * validation rules can be defined in $validate.
-     *
-     * @param array $options Options passed from Model::save().
-     * @return bool True if validate operation should continue, false to abort
-     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
-     * @see Model::save()
-     */
-    public function beforeValidate($options = array())
-    {
-        return true;
-    }
-
-    /**
-     * Called after data has been checked for errors
-     *
-     * @return void
-     */
-    public function afterValidate()
-    {
-    }
-
-    /**
-     * Called when a DataSource-level error occurs.
-     *
-     * @return void
-     * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#onerror
-     */
-    public function onError()
-    {
-    }
-
-    /**
-     * Clears cache for this model.
-     *
-     * @param string $type If null this deletes cached views if Cache.check is true
-     *     Will be used to allow deleting query cache also
-     * @return mixed True on delete, null otherwise
-     */
-    protected function _clearCache($type = null)
-    {
-        if ($type !== null || Configure::read('Cache.check') !== true) {
-            return;
-        }
-        $pluralized = Inflector::pluralize($this->alias);
-        $assoc = array(
-            strtolower($pluralized),
-            Inflector::underscore($pluralized)
-        );
-        foreach ($this->_associations as $association) {
-            foreach ($this->{$association} as $className) {
-                $pluralizedAssociation = Inflector::pluralize($className['className']);
-                if (!in_array(strtolower($pluralizedAssociation), $assoc)) {
-                    $assoc = array_merge($assoc, array(
-                        strtolower($pluralizedAssociation),
-                        Inflector::underscore($pluralizedAssociation)
-                    ));
-                }
-            }
-        }
-        clearCache(array_unique($assoc));
-        return true;
-    }
-
-    /**
-     * Returns an instance of a model validator for this class
-     *
-     * @param ModelValidator $instance Model validator instance.
-     *  If null a new ModelValidator instance will be made using current model object
-     * @return ModelValidator
-     */
-    public function validator(ModelValidator $instance = null)
-    {
-        if ($instance) {
-            $this->_validator = $instance;
-        } elseif (!$this->_validator) {
-            $this->_validator = new ModelValidator($this);
-        }
-
-        return $this->_validator;
     }
 
 }

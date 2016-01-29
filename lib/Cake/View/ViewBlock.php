@@ -62,6 +62,27 @@ class ViewBlock
     protected $_discardActiveBufferOnEnd = false;
 
     /**
+     * Start capturing output for a 'block' if it is empty
+     *
+     * Blocks allow you to create slots or blocks of dynamic content in the layout.
+     * view files can implement some or all of a layout's slots.
+     *
+     * You can end capturing blocks using View::end(). Blocks can be output
+     * using View::get();
+     *
+     * @param string $name The name of the block to capture for.
+     * @return void
+     */
+    public function startIfEmpty($name)
+    {
+        if (empty($this->_blocks[$name])) {
+            return $this->start($name);
+        }
+        $this->_discardActiveBufferOnEnd = true;
+        ob_start();
+    }
+
+    /**
      * Start capturing output for a 'block'
      *
      * Blocks allow you to create slots or blocks of dynamic content in the layout.
@@ -80,27 +101,6 @@ class ViewBlock
             throw new CakeException(__d('cake', "A view block with the name '%s' is already/still open.", $name));
         }
         $this->_active[] = $name;
-        ob_start();
-    }
-
-    /**
-     * Start capturing output for a 'block' if it is empty
-     *
-     * Blocks allow you to create slots or blocks of dynamic content in the layout.
-     * view files can implement some or all of a layout's slots.
-     *
-     * You can end capturing blocks using View::end(). Blocks can be output
-     * using View::get();
-     *
-     * @param string $name The name of the block to capture for.
-     * @return void
-     */
-    public function startIfEmpty($name)
-    {
-        if (empty($this->_blocks[$name])) {
-            return $this->start($name);
-        }
-        $this->_discardActiveBufferOnEnd = true;
         ob_start();
     }
 
@@ -126,6 +126,24 @@ class ViewBlock
             $this->_blocks[$active] .= $content;
             array_pop($this->_active);
         }
+    }
+
+    /**
+     * Append to an existing or new block. Appending to a new
+     * block will create the block.
+     *
+     * Calling append() without a value will create a new capturing
+     * block that needs to be finished with View::end(). The content
+     * of the new capturing context will be added to the existing block context.
+     *
+     * @param string $name Name of the block
+     * @param string $value The content for the block.
+     * @return void
+     * @deprecated 3.0.0 As of 2.3 use ViewBlock::concat() instead.
+     */
+    public function append($name, $value = null)
+    {
+        $this->concat($name, $value);
     }
 
     /**
@@ -156,24 +174,6 @@ class ViewBlock
         } else {
             $this->start($name);
         }
-    }
-
-    /**
-     * Append to an existing or new block. Appending to a new
-     * block will create the block.
-     *
-     * Calling append() without a value will create a new capturing
-     * block that needs to be finished with View::end(). The content
-     * of the new capturing context will be added to the existing block context.
-     *
-     * @param string $name Name of the block
-     * @param string $value The content for the block.
-     * @return void
-     * @deprecated 3.0.0 As of 2.3 use ViewBlock::concat() instead.
-     */
-    public function append($name, $value = null)
-    {
-        $this->concat($name, $value);
     }
 
     /**

@@ -94,19 +94,6 @@ class CakeNumber
     protected static $_numberFormatSupport = null;
 
     /**
-     * Formats a number with a level of precision.
-     *
-     * @param float $value A floating point number.
-     * @param int $precision The precision of the returned number.
-     * @return float Formatted float.
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::precision
-     */
-    public static function precision($value, $precision = 3)
-    {
-        return sprintf("%01.{$precision}f", $value);
-    }
-
-    /**
      * Returns a formatted-for-humans file size.
      *
      * @param int $size Size in bytes
@@ -127,6 +114,19 @@ class CakeNumber
             default:
                 return __d('cake', '%s TB', static::precision($size / 1024 / 1024 / 1024 / 1024, 2));
         }
+    }
+
+    /**
+     * Formats a number with a level of precision.
+     *
+     * @param float $value A floating point number.
+     * @param int $precision The precision of the returned number.
+     * @return float Formatted float.
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::precision
+     */
+    public static function precision($value, $precision = 3)
+    {
+        return sprintf("%01.{$precision}f", $value);
     }
 
     /**
@@ -190,53 +190,6 @@ class CakeNumber
     }
 
     /**
-     * Formats a number into a currency format.
-     *
-     * @param float $value A floating point number
-     * @param int $options If integer then places, if string then before, if (,.-) then use it
-     *   or array with places and before keys
-     * @return string formatted number
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::format
-     */
-    public static function format($value, $options = false)
-    {
-        $places = 0;
-        if (is_int($options)) {
-            $places = $options;
-        }
-
-        $separators = array(',', '.', '-', ':');
-
-        $before = $after = null;
-        if (is_string($options) && !in_array($options, $separators)) {
-            $before = $options;
-        }
-        $thousands = ',';
-        if (!is_array($options) && in_array($options, $separators)) {
-            $thousands = $options;
-        }
-        $decimals = '.';
-        if (!is_array($options) && in_array($options, $separators)) {
-            $decimals = $options;
-        }
-
-        $escape = true;
-        if (is_array($options)) {
-            $defaults = array('before' => '$', 'places' => 2, 'thousands' => ',', 'decimals' => '.');
-            $options += $defaults;
-            extract($options);
-        }
-
-        $value = static::_numberFormat($value, $places, '.', '');
-        $out = $before . static::_numberFormat($value, $places, $decimals, $thousands) . $after;
-
-        if ($escape) {
-            return h($out);
-        }
-        return $out;
-    }
-
-    /**
      * Formats a number into a currency format to show deltas (signed differences in value).
      *
      * ### Options
@@ -291,6 +244,53 @@ class CakeNumber
         }
         $value .= $after;
         return strtr($value, array(' ' => $thousands, '.' => $decimals));
+    }
+
+    /**
+     * Formats a number into a currency format.
+     *
+     * @param float $value A floating point number
+     * @param int $options If integer then places, if string then before, if (,.-) then use it
+     *   or array with places and before keys
+     * @return string formatted number
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::format
+     */
+    public static function format($value, $options = false)
+    {
+        $places = 0;
+        if (is_int($options)) {
+            $places = $options;
+        }
+
+        $separators = array(',', '.', '-', ':');
+
+        $before = $after = null;
+        if (is_string($options) && !in_array($options, $separators)) {
+            $before = $options;
+        }
+        $thousands = ',';
+        if (!is_array($options) && in_array($options, $separators)) {
+            $thousands = $options;
+        }
+        $decimals = '.';
+        if (!is_array($options) && in_array($options, $separators)) {
+            $decimals = $options;
+        }
+
+        $escape = true;
+        if (is_array($options)) {
+            $defaults = array('before' => '$', 'places' => 2, 'thousands' => ',', 'decimals' => '.');
+            $options += $defaults;
+            extract($options);
+        }
+
+        $value = static::_numberFormat($value, $places, '.', '');
+        $out = $before . static::_numberFormat($value, $places, $decimals, $thousands) . $after;
+
+        if ($escape) {
+            return h($out);
+        }
+        return $out;
     }
 
     /**
@@ -386,6 +386,21 @@ class CakeNumber
     }
 
     /**
+     * Getter/setter for default currency
+     *
+     * @param string $currency Default currency string used by currency() if $currency argument is not provided
+     * @return string Currency
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::defaultCurrency
+     */
+    public static function defaultCurrency($currency = null)
+    {
+        if ($currency) {
+            static::$_defaultCurrency = $currency;
+        }
+        return static::$_defaultCurrency;
+    }
+
+    /**
      * Add a currency format to the Number helper. Makes reusing
      * currency formats easier.
      *
@@ -407,21 +422,6 @@ class CakeNumber
     public static function addFormat($formatName, $options)
     {
         static::$_currencies[$formatName] = $options + static::$_currencyDefaults;
-    }
-
-    /**
-     * Getter/setter for default currency
-     *
-     * @param string $currency Default currency string used by currency() if $currency argument is not provided
-     * @return string Currency
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::defaultCurrency
-     */
-    public static function defaultCurrency($currency = null)
-    {
-        if ($currency) {
-            static::$_defaultCurrency = $currency;
-        }
-        return static::$_defaultCurrency;
     }
 
 }

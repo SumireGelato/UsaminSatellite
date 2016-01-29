@@ -34,6 +34,49 @@ class CakePlugin
     protected static $_plugins = array();
 
     /**
+     * Will load all the plugins located in the configured plugins folders
+     * If passed an options array, it will be used as a common default for all plugins to be loaded
+     * It is possible to set specific defaults for each plugins in the options array. Examples:
+     *
+     * ```
+     *    CakePlugin::loadAll(array(
+     *        array('bootstrap' => true),
+     *        'DebugKit' => array('routes' => true, 'bootstrap' => false),
+     *    ))
+     * ```
+     *
+     * The above example will load the bootstrap file for all plugins, but for DebugKit it will only load
+     * the routes file and will not look for any bootstrap script. If you are loading
+     * many plugins that inconsistently support routes/bootstrap files, instead of detailing
+     * each plugin you can use the `ignoreMissing` option:
+     *
+     * ```
+     * CakePlugin::loadAll(array(
+     *   'ignoreMissing' => true,
+     *   'bootstrap' => true,
+     *   'routes' => true,
+     * ));
+     * ```
+     *
+     * The ignoreMissing option will do additional file_exists() calls but is simpler
+     * to use.
+     *
+     * @param array $options Options list. See CakePlugin::load() for valid options.
+     * @return void
+     */
+    public static function loadAll($options = array())
+    {
+        $plugins = App::objects('plugins');
+        foreach ($plugins as $p) {
+            $opts = isset($options[$p]) ? (array)$options[$p] : array();
+            if (isset($options[0])) {
+                $opts += $options[0];
+            }
+            static::load($p, $opts);
+        }
+    }
+
+    /**
      * Loads a plugin and optionally loads bootstrapping, routing files or loads an initialization function
      *
      * Examples:
@@ -125,64 +168,6 @@ class CakePlugin
     }
 
     /**
-     * Will load all the plugins located in the configured plugins folders
-     * If passed an options array, it will be used as a common default for all plugins to be loaded
-     * It is possible to set specific defaults for each plugins in the options array. Examples:
-     *
-     * ```
-     *    CakePlugin::loadAll(array(
-     *        array('bootstrap' => true),
-     *        'DebugKit' => array('routes' => true, 'bootstrap' => false),
-     *    ))
-     * ```
-     *
-     * The above example will load the bootstrap file for all plugins, but for DebugKit it will only load
-     * the routes file and will not look for any bootstrap script. If you are loading
-     * many plugins that inconsistently support routes/bootstrap files, instead of detailing
-     * each plugin you can use the `ignoreMissing` option:
-     *
-     * ```
-     * CakePlugin::loadAll(array(
-     *   'ignoreMissing' => true,
-     *   'bootstrap' => true,
-     *   'routes' => true,
-     * ));
-     * ```
-     *
-     * The ignoreMissing option will do additional file_exists() calls but is simpler
-     * to use.
-     *
-     * @param array $options Options list. See CakePlugin::load() for valid options.
-     * @return void
-     */
-    public static function loadAll($options = array())
-    {
-        $plugins = App::objects('plugins');
-        foreach ($plugins as $p) {
-            $opts = isset($options[$p]) ? (array)$options[$p] : array();
-            if (isset($options[0])) {
-                $opts += $options[0];
-            }
-            static::load($p, $opts);
-        }
-    }
-
-    /**
-     * Returns the filesystem path for a plugin
-     *
-     * @param string $plugin name of the plugin in CamelCase format
-     * @return string path to the plugin folder
-     * @throws MissingPluginException if the folder for plugin was not found or plugin has not been loaded
-     */
-    public static function path($plugin)
-    {
-        if (empty(static::$_plugins[$plugin])) {
-            throw new MissingPluginException(array('plugin' => $plugin));
-        }
-        return static::$_plugins[$plugin]['path'];
-    }
-
-    /**
      * Loads the bootstrapping files for a plugin, or calls the initialization setup in the configuration
      *
      * @param string $plugin name of the plugin
@@ -216,6 +201,36 @@ class CakePlugin
         }
 
         return true;
+    }
+
+    /**
+     * Returns the filesystem path for a plugin
+     *
+     * @param string $plugin name of the plugin in CamelCase format
+     * @return string path to the plugin folder
+     * @throws MissingPluginException if the folder for plugin was not found or plugin has not been loaded
+     */
+    public static function path($plugin)
+    {
+        if (empty(static::$_plugins[$plugin])) {
+            throw new MissingPluginException(array('plugin' => $plugin));
+        }
+        return static::$_plugins[$plugin]['path'];
+    }
+
+    /**
+     * Include file, ignoring include error if needed if file is missing
+     *
+     * @param string $file File to include
+     * @param bool $ignoreMissing Whether to ignore include error for missing files
+     * @return mixed
+     */
+    protected static function _includeFile($file, $ignoreMissing = false)
+    {
+        if ($ignoreMissing && !is_file($file)) {
+            return false;
+        }
+        return include $file;
     }
 
     /**
@@ -274,21 +289,6 @@ class CakePlugin
         } else {
             unset(static::$_plugins[$plugin]);
         }
-    }
-
-    /**
-     * Include file, ignoring include error if needed if file is missing
-     *
-     * @param string $file File to include
-     * @param bool $ignoreMissing Whether to ignore include error for missing files
-     * @return mixed
-     */
-    protected static function _includeFile($file, $ignoreMissing = false)
-    {
-        if ($ignoreMissing && !is_file($file)) {
-            return false;
-        }
-        return include $file;
     }
 
 }

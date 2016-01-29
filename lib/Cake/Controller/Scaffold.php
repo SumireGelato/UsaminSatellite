@@ -73,14 +73,18 @@ class Scaffold
      * @var CakeRequest
      */
     public $request;
-
+    /**
+     * Title HTML element for current scaffolded view
+     *
+     * @var string
+     */
+    public $scaffoldTitle = null;
     /**
      * Valid session.
      *
      * @var bool
      */
     protected $_validSession = null;
-
     /**
      * List of variables to collect from the associated controller
      *
@@ -89,13 +93,6 @@ class Scaffold
     protected $_passedVars = array(
         'layout', 'name', 'viewPath', 'request'
     );
-
-    /**
-     * Title HTML element for current scaffolded view
-     *
-     * @var string
-     */
-    public $scaffoldTitle = null;
 
     /**
      * Construct and set up given controller with given parameters.
@@ -155,6 +152,142 @@ class Scaffold
     }
 
     /**
+     * Returns associations for controllers models.
+     *
+     * @return array Associations for model
+     */
+    protected function _associations()
+    {
+        $keys = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
+        $associations = array();
+
+        foreach ($keys as $type) {
+            foreach ($this->ScaffoldModel->{$type} as $assocKey => $assocData) {
+                $associations[$type][$assocKey]['primaryKey'] =
+                    $this->ScaffoldModel->{$assocKey}->primaryKey;
+
+                $associations[$type][$assocKey]['displayField'] =
+                    $this->ScaffoldModel->{$assocKey}->displayField;
+
+                $associations[$type][$assocKey]['foreignKey'] =
+                    $assocData['foreignKey'];
+
+                list($plugin, $model) = pluginSplit($assocData['className']);
+                if ($plugin) {
+                    $plugin = Inflector::underscore($plugin);
+                }
+                $associations[$type][$assocKey]['plugin'] = $plugin;
+
+                $associations[$type][$assocKey]['controller'] =
+                    Inflector::pluralize(Inflector::underscore($model));
+
+                if ($type === 'hasAndBelongsToMany') {
+                    $associations[$type][$assocKey]['with'] = $assocData['with'];
+                }
+            }
+        }
+        return $associations;
+    }
+
+    /**
+     * When methods are now present in a controller
+     * scaffoldView is used to call default Scaffold methods if:
+     * `public $scaffold;` is placed in the controller's class definition.
+     *
+     * @param CakeRequest $request Request object for scaffolding
+     * @return void
+     * @throws MissingActionException When methods are not scaffolded.
+     * @throws MissingDatabaseException When the database connection is undefined.
+     */
+    protected function _scaffold(CakeRequest $request)
+    {
+        $db = ConnectionManager::getDataSource($this->ScaffoldModel->useDbConfig);
+        $prefixes = Configure::read('Routing.prefixes');
+        $scaffoldPrefix = $this->scaffoldActions;
+
+        if (isset($db)) {
+            if (empty($this->scaffoldActions)) {
+                $this->scaffoldActions = array(
+                    'index', 'list', 'view', 'add', 'create', 'edit', 'update', 'delete'
+                );
+            } elseif (!empty($prefixes) && in_array($scaffoldPrefix, $prefixes)) {
+                $this->scaffoldActions = array(
+                    $scaffoldPrefix . '_index',
+                    $scaffoldPrefix . '_list',
+                    $scaffoldPrefix . '_view',
+                    $scaffoldPrefix . '_add',
+                    $scaffoldPrefix . '_create',
+                    $scaffoldPrefix . '_edit',
+                    $scaffoldPrefix . '_update',
+                    $scaffoldPrefix . '_delete'
+                );
+            }
+
+            if (in_array($request->params['action'], $this->scaffoldActions)) {
+                if (!empty($prefixes)) {
+                    $request->params['action'] = str_replace($scaffoldPrefix . '_', '', $request->params['action']);
+                }
+                switch ($request->params['action']) {
+                    case 'index':
+                    case 'list':
+                        $this->_scaffoldIndex($request);
+                        break;
+                    case 'view':
+                        $this->_scaffoldView($request);
+                        break;
+                    case 'add':
+                    case 'create':
+                        $this->_scaffoldSave($request, 'add');
+                        break;
+                    case 'edit':
+                    case 'update':
+                        $this->_scaffoldSave($request, 'edit');
+                        break;
+                    case 'delete':
+                        $this->_scaffoldDelete($request);
+                        break;
+                }
+            } else {
+                throw new MissingActionException(array(
+                    'controller' => get_class($this->controller),
+                    'action' => $request->action
+                ));
+            }
+        } else {
+            throw new MissingDatabaseException(array('connection' => $this->ScaffoldModel->useDbConfig));
+        }
+    }
+
+    /**
+     * Renders index action of scaffolded model.
+     *
+     * @param array $params Parameters for scaffolding
+     * @return mixed A rendered view listing rows from Models database table
+     */
+    protected function _scaffoldIndex($params)
+    {
+        if ($this->controller->beforeScaffold('index')) {
+            $this->ScaffoldModel->recursive = 0;
+            $this->controller->set(
+                Inflector::variable($this->controller->name), $this->controller->paginate()
+            );
+            $this->controller->render($this->request['action'], $this->layout);
+        } elseif ($this->controller->scaffoldError('index') === false) {
+            return $this->_scaffoldError();
+        }
+    }
+
+    /**
+     * Show a scaffold error
+     *
+     * @return mixed A rendered view showing the error
+     */
+    protected function _scaffoldError()
+    {
+        return $this->controller->render('error', $this->layout);
+    }
+
+    /**
      * Renders a view action of scaffolded model.
      *
      * @param CakeRequest $request Request Object for scaffolding
@@ -179,40 +312,6 @@ class Scaffold
         } elseif ($this->controller->scaffoldError('view') === false) {
             return $this->_scaffoldError();
         }
-    }
-
-    /**
-     * Renders index action of scaffolded model.
-     *
-     * @param array $params Parameters for scaffolding
-     * @return mixed A rendered view listing rows from Models database table
-     */
-    protected function _scaffoldIndex($params)
-    {
-        if ($this->controller->beforeScaffold('index')) {
-            $this->ScaffoldModel->recursive = 0;
-            $this->controller->set(
-                Inflector::variable($this->controller->name), $this->controller->paginate()
-            );
-            $this->controller->render($this->request['action'], $this->layout);
-        } elseif ($this->controller->scaffoldError('index') === false) {
-            return $this->_scaffoldError();
-        }
-    }
-
-    /**
-     * Renders an add or edit action for scaffolded model.
-     *
-     * @param string $action Action (add or edit)
-     * @return void
-     */
-    protected function _scaffoldForm($action = 'edit')
-    {
-        $this->controller->viewVars['scaffoldFields'] = array_merge(
-            $this->controller->viewVars['scaffoldFields'],
-            array_keys($this->ScaffoldModel->hasAndBelongsToMany)
-        );
-        $this->controller->render($action, $this->layout);
     }
 
     /**
@@ -289,6 +388,38 @@ class Scaffold
     }
 
     /**
+     * Sends a message to the user. Either uses Sessions or flash messages depending
+     * on the availability of a session
+     *
+     * @param string $message Message to display
+     * @param string $element Flash template to use
+     * @return void
+     */
+    protected function _sendMessage($message, $element = 'default')
+    {
+        if ($this->_validSession) {
+            $this->controller->Flash->set($message, compact('element'));
+            return $this->controller->redirect($this->redirect);
+        }
+        $this->controller->flash($message, $this->redirect);
+    }
+
+    /**
+     * Renders an add or edit action for scaffolded model.
+     *
+     * @param string $action Action (add or edit)
+     * @return void
+     */
+    protected function _scaffoldForm($action = 'edit')
+    {
+        $this->controller->viewVars['scaffoldFields'] = array_merge(
+            $this->controller->viewVars['scaffoldFields'],
+            array_keys($this->ScaffoldModel->hasAndBelongsToMany)
+        );
+        $this->controller->render($action, $this->layout);
+    }
+
+    /**
      * Performs a delete on given scaffolded Model.
      *
      * @param CakeRequest $request Request for scaffolding
@@ -323,140 +454,6 @@ class Scaffold
         } elseif ($this->controller->scaffoldError('delete') === false) {
             return $this->_scaffoldError();
         }
-    }
-
-    /**
-     * Sends a message to the user. Either uses Sessions or flash messages depending
-     * on the availability of a session
-     *
-     * @param string $message Message to display
-     * @param string $element Flash template to use
-     * @return void
-     */
-    protected function _sendMessage($message, $element = 'default')
-    {
-        if ($this->_validSession) {
-            $this->controller->Flash->set($message, compact('element'));
-            return $this->controller->redirect($this->redirect);
-        }
-        $this->controller->flash($message, $this->redirect);
-    }
-
-    /**
-     * Show a scaffold error
-     *
-     * @return mixed A rendered view showing the error
-     */
-    protected function _scaffoldError()
-    {
-        return $this->controller->render('error', $this->layout);
-    }
-
-    /**
-     * When methods are now present in a controller
-     * scaffoldView is used to call default Scaffold methods if:
-     * `public $scaffold;` is placed in the controller's class definition.
-     *
-     * @param CakeRequest $request Request object for scaffolding
-     * @return void
-     * @throws MissingActionException When methods are not scaffolded.
-     * @throws MissingDatabaseException When the database connection is undefined.
-     */
-    protected function _scaffold(CakeRequest $request)
-    {
-        $db = ConnectionManager::getDataSource($this->ScaffoldModel->useDbConfig);
-        $prefixes = Configure::read('Routing.prefixes');
-        $scaffoldPrefix = $this->scaffoldActions;
-
-        if (isset($db)) {
-            if (empty($this->scaffoldActions)) {
-                $this->scaffoldActions = array(
-                    'index', 'list', 'view', 'add', 'create', 'edit', 'update', 'delete'
-                );
-            } elseif (!empty($prefixes) && in_array($scaffoldPrefix, $prefixes)) {
-                $this->scaffoldActions = array(
-                    $scaffoldPrefix . '_index',
-                    $scaffoldPrefix . '_list',
-                    $scaffoldPrefix . '_view',
-                    $scaffoldPrefix . '_add',
-                    $scaffoldPrefix . '_create',
-                    $scaffoldPrefix . '_edit',
-                    $scaffoldPrefix . '_update',
-                    $scaffoldPrefix . '_delete'
-                );
-            }
-
-            if (in_array($request->params['action'], $this->scaffoldActions)) {
-                if (!empty($prefixes)) {
-                    $request->params['action'] = str_replace($scaffoldPrefix . '_', '', $request->params['action']);
-                }
-                switch ($request->params['action']) {
-                    case 'index':
-                    case 'list':
-                        $this->_scaffoldIndex($request);
-                        break;
-                    case 'view':
-                        $this->_scaffoldView($request);
-                        break;
-                    case 'add':
-                    case 'create':
-                        $this->_scaffoldSave($request, 'add');
-                        break;
-                    case 'edit':
-                    case 'update':
-                        $this->_scaffoldSave($request, 'edit');
-                        break;
-                    case 'delete':
-                        $this->_scaffoldDelete($request);
-                        break;
-                }
-            } else {
-                throw new MissingActionException(array(
-                    'controller' => get_class($this->controller),
-                    'action' => $request->action
-                ));
-            }
-        } else {
-            throw new MissingDatabaseException(array('connection' => $this->ScaffoldModel->useDbConfig));
-        }
-    }
-
-    /**
-     * Returns associations for controllers models.
-     *
-     * @return array Associations for model
-     */
-    protected function _associations()
-    {
-        $keys = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
-        $associations = array();
-
-        foreach ($keys as $type) {
-            foreach ($this->ScaffoldModel->{$type} as $assocKey => $assocData) {
-                $associations[$type][$assocKey]['primaryKey'] =
-                    $this->ScaffoldModel->{$assocKey}->primaryKey;
-
-                $associations[$type][$assocKey]['displayField'] =
-                    $this->ScaffoldModel->{$assocKey}->displayField;
-
-                $associations[$type][$assocKey]['foreignKey'] =
-                    $assocData['foreignKey'];
-
-                list($plugin, $model) = pluginSplit($assocData['className']);
-                if ($plugin) {
-                    $plugin = Inflector::underscore($plugin);
-                }
-                $associations[$type][$assocKey]['plugin'] = $plugin;
-
-                $associations[$type][$assocKey]['controller'] =
-                    Inflector::pluralize(Inflector::underscore($model));
-
-                if ($type === 'hasAndBelongsToMany') {
-                    $associations[$type][$assocKey]['with'] = $assocData['with'];
-                }
-            }
-        }
-        return $associations;
     }
 
 }

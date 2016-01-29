@@ -27,60 +27,6 @@ class CakeHtmlReporter extends CakeBaseReporter
 {
 
     /**
-     * Paints the top of the web page setting the
-     * title to the name of the starting test.
-     *
-     * @return void
-     */
-    public function paintHeader()
-    {
-        $this->_headerSent = true;
-        $this->sendContentType();
-        $this->sendNoCacheHeaders();
-        $this->paintDocumentStart();
-        $this->paintTestMenu();
-        echo "<ul class='tests'>\n";
-    }
-
-    /**
-     * Set the content-type header so it is in the correct encoding.
-     *
-     * @return void
-     */
-    public function sendContentType()
-    {
-        if (!headers_sent()) {
-            header('Content-Type: text/html; charset=' . Configure::read('App.encoding'));
-        }
-    }
-
-    /**
-     * Paints the document start content contained in header.php
-     *
-     * @return void
-     */
-    public function paintDocumentStart()
-    {
-        ob_start();
-        $baseDir = $this->params['baseDir'];
-        include CAKE . 'TestSuite' . DS . 'templates' . DS . 'header.php';
-    }
-
-    /**
-     * Paints the menu on the left side of the test suite interface.
-     * Contains all of the various plugin, core, and app buttons.
-     *
-     * @return void
-     */
-    public function paintTestMenu()
-    {
-        $cases = $this->baseUrl() . '?show=cases';
-        $plugins = App::objects('plugin', null, false);
-        sort($plugins);
-        include CAKE . 'TestSuite' . DS . 'templates' . DS . 'menu.php';
-    }
-
-    /**
      * Retrieves and paints the list of tests cases in an HTML format.
      *
      * @return void
@@ -113,24 +59,6 @@ class CakeHtmlReporter extends CakeBaseReporter
         }
         $buffer .= "</ul>\n";
         echo $buffer;
-    }
-
-    /**
-     * Send the headers necessary to ensure the page is
-     * reloaded on every request. Otherwise you could be
-     * scratching your head over out of date test data.
-     *
-     * @return void
-     */
-    public function sendNoCacheHeaders()
-    {
-        if (!headers_sent()) {
-            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-            header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-            header("Cache-Control: no-store, no-cache, must-revalidate");
-            header("Cache-Control: post-check=0, pre-check=0", false);
-            header("Pragma: no-cache");
-        }
     }
 
     /**
@@ -175,20 +103,6 @@ class CakeHtmlReporter extends CakeBaseReporter
     }
 
     /**
-     * Paints a code coverage report.
-     *
-     * @param array $coverage The coverage data
-     * @return void
-     */
-    public function paintCoverage(array $coverage)
-    {
-        App::uses('HtmlCoverageReport', 'TestSuite/Coverage');
-
-        $reporter = new HtmlCoverageReport($coverage, $this);
-        echo $reporter->report();
-    }
-
-    /**
      * Renders the links that for accessing things in the test suite.
      *
      * @return void
@@ -218,6 +132,35 @@ class CakeHtmlReporter extends CakeBaseReporter
     }
 
     /**
+     * Returns the query string formatted for ouput in links
+     *
+     * @return string
+     */
+    protected function _getQueryLink()
+    {
+        $show = $query = array();
+        if (!empty($this->params['case'])) {
+            $show['show'] = 'cases';
+        }
+
+        if (!empty($this->params['core'])) {
+            $show['core'] = $query['core'] = 'true';
+        }
+        if (!empty($this->params['plugin'])) {
+            $show['plugin'] = $query['plugin'] = $this->params['plugin'];
+        }
+        if (!empty($this->params['case'])) {
+            $query['case'] = $this->params['case'];
+        }
+        if (!empty($this->params['filter'])) {
+            $query['filter'] = $this->params['filter'];
+        }
+        $show = $this->_queryString($show);
+        $query = $this->_queryString($query);
+        return array($show, $query);
+    }
+
+    /**
      * Convert an array of parameters into a query string url
      *
      * @param array $url Url hash to be converted
@@ -232,6 +175,20 @@ class CakeHtmlReporter extends CakeBaseReporter
         }
         $out .= implode('&amp;', $params);
         return $out;
+    }
+
+    /**
+     * Paints a code coverage report.
+     *
+     * @param array $coverage The coverage data
+     * @return void
+     */
+    public function paintCoverage(array $coverage)
+    {
+        App::uses('HtmlCoverageReport', 'TestSuite/Coverage');
+
+        $reporter = new HtmlCoverageReport($coverage, $this);
+        echo $reporter->report();
     }
 
     /**
@@ -289,6 +246,39 @@ class CakeHtmlReporter extends CakeBaseReporter
         }
         echo "<div class='msg'>" . __d('cake_dev', 'Stack trace:') . '<br />' . $trace . "</div>\n";
         echo "</li>\n";
+    }
+
+    /**
+     * Gets a formatted stack trace.
+     *
+     * @param Exception $e Exception to get a stack trace for.
+     * @return string Generated stack trace.
+     */
+    protected function _getStackTrace(Exception $e)
+    {
+        $trace = $e->getTrace();
+        $out = array();
+        foreach ($trace as $frame) {
+            if (isset($frame['file']) && isset($frame['line'])) {
+                $out[] = $frame['file'] . ' : ' . $frame['line'];
+            } elseif (isset($frame['class']) && isset($frame['function'])) {
+                $out[] = $frame['class'] . '::' . $frame['function'];
+            } else {
+                $out[] = '[internal]';
+            }
+        }
+        return implode('<br />', $out);
+    }
+
+    /**
+     * Character set adjusted entity conversion.
+     *
+     * @param string $message Plain text or Unicode message.
+     * @return string Browser readable message.
+     */
+    protected function _htmlEntities($message)
+    {
+        return htmlentities($message, ENT_COMPAT, $this->_characterSet);
     }
 
     /**
@@ -359,39 +349,6 @@ class CakeHtmlReporter extends CakeBaseReporter
     }
 
     /**
-     * Character set adjusted entity conversion.
-     *
-     * @param string $message Plain text or Unicode message.
-     * @return string Browser readable message.
-     */
-    protected function _htmlEntities($message)
-    {
-        return htmlentities($message, ENT_COMPAT, $this->_characterSet);
-    }
-
-    /**
-     * Gets a formatted stack trace.
-     *
-     * @param Exception $e Exception to get a stack trace for.
-     * @return string Generated stack trace.
-     */
-    protected function _getStackTrace(Exception $e)
-    {
-        $trace = $e->getTrace();
-        $out = array();
-        foreach ($trace as $frame) {
-            if (isset($frame['file']) && isset($frame['line'])) {
-                $out[] = $frame['file'] . ' : ' . $frame['line'];
-            } elseif (isset($frame['class']) && isset($frame['function'])) {
-                $out[] = $frame['class'] . '::' . $frame['function'];
-            } else {
-                $out[] = '[internal]';
-            }
-        }
-        return implode('<br />', $out);
-    }
-
-    /**
      * A test suite started.
      *
      * @param PHPUnit_Framework_TestSuite $suite The test suite to start.
@@ -406,32 +363,75 @@ class CakeHtmlReporter extends CakeBaseReporter
     }
 
     /**
-     * Returns the query string formatted for ouput in links
+     * Paints the top of the web page setting the
+     * title to the name of the starting test.
      *
-     * @return string
+     * @return void
      */
-    protected function _getQueryLink()
+    public function paintHeader()
     {
-        $show = $query = array();
-        if (!empty($this->params['case'])) {
-            $show['show'] = 'cases';
-        }
+        $this->_headerSent = true;
+        $this->sendContentType();
+        $this->sendNoCacheHeaders();
+        $this->paintDocumentStart();
+        $this->paintTestMenu();
+        echo "<ul class='tests'>\n";
+    }
 
-        if (!empty($this->params['core'])) {
-            $show['core'] = $query['core'] = 'true';
+    /**
+     * Set the content-type header so it is in the correct encoding.
+     *
+     * @return void
+     */
+    public function sendContentType()
+    {
+        if (!headers_sent()) {
+            header('Content-Type: text/html; charset=' . Configure::read('App.encoding'));
         }
-        if (!empty($this->params['plugin'])) {
-            $show['plugin'] = $query['plugin'] = $this->params['plugin'];
+    }
+
+    /**
+     * Send the headers necessary to ensure the page is
+     * reloaded on every request. Otherwise you could be
+     * scratching your head over out of date test data.
+     *
+     * @return void
+     */
+    public function sendNoCacheHeaders()
+    {
+        if (!headers_sent()) {
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+            header("Cache-Control: no-store, no-cache, must-revalidate");
+            header("Cache-Control: post-check=0, pre-check=0", false);
+            header("Pragma: no-cache");
         }
-        if (!empty($this->params['case'])) {
-            $query['case'] = $this->params['case'];
-        }
-        if (!empty($this->params['filter'])) {
-            $query['filter'] = $this->params['filter'];
-        }
-        $show = $this->_queryString($show);
-        $query = $this->_queryString($query);
-        return array($show, $query);
+    }
+
+    /**
+     * Paints the document start content contained in header.php
+     *
+     * @return void
+     */
+    public function paintDocumentStart()
+    {
+        ob_start();
+        $baseDir = $this->params['baseDir'];
+        include CAKE . 'TestSuite' . DS . 'templates' . DS . 'header.php';
+    }
+
+    /**
+     * Paints the menu on the left side of the test suite interface.
+     * Contains all of the various plugin, core, and app buttons.
+     *
+     * @return void
+     */
+    public function paintTestMenu()
+    {
+        $cases = $this->baseUrl() . '?show=cases';
+        $plugins = App::objects('plugin', null, false);
+        sort($plugins);
+        include CAKE . 'TestSuite' . DS . 'templates' . DS . 'menu.php';
     }
 
 }

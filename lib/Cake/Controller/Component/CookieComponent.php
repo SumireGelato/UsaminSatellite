@@ -184,6 +184,37 @@ class CookieComponent extends Component
     }
 
     /**
+     * Set the expire time for a session variable.
+     *
+     * Creates a new expire time for a session variable.
+     * $expire can be either integer Unix timestamp or a date string.
+     *
+     * Used by write()
+     * CookieComponent::write(string, string, boolean, 8400);
+     * CookieComponent::write(string, string, boolean, '5 Days');
+     *
+     * @param int|string $expires Can be either Unix timestamp, or date string
+     * @return int Unix timestamp
+     */
+    protected function _expire($expires = null)
+    {
+        if ($expires === null) {
+            return $this->_expires;
+        }
+        $this->_reset = $this->_expires;
+        if (!$expires) {
+            return $this->_expires = 0;
+        }
+        $now = new DateTime();
+
+        if (is_int($expires) || is_numeric($expires)) {
+            return $this->_expires = $now->format('U') + (int)$expires;
+        }
+        $now->modify($expires);
+        return $this->_expires = $now->format('U');
+    }
+
+    /**
      * Start CookieComponent for use in the controller
      *
      * @param Controller $controller Controller instance.
@@ -295,6 +326,143 @@ class CookieComponent extends Component
     }
 
     /**
+     * Decrypts $value using public $type method in Security class
+     *
+     * @param array $values Values to decrypt
+     * @return string decrypted string
+     */
+    protected function _decrypt($values)
+    {
+        $decrypted = array();
+        $type = $this->_type;
+
+        foreach ((array)$values as $name => $value) {
+            if (is_array($value)) {
+                foreach ($value as $key => $val) {
+                    $decrypted[$name][$key] = $this->_decode($val);
+                }
+            } else {
+                $decrypted[$name] = $this->_decode($value);
+            }
+        }
+        return $decrypted;
+    }
+
+    /**
+     * Decodes and decrypts a single value.
+     *
+     * @param string $value The value to decode & decrypt.
+     * @return string Decoded value.
+     */
+    protected function _decode($value)
+    {
+        $prefix = 'Q2FrZQ==.';
+        $pos = strpos($value, $prefix);
+        if ($pos === false) {
+            return $this->_explode($value);
+        }
+        $value = base64_decode(substr($value, strlen($prefix)));
+        if ($this->_type === 'rijndael') {
+            $plain = Security::rijndael($value, $this->key, 'decrypt');
+        }
+        if ($this->_type === 'cipher') {
+            $plain = Security::cipher($value, $this->key);
+        }
+        if ($this->_type === 'aes') {
+            $plain = Security::decrypt($value, $this->key);
+        }
+        return $this->_explode($plain);
+    }
+
+    /**
+     * Explode method to return array from string set in CookieComponent::_implode()
+     * Maintains reading backwards compatibility with 1.x CookieComponent::_implode().
+     *
+     * @param string $string A string containing JSON encoded data, or a bare string.
+     * @return array Map of key and values
+     */
+    protected function _explode($string)
+    {
+        $first = substr($string, 0, 1);
+        if ($first === '{' || $first === '[') {
+            $ret = json_decode($string, true);
+            return ($ret !== null) ? $ret : $string;
+        }
+        $array = array();
+        foreach (explode(',', $string) as $pair) {
+            $key = explode('|', $pair);
+            if (!isset($key[1])) {
+                return $key[0];
+            }
+            $array[$key[0]] = $key[1];
+        }
+        return $array;
+    }
+
+    /**
+     * Set cookie
+     *
+     * @param string $name Name for cookie
+     * @param string $value Value for cookie
+     * @return void
+     */
+    protected function _write($name, $value)
+    {
+        $this->_response->cookie(array(
+            'name' => $this->name . $name,
+            'value' => $this->_encrypt($value),
+            'expire' => $this->_expires,
+            'path' => $this->path,
+            'domain' => $this->domain,
+            'secure' => $this->secure,
+            'httpOnly' => $this->httpOnly
+        ));
+
+        if (!empty($this->_reset)) {
+            $this->_expires = $this->_reset;
+            $this->_reset = null;
+        }
+    }
+
+    /**
+     * Encrypts $value using public $type method in Security class
+     *
+     * @param string $value Value to encrypt
+     * @return string Encoded values
+     */
+    protected function _encrypt($value)
+    {
+        if (is_array($value)) {
+            $value = $this->_implode($value);
+        }
+        if (!$this->_encrypted) {
+            return $value;
+        }
+        $prefix = "Q2FrZQ==.";
+        if ($this->_type === 'rijndael') {
+            $cipher = Security::rijndael($value, $this->key, 'encrypt');
+        }
+        if ($this->_type === 'cipher') {
+            $cipher = Security::cipher($value, $this->key);
+        }
+        if ($this->_type === 'aes') {
+            $cipher = Security::encrypt($value, $this->key);
+        }
+        return $prefix . base64_encode($cipher);
+    }
+
+    /**
+     * Implode method to keep keys are multidimensional arrays
+     *
+     * @param array $array Map of key and values
+     * @return string A json encoded string.
+     */
+    protected function _implode(array $array)
+    {
+        return json_encode($array);
+    }
+
+    /**
      * Returns true if given variable is set in cookie.
      *
      * @param string $key Variable name to check for
@@ -350,6 +518,25 @@ class CookieComponent extends Component
     }
 
     /**
+     * Sets a cookie expire time to remove cookie value
+     *
+     * @param string $name Name of cookie
+     * @return void
+     */
+    protected function _delete($name)
+    {
+        $this->_response->cookie(array(
+            'name' => $this->name . $name,
+            'value' => '',
+            'expire' => time() - 42000,
+            'path' => $this->path,
+            'domain' => $this->domain,
+            'secure' => $this->secure,
+            'httpOnly' => $this->httpOnly
+        ));
+    }
+
+    /**
      * Destroy current cookie
      *
      * You must use this method before any output is sent to the browser.
@@ -396,192 +583,5 @@ class CookieComponent extends Component
             $type = 'cipher';
         }
         $this->_type = $type;
-    }
-
-    /**
-     * Set the expire time for a session variable.
-     *
-     * Creates a new expire time for a session variable.
-     * $expire can be either integer Unix timestamp or a date string.
-     *
-     * Used by write()
-     * CookieComponent::write(string, string, boolean, 8400);
-     * CookieComponent::write(string, string, boolean, '5 Days');
-     *
-     * @param int|string $expires Can be either Unix timestamp, or date string
-     * @return int Unix timestamp
-     */
-    protected function _expire($expires = null)
-    {
-        if ($expires === null) {
-            return $this->_expires;
-        }
-        $this->_reset = $this->_expires;
-        if (!$expires) {
-            return $this->_expires = 0;
-        }
-        $now = new DateTime();
-
-        if (is_int($expires) || is_numeric($expires)) {
-            return $this->_expires = $now->format('U') + (int)$expires;
-        }
-        $now->modify($expires);
-        return $this->_expires = $now->format('U');
-    }
-
-    /**
-     * Set cookie
-     *
-     * @param string $name Name for cookie
-     * @param string $value Value for cookie
-     * @return void
-     */
-    protected function _write($name, $value)
-    {
-        $this->_response->cookie(array(
-            'name' => $this->name . $name,
-            'value' => $this->_encrypt($value),
-            'expire' => $this->_expires,
-            'path' => $this->path,
-            'domain' => $this->domain,
-            'secure' => $this->secure,
-            'httpOnly' => $this->httpOnly
-        ));
-
-        if (!empty($this->_reset)) {
-            $this->_expires = $this->_reset;
-            $this->_reset = null;
-        }
-    }
-
-    /**
-     * Sets a cookie expire time to remove cookie value
-     *
-     * @param string $name Name of cookie
-     * @return void
-     */
-    protected function _delete($name)
-    {
-        $this->_response->cookie(array(
-            'name' => $this->name . $name,
-            'value' => '',
-            'expire' => time() - 42000,
-            'path' => $this->path,
-            'domain' => $this->domain,
-            'secure' => $this->secure,
-            'httpOnly' => $this->httpOnly
-        ));
-    }
-
-    /**
-     * Encrypts $value using public $type method in Security class
-     *
-     * @param string $value Value to encrypt
-     * @return string Encoded values
-     */
-    protected function _encrypt($value)
-    {
-        if (is_array($value)) {
-            $value = $this->_implode($value);
-        }
-        if (!$this->_encrypted) {
-            return $value;
-        }
-        $prefix = "Q2FrZQ==.";
-        if ($this->_type === 'rijndael') {
-            $cipher = Security::rijndael($value, $this->key, 'encrypt');
-        }
-        if ($this->_type === 'cipher') {
-            $cipher = Security::cipher($value, $this->key);
-        }
-        if ($this->_type === 'aes') {
-            $cipher = Security::encrypt($value, $this->key);
-        }
-        return $prefix . base64_encode($cipher);
-    }
-
-    /**
-     * Decrypts $value using public $type method in Security class
-     *
-     * @param array $values Values to decrypt
-     * @return string decrypted string
-     */
-    protected function _decrypt($values)
-    {
-        $decrypted = array();
-        $type = $this->_type;
-
-        foreach ((array)$values as $name => $value) {
-            if (is_array($value)) {
-                foreach ($value as $key => $val) {
-                    $decrypted[$name][$key] = $this->_decode($val);
-                }
-            } else {
-                $decrypted[$name] = $this->_decode($value);
-            }
-        }
-        return $decrypted;
-    }
-
-    /**
-     * Decodes and decrypts a single value.
-     *
-     * @param string $value The value to decode & decrypt.
-     * @return string Decoded value.
-     */
-    protected function _decode($value)
-    {
-        $prefix = 'Q2FrZQ==.';
-        $pos = strpos($value, $prefix);
-        if ($pos === false) {
-            return $this->_explode($value);
-        }
-        $value = base64_decode(substr($value, strlen($prefix)));
-        if ($this->_type === 'rijndael') {
-            $plain = Security::rijndael($value, $this->key, 'decrypt');
-        }
-        if ($this->_type === 'cipher') {
-            $plain = Security::cipher($value, $this->key);
-        }
-        if ($this->_type === 'aes') {
-            $plain = Security::decrypt($value, $this->key);
-        }
-        return $this->_explode($plain);
-    }
-
-    /**
-     * Implode method to keep keys are multidimensional arrays
-     *
-     * @param array $array Map of key and values
-     * @return string A json encoded string.
-     */
-    protected function _implode(array $array)
-    {
-        return json_encode($array);
-    }
-
-    /**
-     * Explode method to return array from string set in CookieComponent::_implode()
-     * Maintains reading backwards compatibility with 1.x CookieComponent::_implode().
-     *
-     * @param string $string A string containing JSON encoded data, or a bare string.
-     * @return array Map of key and values
-     */
-    protected function _explode($string)
-    {
-        $first = substr($string, 0, 1);
-        if ($first === '{' || $first === '[') {
-            $ret = json_decode($string, true);
-            return ($ret !== null) ? $ret : $string;
-        }
-        $array = array();
-        foreach (explode(',', $string) as $pair) {
-            $key = explode('|', $pair);
-            if (!isset($key[1])) {
-                return $key[0];
-            }
-            $array[$key[0]] = $key[1];
-        }
-        return $array;
     }
 }

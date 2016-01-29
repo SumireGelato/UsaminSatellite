@@ -40,6 +40,18 @@ class BasicAuthentication
     }
 
     /**
+     * Generate basic [proxy] authentication header
+     *
+     * @param string $user Username.
+     * @param string $pass Password.
+     * @return string
+     */
+    protected static function _generateHeader($user, $pass)
+    {
+        return 'Basic ' . base64_encode($user . ':' . $pass);
+    }
+
+    /**
      * Proxy Authentication
      *
      * @param HttpSocket $http Http socket instance.
@@ -52,18 +64,6 @@ class BasicAuthentication
         if (isset($proxyInfo['user'], $proxyInfo['pass'])) {
             $http->request['header']['Proxy-Authorization'] = static::_generateHeader($proxyInfo['user'], $proxyInfo['pass']);
         }
-    }
-
-    /**
-     * Generate basic [proxy] authentication header
-     *
-     * @param string $user Username.
-     * @param string $pass Password.
-     * @return string
-     */
-    protected static function _generateHeader($user, $pass)
-    {
-        return 'Basic ' . base64_encode($user . ':' . $pass);
     }
 
 }

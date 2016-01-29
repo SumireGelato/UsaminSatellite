@@ -9,25 +9,15 @@ body {
     font-size: 1.6em;
 }
 
-.btn-default {
-    background-color: #ff6c99;
-}
-
-.btn-default:hover,
-.btn-default:focus {
-    color: #9d2068;
-    background-color: #ffc66c;
-}
-
 .awkSRCardImage {
     display: none;
 }
 
-#cardArt:hover .awkSRCardImage{
+#cardArt:hover .awkSRCardImage {
     display: block;
 }
 
-#cardArt:hover .baseSRCardImage{
+#cardArt:hover .baseSRCardImage {
     display: none;
 }
 

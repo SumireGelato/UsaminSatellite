@@ -193,29 +193,6 @@ class ExceptionRenderer
     }
 
     /**
-     * Generic handler for the internal framework errors CakePHP can generate.
-     *
-     * @param CakeException $error The exception to render.
-     * @return void
-     */
-    protected function _cakeError(CakeException $error)
-    {
-        $url = $this->controller->request->here();
-        $code = ($error->getCode() >= 400 && $error->getCode() < 506) ? $error->getCode() : 500;
-        $this->controller->response->statusCode($code);
-        $this->controller->set(array(
-            'code' => $code,
-            'name' => h($error->getMessage()),
-            'message' => h($error->getMessage()),
-            'url' => h($url),
-            'error' => $error,
-            '_serialize' => array('code', 'name', 'message', 'url')
-        ));
-        $this->controller->set($error->getAttributes());
-        $this->_outputMessage($this->template);
-    }
-
-    /**
      * Convenience method to display a 400 series page.
      *
      * @param Exception $error The exception to render.
@@ -283,6 +260,29 @@ class ExceptionRenderer
             'error' => $error,
             '_serialize' => array('code', 'name', 'message', 'url', 'error')
         ));
+        $this->_outputMessage($this->template);
+    }
+
+    /**
+     * Generic handler for the internal framework errors CakePHP can generate.
+     *
+     * @param CakeException $error The exception to render.
+     * @return void
+     */
+    protected function _cakeError(CakeException $error)
+    {
+        $url = $this->controller->request->here();
+        $code = ($error->getCode() >= 400 && $error->getCode() < 506) ? $error->getCode() : 500;
+        $this->controller->response->statusCode($code);
+        $this->controller->set(array(
+            'code' => $code,
+            'name' => h($error->getMessage()),
+            'message' => h($error->getMessage()),
+            'url' => h($url),
+            'error' => $error,
+            '_serialize' => array('code', 'name', 'message', 'url')
+        ));
+        $this->controller->set($error->getAttributes());
         $this->_outputMessage($this->template);
     }
 

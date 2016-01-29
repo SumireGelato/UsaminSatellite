@@ -34,7 +34,36 @@ class CakeSocket
      * @var string
      */
     public $description = 'Remote DataSource Network Socket Interface';
-
+    /**
+     * Configuration settings for the socket connection
+     *
+     * @var array
+     */
+    public $config = array();
+    /**
+     * Reference to socket connection resource
+     *
+     * @var resource
+     */
+    public $connection = null;
+    /**
+     * This boolean contains the current state of the CakeSocket class
+     *
+     * @var bool
+     */
+    public $connected = false;
+    /**
+     * This variable contains an array with the last error number (num) and string (str)
+     *
+     * @var array
+     */
+    public $lastError = array();
+    /**
+     * True if the socket stream is encrypted after a CakeSocket::enableCrypto() call
+     *
+     * @var bool
+     */
+    public $encrypted = false;
     /**
      * Base configuration settings for the socket connection
      *
@@ -47,42 +76,6 @@ class CakeSocket
         'port' => 80,
         'timeout' => 30
     );
-
-    /**
-     * Configuration settings for the socket connection
-     *
-     * @var array
-     */
-    public $config = array();
-
-    /**
-     * Reference to socket connection resource
-     *
-     * @var resource
-     */
-    public $connection = null;
-
-    /**
-     * This boolean contains the current state of the CakeSocket class
-     *
-     * @var bool
-     */
-    public $connected = false;
-
-    /**
-     * This variable contains an array with the last error number (num) and string (str)
-     *
-     * @var array
-     */
-    public $lastError = array();
-
-    /**
-     * True if the socket stream is encrypted after a CakeSocket::enableCrypto() call
-     *
-     * @var bool
-     */
-    public $encrypted = false;
-
     /**
      * Contains all the encryption methods available
      *
@@ -118,6 +111,94 @@ class CakeSocket
     public function __construct($config = array())
     {
         $this->config = array_merge($this->_baseConfig, $config);
+    }
+
+    /**
+     * Gets the connection context.
+     *
+     * @return null|array Null when there is no connection, an array when there is.
+     */
+    public function context()
+    {
+        if (!$this->connection) {
+            return null;
+        }
+        return stream_context_get_options($this->connection);
+    }
+
+    /**
+     * Gets the host name of the current connection.
+     *
+     * @return string Host name
+     */
+    public function host()
+    {
+        if (Validation::ip($this->config['host'])) {
+            return gethostbyaddr($this->config['host']);
+        }
+        return gethostbyaddr($this->address());
+    }
+
+    /**
+     * Gets the IP address of the current connection.
+     *
+     * @return string IP address
+     */
+    public function address()
+    {
+        if (Validation::ip($this->config['host'])) {
+            return $this->config['host'];
+        }
+        return gethostbyname($this->config['host']);
+    }
+
+    /**
+     * Gets all IP addresses associated with the current connection.
+     *
+     * @return array IP addresses
+     */
+    public function addresses()
+    {
+        if (Validation::ip($this->config['host'])) {
+            return array($this->config['host']);
+        }
+        return gethostbynamel($this->config['host']);
+    }
+
+    /**
+     * Gets the last error as a string.
+     *
+     * @return string|null Last error
+     */
+    public function lastError()
+    {
+        if (!empty($this->lastError)) {
+            return $this->lastError['num'] . ': ' . $this->lastError['str'];
+        }
+        return null;
+    }
+
+    /**
+     * Writes data to the socket.
+     *
+     * @param string $data The data to write to the socket
+     * @return bool Success
+     */
+    public function write($data)
+    {
+        if (!$this->connected) {
+            if (!$this->connect()) {
+                return false;
+            }
+        }
+        $totalBytes = strlen($data);
+        for ($written = 0, $rv = 0; $written < $totalBytes; $written += $rv) {
+            $rv = fwrite($this->connection, substr($data, $written));
+            if ($rv === false || $rv === 0) {
+                return $written;
+            }
+        }
+        return $written;
     }
 
     /**
@@ -215,6 +296,25 @@ class CakeSocket
     }
 
     /**
+     * Disconnects the socket from the current connection.
+     *
+     * @return bool Success
+     */
+    public function disconnect()
+    {
+        if (!is_resource($this->connection)) {
+            $this->connected = false;
+            return true;
+        }
+        $this->connected = !fclose($this->connection);
+
+        if (!$this->connected) {
+            $this->connection = null;
+        }
+        return !$this->connected;
+    }
+
+    /**
      * Configure the SSL context options.
      *
      * @param string $host The host name being connected to.
@@ -256,86 +356,6 @@ class CakeSocket
     }
 
     /**
-     * socket_stream_client() does not populate errNum, or $errStr when there are
-     * connection errors, as in the case of SSL verification failure.
-     *
-     * Instead we need to handle those errors manually.
-     *
-     * @param int $code Code.
-     * @param string $message Message.
-     * @return void
-     */
-    protected function _connectionErrorHandler($code, $message)
-    {
-        $this->_connectionErrors[] = $message;
-    }
-
-    /**
-     * Gets the connection context.
-     *
-     * @return null|array Null when there is no connection, an array when there is.
-     */
-    public function context()
-    {
-        if (!$this->connection) {
-            return null;
-        }
-        return stream_context_get_options($this->connection);
-    }
-
-    /**
-     * Gets the host name of the current connection.
-     *
-     * @return string Host name
-     */
-    public function host()
-    {
-        if (Validation::ip($this->config['host'])) {
-            return gethostbyaddr($this->config['host']);
-        }
-        return gethostbyaddr($this->address());
-    }
-
-    /**
-     * Gets the IP address of the current connection.
-     *
-     * @return string IP address
-     */
-    public function address()
-    {
-        if (Validation::ip($this->config['host'])) {
-            return $this->config['host'];
-        }
-        return gethostbyname($this->config['host']);
-    }
-
-    /**
-     * Gets all IP addresses associated with the current connection.
-     *
-     * @return array IP addresses
-     */
-    public function addresses()
-    {
-        if (Validation::ip($this->config['host'])) {
-            return array($this->config['host']);
-        }
-        return gethostbynamel($this->config['host']);
-    }
-
-    /**
-     * Gets the last error as a string.
-     *
-     * @return string|null Last error
-     */
-    public function lastError()
-    {
-        if (!empty($this->lastError)) {
-            return $this->lastError['num'] . ': ' . $this->lastError['str'];
-        }
-        return null;
-    }
-
-    /**
      * Sets the last error.
      *
      * @param int $errNum Error code
@@ -345,105 +365,6 @@ class CakeSocket
     public function setLastError($errNum, $errStr)
     {
         $this->lastError = array('num' => $errNum, 'str' => $errStr);
-    }
-
-    /**
-     * Writes data to the socket.
-     *
-     * @param string $data The data to write to the socket
-     * @return bool Success
-     */
-    public function write($data)
-    {
-        if (!$this->connected) {
-            if (!$this->connect()) {
-                return false;
-            }
-        }
-        $totalBytes = strlen($data);
-        for ($written = 0, $rv = 0; $written < $totalBytes; $written += $rv) {
-            $rv = fwrite($this->connection, substr($data, $written));
-            if ($rv === false || $rv === 0) {
-                return $written;
-            }
-        }
-        return $written;
-    }
-
-    /**
-     * Reads data from the socket. Returns false if no data is available or no connection could be
-     * established.
-     *
-     * @param int $length Optional buffer length to read; defaults to 1024
-     * @return mixed Socket data
-     */
-    public function read($length = 1024)
-    {
-        if (!$this->connected) {
-            if (!$this->connect()) {
-                return false;
-            }
-        }
-
-        if (!feof($this->connection)) {
-            $buffer = fread($this->connection, $length);
-            $info = stream_get_meta_data($this->connection);
-            if ($info['timed_out']) {
-                $this->setLastError(E_WARNING, __d('cake_dev', 'Connection timed out'));
-                return false;
-            }
-            return $buffer;
-        }
-        return false;
-    }
-
-    /**
-     * Disconnects the socket from the current connection.
-     *
-     * @return bool Success
-     */
-    public function disconnect()
-    {
-        if (!is_resource($this->connection)) {
-            $this->connected = false;
-            return true;
-        }
-        $this->connected = !fclose($this->connection);
-
-        if (!$this->connected) {
-            $this->connection = null;
-        }
-        return !$this->connected;
-    }
-
-    /**
-     * Destructor, used to disconnect from current connection.
-     */
-    public function __destruct()
-    {
-        $this->disconnect();
-    }
-
-    /**
-     * Resets the state of this Socket instance to it's initial state (before Object::__construct got executed)
-     *
-     * @param array $state Array with key and values to reset
-     * @return bool True on success
-     */
-    public function reset($state = null)
-    {
-        if (empty($state)) {
-            static $initalState = array();
-            if (empty($initalState)) {
-                $initalState = get_class_vars(__CLASS__);
-            }
-            $state = $initalState;
-        }
-
-        foreach ($state as $property => $value) {
-            $this->{$property} = $value;
-        }
-        return true;
     }
 
     /**
@@ -477,5 +398,77 @@ class CakeSocket
         $errorMessage = __d('cake_dev', 'Unable to perform enableCrypto operation on CakeSocket');
         $this->setLastError(null, $errorMessage);
         throw new SocketException($errorMessage);
+    }
+
+    /**
+     * Reads data from the socket. Returns false if no data is available or no connection could be
+     * established.
+     *
+     * @param int $length Optional buffer length to read; defaults to 1024
+     * @return mixed Socket data
+     */
+    public function read($length = 1024)
+    {
+        if (!$this->connected) {
+            if (!$this->connect()) {
+                return false;
+            }
+        }
+
+        if (!feof($this->connection)) {
+            $buffer = fread($this->connection, $length);
+            $info = stream_get_meta_data($this->connection);
+            if ($info['timed_out']) {
+                $this->setLastError(E_WARNING, __d('cake_dev', 'Connection timed out'));
+                return false;
+            }
+            return $buffer;
+        }
+        return false;
+    }
+
+    /**
+     * Destructor, used to disconnect from current connection.
+     */
+    public function __destruct()
+    {
+        $this->disconnect();
+    }
+
+    /**
+     * Resets the state of this Socket instance to it's initial state (before Object::__construct got executed)
+     *
+     * @param array $state Array with key and values to reset
+     * @return bool True on success
+     */
+    public function reset($state = null)
+    {
+        if (empty($state)) {
+            static $initalState = array();
+            if (empty($initalState)) {
+                $initalState = get_class_vars(__CLASS__);
+            }
+            $state = $initalState;
+        }
+
+        foreach ($state as $property => $value) {
+            $this->{$property} = $value;
+        }
+        return true;
+    }
+
+    /**
+     * socket_stream_client() does not populate errNum, or $errStr when there are
+     * connection errors, as in the case of SSL verification failure.
+     *
+     * Instead we need to handle those errors manually.
+     *
+     * @param int $code Code.
+     * @param string $message Message.
+     * @return void
+     */
+    protected function _connectionErrorHandler($code, $message)
+    {
+        $this->_connectionErrors[] = $message;
     }
 }

@@ -68,6 +68,18 @@ abstract class BaseAuthenticate implements CakeEventListener
     protected $_passwordHasher;
 
     /**
+     * Constructor
+     *
+     * @param ComponentCollection $collection The Component collection used on this request.
+     * @param array $settings Array of settings to use.
+     */
+    public function __construct(ComponentCollection $collection, $settings)
+    {
+        $this->_Collection = $collection;
+        $this->settings = Hash::merge($this->settings, $settings);
+    }
+
+    /**
      * Implemented events
      *
      * @return array of events => callbacks.
@@ -78,15 +90,50 @@ abstract class BaseAuthenticate implements CakeEventListener
     }
 
     /**
-     * Constructor
+     * Authenticate a user based on the request information.
      *
-     * @param ComponentCollection $collection The Component collection used on this request.
-     * @param array $settings Array of settings to use.
+     * @param CakeRequest $request Request to get authentication information from.
+     * @param CakeResponse $response A response object that can have headers added.
+     * @return mixed Either false on failure, or an array of user data on success.
      */
-    public function __construct(ComponentCollection $collection, $settings)
+    abstract public function authenticate(CakeRequest $request, CakeResponse $response);
+
+    /**
+     * Allows you to hook into AuthComponent::logout(),
+     * and implement specialized logout behavior.
+     *
+     * All attached authentication objects will have this method
+     * called when a user logs out.
+     *
+     * @param array $user The user about to be logged out.
+     * @return void
+     */
+    public function logout($user)
     {
-        $this->_Collection = $collection;
-        $this->settings = Hash::merge($this->settings, $settings);
+    }
+
+    /**
+     * Get a user based on information in the request. Primarily used by stateless authentication
+     * systems like basic and digest auth.
+     *
+     * @param CakeRequest $request Request object.
+     * @return mixed Either false or an array of user information
+     */
+    public function getUser(CakeRequest $request)
+    {
+        return false;
+    }
+
+    /**
+     * Handle unauthenticated access attempt.
+     *
+     * @param CakeRequest $request A request object.
+     * @param CakeResponse $response A response object.
+     * @return mixed Either true to indicate the unauthenticated request has been
+     *  dealt with and no more action is required by AuthComponent or void (default).
+     */
+    public function unauthenticated(CakeRequest $request, CakeResponse $response)
+    {
     }
 
     /**
@@ -194,53 +241,6 @@ abstract class BaseAuthenticate implements CakeEventListener
     protected function _password($password)
     {
         return Security::hash($password, null, true);
-    }
-
-    /**
-     * Authenticate a user based on the request information.
-     *
-     * @param CakeRequest $request Request to get authentication information from.
-     * @param CakeResponse $response A response object that can have headers added.
-     * @return mixed Either false on failure, or an array of user data on success.
-     */
-    abstract public function authenticate(CakeRequest $request, CakeResponse $response);
-
-    /**
-     * Allows you to hook into AuthComponent::logout(),
-     * and implement specialized logout behavior.
-     *
-     * All attached authentication objects will have this method
-     * called when a user logs out.
-     *
-     * @param array $user The user about to be logged out.
-     * @return void
-     */
-    public function logout($user)
-    {
-    }
-
-    /**
-     * Get a user based on information in the request. Primarily used by stateless authentication
-     * systems like basic and digest auth.
-     *
-     * @param CakeRequest $request Request object.
-     * @return mixed Either false or an array of user information
-     */
-    public function getUser(CakeRequest $request)
-    {
-        return false;
-    }
-
-    /**
-     * Handle unauthenticated access attempt.
-     *
-     * @param CakeRequest $request A request object.
-     * @param CakeResponse $response A response object.
-     * @return mixed Either true to indicate the unauthenticated request has been
-     *  dealt with and no more action is required by AuthComponent or void (default).
-     */
-    public function unauthenticated(CakeRequest $request, CakeResponse $response)
-    {
     }
 
 }

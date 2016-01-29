@@ -39,6 +39,35 @@ class TidyHelper extends AppHelper
     public $results = null;
 
     /**
+     * report method
+     *
+     * Call process if a string is passed, or no prior results exist - and return the results using
+     * the toolbar helper to generate a nested navigatable array
+     *
+     * @param mixed $html null
+     * @return string
+     */
+    public function report($html = null)
+    {
+        if ($html) {
+            $this->process($html);
+        } elseif ($this->results === null) {
+            $this->process($this->_View->output);
+        }
+        if (!$this->results) {
+            return '<p>' . __d('debug_kit', 'No markup errors found') . '</p>';
+        }
+        foreach ($this->results as &$results) {
+            foreach ($results as $type => &$messages) {
+                foreach ($messages as &$message) {
+                    $message = html_entity_decode($message, ENT_COMPAT, Configure::read('App.encoding'));
+                }
+            }
+        }
+        return $this->Toolbar->makeNeatArray(array_filter($this->results), 0, 0, false);
+    }
+
+    /**
      * Return a nested array of errors for the passed html string
      * Fudge the markup slightly so that the tag which is invalid is highlighted
      *
@@ -80,35 +109,6 @@ class TidyHelper extends AppHelper
         }
         $this->results = $result;
         return $result;
-    }
-
-    /**
-     * report method
-     *
-     * Call process if a string is passed, or no prior results exist - and return the results using
-     * the toolbar helper to generate a nested navigatable array
-     *
-     * @param mixed $html null
-     * @return string
-     */
-    public function report($html = null)
-    {
-        if ($html) {
-            $this->process($html);
-        } elseif ($this->results === null) {
-            $this->process($this->_View->output);
-        }
-        if (!$this->results) {
-            return '<p>' . __d('debug_kit', 'No markup errors found') . '</p>';
-        }
-        foreach ($this->results as &$results) {
-            foreach ($results as $type => &$messages) {
-                foreach ($messages as &$message) {
-                    $message = html_entity_decode($message, ENT_COMPAT, Configure::read('App.encoding'));
-                }
-            }
-        }
-        return $this->Toolbar->makeNeatArray(array_filter($this->results), 0, 0, false);
     }
 
     /**

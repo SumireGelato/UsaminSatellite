@@ -28,16 +28,6 @@ class DebugMemory
     protected static $_points = array();
 
     /**
-     * Get current memory usage
-     *
-     * @return int number of bytes ram currently in use. 0 if memory_get_usage() is not available.
-     */
-    public static function getCurrent()
-    {
-        return memory_get_usage();
-    }
-
-    /**
      * Get peak memory use
      *
      * @return int peak memory use (in bytes). Returns 0 if memory_get_peak_usage() is not available
@@ -72,6 +62,16 @@ class DebugMemory
         }
         self::$_points[$message] = $memoryUse;
         return true;
+    }
+
+    /**
+     * Get current memory usage
+     *
+     * @return int number of bytes ram currently in use. 0 if memory_get_usage() is not available.
+     */
+    public static function getCurrent()
+    {
+        return memory_get_usage();
     }
 
     /**

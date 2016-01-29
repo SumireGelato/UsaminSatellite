@@ -78,6 +78,19 @@ class DbAcl extends Object implements AclInterface
     }
 
     /**
+     * Let access for $aro to action $action in $aco be inherited
+     *
+     * @param string $aro ARO The requesting object identifier.
+     * @param string $aco ACO The controlled object identifier.
+     * @param string $action Action (defaults to *)
+     * @return bool Success
+     */
+    public function inherit($aro, $aco, $action = "*")
+    {
+        return $this->allow($aro, $aco, $action, 0);
+    }
+
+    /**
      * Allow $aro to have access to action $actions in $aco
      *
      * @param string $aro ARO The requesting object identifier.
@@ -90,33 +103,6 @@ class DbAcl extends Object implements AclInterface
     public function allow($aro, $aco, $actions = "*", $value = 1)
     {
         return $this->Permission->allow($aro, $aco, $actions, $value);
-    }
-
-    /**
-     * Deny access for $aro to action $action in $aco
-     *
-     * @param string $aro ARO The requesting object identifier.
-     * @param string $aco ACO The controlled object identifier.
-     * @param string $action Action (defaults to *)
-     * @return bool Success
-     * @link http://book.cakephp.org/2.0/en/core-libraries/components/access-control-lists.html#assigning-permissions
-     */
-    public function deny($aro, $aco, $action = "*")
-    {
-        return $this->allow($aro, $aco, $action, -1);
-    }
-
-    /**
-     * Let access for $aro to action $action in $aco be inherited
-     *
-     * @param string $aro ARO The requesting object identifier.
-     * @param string $aco ACO The controlled object identifier.
-     * @param string $action Action (defaults to *)
-     * @return bool Success
-     */
-    public function inherit($aro, $aco, $action = "*")
-    {
-        return $this->allow($aro, $aco, $action, 0);
     }
 
     /**
@@ -145,6 +131,20 @@ class DbAcl extends Object implements AclInterface
     public function revoke($aro, $aco, $action = "*")
     {
         return $this->deny($aro, $aco, $action);
+    }
+
+    /**
+     * Deny access for $aro to action $action in $aco
+     *
+     * @param string $aro ARO The requesting object identifier.
+     * @param string $aco ACO The controlled object identifier.
+     * @param string $action Action (defaults to *)
+     * @return bool Success
+     * @link http://book.cakephp.org/2.0/en/core-libraries/components/access-control-lists.html#assigning-permissions
+     */
+    public function deny($aro, $aco, $action = "*")
+    {
+        return $this->allow($aro, $aco, $action, -1);
     }
 
     /**

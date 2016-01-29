@@ -72,6 +72,32 @@ HTML;
     }
 
     /**
+     * generate some javascript for the coverage report.
+     *
+     * @return string
+     */
+    public function coverageScript()
+    {
+        return <<<HTML
+		<script type="text/javascript">
+		function coverage_show_hide(selector) {
+			var element = document.getElementById(selector);
+			element.style.display = (element.style.display === 'none') ? '' : 'none';
+		}
+		function coverage_toggle_all() {
+			var divs = document.querySelectorAll('div.coverage-container');
+			var i = divs.length;
+			while (i--) {
+				if (divs[i] && divs[i].className.indexOf('primary') == -1) {
+					divs[i].style.display = (divs[i].style.display === 'none') ? '' : 'none';
+				}
+			}
+		}
+		</script>
+HTML;
+    }
+
+    /**
      * Generates an HTML diff for $file based on $coverageData.
      *
      * Handles both PHPUnit3.5 and 3.6 formats.
@@ -170,32 +196,6 @@ HTML;
             $linenumber,
             htmlspecialchars($line)
         );
-    }
-
-    /**
-     * generate some javascript for the coverage report.
-     *
-     * @return string
-     */
-    public function coverageScript()
-    {
-        return <<<HTML
-		<script type="text/javascript">
-		function coverage_show_hide(selector) {
-			var element = document.getElementById(selector);
-			element.style.display = (element.style.display === 'none') ? '' : 'none';
-		}
-		function coverage_toggle_all() {
-			var divs = document.querySelectorAll('div.coverage-container');
-			var i = divs.length;
-			while (i--) {
-				if (divs[i] && divs[i].className.indexOf('primary') == -1) {
-					divs[i].style.display = (divs[i].style.display === 'none') ? '' : 'none';
-				}
-			}
-		}
-		</script>
-HTML;
     }
 
     /**

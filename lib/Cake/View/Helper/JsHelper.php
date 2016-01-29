@@ -46,7 +46,12 @@ class JsHelper extends AppHelper
      * @var array
      */
     public $helpers = array('Html', 'Form');
-
+    /**
+     * The javascript variable created by set() variables.
+     *
+     * @var string
+     */
+    public $setVariable = 'app';
     /**
      * Variables to pass to Javascript.
      *
@@ -54,7 +59,6 @@ class JsHelper extends AppHelper
      * @see JsHelper::set()
      */
     protected $_jsVars = array();
-
     /**
      * Scripts that are queued for output
      *
@@ -62,20 +66,12 @@ class JsHelper extends AppHelper
      * @see JsHelper::buffer()
      */
     protected $_bufferedScripts = array();
-
     /**
      * Current Javascript Engine that is being used
      *
      * @var string
      */
     protected $_engineName;
-
-    /**
-     * The javascript variable created by set() variables.
-     *
-     * @var string
-     */
-    public $setVariable = 'app';
 
     /**
      * Constructor - determines engine helper
@@ -156,6 +152,24 @@ class JsHelper extends AppHelper
     }
 
     /**
+     * Write a script to the buffered scripts.
+     *
+     * @param string $script Script string to add to the buffer.
+     * @param bool $top If true the script will be added to the top of the
+     *   buffered scripts array. If false the bottom.
+     * @return void
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/js.html#JsHelper::buffer
+     */
+    public function buffer($script, $top = false)
+    {
+        if ($top) {
+            array_unshift($this->_bufferedScripts, $script);
+        } else {
+            $this->_bufferedScripts[] = $script;
+        }
+    }
+
+    /**
      * Overwrite inherited Helper::value()
      * See JsBaseEngineHelper::value() for more information on this method.
      *
@@ -228,24 +242,6 @@ class JsHelper extends AppHelper
             return $return;
         }
         return null;
-    }
-
-    /**
-     * Write a script to the buffered scripts.
-     *
-     * @param string $script Script string to add to the buffer.
-     * @param bool $top If true the script will be added to the top of the
-     *   buffered scripts array. If false the bottom.
-     * @return void
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/js.html#JsHelper::buffer
-     */
-    public function buffer($script, $top = false)
-    {
-        if ($top) {
-            array_unshift($this->_bufferedScripts, $script);
-        } else {
-            $this->_bufferedScripts[] = $script;
-        }
     }
 
     /**
@@ -325,6 +321,34 @@ class JsHelper extends AppHelper
             $out .= $this->Html->scriptBlock($event, $opts);
         }
         return $out;
+    }
+
+    /**
+     * Parse a set of Options and extract the Html options.
+     * Extracted Html Options are removed from the $options param.
+     *
+     * @param array $options Options to filter.
+     * @param array $additional Array of additional keys to extract and include in the return options array.
+     * @return array Array of js options and Htmloptions
+     */
+    protected function _getHtmlOptions($options, $additional = array())
+    {
+        $htmlKeys = array_merge(
+            array('class', 'id', 'escape', 'onblur', 'onfocus', 'rel', 'title', 'style'),
+            $additional
+        );
+        $htmlOptions = array();
+        foreach ($htmlKeys as $key) {
+            if (isset($options[$key])) {
+                $htmlOptions[$key] = $options[$key];
+            }
+            unset($options[$key]);
+        }
+        if (isset($options['htmlAttributes'])) {
+            $htmlOptions = array_merge($htmlOptions, $options['htmlAttributes']);
+            unset($options['htmlAttributes']);
+        }
+        return array($options, $htmlOptions);
     }
 
     /**
@@ -415,34 +439,6 @@ class JsHelper extends AppHelper
             $out .= $this->Html->scriptBlock($event, $opts);
         }
         return $out;
-    }
-
-    /**
-     * Parse a set of Options and extract the Html options.
-     * Extracted Html Options are removed from the $options param.
-     *
-     * @param array $options Options to filter.
-     * @param array $additional Array of additional keys to extract and include in the return options array.
-     * @return array Array of js options and Htmloptions
-     */
-    protected function _getHtmlOptions($options, $additional = array())
-    {
-        $htmlKeys = array_merge(
-            array('class', 'id', 'escape', 'onblur', 'onfocus', 'rel', 'title', 'style'),
-            $additional
-        );
-        $htmlOptions = array();
-        foreach ($htmlKeys as $key) {
-            if (isset($options[$key])) {
-                $htmlOptions[$key] = $options[$key];
-            }
-            unset($options[$key]);
-        }
-        if (isset($options['htmlAttributes'])) {
-            $htmlOptions = array_merge($htmlOptions, $options['htmlAttributes']);
-            unset($options['htmlAttributes']);
-        }
-        return array($options, $htmlOptions);
     }
 
 }

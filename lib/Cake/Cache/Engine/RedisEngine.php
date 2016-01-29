@@ -25,13 +25,6 @@ class RedisEngine extends CacheEngine
 {
 
     /**
-     * Redis wrapper.
-     *
-     * @var Redis
-     */
-    protected $_Redis = null;
-
-    /**
      * Settings
      *
      *  - server = string URL or ip to the Redis server host
@@ -44,6 +37,12 @@ class RedisEngine extends CacheEngine
      * @var array
      */
     public $settings = array();
+    /**
+     * Redis wrapper.
+     *
+     * @var Redis
+     */
+    protected $_Redis = null;
 
     /**
      * Initialize the Cache Engine

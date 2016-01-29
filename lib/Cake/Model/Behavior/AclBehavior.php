@@ -70,30 +70,6 @@ class AclBehavior extends ModelBehavior
     }
 
     /**
-     * Retrieves the Aro/Aco node for this model
-     *
-     * @param Model $model Model using this behavior.
-     * @param string|array|Model $ref Array with 'model' and 'foreign_key', model object, or string value
-     * @param string $type Only needed when Acl is set up as 'both', specify 'Aro' or 'Aco' to get the correct node
-     * @return array
-     * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/acl.html#node
-     */
-    public function node(Model $model, $ref = null, $type = null)
-    {
-        if (empty($type)) {
-            $type = $this->_typeMaps[$this->settings[$model->name]['type']];
-            if (is_array($type)) {
-                trigger_error(__d('cake_dev', 'AclBehavior is setup with more then one type, please specify type parameter for node()'), E_USER_WARNING);
-                return array();
-            }
-        }
-        if (empty($ref)) {
-            $ref = array('model' => $model->name, 'foreign_key' => $model->id);
-        }
-        return $model->{$type}->node($ref);
-    }
-
-    /**
      * Creates a new ARO/ACO node bound to this record
      *
      * @param Model $model Model using this behavior.
@@ -124,6 +100,30 @@ class AclBehavior extends ModelBehavior
             $model->{$type}->create();
             $model->{$type}->save($data);
         }
+    }
+
+    /**
+     * Retrieves the Aro/Aco node for this model
+     *
+     * @param Model $model Model using this behavior.
+     * @param string|array|Model $ref Array with 'model' and 'foreign_key', model object, or string value
+     * @param string $type Only needed when Acl is set up as 'both', specify 'Aro' or 'Aco' to get the correct node
+     * @return array
+     * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/acl.html#node
+     */
+    public function node(Model $model, $ref = null, $type = null)
+    {
+        if (empty($type)) {
+            $type = $this->_typeMaps[$this->settings[$model->name]['type']];
+            if (is_array($type)) {
+                trigger_error(__d('cake_dev', 'AclBehavior is setup with more then one type, please specify type parameter for node()'), E_USER_WARNING);
+                return array();
+            }
+        }
+        if (empty($ref)) {
+            $ref = array('model' => $model->name, 'foreign_key' => $model->id);
+        }
+        return $model->{$type}->node($ref);
     }
 
     /**

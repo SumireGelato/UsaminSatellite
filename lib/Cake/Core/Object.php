@@ -139,18 +139,6 @@ class Object
     }
 
     /**
-     * Stop execution of the current script. Wraps exit() making
-     * testing easier.
-     *
-     * @param int|string $status see http://php.net/exit for values
-     * @return void
-     */
-    protected function _stop($status = 0)
-    {
-        exit($status);
-    }
-
-    /**
      * Convenience method to write a message to CakeLog. See CakeLog::write()
      * for more information on writing to logs.
      *
@@ -167,6 +155,18 @@ class Object
         }
 
         return CakeLog::write($type, $msg, $scope);
+    }
+
+    /**
+     * Stop execution of the current script. Wraps exit() making
+     * testing easier.
+     *
+     * @param int|string $status see http://php.net/exit for values
+     * @return void
+     */
+    protected function _stop($status = 0)
+    {
+        exit($status);
     }
 
     /**

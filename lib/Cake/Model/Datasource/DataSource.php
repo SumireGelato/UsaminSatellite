@@ -33,42 +33,12 @@ class DataSource extends Object
      * @var bool
      */
     public $connected = false;
-
-    /**
-     * The default configuration of a specific DataSource
-     *
-     * @var array
-     */
-    protected $_baseConfig = array();
-
-    /**
-     * Holds references to descriptions loaded by the DataSource
-     *
-     * @var array
-     */
-    protected $_descriptions = array();
-
-    /**
-     * Holds a list of sources (tables) contained in the DataSource
-     *
-     * @var array
-     */
-    protected $_sources = null;
-
     /**
      * The DataSource configuration
      *
      * @var array
      */
     public $config = array();
-
-    /**
-     * Whether or not this DataSource is in the middle of a transaction
-     *
-     * @var bool
-     */
-    protected $_transactionStarted = false;
-
     /**
      * Whether or not source data like available tables and schema descriptions
      * should be cached
@@ -76,6 +46,30 @@ class DataSource extends Object
      * @var bool
      */
     public $cacheSources = true;
+    /**
+     * The default configuration of a specific DataSource
+     *
+     * @var array
+     */
+    protected $_baseConfig = array();
+    /**
+     * Holds references to descriptions loaded by the DataSource
+     *
+     * @var array
+     */
+    protected $_descriptions = array();
+    /**
+     * Holds a list of sources (tables) contained in the DataSource
+     *
+     * @var array
+     */
+    protected $_sources = null;
+    /**
+     * Whether or not this DataSource is in the middle of a transaction
+     *
+     * @var bool
+     */
+    protected $_transactionStarted = false;
 
     /**
      * Constructor.
@@ -86,6 +80,18 @@ class DataSource extends Object
     {
         parent::__construct();
         $this->setConfig($config);
+    }
+
+    /**
+     * Sets the configuration for the DataSource.
+     * Merges the $config information with the _baseConfig and the existing $config property.
+     *
+     * @param array $config The configuration array
+     * @return void
+     */
+    public function setConfig($config = array())
+    {
+        $this->config = array_merge($this->_baseConfig, $this->config, $config);
     }
 
     /**
@@ -146,6 +152,34 @@ class DataSource extends Object
     }
 
     /**
+     * Cache the DataSource description
+     *
+     * @param string $object The name of the object (model) to cache
+     * @param mixed $data The description of the model, usually a string or array
+     * @return mixed
+     */
+    protected function _cacheDescription($object, $data = null)
+    {
+        if ($this->cacheSources === false) {
+            return null;
+        }
+
+        if ($data !== null) {
+            $this->_descriptions[$object] =& $data;
+        }
+
+        $key = ConnectionManager::getSourceName($this) . '_' . $object;
+        $cache = Cache::read($key, '_cake_model_');
+
+        if (empty($cache)) {
+            $cache = $data;
+            Cache::write($key, $cache, '_cake_model_');
+        }
+
+        return $cache;
+    }
+
+    /**
      * Begin a transaction
      *
      * @return bool Returns true if a transaction is not in progress
@@ -161,16 +195,6 @@ class DataSource extends Object
      * @return bool Returns true if a transaction is in progress
      */
     public function commit()
-    {
-        return $this->_transactionStarted;
-    }
-
-    /**
-     * Rollback a transaction
-     *
-     * @return bool Returns true if a transaction is in progress
-     */
-    public function rollback()
     {
         return $this->_transactionStarted;
     }
@@ -292,46 +316,6 @@ class DataSource extends Object
     }
 
     /**
-     * Sets the configuration for the DataSource.
-     * Merges the $config information with the _baseConfig and the existing $config property.
-     *
-     * @param array $config The configuration array
-     * @return void
-     */
-    public function setConfig($config = array())
-    {
-        $this->config = array_merge($this->_baseConfig, $this->config, $config);
-    }
-
-    /**
-     * Cache the DataSource description
-     *
-     * @param string $object The name of the object (model) to cache
-     * @param mixed $data The description of the model, usually a string or array
-     * @return mixed
-     */
-    protected function _cacheDescription($object, $data = null)
-    {
-        if ($this->cacheSources === false) {
-            return null;
-        }
-
-        if ($data !== null) {
-            $this->_descriptions[$object] =& $data;
-        }
-
-        $key = ConnectionManager::getSourceName($this) . '_' . $object;
-        $cache = Cache::read($key, '_cake_model_');
-
-        if (empty($cache)) {
-            $cache = $data;
-            Cache::write($key, $cache, '_cake_model_');
-        }
-
-        return $cache;
-    }
-
-    /**
      * Replaces `{$__cakeID__$}` and `{$__cakeForeignKey__$}` placeholders in query data.
      *
      * @param string $query Query string needing replacements done.
@@ -435,16 +419,6 @@ class DataSource extends Object
     }
 
     /**
-     * Closes a connection. Override in subclasses.
-     *
-     * @return bool
-     */
-    public function close()
-    {
-        return $this->connected = false;
-    }
-
-    /**
      * Closes the current datasource.
      */
     public function __destruct()
@@ -455,6 +429,26 @@ class DataSource extends Object
         if ($this->connected) {
             $this->close();
         }
+    }
+
+    /**
+     * Rollback a transaction
+     *
+     * @return bool Returns true if a transaction is in progress
+     */
+    public function rollback()
+    {
+        return $this->_transactionStarted;
+    }
+
+    /**
+     * Closes a connection. Override in subclasses.
+     *
+     * @return bool
+     */
+    public function close()
+    {
+        return $this->connected = false;
     }
 
 }

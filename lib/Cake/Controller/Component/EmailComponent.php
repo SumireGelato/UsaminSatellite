@@ -365,27 +365,46 @@ class EmailComponent extends Component
     }
 
     /**
-     * Reset all EmailComponent internal variables to be able to send out a new email.
+     * Format addresses to be an array with email as key and alias as value
      *
-     * @return void
+     * @param array $addresses Address to format.
+     * @return array
      */
-    public function reset()
+    protected function _formatAddresses($addresses)
     {
-        $this->template = null;
-        $this->to = array();
-        $this->from = null;
-        $this->replyTo = null;
-        $this->return = null;
-        $this->cc = array();
-        $this->bcc = array();
-        $this->subject = null;
-        $this->additionalParams = null;
-        $this->date = null;
-        $this->attachments = array();
-        $this->htmlMessage = null;
-        $this->textMessage = null;
-        $this->messageId = true;
-        $this->delivery = 'mail';
+        $formatted = array();
+        foreach ($addresses as $address) {
+            if (preg_match('/((.*))?\s?<(.+)>/', $address, $matches) && !empty($matches[2])) {
+                $formatted[$this->_strip($matches[3])] = $matches[2];
+            } else {
+                $address = $this->_strip($address);
+                $formatted[$address] = $address;
+            }
+        }
+        return $formatted;
+    }
+
+    /**
+     * Remove certain elements (such as bcc:, to:, %0a) from given value.
+     * Helps prevent header injection / manipulation on user content.
+     *
+     * @param string $value Value to strip
+     * @param bool $message Set to true to indicate main message content
+     * @return string Stripped value
+     */
+    protected function _strip($value, $message = false)
+    {
+        $search = '%0a|%0d|Content-(?:Type|Transfer-Encoding)\:';
+        $search .= '|charset\=|mime-version\:|multipart/mixed|(?:[^a-z]to|b?cc)\:.*';
+
+        if ($message !== true) {
+            $search .= '|\r|\n';
+        }
+        $search = '#(?:' . $search . ')#i';
+        while (preg_match($search, $value)) {
+            $value = preg_replace($search, '', $value);
+        }
+        return $value;
     }
 
     /**
@@ -429,46 +448,27 @@ class EmailComponent extends Component
     }
 
     /**
-     * Format addresses to be an array with email as key and alias as value
+     * Reset all EmailComponent internal variables to be able to send out a new email.
      *
-     * @param array $addresses Address to format.
-     * @return array
+     * @return void
      */
-    protected function _formatAddresses($addresses)
+    public function reset()
     {
-        $formatted = array();
-        foreach ($addresses as $address) {
-            if (preg_match('/((.*))?\s?<(.+)>/', $address, $matches) && !empty($matches[2])) {
-                $formatted[$this->_strip($matches[3])] = $matches[2];
-            } else {
-                $address = $this->_strip($address);
-                $formatted[$address] = $address;
-            }
-        }
-        return $formatted;
-    }
-
-    /**
-     * Remove certain elements (such as bcc:, to:, %0a) from given value.
-     * Helps prevent header injection / manipulation on user content.
-     *
-     * @param string $value Value to strip
-     * @param bool $message Set to true to indicate main message content
-     * @return string Stripped value
-     */
-    protected function _strip($value, $message = false)
-    {
-        $search = '%0a|%0d|Content-(?:Type|Transfer-Encoding)\:';
-        $search .= '|charset\=|mime-version\:|multipart/mixed|(?:[^a-z]to|b?cc)\:.*';
-
-        if ($message !== true) {
-            $search .= '|\r|\n';
-        }
-        $search = '#(?:' . $search . ')#i';
-        while (preg_match($search, $value)) {
-            $value = preg_replace($search, '', $value);
-        }
-        return $value;
+        $this->template = null;
+        $this->to = array();
+        $this->from = null;
+        $this->replyTo = null;
+        $this->return = null;
+        $this->cc = array();
+        $this->bcc = array();
+        $this->subject = null;
+        $this->additionalParams = null;
+        $this->date = null;
+        $this->attachments = array();
+        $this->htmlMessage = null;
+        $this->textMessage = null;
+        $this->messageId = true;
+        $this->delivery = 'mail';
     }
 
 }

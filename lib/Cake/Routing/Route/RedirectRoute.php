@@ -103,17 +103,6 @@ class RedirectRoute extends CakeRoute
     }
 
     /**
-     * There is no reverse routing redirection routes
-     *
-     * @param array $url Array of parameters to convert to a string.
-     * @return mixed either false or a string URL.
-     */
-    public function match($url)
-    {
-        return false;
-    }
-
-    /**
      * Stop execution of the current script. Wraps exit() making
      * testing easier.
      *
@@ -125,6 +114,17 @@ class RedirectRoute extends CakeRoute
         if ($this->stop) {
             exit($code);
         }
+    }
+
+    /**
+     * There is no reverse routing redirection routes
+     *
+     * @param array $url Array of parameters to convert to a string.
+     * @return mixed either false or a string URL.
+     */
+    public function match($url)
+    {
+        return false;
     }
 
 }

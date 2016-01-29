@@ -529,6 +529,51 @@ class CakeText
     }
 
     /**
+     * Extracts an excerpt from the text surrounding the phrase with a number of characters on each side
+     * determined by radius.
+     *
+     * @param string $text CakeText to search the phrase in
+     * @param string $phrase Phrase that will be searched for
+     * @param int $radius The amount of characters that will be returned on each side of the founded phrase
+     * @param string $ellipsis Ending that will be appended
+     * @return string Modified string
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/text.html#TextHelper::excerpt
+     */
+    public static function excerpt($text, $phrase, $radius = 100, $ellipsis = '...')
+    {
+        if (empty($text) || empty($phrase)) {
+            return static::truncate($text, $radius * 2, array('ellipsis' => $ellipsis));
+        }
+
+        $append = $prepend = $ellipsis;
+
+        $phraseLen = mb_strlen($phrase);
+        $textLen = mb_strlen($text);
+
+        $pos = mb_strpos(mb_strtolower($text), mb_strtolower($phrase));
+        if ($pos === false) {
+            return mb_substr($text, 0, $radius) . $ellipsis;
+        }
+
+        $startPos = $pos - $radius;
+        if ($startPos <= 0) {
+            $startPos = 0;
+            $prepend = '';
+        }
+
+        $endPos = $pos + $phraseLen + $radius;
+        if ($endPos >= $textLen) {
+            $endPos = $textLen;
+            $append = '';
+        }
+
+        $excerpt = mb_substr($text, $startPos, $endPos - $startPos);
+        $excerpt = $prepend . $excerpt . $append;
+
+        return $excerpt;
+    }
+
+    /**
      * Truncates text.
      *
      * Cuts a string to the length of $length and replaces the last characters
@@ -654,51 +699,6 @@ class CakeText
         }
 
         return $truncate;
-    }
-
-    /**
-     * Extracts an excerpt from the text surrounding the phrase with a number of characters on each side
-     * determined by radius.
-     *
-     * @param string $text CakeText to search the phrase in
-     * @param string $phrase Phrase that will be searched for
-     * @param int $radius The amount of characters that will be returned on each side of the founded phrase
-     * @param string $ellipsis Ending that will be appended
-     * @return string Modified string
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/text.html#TextHelper::excerpt
-     */
-    public static function excerpt($text, $phrase, $radius = 100, $ellipsis = '...')
-    {
-        if (empty($text) || empty($phrase)) {
-            return static::truncate($text, $radius * 2, array('ellipsis' => $ellipsis));
-        }
-
-        $append = $prepend = $ellipsis;
-
-        $phraseLen = mb_strlen($phrase);
-        $textLen = mb_strlen($text);
-
-        $pos = mb_strpos(mb_strtolower($text), mb_strtolower($phrase));
-        if ($pos === false) {
-            return mb_substr($text, 0, $radius) . $ellipsis;
-        }
-
-        $startPos = $pos - $radius;
-        if ($startPos <= 0) {
-            $startPos = 0;
-            $prepend = '';
-        }
-
-        $endPos = $pos + $phraseLen + $radius;
-        if ($endPos >= $textLen) {
-            $endPos = $textLen;
-            $append = '';
-        }
-
-        $excerpt = mb_substr($text, $startPos, $endPos - $startPos);
-        $excerpt = $prepend . $excerpt . $append;
-
-        return $excerpt;
     }
 
     /**

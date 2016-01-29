@@ -60,6 +60,21 @@ class ConnectionManager
     protected static $_init = false;
 
     /**
+     * Gets the list of available DataSource connections
+     * This will only return the datasources instantiated by this manager
+     * It differs from enumConnectionObjects, since the latter will return all configured connections
+     *
+     * @return array List of available connections
+     */
+    public static function sourceList()
+    {
+        if (empty(static::$_init)) {
+            static::_init();
+        }
+        return array_keys(static::$_dataSources);
+    }
+
+    /**
      * Loads connections configuration.
      *
      * @return void
@@ -71,6 +86,80 @@ class ConnectionManager
             static::$config = new DATABASE_CONFIG();
         }
         static::$_init = true;
+    }
+
+    /**
+     * Gets a DataSource name from an object reference.
+     *
+     * @param DataSource $source DataSource object
+     * @return string|null Datasource name, or null if source is not present
+     *    in the ConnectionManager.
+     */
+    public static function getSourceName($source)
+    {
+        if (empty(static::$_init)) {
+            static::_init();
+        }
+        foreach (static::$_dataSources as $name => $ds) {
+            if ($ds === $source) {
+                return $name;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns a list of connections
+     *
+     * @return array An associative array of elements where the key is the connection name
+     *    (as defined in Connections), and the value is an array with keys 'filename' and 'classname'.
+     */
+    public static function enumConnectionObjects()
+    {
+        if (empty(static::$_init)) {
+            static::_init();
+        }
+        return (array)static::$config;
+    }
+
+    /**
+     * Dynamically creates a DataSource object at runtime, with the given name and settings
+     *
+     * @param string $name The DataSource name
+     * @param array $config The DataSource configuration settings
+     * @return DataSource|null A reference to the DataSource object, or null if creation failed
+     */
+    public static function create($name = '', $config = array())
+    {
+        if (empty(static::$_init)) {
+            static::_init();
+        }
+
+        if (empty($name) || empty($config) || array_key_exists($name, static::$_connectionsEnum)) {
+            return null;
+        }
+        static::$config->{$name} = $config;
+        static::$_connectionsEnum[$name] = static::_connectionData($config);
+        $return = static::getDataSource($name);
+        return $return;
+    }
+
+    /**
+     * Returns the file, class name, and parent for the given driver.
+     *
+     * @param array $config Array with connection configuration. Key 'datasource' is required
+     * @return array An indexed array with: filename, classname, plugin and parent
+     */
+    protected static function _connectionData($config)
+    {
+        $package = $classname = $plugin = null;
+
+        list($plugin, $classname) = pluginSplit($config['datasource']);
+        if (strpos($classname, '/') !== false) {
+            $package = dirname($classname);
+            $classname = basename($classname);
+        }
+        return compact('package', 'classname', 'plugin');
     }
 
     /**
@@ -112,38 +201,19 @@ class ConnectionManager
     }
 
     /**
-     * Gets the list of available DataSource connections
-     * This will only return the datasources instantiated by this manager
-     * It differs from enumConnectionObjects, since the latter will return all configured connections
+     * Gets a list of class and file names associated with the user-defined DataSource connections
      *
-     * @return array List of available connections
+     * @param string $name Connection name
+     * @return void
+     * @throws MissingDatasourceConfigException
      */
-    public static function sourceList()
+    protected static function _getConnectionObject($name)
     {
-        if (empty(static::$_init)) {
-            static::_init();
+        if (!empty(static::$config->{$name})) {
+            static::$_connectionsEnum[$name] = static::_connectionData(static::$config->{$name});
+        } else {
+            throw new MissingDatasourceConfigException(array('config' => $name));
         }
-        return array_keys(static::$_dataSources);
-    }
-
-    /**
-     * Gets a DataSource name from an object reference.
-     *
-     * @param DataSource $source DataSource object
-     * @return string|null Datasource name, or null if source is not present
-     *    in the ConnectionManager.
-     */
-    public static function getSourceName($source)
-    {
-        if (empty(static::$_init)) {
-            static::_init();
-        }
-        foreach (static::$_dataSources as $name => $ds) {
-            if ($ds === $source) {
-                return $name;
-            }
-        }
-        return null;
     }
 
     /**
@@ -190,42 +260,6 @@ class ConnectionManager
     }
 
     /**
-     * Returns a list of connections
-     *
-     * @return array An associative array of elements where the key is the connection name
-     *    (as defined in Connections), and the value is an array with keys 'filename' and 'classname'.
-     */
-    public static function enumConnectionObjects()
-    {
-        if (empty(static::$_init)) {
-            static::_init();
-        }
-        return (array)static::$config;
-    }
-
-    /**
-     * Dynamically creates a DataSource object at runtime, with the given name and settings
-     *
-     * @param string $name The DataSource name
-     * @param array $config The DataSource configuration settings
-     * @return DataSource|null A reference to the DataSource object, or null if creation failed
-     */
-    public static function create($name = '', $config = array())
-    {
-        if (empty(static::$_init)) {
-            static::_init();
-        }
-
-        if (empty($name) || empty($config) || array_key_exists($name, static::$_connectionsEnum)) {
-            return null;
-        }
-        static::$config->{$name} = $config;
-        static::$_connectionsEnum[$name] = static::_connectionData($config);
-        $return = static::getDataSource($name);
-        return $return;
-    }
-
-    /**
      * Removes a connection configuration at runtime given its name
      *
      * @param string $name the connection name as it was created
@@ -242,40 +276,6 @@ class ConnectionManager
         }
         unset(static::$_connectionsEnum[$name], static::$_dataSources[$name], static::$config->{$name});
         return true;
-    }
-
-    /**
-     * Gets a list of class and file names associated with the user-defined DataSource connections
-     *
-     * @param string $name Connection name
-     * @return void
-     * @throws MissingDatasourceConfigException
-     */
-    protected static function _getConnectionObject($name)
-    {
-        if (!empty(static::$config->{$name})) {
-            static::$_connectionsEnum[$name] = static::_connectionData(static::$config->{$name});
-        } else {
-            throw new MissingDatasourceConfigException(array('config' => $name));
-        }
-    }
-
-    /**
-     * Returns the file, class name, and parent for the given driver.
-     *
-     * @param array $config Array with connection configuration. Key 'datasource' is required
-     * @return array An indexed array with: filename, classname, plugin and parent
-     */
-    protected static function _connectionData($config)
-    {
-        $package = $classname = $plugin = null;
-
-        list($plugin, $classname) = pluginSplit($config['datasource']);
-        if (strpos($classname, '/') !== false) {
-            $package = dirname($classname);
-            $classname = basename($classname);
-        }
-        return compact('package', 'classname', 'plugin');
     }
 
 }

@@ -47,6 +47,23 @@ class HelperCollection extends ObjectCollection implements CakeEventListener
     }
 
     /**
+     * Provide public read access to the loaded objects
+     *
+     * @param string $name Name of property to read
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if ($result = parent::__get($name)) {
+            return $result;
+        }
+        if ($this->__isset($name)) {
+            return $this->_loaded[$name];
+        }
+        return null;
+    }
+
+    /**
      * Tries to lazy load a helper based on its name, if it cannot be found
      * in the application folder, then it tries looking under the current plugin
      * if any
@@ -76,23 +93,6 @@ class HelperCollection extends ObjectCollection implements CakeEventListener
         }
 
         return true;
-    }
-
-    /**
-     * Provide public read access to the loaded objects
-     *
-     * @param string $name Name of property to read
-     * @return mixed
-     */
-    public function __get($name)
-    {
-        if ($result = parent::__get($name)) {
-            return $result;
-        }
-        if ($this->__isset($name)) {
-            return $this->_loaded[$name];
-        }
-        return null;
     }
 
     /**

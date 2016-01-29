@@ -31,6 +31,17 @@ class SessionsSchema extends CakeSchema
      * @var string
      */
     public $name = 'Sessions';
+    /**
+     * The cake_sessions table definition
+     *
+     * @var array
+     */
+    public $cake_sessions = array(
+        'id' => array('type' => 'string', 'null' => false, 'key' => 'primary'),
+        'data' => array('type' => 'text', 'null' => true, 'default' => null),
+        'expires' => array('type' => 'integer', 'null' => true, 'default' => null),
+        'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1))
+    );
 
     /**
      * Before callback.
@@ -52,17 +63,5 @@ class SessionsSchema extends CakeSchema
     public function after($event = array())
     {
     }
-
-    /**
-     * The cake_sessions table definition
-     *
-     * @var array
-     */
-    public $cake_sessions = array(
-        'id' => array('type' => 'string', 'null' => false, 'key' => 'primary'),
-        'data' => array('type' => 'text', 'null' => true, 'default' => null),
-        'expires' => array('type' => 'integer', 'null' => true, 'default' => null),
-        'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1))
-    );
 
 }

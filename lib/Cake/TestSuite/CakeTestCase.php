@@ -68,6 +68,149 @@ abstract class CakeTestCase extends PHPUnit_Framework_TestCase
     protected $_pathRestore = array();
 
     /**
+     * See CakeTestSuiteDispatcher::date()
+     *
+     * @param string $format format to be used.
+     * @return string
+     */
+    public static function date($format = 'Y-m-d H:i:s')
+    {
+        return CakeTestSuiteDispatcher::date($format);
+    }
+
+    /**
+     * Compatibility wrapper function for assertEquals
+     *
+     * @param mixed $result
+     * @param mixed $expected
+     * @param string $message the text to display if the assertion is not correct
+     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @return void
+     */
+    protected static function assertEqual($result, $expected, $message = '')
+    {
+        return static::assertEquals($expected, $result, $message);
+    }
+
+    /**
+     * Compatibility wrapper function for assertNotEquals
+     *
+     * @param mixed $result
+     * @param mixed $expected
+     * @param string $message the text to display if the assertion is not correct
+     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @return void
+     */
+    protected static function assertNotEqual($result, $expected, $message = '')
+    {
+        return static::assertNotEquals($expected, $result, $message);
+    }
+
+    /**
+     * Compatibility wrapper function for assertRegexp
+     *
+     * @param mixed $pattern a regular expression
+     * @param string $string the text to be matched
+     * @param string $message the text to display if the assertion is not correct
+     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @return void
+     */
+    protected static function assertPattern($pattern, $string, $message = '')
+    {
+        return static::assertRegExp($pattern, $string, $message);
+    }
+
+    /**
+     * Compatibility wrapper function for assertEquals
+     *
+     * @param mixed $actual
+     * @param mixed $expected
+     * @param string $message the text to display if the assertion is not correct
+     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @return void
+     */
+    protected static function assertIdentical($actual, $expected, $message = '')
+    {
+        return static::assertSame($expected, $actual, $message);
+    }
+
+    /**
+     * Compatibility wrapper function for assertNotEquals
+     *
+     * @param mixed $actual
+     * @param mixed $expected
+     * @param string $message the text to display if the assertion is not correct
+     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @return void
+     */
+    protected static function assertNotIdentical($actual, $expected, $message = '')
+    {
+        return static::assertNotSame($expected, $actual, $message);
+    }
+
+    /**
+     * Compatibility wrapper function for assertNotRegExp
+     *
+     * @param mixed $pattern a regular expression
+     * @param string $string the text to be matched
+     * @param string $message the text to display if the assertion is not correct
+     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @return void
+     */
+    protected static function assertNoPattern($pattern, $string, $message = '')
+    {
+        return static::assertNotRegExp($pattern, $string, $message);
+    }
+
+// @codingStandardsIgnoreStart PHPUnit overrides don't match CakePHP
+
+    /**
+     * Compatibility wrapper function for assertSame
+     *
+     * @param mixed $first
+     * @param mixed $second
+     * @param string $message the text to display if the assertion is not correct
+     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @return void
+     */
+    protected static function assertReference(&$first, &$second, $message = '')
+    {
+        return static::assertSame($first, $second, $message);
+    }
+
+    /**
+     * Compatibility wrapper for assertIsA
+     *
+     * @param string $object
+     * @param string $type
+     * @param string $message
+     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @return void
+     */
+    protected static function assertIsA($object, $type, $message = '')
+    {
+        return static::assertInstanceOf($type, $object, $message);
+    }
+
+// @codingStandardsIgnoreEnd
+
+    /**
+     * Compatibility function to test if value is between an acceptable range
+     *
+     * @param mixed $result
+     * @param mixed $expected
+     * @param mixed $margin the rage of acceptation
+     * @param string $message the text to display if the assertion is not correct
+     * @return void
+     */
+    protected static function assertWithinMargin($result, $expected, $margin, $message = '')
+    {
+        $upper = $result + $margin;
+        $lower = $result - $margin;
+        return static::assertTrue((($expected <= $upper) && ($expected >= $lower)), $message);
+    }
+
+    /**
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
      * This method is run for each test method in this class
@@ -86,26 +229,6 @@ abstract class CakeTestCase extends PHPUnit_Framework_TestCase
             $this->fixtureManager->unload($this);
         }
         return $result;
-    }
-
-    /**
-     * Called when a test case method is about to start (to be overridden when needed.)
-     *
-     * @param string $method Test method about to get executed.
-     * @return void
-     */
-    public function startTest($method)
-    {
-    }
-
-    /**
-     * Called when a test case method has been executed (to be overridden when needed.)
-     *
-     * @param string $method Test method about that was executed.
-     * @return void
-     */
-    public function endTest($method)
-    {
     }
 
     /**
@@ -165,43 +288,6 @@ abstract class CakeTestCase extends PHPUnit_Framework_TestCase
             ob_flush();
         }
     }
-
-    /**
-     * See CakeTestSuiteDispatcher::date()
-     *
-     * @param string $format format to be used.
-     * @return string
-     */
-    public static function date($format = 'Y-m-d H:i:s')
-    {
-        return CakeTestSuiteDispatcher::date($format);
-    }
-
-// @codingStandardsIgnoreStart PHPUnit overrides don't match CakePHP
-
-    /**
-     * Announces the start of a test.
-     *
-     * @return void
-     */
-    protected function assertPreConditions()
-    {
-        parent::assertPreConditions();
-        $this->startTest($this->getName());
-    }
-
-    /**
-     * Announces the end of a test.
-     *
-     * @return void
-     */
-    protected function assertPostConditions()
-    {
-        parent::assertPostConditions();
-        $this->endTest($this->getName());
-    }
-
-// @codingStandardsIgnoreEnd
 
     /**
      * Chooses which fixtures to load for a given test
@@ -302,6 +388,8 @@ abstract class CakeTestCase extends PHPUnit_Framework_TestCase
         $string = str_replace(array("\r\n", "\r"), "\n", $string);
         return $this->assertStringEndsWith($suffix, $string, $message);
     }
+
+// @codingStandardsIgnoreStart
 
     /**
      * Asserts that a string ends not with a given prefix, ignoring differences in newlines.
@@ -557,90 +645,84 @@ abstract class CakeTestCase extends PHPUnit_Framework_TestCase
         return $string;
     }
 
-// @codingStandardsIgnoreStart
-
     /**
-     * Compatibility wrapper function for assertEquals
+     * Mock a model, maintain fixtures and table association
      *
-     * @param mixed $result
-     * @param mixed $expected
-     * @param string $message the text to display if the assertion is not correct
-     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
-     * @return void
+     * @param string $model The model to get a mock for.
+     * @param mixed $methods The list of methods to mock
+     * @param array $config The config data for the mock's constructor.
+     * @throws MissingModelException
+     * @return Model
      */
-    protected static function assertEqual($result, $expected, $message = '')
+    public function getMockForModel($model, $methods = array(), $config = array())
     {
-        return static::assertEquals($expected, $result, $message);
+        $config += ClassRegistry::config('Model');
+
+        list($plugin, $name) = pluginSplit($model, true);
+        App::uses($name, $plugin . 'Model');
+
+        $config = array_merge((array)$config, array('name' => $name));
+        unset($config['ds']);
+
+        if (!class_exists($name)) {
+            throw new MissingModelException(array($model));
+        }
+        $mock = $this->getMock($name, $methods, array($config));
+
+        $availableDs = array_keys(ConnectionManager::enumConnectionObjects());
+
+        if ($mock->useDbConfig !== 'test' && in_array('test_' . $mock->useDbConfig, $availableDs)) {
+            $mock->setDataSource('test_' . $mock->useDbConfig);
+        } else {
+            $mock->useDbConfig = 'test';
+            $mock->setDataSource('test');
+        }
+
+        ClassRegistry::removeObject($name);
+        ClassRegistry::addObject($name, $mock);
+        return $mock;
     }
 
     /**
-     * Compatibility wrapper function for assertNotEquals
+     * Announces the start of a test.
      *
-     * @param mixed $result
-     * @param mixed $expected
-     * @param string $message the text to display if the assertion is not correct
-     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
      * @return void
      */
-    protected static function assertNotEqual($result, $expected, $message = '')
+    protected function assertPreConditions()
     {
-        return static::assertNotEquals($expected, $result, $message);
+        parent::assertPreConditions();
+        $this->startTest($this->getName());
     }
 
     /**
-     * Compatibility wrapper function for assertRegexp
+     * Called when a test case method is about to start (to be overridden when needed.)
      *
-     * @param mixed $pattern a regular expression
-     * @param string $string the text to be matched
-     * @param string $message the text to display if the assertion is not correct
-     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @param string $method Test method about to get executed.
      * @return void
      */
-    protected static function assertPattern($pattern, $string, $message = '')
+    public function startTest($method)
     {
-        return static::assertRegExp($pattern, $string, $message);
     }
 
     /**
-     * Compatibility wrapper function for assertEquals
+     * Announces the end of a test.
      *
-     * @param mixed $actual
-     * @param mixed $expected
-     * @param string $message the text to display if the assertion is not correct
-     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
      * @return void
      */
-    protected static function assertIdentical($actual, $expected, $message = '')
+    protected function assertPostConditions()
     {
-        return static::assertSame($expected, $actual, $message);
+        parent::assertPostConditions();
+        $this->endTest($this->getName());
     }
 
     /**
-     * Compatibility wrapper function for assertNotEquals
+     * Called when a test case method has been executed (to be overridden when needed.)
      *
-     * @param mixed $actual
-     * @param mixed $expected
-     * @param string $message the text to display if the assertion is not correct
-     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
+     * @param string $method Test method about that was executed.
      * @return void
      */
-    protected static function assertNotIdentical($actual, $expected, $message = '')
+    public function endTest($method)
     {
-        return static::assertNotSame($expected, $actual, $message);
-    }
-
-    /**
-     * Compatibility wrapper function for assertNotRegExp
-     *
-     * @param mixed $pattern a regular expression
-     * @param string $string the text to be matched
-     * @param string $message the text to display if the assertion is not correct
-     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
-     * @return void
-     */
-    protected static function assertNoPattern($pattern, $string, $message = '')
-    {
-        return static::assertNotRegExp($pattern, $string, $message);
     }
 
     /**
@@ -681,50 +763,7 @@ abstract class CakeTestCase extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException($name, $message);
     }
-
-    /**
-     * Compatibility wrapper function for assertSame
-     *
-     * @param mixed $first
-     * @param mixed $second
-     * @param string $message the text to display if the assertion is not correct
-     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
-     * @return void
-     */
-    protected static function assertReference(&$first, &$second, $message = '')
-    {
-        return static::assertSame($first, $second, $message);
-    }
-
-    /**
-     * Compatibility wrapper for assertIsA
-     *
-     * @param string $object
-     * @param string $type
-     * @param string $message
-     * @deprecated 3.0.0 This is a compatiblity wrapper for 1.x. It will be removed in 3.0
-     * @return void
-     */
-    protected static function assertIsA($object, $type, $message = '')
-    {
-        return static::assertInstanceOf($type, $object, $message);
-    }
-
-    /**
-     * Compatibility function to test if value is between an acceptable range
-     *
-     * @param mixed $result
-     * @param mixed $expected
-     * @param mixed $margin the rage of acceptation
-     * @param string $message the text to display if the assertion is not correct
-     * @return void
-     */
-    protected static function assertWithinMargin($result, $expected, $margin, $message = '')
-    {
-        $upper = $result + $margin;
-        $lower = $result - $margin;
-        return static::assertTrue((($expected <= $upper) && ($expected >= $lower)), $message);
-    }
+    // @codingStandardsIgnoreEnd
 
     /**
      * Compatibility function for skipping.
@@ -739,45 +778,6 @@ abstract class CakeTestCase extends PHPUnit_Framework_TestCase
             $this->markTestSkipped($message);
         }
         return $condition;
-    }
-    // @codingStandardsIgnoreEnd
-
-    /**
-     * Mock a model, maintain fixtures and table association
-     *
-     * @param string $model The model to get a mock for.
-     * @param mixed $methods The list of methods to mock
-     * @param array $config The config data for the mock's constructor.
-     * @throws MissingModelException
-     * @return Model
-     */
-    public function getMockForModel($model, $methods = array(), $config = array())
-    {
-        $config += ClassRegistry::config('Model');
-
-        list($plugin, $name) = pluginSplit($model, true);
-        App::uses($name, $plugin . 'Model');
-
-        $config = array_merge((array)$config, array('name' => $name));
-        unset($config['ds']);
-
-        if (!class_exists($name)) {
-            throw new MissingModelException(array($model));
-        }
-        $mock = $this->getMock($name, $methods, array($config));
-
-        $availableDs = array_keys(ConnectionManager::enumConnectionObjects());
-
-        if ($mock->useDbConfig !== 'test' && in_array('test_' . $mock->useDbConfig, $availableDs)) {
-            $mock->setDataSource('test_' . $mock->useDbConfig);
-        } else {
-            $mock->useDbConfig = 'test';
-            $mock->setDataSource('test');
-        }
-
-        ClassRegistry::removeObject($name);
-        ClassRegistry::addObject($name, $mock);
-        return $mock;
     }
 
 }

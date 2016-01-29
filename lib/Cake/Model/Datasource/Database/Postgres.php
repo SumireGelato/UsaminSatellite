@@ -30,25 +30,6 @@ class Postgres extends DboSource
      * @var string
      */
     public $description = "PostgreSQL DBO Driver";
-
-    /**
-     * Base driver configuration settings. Merged with user settings.
-     *
-     * @var array
-     */
-    protected $_baseConfig = array(
-        'persistent' => true,
-        'host' => 'localhost',
-        'login' => 'root',
-        'password' => '',
-        'database' => 'cake',
-        'schema' => 'public',
-        'port' => 5432,
-        'encoding' => '',
-        'sslmode' => 'allow',
-        'flags' => array()
-    );
-
     /**
      * Columns
      *
@@ -71,21 +52,35 @@ class Postgres extends DboSource
         'number' => array('name' => 'numeric'),
         'inet' => array('name' => 'inet')
     );
-
     /**
      * Starting Quote
      *
      * @var string
      */
     public $startQuote = '"';
-
     /**
      * Ending Quote
      *
      * @var string
      */
     public $endQuote = '"';
-
+    /**
+     * Base driver configuration settings. Merged with user settings.
+     *
+     * @var array
+     */
+    protected $_baseConfig = array(
+        'persistent' => true,
+        'host' => 'localhost',
+        'login' => 'root',
+        'password' => '',
+        'database' => 'cake',
+        'schema' => 'public',
+        'port' => 5432,
+        'encoding' => '',
+        'sslmode' => 'allow',
+        'flags' => array()
+    );
     /**
      * Contains mappings of custom auto-increment sequences, if a table uses a sequence name
      * other than what is dictated by convention.
@@ -148,6 +143,17 @@ class Postgres extends DboSource
     }
 
     /**
+     * Sets the database encoding
+     *
+     * @param mixed $enc Database encoding
+     * @return bool True on success, false on failure
+     */
+    public function setEncoding($enc)
+    {
+        return $this->_execute('SET NAMES ' . $this->value($enc)) !== false;
+    }
+
+    /**
      * Check if PostgreSQL is enabled/loaded
      *
      * @return bool
@@ -188,6 +194,40 @@ class Postgres extends DboSource
         $result->closeCursor();
         parent::listSources($tables);
         return $tables;
+    }
+
+    /**
+     * Returns the ID generated from the previous INSERT operation.
+     *
+     * @param string $source Name of the database table
+     * @param string $field Name of the ID database field. Defaults to "id"
+     * @return int
+     */
+    public function lastInsertId($source = null, $field = 'id')
+    {
+        $seq = $this->getSequence($source, $field);
+        return $this->_connection->lastInsertId($seq);
+    }
+
+    /**
+     * Gets the associated sequence for the given table/field
+     *
+     * @param string|Model $table Either a full table name (with prefix) as a string, or a model object
+     * @param string $field Name of the ID database field. Defaults to "id"
+     * @return string The associated sequence name from the sequence map, defaults to "{$table}_{$field}_seq"
+     */
+    public function getSequence($table, $field = 'id')
+    {
+        if (is_object($table)) {
+            $table = $this->fullTableName($table, false, false);
+        }
+        if (!isset($this->_sequenceMap[$table])) {
+            $this->describe($table);
+        }
+        if (isset($this->_sequenceMap[$table][$field])) {
+            return $this->_sequenceMap[$table][$field];
+        }
+        return "{$table}_{$field}_seq";
     }
 
     /**
@@ -288,37 +328,78 @@ class Postgres extends DboSource
     }
 
     /**
-     * Returns the ID generated from the previous INSERT operation.
+     * Gets the length of a database-native column description, or null if no length
      *
-     * @param string $source Name of the database table
-     * @param string $field Name of the ID database field. Defaults to "id"
-     * @return int
+     * @param string $real Real database-layer column type (i.e. "varchar(255)")
+     * @return int An integer representing the length of the column
      */
-    public function lastInsertId($source = null, $field = 'id')
+    public function length($real)
     {
-        $seq = $this->getSequence($source, $field);
-        return $this->_connection->lastInsertId($seq);
+        $col = str_replace(array(')', 'unsigned'), '', $real);
+        $limit = null;
+
+        if (strpos($col, '(') !== false) {
+            list($col, $limit) = explode('(', $col);
+        }
+        if ($col === 'uuid') {
+            return 36;
+        }
+        if ($limit) {
+            return (int)$limit;
+        }
+        return null;
     }
 
     /**
-     * Gets the associated sequence for the given table/field
+     * Converts database-layer column types to basic types
      *
-     * @param string|Model $table Either a full table name (with prefix) as a string, or a model object
-     * @param string $field Name of the ID database field. Defaults to "id"
-     * @return string The associated sequence name from the sequence map, defaults to "{$table}_{$field}_seq"
+     * @param string $real Real database-layer column type (i.e. "varchar(255)")
+     * @return string Abstract column type (i.e. "string")
      */
-    public function getSequence($table, $field = 'id')
+    public function column($real)
     {
-        if (is_object($table)) {
-            $table = $this->fullTableName($table, false, false);
+        if (is_array($real)) {
+            $col = $real['name'];
+            if (isset($real['limit'])) {
+                $col .= '(' . $real['limit'] . ')';
+            }
+            return $col;
         }
-        if (!isset($this->_sequenceMap[$table])) {
-            $this->describe($table);
+
+        $col = str_replace(')', '', $real);
+
+        if (strpos($col, '(') !== false) {
+            list($col, $limit) = explode('(', $col);
         }
-        if (isset($this->_sequenceMap[$table][$field])) {
-            return $this->_sequenceMap[$table][$field];
+
+        $floats = array(
+            'float', 'float4', 'float8', 'double', 'double precision', 'real'
+        );
+
+        switch (true) {
+            case (in_array($col, array('date', 'time', 'inet', 'boolean'))):
+                return $col;
+            case (strpos($col, 'timestamp') !== false):
+                return 'datetime';
+            case (strpos($col, 'time') === 0):
+                return 'time';
+            case ($col === 'bigint'):
+                return 'biginteger';
+            case (strpos($col, 'int') !== false && $col !== 'interval'):
+                return 'integer';
+            case (strpos($col, 'char') !== false || $col === 'uuid'):
+                return 'string';
+            case (strpos($col, 'text') !== false):
+                return 'text';
+            case (strpos($col, 'bytea') !== false):
+                return 'binary';
+            case ($col === 'decimal' || $col === 'numeric'):
+                return 'decimal';
+            case (in_array($col, $floats)):
+                return 'float';
+            default:
+                return 'text';
         }
-        return "{$table}_{$field}_seq";
     }
 
     /**
@@ -339,6 +420,20 @@ class Postgres extends DboSource
         $column = $this->name($column);
         $this->execute("SELECT setval($sequence, (SELECT MAX($column) FROM $fullTable))");
         return true;
+    }
+
+    /**
+     * Prepares field names to be quoted by parent
+     *
+     * @param string $data The name to format.
+     * @return string SQL field
+     */
+    public function name($data)
+    {
+        if (is_string($data)) {
+            $data = str_replace('"__"', '__', $data);
+        }
+        return parent::name($data);
     }
 
     /**
@@ -368,20 +463,6 @@ class Postgres extends DboSource
             return true;
         }
         return false;
-    }
-
-    /**
-     * Prepares field names to be quoted by parent
-     *
-     * @param string $data The name to format.
-     * @return string SQL field
-     */
-    public function name($data)
-    {
-        if (is_string($data)) {
-            $data = str_replace('"__"', '__', $data);
-        }
-        return parent::name($data);
     }
 
     /**
@@ -442,33 +523,6 @@ class Postgres extends DboSource
             return $result;
         }
         return $fields;
-    }
-
-    /**
-     * Auxiliary function to quote matched `(Model.fields)` from a preg_replace_callback call
-     * Quotes the fields in a function call.
-     *
-     * @param string $match matched string
-     * @return string quoted string
-     */
-    protected function _quoteFunctionField($match)
-    {
-        $prepend = '';
-        if (strpos($match[1], 'DISTINCT') !== false) {
-            $prepend = 'DISTINCT ';
-            $match[1] = trim(str_replace('DISTINCT', '', $match[1]));
-        }
-        $constant = preg_match('/^\d+|NULL|FALSE|TRUE$/i', $match[1]);
-
-        if (!$constant && strpos($match[1], '.') === false) {
-            $match[1] = $this->name($match[1]);
-        } elseif (!$constant) {
-            $parts = explode('.', $match[1]);
-            if (!Hash::numeric($parts)) {
-                $match[1] = $this->name($match[1]);
-            }
-        }
-        return '(' . $prepend . $match[1] . ')';
     }
 
     /**
@@ -617,6 +671,54 @@ class Postgres extends DboSource
     }
 
     /**
+     * Generate a Postgres-native column schema string
+     *
+     * @param array $column An array structured like the following:
+     *                      array('name'=>'value', 'type'=>'value'[, options]),
+     *                      where options can be 'default', 'length', or 'key'.
+     * @return string
+     */
+    public function buildColumn($column)
+    {
+        $col = $this->columns[$column['type']];
+        if (!isset($col['length']) && !isset($col['limit'])) {
+            unset($column['length']);
+        }
+        $out = parent::buildColumn($column);
+
+        $out = preg_replace(
+            '/integer\([0-9]+\)/',
+            'integer',
+            $out
+        );
+        $out = preg_replace(
+            '/bigint\([0-9]+\)/',
+            'bigint',
+            $out
+        );
+
+        $out = str_replace('integer serial', 'serial', $out);
+        $out = str_replace('bigint serial', 'bigserial', $out);
+        if (strpos($out, 'timestamp DEFAULT')) {
+            if (isset($column['null']) && $column['null']) {
+                $out = str_replace('DEFAULT NULL', '', $out);
+            } else {
+                $out = str_replace('DEFAULT NOT NULL', '', $out);
+            }
+        }
+        if (strpos($out, 'DEFAULT DEFAULT')) {
+            if (isset($column['null']) && $column['null']) {
+                $out = str_replace('DEFAULT DEFAULT', 'DEFAULT NULL', $out);
+            } elseif (in_array($column['type'], array('integer', 'float'))) {
+                $out = str_replace('DEFAULT DEFAULT', 'DEFAULT 0', $out);
+            } elseif ($column['type'] === 'boolean') {
+                $out = str_replace('DEFAULT DEFAULT', 'DEFAULT FALSE', $out);
+            }
+        }
+        return $out;
+    }
+
+    /**
      * Generate PostgreSQL index alteration statements for a table.
      *
      * @param string $table Table to alter indexes for
@@ -674,81 +776,6 @@ class Postgres extends DboSource
                 $rt .= sprintf(' OFFSET %u', $offset);
             }
             return $rt;
-        }
-        return null;
-    }
-
-    /**
-     * Converts database-layer column types to basic types
-     *
-     * @param string $real Real database-layer column type (i.e. "varchar(255)")
-     * @return string Abstract column type (i.e. "string")
-     */
-    public function column($real)
-    {
-        if (is_array($real)) {
-            $col = $real['name'];
-            if (isset($real['limit'])) {
-                $col .= '(' . $real['limit'] . ')';
-            }
-            return $col;
-        }
-
-        $col = str_replace(')', '', $real);
-
-        if (strpos($col, '(') !== false) {
-            list($col, $limit) = explode('(', $col);
-        }
-
-        $floats = array(
-            'float', 'float4', 'float8', 'double', 'double precision', 'real'
-        );
-
-        switch (true) {
-            case (in_array($col, array('date', 'time', 'inet', 'boolean'))):
-                return $col;
-            case (strpos($col, 'timestamp') !== false):
-                return 'datetime';
-            case (strpos($col, 'time') === 0):
-                return 'time';
-            case ($col === 'bigint'):
-                return 'biginteger';
-            case (strpos($col, 'int') !== false && $col !== 'interval'):
-                return 'integer';
-            case (strpos($col, 'char') !== false || $col === 'uuid'):
-                return 'string';
-            case (strpos($col, 'text') !== false):
-                return 'text';
-            case (strpos($col, 'bytea') !== false):
-                return 'binary';
-            case ($col === 'decimal' || $col === 'numeric'):
-                return 'decimal';
-            case (in_array($col, $floats)):
-                return 'float';
-            default:
-                return 'text';
-        }
-    }
-
-    /**
-     * Gets the length of a database-native column description, or null if no length
-     *
-     * @param string $real Real database-layer column type (i.e. "varchar(255)")
-     * @return int An integer representing the length of the column
-     */
-    public function length($real)
-    {
-        $col = str_replace(array(')', 'unsigned'), '', $real);
-        $limit = null;
-
-        if (strpos($col, '(') !== false) {
-            list($col, $limit) = explode('(', $col);
-        }
-        if ($col === 'uuid') {
-            return 36;
-        }
-        if ($limit) {
-            return (int)$limit;
         }
         return null;
     }
@@ -842,17 +869,6 @@ class Postgres extends DboSource
     }
 
     /**
-     * Sets the database encoding
-     *
-     * @param mixed $enc Database encoding
-     * @return bool True on success, false on failure
-     */
-    public function setEncoding($enc)
-    {
-        return $this->_execute('SET NAMES ' . $this->value($enc)) !== false;
-    }
-
-    /**
      * Gets the database encoding
      *
      * @return string The database encoding
@@ -864,54 +880,6 @@ class Postgres extends DboSource
             return false;
         }
         return (isset($result['client_encoding'])) ? $result['client_encoding'] : false;
-    }
-
-    /**
-     * Generate a Postgres-native column schema string
-     *
-     * @param array $column An array structured like the following:
-     *                      array('name'=>'value', 'type'=>'value'[, options]),
-     *                      where options can be 'default', 'length', or 'key'.
-     * @return string
-     */
-    public function buildColumn($column)
-    {
-        $col = $this->columns[$column['type']];
-        if (!isset($col['length']) && !isset($col['limit'])) {
-            unset($column['length']);
-        }
-        $out = parent::buildColumn($column);
-
-        $out = preg_replace(
-            '/integer\([0-9]+\)/',
-            'integer',
-            $out
-        );
-        $out = preg_replace(
-            '/bigint\([0-9]+\)/',
-            'bigint',
-            $out
-        );
-
-        $out = str_replace('integer serial', 'serial', $out);
-        $out = str_replace('bigint serial', 'bigserial', $out);
-        if (strpos($out, 'timestamp DEFAULT')) {
-            if (isset($column['null']) && $column['null']) {
-                $out = str_replace('DEFAULT NULL', '', $out);
-            } else {
-                $out = str_replace('DEFAULT NOT NULL', '', $out);
-            }
-        }
-        if (strpos($out, 'DEFAULT DEFAULT')) {
-            if (isset($column['null']) && $column['null']) {
-                $out = str_replace('DEFAULT DEFAULT', 'DEFAULT NULL', $out);
-            } elseif (in_array($column['type'], array('integer', 'float'))) {
-                $out = str_replace('DEFAULT DEFAULT', 'DEFAULT 0', $out);
-            } elseif ($column['type'] === 'boolean') {
-                $out = str_replace('DEFAULT DEFAULT', 'DEFAULT FALSE', $out);
-            }
-        }
-        return $out;
     }
 
     /**
@@ -998,6 +966,33 @@ class Postgres extends DboSource
     public function nestedTransactionSupported()
     {
         return $this->useNestedTransactions && version_compare($this->getVersion(), '8.0', '>=');
+    }
+
+    /**
+     * Auxiliary function to quote matched `(Model.fields)` from a preg_replace_callback call
+     * Quotes the fields in a function call.
+     *
+     * @param string $match matched string
+     * @return string quoted string
+     */
+    protected function _quoteFunctionField($match)
+    {
+        $prepend = '';
+        if (strpos($match[1], 'DISTINCT') !== false) {
+            $prepend = 'DISTINCT ';
+            $match[1] = trim(str_replace('DISTINCT', '', $match[1]));
+        }
+        $constant = preg_match('/^\d+|NULL|FALSE|TRUE$/i', $match[1]);
+
+        if (!$constant && strpos($match[1], '.') === false) {
+            $match[1] = $this->name($match[1]);
+        } elseif (!$constant) {
+            $parts = explode('.', $match[1]);
+            if (!Hash::numeric($parts)) {
+                $match[1] = $this->name($match[1]);
+            }
+        }
+        return '(' . $prepend . $match[1] . ')';
     }
 
 }
