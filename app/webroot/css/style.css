@@ -13,24 +13,27 @@ body {
     display: none;
 }
 
-#cardArt:hover .awkSRCardImage {
+/*#cardArt:hover .awkSRCardImage {
     display: block;
 }
 
 #cardArt:hover .baseSRCardImage {
     display: none;
-}
+}*/
 
 .panel-heading.cute {
     background-color: #FF547F;
+    border-color: #FF547F;
 }
 
 .panel-heading.cool {
     background-color: #0275F2;
+    border-color: #0275F2;
 }
 
 .panel-heading.passion {
     background-color: #FFAF3A;
+    border-color: #FFAF3A;
 }
 
 /* CUSTOMIZE THE NAVBAR

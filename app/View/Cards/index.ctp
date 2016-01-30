@@ -62,11 +62,15 @@ if (!$this->request->is('ajax'))
                                style="text-decoration: none; color: black">
                                 <?php
                                 if ($card['Card']['rarity'] == 'N' || $card['Card']['rarity'] == 'R') {
-                                    echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '50%', 'width' => '50%', 'class' => 'baseCardImage'));
-                                    echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '50%', 'width' => '50%', 'class' => 'awkCardImage'));
+                                    echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '50%', 'width' => '50%',
+                                        'class' => 'baseCardImage'));
+                                    echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '50%', 'width' => '50%',
+                                        'class' => 'awkCardImage'));
                                 } else {
-                                    echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '100%', 'width' => '97%', 'class' => 'baseSRCardImage'));
-                                    echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '100%', 'width' => '97%', 'class' => 'awkSRCardImage'));
+                                    echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '100%', 'width' => '97%',
+                                        'class' => 'baseSRCardImage'));
+                                    echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '100%', 'width' => '97%',
+                                        'class' => 'awkSRCardImage'));
                                 }
                                 ?>
                                 <!--                            <h4>-->
@@ -128,29 +132,29 @@ if (!$this->request->is('ajax'))
                                             <?php switch ($card['Card']['type']) {
                                                 case "Cute":
                                                     ?>
-                                                    <label class="btn btn-cute active">
-                                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
+                                                    <label class="btn btn-cute active" id="regawk1">
+                                                        <input type="radio" name="regawk" autocomplete="off" checked>Regular
                                                     </label>
-                                                    <label class="btn btn-cute">
-                                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                    <label class="btn btn-cute" id="regawk2">
+                                                        <input type="radio" name="regawk" autocomplete="off">Awakened
                                                     </label>
                                                     <?php break;
                                                 case "Cool":
                                                     ?>
-                                                    <label class="btn btn-cool active">
-                                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
+                                                    <label class="btn btn-cool active" id="regawk1">
+                                                        <input type="radio" name="regawk" autocomplete="off" checked>Regular
                                                     </label>
-                                                    <label class="btn btn-cool">
-                                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                    <label class="btn btn-cool" id="regawk2">
+                                                        <input type="radio" name="regawk" autocomplete="off">Awakened
                                                     </label>
                                                     <?php break;
                                                 case "Passion":
                                                     ?>
-                                                    <label class="btn btn-passion active">
-                                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Regular
+                                                    <label class="btn btn-passion active" id="regawk1">
+                                                        <input type="radio" name="regawk" autocomplete="off" checked>Regular
                                                     </label>
-                                                    <label class="btn btn-passion">
-                                                        <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                    <label class="btn btn-passion" id="regawk2">
+                                                        <input type="radio" name="regawk" autocomplete="off">Awakened
                                                     </label>
                                                     <?php break;
                                             } ?>
@@ -169,7 +173,7 @@ if (!$this->request->is('ajax'))
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
                                                         <label class="btn btn-cute">
-                                                            <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                            <input type="radio" name="options" id="option2" autocomplete="off">Level
                                                         </label>
                                                         <?php break;
                                                     case "Cool":
@@ -178,7 +182,7 @@ if (!$this->request->is('ajax'))
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
                                                         <label class="btn btn-cool">
-                                                            <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                            <input type="radio" name="options" id="option2" autocomplete="off">Level
                                                         </label>
                                                         <?php break;
                                                     case "Passion":
@@ -187,7 +191,7 @@ if (!$this->request->is('ajax'))
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
                                                         <label class="btn btn-passion">
-                                                            <input type="radio" name="options" id="option2" autocomplete="off">Awakened
+                                                            <input type="radio" name="options" id="option2" autocomplete="off">Level
                                                         </label>
                                                         <?php break;
                                                 } ?>
@@ -280,6 +284,19 @@ if (!$this->request->is('ajax'))
 //                        alert(url);
                             });
                         }
+                    });
+                });
+
+                $(document).ready(function(){
+                    $("[id=regawk1]").click( function() {
+//                        alert($(this).parent().closest('.panel-heading.cute').find('img.awkSRCardImage').get(0).tagName);
+                        $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display","none");
+                        $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display","inherit");
+                    });
+                    $("[id=regawk2]").click( function() {
+//                        alert($(this).closest(".panel.panel-default").find("img").attr("class"));
+                        $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display","inherit");
+                        $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display","none");
                     });
                 });
             </script>
