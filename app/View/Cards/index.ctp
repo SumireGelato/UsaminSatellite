@@ -239,7 +239,7 @@ if (!$this->request->is('ajax'))
                                     </div>
                                     <hr>
                                     <div class="row">
-                                        <div class="col-xs-12"><!--closest class base > find id table.base > css show/hide-->
+                                        <div class="col-xs-12">
                                             <table>
                                                 <tr>
                                                     <td>Life 27</td>
@@ -268,10 +268,10 @@ if (!$this->request->is('ajax'))
                                                 <?php switch ($card['Card']['type']) {
                                                     case "Cute":
                                                         ?>
-                                                        <label class="btn btn-cute active">
+                                                        <label class="btn btn-cute active" id="lvl1">
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
-                                                        <label class="btn btn-cute">
+                                                        <label class="btn btn-cute" id="lvl2">
                                                             <?php switch ($card['Card']['rarity']) {
                                                                 case "N": ?>
                                                                     <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
@@ -290,10 +290,10 @@ if (!$this->request->is('ajax'))
                                                         <?php break;
                                                     case "Cool":
                                                         ?>
-                                                        <label class="btn btn-cool active">
+                                                        <label class="btn btn-cool active" id="lvl1">
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
-                                                        <label class="btn btn-cool">
+                                                        <label class="btn btn-cool" id="lvl2">
                                                             <?php switch ($card['Card']['rarity']) {
                                                                 case "N": ?>
                                                                     <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
@@ -312,10 +312,10 @@ if (!$this->request->is('ajax'))
                                                         <?php break;
                                                     case "Passion":
                                                         ?>
-                                                        <label class="btn btn-passion active">
+                                                        <label class="btn btn-passion active" id="lvl1">
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
-                                                        <label class="btn btn-passion">
+                                                        <label class="btn btn-passion" id="lvl2">
                                                             <?php switch ($card['Card']['rarity']) {
                                                                 case "N": ?>
                                                                     <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
@@ -440,6 +440,15 @@ if (!$this->request->is('ajax'))
                     $("[id=regawk2]").click(function () {
                         $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "inherit");
                         $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "none");
+                    });
+                });
+//              closest class base > find id table.base > css show/hide
+                $(document).ready(function() {
+                   $("[id=lvl1]").click(function () {
+
+                   });
+                    $("[id=lvl2]").click(function () {
+
                     });
                 });
             </script>
