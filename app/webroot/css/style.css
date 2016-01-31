@@ -13,6 +13,10 @@ body {
     display: none;
 }
 
+.awakened {
+    display: none;
+}
+
 /*#cardArt:hover .awkSRCardImage {
     display: block;
 }

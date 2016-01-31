@@ -162,7 +162,106 @@ if (!$this->request->is('ajax'))
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="stats">
+                                <div class="base">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <?php switch ($card['Card']['type']) {
+                                                    case "Cute":
+                                                        ?>
+                                                        <label class="btn btn-cute active" id="lvl1">
+                                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
+                                                        </label>
+                                                        <label class="btn btn-cute" id="lvl2">
+                                                            <?php switch ($card['Card']['rarity']) {
+                                                                case "N": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 20 (Max)
+                                                                    <?php break;
+                                                                case "R": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 40 (Max)
+                                                                    <?php break;
+                                                                case "SR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 60 (Max)
+                                                                    <?php break;
+                                                                case "SSR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 80 (Max)
+                                                                    <?php break;
+                                                            } ?>
+                                                        </label>
+                                                        <?php break;
+                                                    case "Cool":
+                                                        ?>
+                                                        <label class="btn btn-cool active" id="lvl1">
+                                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
+                                                        </label>
+                                                        <label class="btn btn-cool" id="lvl2">
+                                                            <?php switch ($card['Card']['rarity']) {
+                                                                case "N": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 20 (Max)
+                                                                    <?php break;
+                                                                case "R": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 40 (Max)
+                                                                    <?php break;
+                                                                case "SR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 60 (Max)
+                                                                    <?php break;
+                                                                case "SSR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 80 (Max)
+                                                                    <?php break;
+                                                            } ?>
+                                                        </label>
+                                                        <?php break;
+                                                    case "Passion":
+                                                        ?>
+                                                        <label class="btn btn-passion active" id="lvl1">
+                                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
+                                                        </label>
+                                                        <label class="btn btn-passion" id="lvl2">
+                                                            <?php switch ($card['Card']['rarity']) {
+                                                                case "N": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 20 (Max)
+                                                                    <?php break;
+                                                                case "R": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 40 (Max)
+                                                                    <?php break;
+                                                                case "SR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 60 (Max)
+                                                                    <?php break;
+                                                                case "SSR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 80 (Max)
+                                                                    <?php break;
+                                                            } ?>
+                                                        </label>
+                                                        <?php break;
+                                                } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-xs-12"><!--closest id base > find id base > css show/hide-->
+                                            <table>
+                                                <tr>
+                                                    <td>Life 27</td>
+                                                    <td>Vocal 2158</td>
+                                                    <td>Dance 1578</td>
+                                                    <td>Visual 1665</td>
+                                                    <td>Total 5571</td>
+                                                </tr>
+                                            </table>
+                                            <table>
+                                                <tr>
+                                                    <td>Life 27</td>
+                                                    <td>Vocal 2158</td>
+                                                    <td>Dance 1578</td>
+                                                    <td>Visual 1665</td>
+                                                    <td>Total 5571</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="awakened">
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <div class="btn-group" data-toggle="buttons">
@@ -173,7 +272,20 @@ if (!$this->request->is('ajax'))
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
                                                         <label class="btn btn-cute">
-                                                            <input type="radio" name="options" id="option2" autocomplete="off">Level
+                                                            <?php switch ($card['Card']['rarity']) {
+                                                                case "N": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
+                                                                    <?php break;
+                                                                case "R": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 50 (Max)
+                                                                    <?php break;
+                                                                case "SR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 70 (Max)
+                                                                    <?php break;
+                                                                case "SSR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 90 (Max)
+                                                                    <?php break;
+                                                            } ?>
                                                         </label>
                                                         <?php break;
                                                     case "Cool":
@@ -182,7 +294,20 @@ if (!$this->request->is('ajax'))
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
                                                         <label class="btn btn-cool">
-                                                            <input type="radio" name="options" id="option2" autocomplete="off">Level
+                                                            <?php switch ($card['Card']['rarity']) {
+                                                                case "N": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
+                                                                    <?php break;
+                                                                case "R": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 50 (Max)
+                                                                    <?php break;
+                                                                case "SR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 70 (Max)
+                                                                    <?php break;
+                                                                case "SSR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 90 (Max)
+                                                                    <?php break;
+                                                            } ?>
                                                         </label>
                                                         <?php break;
                                                     case "Passion":
@@ -191,7 +316,20 @@ if (!$this->request->is('ajax'))
                                                             <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                                                         </label>
                                                         <label class="btn btn-passion">
-                                                            <input type="radio" name="options" id="option2" autocomplete="off">Level
+                                                            <?php switch ($card['Card']['rarity']) {
+                                                                case "N": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
+                                                                    <?php break;
+                                                                case "R": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 50 (Max)
+                                                                    <?php break;
+                                                                case "SR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 70 (Max)
+                                                                    <?php break;
+                                                                case "SSR": ?>
+                                                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 90 (Max)
+                                                                    <?php break;
+                                                            } ?>
                                                         </label>
                                                         <?php break;
                                                 } ?>
@@ -201,6 +339,15 @@ if (!$this->request->is('ajax'))
                                     <hr>
                                     <div class="row">
                                         <div class="col-xs-12">
+                                            <table>
+                                                <tr>
+                                                    <td>Life 27</td>
+                                                    <td>Vocal 2158</td>
+                                                    <td>Dance 1578</td>
+                                                    <td>Visual 1665</td>
+                                                    <td>Total 5571</td>
+                                                </tr>
+                                            </table>
                                             <table>
                                                 <tr>
                                                     <td>Life 27</td>
@@ -277,26 +424,22 @@ if (!$this->request->is('ajax'))
                         }
                         if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
                             processing = true;
-//                    alert("i'm at the bottom!");
                             $(this).remove();
                             $.get(url, function (data) {
                                 $('#accordion').append(data);
-//                        alert(url);
                             });
                         }
                     });
                 });
 
-                $(document).ready(function(){
-                    $("[id=regawk1]").click( function() {
-//                        alert($(this).parent().closest('.panel-heading.cute').find('img.awkSRCardImage').get(0).tagName);
-                        $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display","none");
-                        $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display","inherit");
+                $(document).ready(function () {
+                    $("[id=regawk1]").click(function () {
+                        $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "none");
+                        $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "inherit");
                     });
-                    $("[id=regawk2]").click( function() {
-//                        alert($(this).closest(".panel.panel-default").find("img").attr("class"));
-                        $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display","inherit");
-                        $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display","none");
+                    $("[id=regawk2]").click(function () {
+                        $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "inherit");
+                        $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "none");
                     });
                 });
             </script>
