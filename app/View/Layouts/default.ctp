@@ -52,11 +52,16 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </head>
 <body onload="startTime()">
 <div class="container-fluid marketing" id="contentContainer">
+    <noscript>
+        <div class="alert alert-danger" role="alert">This site makes extensive use of JavaScript.
+            Please enable JavaScript in your browser. Here are the <a href="http://www.enable-javascript.com/" target="_blank">
+                instructions how to enable JavaScript in your web browser</a></div>
+    </noscript>
     <div class="navbar-wrapper">
         <div class="container-fluid">
 
             <nav class="navbar navbar-default" role="navigation">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                                 data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -123,8 +128,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
         </div>
     </div>
-
-
     <!-- Get Content -->
     <div id="pageContent">
         <?php echo $this->Session->flash(); ?>

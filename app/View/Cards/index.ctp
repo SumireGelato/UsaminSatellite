@@ -239,7 +239,7 @@ if (!$this->request->is('ajax'))
                                     </div>
                                     <hr>
                                     <div class="row">
-                                        <div class="col-xs-12"><!--closest id base > find id base > css show/hide-->
+                                        <div class="col-xs-12"><!--closest class base > find id table.base > css show/hide-->
                                             <table>
                                                 <tr>
                                                     <td>Life 27</td>
