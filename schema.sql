@@ -28,8 +28,8 @@ CREATE TABLE idols (
   hometown    VARCHAR(50)   NOT NULL,
   type        VARCHAR(10)   NOT NULL,
   cv          VARCHAR(255)  NOT NULL,
-  pic1        VARCHAR(255)  NOT NULL,
-  pic2        VARCHAR(255),
+  profilePic  VARCHAR(255)  NOT NULL,
+  puchiPic    VARCHAR(255)  NOT NULL,
   CONSTRAINT idols_pk PRIMARY KEY (id)
 );
 
@@ -159,22 +159,22 @@ INSERT INTO news (id, user_id, title, category, body, created, isPublished) VALU
   (1, 1, 'Test Post', 'site', '<h1> This is a published test post </h1>', '2015-09-17 15:33:26', TRUE),
   (2, 1, 'Test Post 2', 'game', '<h1> This is a draft test post</h1>', '2015-09-17 15:33:26', TRUE);
 
-INSERT INTO idols (id, eName, jName, age, height, weight, birthday, bloodType, bwh, hobbies, writingHand, horoscope, hometown, type, cv, pic1)
+INSERT INTO idols (id, eName, jName, age, height, weight, birthday, bloodType, bwh, hobbies, writingHand, horoscope, hometown, type, cv, profilePic, puchiPic)
 VALUES
   (1, 'Uzuki Shimamura', '島村卯月', '17', 159, 45, 'April 24', 'O', '83/59/87', 'Long Phone Calls with friends', 'Right',
-   'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'uzuki.png'),
+   'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'uzuki.png', 'uzuki.png'),
   (2, 'Rin Shibuya', '渋谷凜', '15', 165, 44, 'August 10', 'B', '80/56/81', 'Dog Walking', 'Right', 'Leo', 'Tokyo', 'Cool',
-   'Ayaka Fukuhara', 'rin.png'),
+   'Ayaka Fukuhara', 'rin.png', 'rin.png'),
   (3, 'Mio Honda', '本田未央', 15, 161, 46, 'December 1', 'B', '84/58/87', 'Shopping', 'Right', 'Sagittarius', 'Chiba',
    'Passion',
-   'Sayuri Hara', 'mio.png');
+   'Sayuri Hara', 'mio.png', 'mio.png');
 
 INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, type, t1, t2, t3, t4, t5, t6, t7, pic)
 VALUES
   (1, TRUE, TRUE, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-01-13 15:00:00', '2016-01-18 15:00:00',
    'Get Coins, Buy Idols', 'All', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'caravan1.jpg'),
   (2, FALSE, FALSE, 'LIVE Groove Dance burst', 'LIVE Groove Dance burst', '2015-12-30 15:00:00', '2016-01-08 20:59',
-   'Medley', 'All', 45128, 31182, 27954, 22930, 18874, 3032, 262, 'livegroove12.jpg');
+   'Medley', 'All', 45128, 31182, 27954, 22930, 18874, 3032, 262, 'livegroove1.jpg');
 
 INSERT INTO songs (id, eName, jName, romaji, type, bpm, unlockCon, coverArt, debutLvl, debutStam, debutNotes, regLvl, regStam, regNotes,
                    proLvl, proStam, proNotes, masterLvl, masterStam, masterNotes, dateAdded) VALUES
