@@ -73,8 +73,8 @@ class Configure
 
             if (!include APP . 'Config' . DS . 'core.php') {
                 trigger_error(__d('cake_dev',
-                    "Can't find application core file. Please create %s, and make sure it is readable by PHP.",
-                    APP . 'Config' . DS . 'core.php'),
+                        "Can't find application core file. Please create %s, and make sure it is readable by PHP.",
+                        APP . 'Config' . DS . 'core.php'),
                     E_USER_ERROR
                 );
             }
@@ -99,8 +99,8 @@ class Configure
 
             if (!include APP . 'Config' . DS . 'bootstrap.php') {
                 trigger_error(__d('cake_dev',
-                    "Can't find application bootstrap file. Please create %s, and make sure it is readable by PHP.",
-                    APP . 'Config' . DS . 'bootstrap.php'),
+                        "Can't find application bootstrap file. Please create %s, and make sure it is readable by PHP.",
+                        APP . 'Config' . DS . 'bootstrap.php'),
                     E_USER_ERROR
                 );
             }

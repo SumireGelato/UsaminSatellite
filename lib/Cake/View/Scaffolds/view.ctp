@@ -114,7 +114,7 @@ if (!empty($associations['hasOne'])) :
                 </ul>
             </div>
         </div>
-        <?php
+    <?php
     endforeach;
 endif;
 

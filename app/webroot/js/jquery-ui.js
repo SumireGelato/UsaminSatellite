@@ -104,18 +104,18 @@
             return !!img && visible(img);
         }
         return ( /^(input|select|textarea|button|object)$/.test(nodeName) ?
-                !element.disabled :
-                "a" === nodeName ?
-                element.href || isTabIndexNotNaN :
-                    isTabIndexNotNaN) &&
-                // the element and all of its ancestors must be visible
-            visible(element);
+            !element.disabled :
+            "a" === nodeName ?
+            element.href || isTabIndexNotNaN :
+                isTabIndexNotNaN) &&
+            // the element and all of its ancestors must be visible
+        visible(element);
     }
 
     function visible(element) {
         return $.expr.filters.visible(element) && !$(element).parents().addBack().filter(function () {
-                return $.css(this, "visibility") === "hidden";
-            }).length;
+            return $.css(this, "visibility") === "hidden";
+        }).length;
     }
 
     $.extend($.expr[":"], {
@@ -500,7 +500,7 @@
                     }
                     if (!instance) {
                         return $.error("cannot call methods on " + name + " prior to initialization; " +
-                            "attempted to call method '" + options + "'");
+                        "attempted to call method '" + options + "'");
                     }
                     if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
                         return $.error("no such method '" + options + "' for " + name + " widget instance");
@@ -746,7 +746,7 @@
 
         _off: function (element, eventName) {
             eventName = (eventName || "").split(" ").join(this.eventNamespace + " ") +
-                this.eventNamespace;
+            this.eventNamespace;
             element.unbind(eventName).undelegate(eventName);
 
             // Clear the stack to avoid memory leaks (#10056)
@@ -1026,9 +1026,9 @@
 
         _mouseDistanceMet: function (event) {
             return (Math.max(
-                    Math.abs(this._mouseDownEvent.pageX - event.pageX),
-                    Math.abs(this._mouseDownEvent.pageY - event.pageY)
-                ) >= this.options.distance
+                Math.abs(this._mouseDownEvent.pageX - event.pageX),
+                Math.abs(this._mouseDownEvent.pageY - event.pageY)
+            ) >= this.options.distance
             );
         },
 
@@ -1731,8 +1731,8 @@
             this.scrollParent = this.helper.scrollParent(true);
             this.offsetParent = this.helper.offsetParent();
             this.hasFixedAncestor = this.helper.parents().filter(function () {
-                    return $(this).css("position") === "fixed";
-                }).length > 0;
+                return $(this).css("position") === "fixed";
+            }).length > 0;
 
             //The element's absolute position on the page minus margins
             this.positionAbs = this.element.offset();
@@ -2095,16 +2095,16 @@
 
             return {
                 top: (
-                    pos.top +																// The absolute mouse position
-                    this.offset.relative.top * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
-                    this.offset.parent.top * mod -										// The offsetParent's offset without borders (offset + border)
-                    ( ( this.cssPosition === "fixed" ? -this.offset.scroll.top : ( scrollIsRootNode ? 0 : this.offset.scroll.top ) ) * mod)
+                pos.top +																// The absolute mouse position
+                this.offset.relative.top * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
+                this.offset.parent.top * mod -										// The offsetParent's offset without borders (offset + border)
+                ( ( this.cssPosition === "fixed" ? -this.offset.scroll.top : ( scrollIsRootNode ? 0 : this.offset.scroll.top ) ) * mod)
                 ),
                 left: (
-                    pos.left +																// The absolute mouse position
-                    this.offset.relative.left * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
-                    this.offset.parent.left * mod -										// The offsetParent's offset without borders (offset + border)
-                    ( ( this.cssPosition === "fixed" ? -this.offset.scroll.left : ( scrollIsRootNode ? 0 : this.offset.scroll.left ) ) * mod)
+                pos.left +																// The absolute mouse position
+                this.offset.relative.left * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
+                this.offset.parent.left * mod -										// The offsetParent's offset without borders (offset + border)
+                ( ( this.cssPosition === "fixed" ? -this.offset.scroll.left : ( scrollIsRootNode ? 0 : this.offset.scroll.left ) ) * mod)
                 )
             };
 
@@ -2180,18 +2180,18 @@
 
             return {
                 top: (
-                    pageY -																	// The absolute mouse position
-                    this.offset.click.top -												// Click offset (relative to the element)
-                    this.offset.relative.top -												// Only for relative positioned nodes: Relative offset from element to offset parent
-                    this.offset.parent.top +												// The offsetParent's offset without borders (offset + border)
-                    ( this.cssPosition === "fixed" ? -this.offset.scroll.top : ( scrollIsRootNode ? 0 : this.offset.scroll.top ) )
+                pageY -																	// The absolute mouse position
+                this.offset.click.top -												// Click offset (relative to the element)
+                this.offset.relative.top -												// Only for relative positioned nodes: Relative offset from element to offset parent
+                this.offset.parent.top +												// The offsetParent's offset without borders (offset + border)
+                ( this.cssPosition === "fixed" ? -this.offset.scroll.top : ( scrollIsRootNode ? 0 : this.offset.scroll.top ) )
                 ),
                 left: (
-                    pageX -																	// The absolute mouse position
-                    this.offset.click.left -												// Click offset (relative to the element)
-                    this.offset.relative.left -												// Only for relative positioned nodes: Relative offset from element to offset parent
-                    this.offset.parent.left +												// The offsetParent's offset without borders (offset + border)
-                    ( this.cssPosition === "fixed" ? -this.offset.scroll.left : ( scrollIsRootNode ? 0 : this.offset.scroll.left ) )
+                pageX -																	// The absolute mouse position
+                this.offset.click.left -												// Click offset (relative to the element)
+                this.offset.relative.left -												// Only for relative positioned nodes: Relative offset from element to offset parent
+                this.offset.parent.left +												// The offsetParent's offset without borders (offset + border)
+                ( this.cssPosition === "fixed" ? -this.offset.scroll.left : ( scrollIsRootNode ? 0 : this.offset.scroll.left ) )
                 )
             };
 
@@ -2369,9 +2369,9 @@
                         sortable.offset.click.top = draggable.offset.click.top;
                         sortable.offset.click.left = draggable.offset.click.left;
                         sortable.offset.parent.left -= draggable.offset.parent.left -
-                            sortable.offset.parent.left;
+                        sortable.offset.parent.left;
                         sortable.offset.parent.top -= draggable.offset.parent.top -
-                            sortable.offset.parent.top;
+                        sortable.offset.parent.top;
 
                         draggable._trigger("toSortable", event);
 
@@ -2932,14 +2932,14 @@
                     return isOverAxis(event.pageY, t, droppable.proportions().height) && isOverAxis(event.pageX, l, droppable.proportions().width);
                 case "touch":
                     return (
-                            ( y1 >= t && y1 <= b ) || // Top edge touching
-                            ( y2 >= t && y2 <= b ) || // Bottom edge touching
-                            ( y1 < t && y2 > b ) // Surrounded vertically
-                        ) && (
-                            ( x1 >= l && x1 <= r ) || // Left edge touching
-                            ( x2 >= l && x2 <= r ) || // Right edge touching
-                            ( x1 < l && x2 > r ) // Surrounded horizontally
-                        );
+                    ( y1 >= t && y1 <= b ) || // Top edge touching
+                    ( y2 >= t && y2 <= b ) || // Bottom edge touching
+                    ( y1 < t && y2 > b ) // Surrounded vertically
+                    ) && (
+                    ( x1 >= l && x1 <= r ) || // Left edge touching
+                    ( x2 >= l && x2 <= r ) || // Right edge touching
+                    ( x1 < l && x2 > r ) // Surrounded horizontally
+                    );
                 default:
                     return false;
             }
@@ -3222,17 +3222,17 @@
             }
 
             this.handles = o.handles ||
-                ( !$(".ui-resizable-handle", this.element).length ?
-                    "e,s,se" : {
-                    n: ".ui-resizable-n",
-                    e: ".ui-resizable-e",
-                    s: ".ui-resizable-s",
-                    w: ".ui-resizable-w",
-                    se: ".ui-resizable-se",
-                    sw: ".ui-resizable-sw",
-                    ne: ".ui-resizable-ne",
-                    nw: ".ui-resizable-nw"
-                } );
+            ( !$(".ui-resizable-handle", this.element).length ?
+                "e,s,se" : {
+                n: ".ui-resizable-n",
+                e: ".ui-resizable-e",
+                s: ".ui-resizable-s",
+                w: ".ui-resizable-w",
+                se: ".ui-resizable-se",
+                sw: ".ui-resizable-sw",
+                ne: ".ui-resizable-ne",
+                nw: ".ui-resizable-nw"
+            } );
 
             this._handles = $();
             if (this.handles.constructor === String) {
@@ -3505,9 +3505,9 @@
                     height: (that.helper.height() - soffseth)
                 };
                 left = (parseInt(that.element.css("left"), 10) +
-                    (that.position.left - that.originalPosition.left)) || null;
+                (that.position.left - that.originalPosition.left)) || null;
                 top = (parseInt(that.element.css("top"), 10) +
-                    (that.position.top - that.originalPosition.top)) || null;
+                (that.position.top - that.originalPosition.top)) || null;
 
                 if (!o.animate) {
                     this.element.css($.extend(s, {top: top, left: left}));
@@ -3955,9 +3955,9 @@
 
             if (cp.left < ( that._helper ? co.left : 0 )) {
                 that.size.width = that.size.width +
-                    ( that._helper ?
-                        ( that.position.left - co.left ) :
-                        ( that.position.left - cop.left ) );
+                ( that._helper ?
+                    ( that.position.left - co.left ) :
+                    ( that.position.left - cop.left ) );
 
                 if (pRatio) {
                     that.size.height = that.size.width / that.aspectRatio;
@@ -3968,9 +3968,9 @@
 
             if (cp.top < ( that._helper ? co.top : 0 )) {
                 that.size.height = that.size.height +
-                    ( that._helper ?
-                        ( that.position.top - co.top ) :
-                        that.position.top );
+                ( that._helper ?
+                    ( that.position.top - co.top ) :
+                    that.position.top );
 
                 if (pRatio) {
                     that.size.width = that.size.height * that.aspectRatio;
@@ -3991,14 +3991,14 @@
             }
 
             woset = Math.abs(that.sizeDiff.width +
-                (that._helper ?
-                that.offset.left - cop.left :
-                    (that.offset.left - co.left)));
+            (that._helper ?
+            that.offset.left - cop.left :
+                (that.offset.left - co.left)));
 
             hoset = Math.abs(that.sizeDiff.height +
-                (that._helper ?
-                that.offset.top - cop.top :
-                    (that.offset.top - co.top)));
+            (that._helper ?
+            that.offset.top - cop.top :
+                (that.offset.top - co.top)));
 
             if (woset + that.size.width >= that.parentData.width) {
                 that.size.width = that.parentData.width - woset;
@@ -5595,16 +5595,16 @@
 
             return {
                 top: (
-                    pos.top +																// The absolute mouse position
-                    this.offset.relative.top * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
-                    this.offset.parent.top * mod -											// The offsetParent's offset without borders (offset + border)
-                    ( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollTop() : ( scrollIsRootNode ? 0 : scroll.scrollTop() ) ) * mod)
+                pos.top +																// The absolute mouse position
+                this.offset.relative.top * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
+                this.offset.parent.top * mod -											// The offsetParent's offset without borders (offset + border)
+                ( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollTop() : ( scrollIsRootNode ? 0 : scroll.scrollTop() ) ) * mod)
                 ),
                 left: (
-                    pos.left +																// The absolute mouse position
-                    this.offset.relative.left * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
-                    this.offset.parent.left * mod -										// The offsetParent's offset without borders (offset + border)
-                    ( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollLeft() : scrollIsRootNode ? 0 : scroll.scrollLeft() ) * mod)
+                pos.left +																// The absolute mouse position
+                this.offset.relative.left * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
+                this.offset.parent.left * mod -										// The offsetParent's offset without borders (offset + border)
+                ( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollLeft() : scrollIsRootNode ? 0 : scroll.scrollLeft() ) * mod)
                 )
             };
 
@@ -5660,18 +5660,18 @@
 
             return {
                 top: (
-                    pageY -																// The absolute mouse position
-                    this.offset.click.top -													// Click offset (relative to the element)
-                    this.offset.relative.top -											// Only for relative positioned nodes: Relative offset from element to offset parent
-                    this.offset.parent.top +												// The offsetParent's offset without borders (offset + border)
-                    ( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollTop() : ( scrollIsRootNode ? 0 : scroll.scrollTop() ) ))
+                pageY -																// The absolute mouse position
+                this.offset.click.top -													// Click offset (relative to the element)
+                this.offset.relative.top -											// Only for relative positioned nodes: Relative offset from element to offset parent
+                this.offset.parent.top +												// The offsetParent's offset without borders (offset + border)
+                ( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollTop() : ( scrollIsRootNode ? 0 : scroll.scrollTop() ) ))
                 ),
                 left: (
-                    pageX -																// The absolute mouse position
-                    this.offset.click.left -												// Click offset (relative to the element)
-                    this.offset.relative.left -											// Only for relative positioned nodes: Relative offset from element to offset parent
-                    this.offset.parent.left +												// The offsetParent's offset without borders (offset + border)
-                    ( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollLeft() : scrollIsRootNode ? 0 : scroll.scrollLeft() ))
+                pageX -																// The absolute mouse position
+                this.offset.click.left -												// Click offset (relative to the element)
+                this.offset.relative.left -											// Only for relative positioned nodes: Relative offset from element to offset parent
+                this.offset.parent.left +												// The offsetParent's offset without borders (offset + border)
+                ( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollLeft() : scrollIsRootNode ? 0 : scroll.scrollLeft() ))
                 )
             };
 
@@ -6176,7 +6176,7 @@
                 this.headers.next()
                     .each(function () {
                         $(this).height(Math.max(0, maxHeight -
-                            $(this).innerHeight() + $(this).height()));
+                        $(this).innerHeight() + $(this).height()));
                     })
                     .css("overflow", "auto");
             } else if (heightStyle === "auto") {
@@ -7628,7 +7628,7 @@
                 noResults: "No search results.",
                 results: function (amount) {
                     return amount + ( amount > 1 ? " results are" : " result is" ) +
-                        " available, use up and down arrow keys to navigate.";
+                    " available, use up and down arrow keys to navigate.";
                 }
             }
         },
@@ -8327,7 +8327,7 @@
                     date.setMonth(findMax(this._get(inst, (dateFormat.match(/MM/) ?
                         "monthNames" : "monthNamesShort"))));
                     date.setDate(findMax(this._get(inst, (dateFormat.match(/DD/) ?
-                            "dayNames" : "dayNamesShort"))) + 20 - date.getDay());
+                        "dayNames" : "dayNamesShort"))) + 20 - date.getDay());
                 }
                 inst.input.attr("size", this._formatDate(inst, date).length);
             }
@@ -8371,7 +8371,7 @@
                 this.uuid += 1;
                 id = "dp" + this.uuid;
                 this._dialogInput = $("<input type='text' id='" + id +
-                    "' style='position: absolute; top: -100px; width: 0px;'/>");
+                "' style='position: absolute; top: -100px; width: 0px;'/>");
                 this._dialogInput.keydown(this._doKeyDown);
                 $("body").append(this._dialogInput);
                 inst = this._dialogInst = this._newInst(this._dialogInput, false);
@@ -8644,7 +8644,7 @@
                         break; // hide on tab out
                     case 13:
                         sel = $("td." + $.datepicker._dayOverClass + ":not(." +
-                            $.datepicker._currentClass + ")", inst.dpDiv);
+                        $.datepicker._currentClass + ")", inst.dpDiv);
                         if (sel[0]) {
                             $.datepicker._selectDay(event.target, inst.selectedMonth, inst.selectedYear, sel[0]);
                         }
@@ -9312,7 +9312,7 @@
                 year = new Date().getFullYear();
             } else if (year < 100) {
                 year += new Date().getFullYear() - new Date().getFullYear() % 100 +
-                    (year <= shortYearCutoff ? 0 : -100);
+                (year <= shortYearCutoff ? 0 : -100);
             }
 
             if (doy > -1) {
@@ -9812,17 +9812,17 @@
                         calender += "'>";
                     }
                     calender += "<div class='ui-datepicker-header ui-widget-header ui-helper-clearfix" + cornerClass + "'>" +
-                        (/all|left/.test(cornerClass) && row === 0 ? (isRTL ? next : prev) : "") +
-                        (/all|right/.test(cornerClass) && row === 0 ? (isRTL ? prev : next) : "") +
-                        this._generateMonthYearHeader(inst, drawMonth, drawYear, minDate, maxDate,
-                            row > 0 || col > 0, monthNames, monthNamesShort) + // draw month headers
-                        "</div><table class='ui-datepicker-calendar'><thead>" +
-                        "<tr>";
+                    (/all|left/.test(cornerClass) && row === 0 ? (isRTL ? next : prev) : "") +
+                    (/all|right/.test(cornerClass) && row === 0 ? (isRTL ? prev : next) : "") +
+                    this._generateMonthYearHeader(inst, drawMonth, drawYear, minDate, maxDate,
+                        row > 0 || col > 0, monthNames, monthNamesShort) + // draw month headers
+                    "</div><table class='ui-datepicker-calendar'><thead>" +
+                    "<tr>";
                     thead = (showWeek ? "<th class='ui-datepicker-week-col'>" + this._get(inst, "weekHeader") + "</th>" : "");
                     for (dow = 0; dow < 7; dow++) { // days of the week
                         day = (dow + firstDay) % 7;
                         thead += "<th scope='col'" + ((dow + firstDay + 6) % 7 >= 5 ? " class='ui-datepicker-week-end'" : "") + ">" +
-                            "<span title='" + dayNames[day] + "'>" + dayNamesMin[day] + "</span></th>";
+                        "<span title='" + dayNames[day] + "'>" + dayNamesMin[day] + "</span></th>";
                     }
                     calender += thead + "</tr></thead><tbody>";
                     daysInMonth = this._getDaysInMonth(drawYear, drawMonth);
@@ -9843,26 +9843,26 @@
                                 beforeShowDay.apply((inst.input ? inst.input[0] : null), [printDate]) : [true, ""]);
                             otherMonth = (printDate.getMonth() !== drawMonth);
                             unselectable = (otherMonth && !selectOtherMonths) || !daySettings[0] ||
-                                (minDate && printDate < minDate) || (maxDate && printDate > maxDate);
+                            (minDate && printDate < minDate) || (maxDate && printDate > maxDate);
                             tbody += "<td class='" +
-                                ((dow + firstDay + 6) % 7 >= 5 ? " ui-datepicker-week-end" : "") + // highlight weekends
-                                (otherMonth ? " ui-datepicker-other-month" : "") + // highlight days from other months
-                                ((printDate.getTime() === selectedDate.getTime() && drawMonth === inst.selectedMonth && inst._keyEvent) || // user pressed key
-                                (defaultDate.getTime() === printDate.getTime() && defaultDate.getTime() === selectedDate.getTime()) ?
-                                    // or defaultDate is current printedDate and defaultDate is selectedDate
-                                " " + this._dayOverClass : "") + // highlight selected day
-                                (unselectable ? " " + this._unselectableClass + " ui-state-disabled" : "") +  // highlight unselectable days
-                                (otherMonth && !showOtherMonths ? "" : " " + daySettings[1] + // highlight custom dates
-                                (printDate.getTime() === currentDate.getTime() ? " " + this._currentClass : "") + // highlight selected day
-                                (printDate.getTime() === today.getTime() ? " ui-datepicker-today" : "")) + "'" + // highlight today (if different)
-                                ((!otherMonth || showOtherMonths) && daySettings[2] ? " title='" + daySettings[2].replace(/'/g, "&#39;") + "'" : "") + // cell title
-                                (unselectable ? "" : " data-handler='selectDay' data-event='click' data-month='" + printDate.getMonth() + "' data-year='" + printDate.getFullYear() + "'") + ">" + // actions
-                                (otherMonth && !showOtherMonths ? "&#xa0;" : // display for other months
-                                    (unselectable ? "<span class='ui-state-default'>" + printDate.getDate() + "</span>" : "<a class='ui-state-default" +
-                                    (printDate.getTime() === today.getTime() ? " ui-state-highlight" : "") +
-                                    (printDate.getTime() === currentDate.getTime() ? " ui-state-active" : "") + // highlight selected day
-                                    (otherMonth ? " ui-priority-secondary" : "") + // distinguish dates from other months
-                                    "' href='#'>" + printDate.getDate() + "</a>")) + "</td>"; // display selectable date
+                            ((dow + firstDay + 6) % 7 >= 5 ? " ui-datepicker-week-end" : "") + // highlight weekends
+                            (otherMonth ? " ui-datepicker-other-month" : "") + // highlight days from other months
+                            ((printDate.getTime() === selectedDate.getTime() && drawMonth === inst.selectedMonth && inst._keyEvent) || // user pressed key
+                            (defaultDate.getTime() === printDate.getTime() && defaultDate.getTime() === selectedDate.getTime()) ?
+                                // or defaultDate is current printedDate and defaultDate is selectedDate
+                            " " + this._dayOverClass : "") + // highlight selected day
+                            (unselectable ? " " + this._unselectableClass + " ui-state-disabled" : "") +  // highlight unselectable days
+                            (otherMonth && !showOtherMonths ? "" : " " + daySettings[1] + // highlight custom dates
+                            (printDate.getTime() === currentDate.getTime() ? " " + this._currentClass : "") + // highlight selected day
+                            (printDate.getTime() === today.getTime() ? " ui-datepicker-today" : "")) + "'" + // highlight today (if different)
+                            ((!otherMonth || showOtherMonths) && daySettings[2] ? " title='" + daySettings[2].replace(/'/g, "&#39;") + "'" : "") + // cell title
+                            (unselectable ? "" : " data-handler='selectDay' data-event='click' data-month='" + printDate.getMonth() + "' data-year='" + printDate.getFullYear() + "'") + ">" + // actions
+                            (otherMonth && !showOtherMonths ? "&#xa0;" : // display for other months
+                                (unselectable ? "<span class='ui-state-default'>" + printDate.getDate() + "</span>" : "<a class='ui-state-default" +
+                                (printDate.getTime() === today.getTime() ? " ui-state-highlight" : "") +
+                                (printDate.getTime() === currentDate.getTime() ? " ui-state-active" : "") + // highlight selected day
+                                (otherMonth ? " ui-priority-secondary" : "") + // distinguish dates from other months
+                                "' href='#'>" + printDate.getDate() + "</a>")) + "</td>"; // display selectable date
                             printDate.setDate(printDate.getDate() + 1);
                             printDate = this._daylightSavingAdjust(printDate);
                         }
@@ -9874,7 +9874,7 @@
                         drawYear++;
                     }
                     calender += "</tbody></table>" + (isMultiMonth ? "</div>" +
-                        ((numMonths[0] > 0 && col === numMonths[1] - 1) ? "<div class='ui-datepicker-row-break'></div>" : "") : "");
+                    ((numMonths[0] > 0 && col === numMonths[1] - 1) ? "<div class='ui-datepicker-row-break'></div>" : "") : "");
                     group += calender;
                 }
                 html += group;
@@ -9905,8 +9905,8 @@
                 for (month = 0; month < 12; month++) {
                     if ((!inMinYear || month >= minDate.getMonth()) && (!inMaxYear || month <= maxDate.getMonth())) {
                         monthHtml += "<option value='" + month + "'" +
-                            (month === drawMonth ? " selected='selected'" : "") +
-                            ">" + monthNamesShort[month] + "</option>";
+                        (month === drawMonth ? " selected='selected'" : "") +
+                        ">" + monthNamesShort[month] + "</option>";
                     }
                 }
                 monthHtml += "</select>";
@@ -9938,8 +9938,8 @@
                     inst.yearshtml += "<select class='ui-datepicker-year' data-handler='selectYear' data-event='change'>";
                     for (; year <= endYear; year++) {
                         inst.yearshtml += "<option value='" + year + "'" +
-                            (year === drawYear ? " selected='selected'" : "") +
-                            ">" + year + "</option>";
+                        (year === drawYear ? " selected='selected'" : "") +
+                        ">" + year + "</option>";
                     }
                     inst.yearshtml += "</select>";
 
@@ -11881,9 +11881,9 @@
                         .appendTo(this.element);
 
                     classes = "ui-slider-range" +
-                            // note: this isn't the most fittingly semantic framework class for this element,
-                            // but worked best visually with a variety of themes
-                        " ui-widget-header ui-corner-all";
+                        // note: this isn't the most fittingly semantic framework class for this element,
+                        // but worked best visually with a variety of themes
+                    " ui-widget-header ui-corner-all";
                 } else {
                     this.range.removeClass("ui-slider-range-min ui-slider-range-max")
                         // Handle range switching from true to min/max
@@ -11894,7 +11894,7 @@
                 }
 
                 this.range.addClass(classes +
-                    ( ( options.range === "min" || options.range === "max" ) ? " ui-slider-range-" + options.range : "" ));
+                ( ( options.range === "min" || options.range === "max" ) ? " ui-slider-range-" + options.range : "" ));
             } else {
                 if (this.range) {
                     this.range.remove();
@@ -12727,12 +12727,12 @@
 
         _buttonHtml: function () {
             return "" +
-                "<a class='ui-spinner-button ui-spinner-up ui-corner-tr'>" +
-                "<span class='ui-icon " + this.options.icons.up + "'>&#9650;</span>" +
-                "</a>" +
-                "<a class='ui-spinner-button ui-spinner-down ui-corner-br'>" +
-                "<span class='ui-icon " + this.options.icons.down + "'>&#9660;</span>" +
-                "</a>";
+            "<a class='ui-spinner-button ui-spinner-up ui-corner-tr'>" +
+            "<span class='ui-icon " + this.options.icons.up + "'>&#9650;</span>" +
+            "</a>" +
+            "<a class='ui-spinner-button ui-spinner-down ui-corner-br'>" +
+            "<span class='ui-icon " + this.options.icons.down + "'>&#9660;</span>" +
+            "</a>";
         },
 
         _start: function (event) {
@@ -13523,7 +13523,7 @@
 
                 this.panels.each(function () {
                     $(this).height(Math.max(0, maxHeight -
-                        $(this).innerHeight() + $(this).height()));
+                    $(this).innerHeight() + $(this).height()));
                 })
                     .css("overflow", "auto");
             } else if (heightStyle === "auto") {
@@ -14745,10 +14745,10 @@
 
                 return "#" + jQuery.map(rgba, function (v) {
 
-                        // default to 0 when nulls exist
-                        v = ( v || 0 ).toString(16);
-                        return v.length === 1 ? "0" + v : v;
-                    }).join("");
+                    // default to 0 when nulls exist
+                    v = ( v || 0 ).toString(16);
+                    return v.length === 1 ? "0" + v : v;
+                }).join("");
             },
             toString: function () {
                 return this._rgba[3] === 0 ? "transparent" : this.toRgbaString();
@@ -15911,9 +15911,9 @@
 
         // Animation
         animation[ref] = ( show ?
-                ( motion === "pos" ? "+=" : "-=" ) :
-                ( motion === "pos" ? "-=" : "+=" ) ) +
-            distance;
+            ( motion === "pos" ? "+=" : "-=" ) :
+            ( motion === "pos" ? "-=" : "+=" ) ) +
+        distance;
 
         // Animate
         el.animate(animation, {
@@ -16438,11 +16438,11 @@
         }
 
         options.from = o.from || ( mode === "show" ? {
-                height: 0,
-                width: 0,
-                outerHeight: 0,
-                outerWidth: 0
-            } : original );
+            height: 0,
+            width: 0,
+            outerHeight: 0,
+            outerWidth: 0
+        } : original );
         options.to = {
             height: original.height * factor.y,
             width: original.width * factor.x,
@@ -16685,9 +16685,9 @@
 
         // Animation
         animation[ref] = ( show ?
-                ( positiveMotion ? "+=" : "-=") :
-                ( positiveMotion ? "-=" : "+=")) +
-            distance;
+            ( positiveMotion ? "+=" : "-=") :
+            ( positiveMotion ? "-=" : "+=")) +
+        distance;
 
         // Animate
         el.animate(animation, {

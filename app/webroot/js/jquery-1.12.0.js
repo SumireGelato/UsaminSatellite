@@ -573,7 +573,7 @@
         }
 
         return type === "array" || length === 0 ||
-            typeof length === "number" && length > 0 && ( length - 1 ) in obj;
+        typeof length === "number" && length > 0 && ( length - 1 ) in obj;
     }
 
     var Sizzle =
@@ -696,13 +696,13 @@
                     "ATTR": new RegExp("^" + attributes),
                     "PSEUDO": new RegExp("^" + pseudos),
                     "CHILD": new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
-                        "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" + whitespace +
-                        "*(\\d+)|))" + whitespace + "*\\)|)", "i"),
+                    "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" + whitespace +
+                    "*(\\d+)|))" + whitespace + "*\\)|)", "i"),
                     "bool": new RegExp("^(?:" + booleans + ")$", "i"),
                     // For use in libraries implementing .is()
                     // We use this for POS matching in `select`
                     "needsContext": new RegExp("^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
-                        whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i")
+                    whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i")
                 },
 
                 rinputs = /^(?:input|select|textarea|button)$/i,
@@ -880,7 +880,7 @@
 
                                 // Expand context for sibling selectors
                                 newContext = rsibling.test(selector) && testContext(context.parentNode) ||
-                                    context;
+                                context;
                             }
 
                             if (newSelector) {
@@ -1193,10 +1193,10 @@
 
                 // Class
                 Expr.find["CLASS"] = support.getElementsByClassName && function (className, context) {
-                        if (typeof context.getElementsByClassName !== "undefined" && documentIsHTML) {
-                            return context.getElementsByClassName(className);
-                        }
-                    };
+                    if (typeof context.getElementsByClassName !== "undefined" && documentIsHTML) {
+                        return context.getElementsByClassName(className);
+                    }
+                };
 
                 /* QSA/matchesSelector
                  ---------------------------------------------------------------------- */
@@ -1223,8 +1223,8 @@
                         // since its presence should be enough
                         // http://bugs.jquery.com/ticket/12359
                         docElem.appendChild(div).innerHTML = "<a id='" + expando + "'></a>" +
-                            "<select id='" + expando + "-\r\\' msallowcapture=''>" +
-                            "<option selected=''></option></select>";
+                        "<select id='" + expando + "-\r\\' msallowcapture=''>" +
+                        "<option selected=''></option></select>";
 
                         // Support: IE8, Opera 11-12.16
                         // Nothing should be selected when empty strings follow ^= or $= or *=
@@ -1286,10 +1286,10 @@
                 }
 
                 if ((support.matchesSelector = rnative.test((matches = docElem.matches ||
-                        docElem.webkitMatchesSelector ||
-                        docElem.mozMatchesSelector ||
-                        docElem.oMatchesSelector ||
-                        docElem.msMatchesSelector)))) {
+                    docElem.webkitMatchesSelector ||
+                    docElem.mozMatchesSelector ||
+                    docElem.oMatchesSelector ||
+                    docElem.msMatchesSelector)))) {
 
                     assert(function (div) {
                         // Check to see if it's possible to do matchesSelector
@@ -1318,10 +1318,10 @@
                         var adown = a.nodeType === 9 ? a.documentElement : a,
                             bup = b && b.parentNode;
                         return a === bup || !!( bup && bup.nodeType === 1 && (
-                                adown.contains ?
-                                    adown.contains(bup) :
-                                a.compareDocumentPosition && a.compareDocumentPosition(bup) & 16
-                            ));
+                            adown.contains ?
+                                adown.contains(bup) :
+                            a.compareDocumentPosition && a.compareDocumentPosition(bup) & 16
+                        ));
                     } :
                     function (a, b) {
                         if (b) {
@@ -1684,10 +1684,10 @@
                         var pattern = classCache[className + " "];
 
                         return pattern ||
-                            (pattern = new RegExp("(^|" + whitespace + ")" + className + "(" + whitespace + "|$)")) &&
-                            classCache(className, function (elem) {
-                                return pattern.test(typeof elem.className === "string" && elem.className || typeof elem.getAttribute !== "undefined" && elem.getAttribute("class") || "");
-                            });
+                        (pattern = new RegExp("(^|" + whitespace + ")" + className + "(" + whitespace + "|$)")) &&
+                        classCache(className, function (elem) {
+                            return pattern.test(typeof elem.className === "string" && elem.className || typeof elem.getAttribute !== "undefined" && elem.getAttribute("class") || "");
+                        });
                     },
 
                     "ATTR": function (name, operator, check) {
@@ -1768,7 +1768,7 @@
                                         // Support: IE <9 only
                                         // Defend against cloned attroperties (jQuery gh-1709)
                                         uniqueCache = outerCache[node.uniqueID] ||
-                                            (outerCache[node.uniqueID] = {});
+                                        (outerCache[node.uniqueID] = {});
 
                                         cache = uniqueCache[type] || [];
                                         nodeIndex = cache[0] === dirruns && cache[1];
@@ -1777,8 +1777,8 @@
 
                                         while ((node = ++nodeIndex && node && node[dir] ||
 
-                                                // Fallback to seeking `elem` from the start
-                                            (diff = nodeIndex = 0) || start.pop())) {
+                                            // Fallback to seeking `elem` from the start
+                                        (diff = nodeIndex = 0) || start.pop())) {
 
                                             // When found, cache indexes on `parent` and break
                                             if (node.nodeType === 1 && ++diff && node === elem) {
@@ -1797,7 +1797,7 @@
                                             // Support: IE <9 only
                                             // Defend against cloned attroperties (jQuery gh-1709)
                                             uniqueCache = outerCache[node.uniqueID] ||
-                                                (outerCache[node.uniqueID] = {});
+                                            (outerCache[node.uniqueID] = {});
 
                                             cache = uniqueCache[type] || [];
                                             nodeIndex = cache[0] === dirruns && cache[1];
@@ -1809,7 +1809,7 @@
                                         if (diff === false) {
                                             // Use the same loop as above to seek `elem` from the start
                                             while ((node = ++nodeIndex && node && node[dir] ||
-                                                (diff = nodeIndex = 0) || start.pop())) {
+                                            (diff = nodeIndex = 0) || start.pop())) {
 
                                                 if (( ofType ?
                                                     node.nodeName.toLowerCase() === name :
@@ -1822,7 +1822,7 @@
                                                         // Support: IE <9 only
                                                         // Defend against cloned attroperties (jQuery gh-1709)
                                                         uniqueCache = outerCache[node.uniqueID] ||
-                                                            (outerCache[node.uniqueID] = {});
+                                                        (outerCache[node.uniqueID] = {});
 
                                                         uniqueCache[type] = [dirruns, diff];
                                                     }
@@ -2028,11 +2028,11 @@
                     "text": function (elem) {
                         var attr;
                         return elem.nodeName.toLowerCase() === "input" &&
-                            elem.type === "text" &&
+                        elem.type === "text" &&
 
-                                // Support: IE<8
-                                // New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
-                            ( (attr = elem.getAttribute("type")) == null || attr.toLowerCase() === "text" );
+                            // Support: IE<8
+                            // New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
+                        ( (attr = elem.getAttribute("type")) == null || attr.toLowerCase() === "text" );
                     },
 
                     // Position-in-collection
@@ -4166,11 +4166,11 @@
         _queueHooks: function (elem, type) {
             var key = type + "queueHooks";
             return jQuery._data(elem, key) || jQuery._data(elem, key, {
-                    empty: jQuery.Callbacks("once memory").add(function () {
-                        jQuery._removeData(elem, type + "queue");
-                        jQuery._removeData(elem, key);
-                    })
-                });
+                empty: jQuery.Callbacks("once memory").add(function () {
+                    jQuery._removeData(elem, type + "queue");
+                    jQuery._removeData(elem, key);
+                })
+            });
         }
     });
 
@@ -4992,7 +4992,7 @@
                 type = ( selector ? special.delegateType : special.bindType ) || type;
                 handlers = events[type] || [];
                 tmp = tmp[2] &&
-                    new RegExp("(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)");
+                new RegExp("(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)");
 
                 // Remove matching events
                 origCount = j = handlers.length;
@@ -5124,7 +5124,7 @@
 
                 // jQuery handler
                 handle = ( jQuery._data(cur, "events") || {} )[event.type] &&
-                    jQuery._data(cur, "handle");
+                jQuery._data(cur, "handle");
 
                 if (handle) {
                     handle.apply(cur, data);
@@ -5146,7 +5146,7 @@
 
                 if (
                     ( !special._default ||
-                        special._default.apply(eventPath.pop(), data) === false
+                    special._default.apply(eventPath.pop(), data) === false
                     ) && acceptData(elem)
                 ) {
 
@@ -5375,11 +5375,11 @@
                     body = eventDoc.body;
 
                     event.pageX = original.clientX +
-                        ( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) -
-                        ( doc && doc.clientLeft || body && body.clientLeft || 0 );
+                    ( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) -
+                    ( doc && doc.clientLeft || body && body.clientLeft || 0 );
                     event.pageY = original.clientY +
-                        ( doc && doc.scrollTop || body && body.scrollTop || 0 ) -
-                        ( doc && doc.clientTop || body && body.clientTop || 0 );
+                    ( doc && doc.scrollTop || body && body.scrollTop || 0 ) -
+                    ( doc && doc.clientTop || body && body.clientTop || 0 );
                 }
 
                 // Add relatedTarget, if necessary
@@ -6539,14 +6539,14 @@
 
         container = document.createElement("div");
         container.style.cssText = "border:0;width:8px;height:0;top:0;left:-9999px;" +
-            "padding:0;margin-top:1px;position:absolute";
+        "padding:0;margin-top:1px;position:absolute";
         div.innerHTML = "";
         container.appendChild(div);
 
         // Support: Firefox<29, Android 2.3
         // Vendor-prefix box-sizing
         support.boxSizing = div.style.boxSizing === "" || div.style.MozBoxSizing === "" ||
-            div.style.WebkitBoxSizing === "";
+        div.style.WebkitBoxSizing === "";
 
         jQuery.extend(support, {
             reliableHiddenOffsets: function () {
@@ -7019,7 +7019,7 @@
             // we need the check for style in case a browser which returns unreliable values
             // for getComputedStyle silently falls back to the reliable elem.style
             valueIsBorderBox = isBorderBox &&
-                ( support.boxSizingReliable() || val === elem.style[name] );
+            ( support.boxSizingReliable() || val === elem.style[name] );
 
             // Normalize "", auto, and prepare for extra
             val = parseFloat(val) || 0;
@@ -7027,14 +7027,14 @@
 
         // use the active box-sizing model to add/subtract irrelevant styles
         return ( val +
-                augmentWidthOrHeight(
-                    elem,
-                    name,
-                    extra || ( isBorderBox ? "border" : "content" ),
-                    valueIsBorderBox,
-                    styles
-                )
-            ) + "px";
+        augmentWidthOrHeight(
+            elem,
+            name,
+            extra || ( isBorderBox ? "border" : "content" ),
+            valueIsBorderBox,
+            styles
+        )
+        ) + "px";
     }
 
     jQuery.extend({
@@ -7093,7 +7093,7 @@
                 style = elem.style;
 
             name = jQuery.cssProps[origName] ||
-                ( jQuery.cssProps[origName] = vendorPropName(origName) || origName );
+            ( jQuery.cssProps[origName] = vendorPropName(origName) || origName );
 
             // gets hook for the prefixed version
             // followed by the unprefixed version
@@ -7160,7 +7160,7 @@
 
             // Make sure that we're working with the right name
             name = jQuery.cssProps[origName] ||
-                ( jQuery.cssProps[origName] = vendorPropName(origName) || origName );
+            ( jQuery.cssProps[origName] = vendorPropName(origName) || origName );
 
             // gets hook for the prefixed version
             // followed by the unprefixed version
@@ -7228,8 +7228,8 @@
 
                 // IE uses filters for opacity
                 return ropacity.test(( computed && elem.currentStyle ?
-                        elem.currentStyle.filter :
-                        elem.style.filter ) || "") ?
+                    elem.currentStyle.filter :
+                    elem.style.filter ) || "") ?
                 ( 0.01 * parseFloat(RegExp.$1) ) + "" :
                     computed ? "1" : "";
             },
@@ -7284,20 +7284,20 @@
         function (elem, computed) {
             if (computed) {
                 return (
-                        parseFloat(curCSS(elem, "marginLeft")) ||
+                parseFloat(curCSS(elem, "marginLeft")) ||
 
-                            // Support: IE<=11+
-                            // Running getBoundingClientRect on a disconnected node in IE throws an error
-                            // Support: IE8 only
-                            // getClientRects() errors on disconnected elems
-                        ( jQuery.contains(elem.ownerDocument, elem) ?
-                            elem.getBoundingClientRect().left -
-                            swap(elem, {marginLeft: 0}, function () {
-                                return elem.getBoundingClientRect().left;
-                            }) :
-                                0
-                        )
-                    ) + "px";
+                    // Support: IE<=11+
+                    // Running getBoundingClientRect on a disconnected node in IE throws an error
+                    // Support: IE8 only
+                    // getClientRects() errors on disconnected elems
+                ( jQuery.contains(elem.ownerDocument, elem) ?
+                elem.getBoundingClientRect().left -
+                swap(elem, {marginLeft: 0}, function () {
+                    return elem.getBoundingClientRect().left;
+                }) :
+                    0
+                )
+                ) + "px";
             }
         }
     );
@@ -8199,7 +8199,7 @@
             if (!arguments.length) {
                 if (elem) {
                     hooks = jQuery.valHooks[elem.type] ||
-                        jQuery.valHooks[elem.nodeName.toLowerCase()];
+                    jQuery.valHooks[elem.nodeName.toLowerCase()];
 
                     if (
                         hooks &&
@@ -8408,7 +8408,7 @@
             if (nType !== 1 || !jQuery.isXMLDoc(elem)) {
                 name = name.toLowerCase();
                 hooks = jQuery.attrHooks[name] ||
-                    ( jQuery.expr.match.bool.test(name) ? boolHook : nodeHook );
+                ( jQuery.expr.match.bool.test(name) ? boolHook : nodeHook );
             }
 
             if (value !== undefined) {
@@ -8802,7 +8802,7 @@
                 while (( elem = this[i++] )) {
                     curValue = getClass(elem);
                     cur = elem.nodeType === 1 &&
-                        ( " " + curValue + " " ).replace(rclass, " ");
+                    ( " " + curValue + " " ).replace(rclass, " ");
 
                     if (cur) {
                         j = 0;
@@ -8846,7 +8846,7 @@
 
                     // This expression is here for better compressibility (see addClass)
                     cur = elem.nodeType === 1 &&
-                        ( " " + curValue + " " ).replace(rclass, " ");
+                    ( " " + curValue + " " ).replace(rclass, " ");
 
                     if (cur) {
                         j = 0;
@@ -9283,7 +9283,7 @@
 
                                 // If prev can be converted to accepted input
                                 conv = converters[prev + " " + tmp[0]] ||
-                                    converters["* " + tmp[0]];
+                                converters["* " + tmp[0]];
                                 if (conv) {
 
                                     // Condense equivalence converters
@@ -9578,9 +9578,9 @@
             if (s.crossDomain == null) {
                 parts = rurl.exec(s.url.toLowerCase());
                 s.crossDomain = !!( parts &&
-                    ( parts[1] !== ajaxLocParts[1] || parts[2] !== ajaxLocParts[2] ||
-                    ( parts[3] || ( parts[1] === "http:" ? "80" : "443" ) ) !==
-                    ( ajaxLocParts[3] || ( ajaxLocParts[1] === "http:" ? "80" : "443" ) ) )
+                ( parts[1] !== ajaxLocParts[1] || parts[2] !== ajaxLocParts[2] ||
+                ( parts[3] || ( parts[1] === "http:" ? "80" : "443" ) ) !==
+                ( ajaxLocParts[3] || ( ajaxLocParts[1] === "http:" ? "80" : "443" ) ) )
                 );
             }
 
@@ -10085,8 +10085,8 @@
 
                     // Use .is(":disabled") so that fieldset[disabled] works
                     return this.name && !jQuery(this).is(":disabled") &&
-                        rsubmittable.test(this.nodeName) && !rsubmitterTypes.test(type) &&
-                        ( this.checked || !rcheckableType.test(type) );
+                    rsubmittable.test(this.nodeName) && !rsubmitterTypes.test(type) &&
+                    ( this.checked || !rcheckableType.test(type) );
                 })
                 .map(function (i, elem) {
                     var val = jQuery(this).val();
@@ -10132,7 +10132,7 @@
             // Although this check for six methods instead of eight
             // since IE also does not support "trace" and "connect"
             return /^(get|post|head|put|delete|options)$/i.test(this.type) &&
-                createStandardXHR() || createActiveXHR();
+            createStandardXHR() || createActiveXHR();
         } :
 
         // For all other browsers, use the standard XMLHttpRequest object
@@ -10441,11 +10441,11 @@
 
         var callbackName, overwritten, responseContainer,
             jsonProp = s.jsonp !== false && ( rjsonp.test(s.url) ?
-                        "url" :
-                    typeof s.data === "string" &&
-                    ( s.contentType || "" )
-                        .indexOf("application/x-www-form-urlencoded") === 0 &&
-                    rjsonp.test(s.data) && "data"
+                    "url" :
+                typeof s.data === "string" &&
+                ( s.contentType || "" )
+                    .indexOf("application/x-www-form-urlencoded") === 0 &&
+                rjsonp.test(s.data) && "data"
                 );
 
         // Handle iff the expected data type is "jsonp" or we have a parameter to set
@@ -10547,8 +10547,8 @@
         // document.implementation stops scripts or inline event handlers from
         // being executed immediately
         context = context || ( support.createHTMLDocument ?
-                document.implementation.createHTMLDocument("") :
-                document );
+            document.implementation.createHTMLDocument("") :
+            document );
 
         var parsed = rsingleTag.exec(data),
             scripts = !keepScripts && [];
@@ -10629,10 +10629,10 @@
                 // but they are ignored because response was set above.
                 // If it fails, this function gets "jqXHR", "status", "error"
             }).always(callback && function (jqXHR, status) {
-                    self.each(function () {
-                        callback.apply(self, response || [jqXHR.responseText, status, jqXHR]);
-                    });
+                self.each(function () {
+                    callback.apply(self, response || [jqXHR.responseText, status, jqXHR]);
                 });
+            });
         }
 
         return this;
@@ -10688,7 +10688,7 @@
             curCSSTop = jQuery.css(elem, "top");
             curCSSLeft = jQuery.css(elem, "left");
             calculatePosition = ( position === "absolute" || position === "fixed" ) &&
-                jQuery.inArray("auto", [curCSSTop, curCSSLeft]) > -1;
+            jQuery.inArray("auto", [curCSSTop, curCSSLeft]) > -1;
 
             // need to be able to calculate position if either top or left
             // is auto and position is either absolute or fixed
@@ -10789,9 +10789,9 @@
                 // Add offsetParent borders
                 // Subtract offsetParent scroll positions
                 parentOffset.top += jQuery.css(offsetParent[0], "borderTopWidth", true) -
-                    offsetParent.scrollTop();
+                offsetParent.scrollTop();
                 parentOffset.left += jQuery.css(offsetParent[0], "borderLeftWidth", true) -
-                    offsetParent.scrollLeft();
+                offsetParent.scrollLeft();
             }
 
             // Subtract parent offsets and element margins

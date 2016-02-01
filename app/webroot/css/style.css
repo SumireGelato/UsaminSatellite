@@ -17,6 +17,10 @@ body {
     display: none;
 }
 
+#levelMax {
+    display: none;
+}
+
 /*#cardArt:hover .awkSRCardImage {
     display: block;
 }

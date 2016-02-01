@@ -562,6 +562,61 @@ class CakeRequest implements ArrayAccess
     }
 
     /**
+     * Parse Accept* headers with qualifier options.
+     *
+     * Only qualifiers will be extracted, any other accept extensions will be
+     * discarded as they are not frequently used.
+     *
+     * @param string $header Header to parse.
+     * @return array
+     */
+    protected static function _parseAcceptWithQualifier($header)
+    {
+        $accept = array();
+        $header = explode(',', $header);
+        foreach (array_filter($header) as $value) {
+            $prefValue = '1.0';
+            $value = trim($value);
+
+            $semiPos = strpos($value, ';');
+            if ($semiPos !== false) {
+                $params = explode(';', $value);
+                $value = trim($params[0]);
+                foreach ($params as $param) {
+                    $qPos = strpos($param, 'q=');
+                    if ($qPos !== false) {
+                        $prefValue = substr($param, $qPos + 2);
+                    }
+                }
+            }
+
+            if (!isset($accept[$prefValue])) {
+                $accept[$prefValue] = array();
+            }
+            if ($prefValue) {
+                $accept[$prefValue][] = $value;
+            }
+        }
+        krsort($accept);
+        return $accept;
+    }
+
+    /**
+     * Read an HTTP header from the Request information.
+     *
+     * @param string $name Name of the header you want.
+     * @return mixed Either false on no header being set or the value of the header.
+     */
+    public static function header($name)
+    {
+        $name = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
+        if (isset($_SERVER[$name])) {
+            return $_SERVER[$name];
+        }
+        return false;
+    }
+
+    /**
      * Get the IP the client is using, or says they are using.
      *
      * @param bool $safe Use safe = false when you think the user might manipulate their HTTP_CLIENT_IP
@@ -884,61 +939,6 @@ class CakeRequest implements ArrayAccess
     public function parseAccept()
     {
         return $this->_parseAcceptWithQualifier($this->header('accept'));
-    }
-
-    /**
-     * Parse Accept* headers with qualifier options.
-     *
-     * Only qualifiers will be extracted, any other accept extensions will be
-     * discarded as they are not frequently used.
-     *
-     * @param string $header Header to parse.
-     * @return array
-     */
-    protected static function _parseAcceptWithQualifier($header)
-    {
-        $accept = array();
-        $header = explode(',', $header);
-        foreach (array_filter($header) as $value) {
-            $prefValue = '1.0';
-            $value = trim($value);
-
-            $semiPos = strpos($value, ';');
-            if ($semiPos !== false) {
-                $params = explode(';', $value);
-                $value = trim($params[0]);
-                foreach ($params as $param) {
-                    $qPos = strpos($param, 'q=');
-                    if ($qPos !== false) {
-                        $prefValue = substr($param, $qPos + 2);
-                    }
-                }
-            }
-
-            if (!isset($accept[$prefValue])) {
-                $accept[$prefValue] = array();
-            }
-            if ($prefValue) {
-                $accept[$prefValue][] = $value;
-            }
-        }
-        krsort($accept);
-        return $accept;
-    }
-
-    /**
-     * Read an HTTP header from the Request information.
-     *
-     * @param string $name Name of the header you want.
-     * @return mixed Either false on no header being set or the value of the header.
-     */
-    public static function header($name)
-    {
-        $name = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
-        if (isset($_SERVER[$name])) {
-            return $_SERVER[$name];
-        }
-        return false;
     }
 
     /**

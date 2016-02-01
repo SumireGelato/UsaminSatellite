@@ -560,7 +560,7 @@ if (typeof jQuery === 'undefined') {
         this.$element = $(element)
         this.options = $.extend({}, Collapse.DEFAULTS, options)
         this.$trigger = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
-            '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+        '[data-toggle="collapse"][data-target="#' + element.id + '"]')
         this.transitioning = null
 
         if (this.options.parent) {
@@ -1675,7 +1675,7 @@ if (typeof jQuery === 'undefined') {
         var o = this.options
 
         title = $e.attr('data-original-title')
-            || (typeof o.title == 'function' ? o.title.call($e[0]) : o.title)
+        || (typeof o.title == 'function' ? o.title.call($e[0]) : o.title)
 
         return title
     }
@@ -1845,9 +1845,9 @@ if (typeof jQuery === 'undefined') {
         var o = this.options
 
         return $e.attr('data-content')
-            || (typeof o.content == 'function' ?
-                o.content.call($e[0]) :
-                o.content)
+        || (typeof o.content == 'function' ?
+            o.content.call($e[0]) :
+            o.content)
     }
 
     Popover.prototype.arrow = function () {
@@ -1948,9 +1948,9 @@ if (typeof jQuery === 'undefined') {
                 var $href = /^#./.test(href) && $(href)
 
                 return ($href
-                    && $href.length
-                    && $href.is(':visible')
-                    && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+                && $href.length
+                && $href.is(':visible')
+                && [[$href[offsetMethod]().top + offsetBase, href]]) || null
             })
             .sort(function (a, b) {
                 return a[0] - b[0]

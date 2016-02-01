@@ -84,9 +84,9 @@ $num3 = mt_rand(1, 46); //Songs
 
 <hr class="featurette-divider"/>
 <?php
-$num1 = mt_rand(1, 357);
-$num2 = mt_rand(1, 357);
-$num3 = mt_rand(1, 357);
+$num1 = mt_rand(1, 373);
+$num2 = mt_rand(1, 373);
+$num3 = mt_rand(1, 373);
 ?>
 <div class="row" id="puchis">
     <div class="col-lg-2">
@@ -109,7 +109,8 @@ $num3 = mt_rand(1, 357);
         </div>
         <div class="news">
             <?php
-            foreach ($news as $newsItem) { ?>
+            foreach ($news as $newsItem) {
+                ?>
                 <p>
                     <?php
                     echo $this->Html->image($newsItem['News']['category'] . '.png', array('class' => 'newsItem')) . ' ' .
@@ -117,7 +118,7 @@ $num3 = mt_rand(1, 357);
                             array('controller' => 'news', 'action' => 'view', $newsItem['News']['id']), array('escape' => false));
                     ?>
                 </p>
-                <?php
+            <?php
             }
             ?>
         </div>

@@ -259,6 +259,25 @@ class CakeTime
     }
 
     /**
+     * Converts a string representing the format for the function strftime and returns a
+     * Windows safe and i18n aware format.
+     *
+     * @param string $format Format with specifiers for strftime function.
+     *    Accepts the special specifier %S which mimics the modifier S for date()
+     * @param string $time UNIX timestamp
+     * @return string Windows safe and date() function compatible format for strftime
+     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/time.html#TimeHelper::convertSpecifiers
+     */
+    public static function convertSpecifiers($format, $time = null)
+    {
+        if (!$time) {
+            $time = time();
+        }
+        static::$_time = $time;
+        return preg_replace_callback('/\%(\w+)/', array('CakeTime', '_translateSpecifier'), $format);
+    }
+
+    /**
      * Returns a formatted descriptive date string for given datetime string.
      *
      * If the given date is today, the returned string could be "Today, 16:54".
@@ -1126,25 +1145,6 @@ class CakeTime
                 break;
         }
         return $specifier[0];
-    }
-
-    /**
-     * Converts a string representing the format for the function strftime and returns a
-     * Windows safe and i18n aware format.
-     *
-     * @param string $format Format with specifiers for strftime function.
-     *    Accepts the special specifier %S which mimics the modifier S for date()
-     * @param string $time UNIX timestamp
-     * @return string Windows safe and date() function compatible format for strftime
-     * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/time.html#TimeHelper::convertSpecifiers
-     */
-    public static function convertSpecifiers($format, $time = null)
-    {
-        if (!$time) {
-            $time = time();
-        }
-        static::$_time = $time;
-        return preg_replace_callback('/\%(\w+)/', array('CakeTime', '_translateSpecifier'), $format);
     }
 
     /**

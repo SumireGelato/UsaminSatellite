@@ -270,8 +270,8 @@
             }), c.getElementsByTagName = gb(function (a) {
                 return a.appendChild(e.createComment("")), !a.getElementsByTagName("*").length
             }), c.getElementsByClassName = Y.test(e.getElementsByClassName) && gb(function (a) {
-                    return a.innerHTML = "<div class='a'></div><div class='a i'></div>", a.firstChild.className = "i", 2 === a.getElementsByClassName("i").length
-                }), c.getById = gb(function (a) {
+                return a.innerHTML = "<div class='a'></div><div class='a i'></div>", a.firstChild.className = "i", 2 === a.getElementsByClassName("i").length
+            }), c.getById = gb(function (a) {
                 return m.appendChild(a).id = s, !e.getElementsByName || !e.getElementsByName(s).length
             }), c.getById ? (d.find.ID = function (a, b) {
                 if (typeof b.getElementById !== A && n) {
@@ -299,8 +299,8 @@
                 }
                 return f
             }, d.find.CLASS = c.getElementsByClassName && function (a, b) {
-                    return typeof b.getElementsByClassName !== A && n ? b.getElementsByClassName(a) : void 0
-                }, p = [], o = [], (c.qsa = Y.test(e.querySelectorAll)) && (gb(function (a) {
+                return typeof b.getElementsByClassName !== A && n ? b.getElementsByClassName(a) : void 0
+            }, p = [], o = [], (c.qsa = Y.test(e.querySelectorAll)) && (gb(function (a) {
                 a.innerHTML = "<select t=''><option selected=''></option></select>", a.querySelectorAll("[t^='']").length && o.push("[*^$]=" + K + "*(?:''|\"\")"), a.querySelectorAll("[selected]").length || o.push("\\[" + K + "*(?:value|" + J + ")"), a.querySelectorAll(":checked").length || o.push(":checked")
             }), gb(function (a) {
                 var b = e.createElement("input");
@@ -395,8 +395,8 @@
                 }, CLASS: function (a) {
                     var b = w[a + " "];
                     return b || (b = new RegExp("(^|" + K + ")" + a + "(" + K + "|$)")) && w(a, function (a) {
-                            return b.test("string" == typeof a.className && a.className || typeof a.getAttribute !== A && a.getAttribute("class") || "")
-                        })
+                        return b.test("string" == typeof a.className && a.className || typeof a.getAttribute !== A && a.getAttribute("class") || "")
+                    })
                 }, ATTR: function (a, b, c) {
                     return function (d) {
                         var e = db.attr(d, a);
@@ -1064,10 +1064,10 @@
         }, _queueHooks: function (a, b) {
             var c = b + "queueHooks";
             return n._data(a, c) || n._data(a, c, {
-                    empty: n.Callbacks("once memory").add(function () {
-                        n._removeData(a, b + "queue"), n._removeData(a, c)
-                    })
+                empty: n.Callbacks("once memory").add(function () {
+                    n._removeData(a, b + "queue"), n._removeData(a, c)
                 })
+            })
         }
     }), n.fn.extend({
         queue: function (a, b) {
@@ -2563,8 +2563,8 @@
         }).done(function (a) {
             e = arguments, g.html(d ? n("<div>").append(n.parseHTML(a)).find(d) : a)
         }).complete(c && function (a, b) {
-                g.each(c, e || [a.responseText, b, a])
-            }), this
+            g.each(c, e || [a.responseText, b, a])
+        }), this
     }, n.expr.filters.animated = function (a) {
         return n.grep(n.timers, function (b) {
             return a === b.elem

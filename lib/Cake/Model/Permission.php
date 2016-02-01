@@ -85,10 +85,10 @@ class Permission extends AppModel
 
         if (!$aroPath) {
             $this->log(__d('cake_dev',
-                "%s - Failed ARO node lookup in permissions check. Node references:\nAro: %s\nAco: %s",
-                'DbAcl::check()',
-                print_r($aro, true),
-                print_r($aco, true)),
+                    "%s - Failed ARO node lookup in permissions check. Node references:\nAro: %s\nAco: %s",
+                    'DbAcl::check()',
+                    print_r($aro, true),
+                    print_r($aco, true)),
                 E_USER_WARNING
             );
             return false;
@@ -96,10 +96,10 @@ class Permission extends AppModel
 
         if (!$acoPath) {
             $this->log(__d('cake_dev',
-                "%s - Failed ACO node lookup in permissions check. Node references:\nAro: %s\nAco: %s",
-                'DbAcl::check()',
-                print_r($aro, true),
-                print_r($aco, true)),
+                    "%s - Failed ACO node lookup in permissions check. Node references:\nAro: %s\nAco: %s",
+                    'DbAcl::check()',
+                    print_r($aro, true),
+                    print_r($aco, true)),
                 E_USER_WARNING
             );
             return false;

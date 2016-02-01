@@ -75,7 +75,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
                                 array('class' => 'navbar-brand', 'id' => 'showText'));
                             echo $this->Html->link($this->Html->image('usamin-logo.png',
-                                array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'),
+                                    array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'),
                                 array('class' => 'navbar-brand', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0'));
                         } else {
                             echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
@@ -135,7 +135,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
     <!--    <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
-            <p>&copy;  &middot;</p>
+            <p>&copy; &middot;</p>
         </footer>-->
 </div>
 <!-- End get Content -->
