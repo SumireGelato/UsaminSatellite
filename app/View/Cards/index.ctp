@@ -8,35 +8,40 @@ if (!$this->request->is('ajax'))
 <!--Search and filter bar-->
 <div class="row">
     <div class="col-lg-12">
-        <nav class="navbar navbar-default search">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <h4>Search</h4>
+
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#hide" aria-controls="home" role="tab" data-toggle="tab">Hide</a></li>
+            <li role="presentation"><a href="#search" aria-controls="profile" role="tab" data-toggle="tab">Search</a></li>
+            <li role="presentation"><a href="#filter" aria-controls="messages" role="tab" data-toggle="tab">Filter</a></li>
+            <li role="presentation"><a href="#sort" aria-controls="settings" role="tab" data-toggle="tab">Sort</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="hide"></div>
+
+                <div role="tabpanel" class="tab-pane" id="search">
+                    <div class="container well well-sm">
+                        I'm a Search Box!
+                    </div>
                 </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Go</button>
-                    </form>
+                <div role="tabpanel" class="tab-pane" id="filter">
+                    <div class="container well well-sm">
+                        I'm a Filter Form!
+                    </div>
                 </div>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container-fluid -->
-        </nav>
+
+                <div role="tabpanel" class="tab-pane" id="sort">
+                    <div class="container well well-sm">
+                        I'm a Sort Dropdown!
+                    </div>
+                </div>
+          </div>
     </div>
 </div>
+
 <!--Cards Gallery-->
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 <?php
