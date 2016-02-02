@@ -28,8 +28,8 @@ CREATE TABLE idols (
   hometown    VARCHAR(50)   NOT NULL,
   type        VARCHAR(10)   NOT NULL,
   cv          VARCHAR(255)  NOT NULL,
-  profilePic  VARCHAR(255)  NOT NULL,
-  puchiPic    VARCHAR(255)  NOT NULL,
+  profilePic  VARCHAR(255),
+  puchiPic    VARCHAR(255),
   CONSTRAINT idols_pk PRIMARY KEY (id)
 );
 
@@ -41,7 +41,7 @@ CREATE TABLE songs (
   type        VARCHAR(10)  NOT NULL,
   bpm         INT          NOT NULL,
   unlockCon   TEXT         NOT NULL,
-  coverArt    VARCHAR(255) NOT NULL,
+  coverArt    VARCHAR(255),
   debutLvl    INT          NOT NULL,
   debutStam   INT          NOT NULL,
   debutNotes  INT          NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE events (
   t5        INT,
   t6        INT,
   t7        INT,
-  pic       CHARACTER(255) NOT NULL,
+  pic       CHARACTER(255),
   CONSTRAINT events_pk PRIMARY KEY (id)
 );
 
@@ -114,8 +114,8 @@ CREATE TABLE cards (
   centerSkillText  CHARACTER(255) NOT NULL,
   specialSkillType CHARACTER(50)  NOT NULL,
   specialSkillText TEXT           NOT NULL,
-  baseArt          CHARACTER(255) NOT NULL,
-  awkArt           CHARACTER(255) NOT NULL,
+  baseArt          CHARACTER(255),
+  awkArt           CHARACTER(255),
   CONSTRAINT cards_pk PRIMARY KEY (id)
 );
 
@@ -162,12 +162,12 @@ INSERT INTO news (id, user_id, title, category, body, created, isPublished) VALU
 INSERT INTO idols (id, eName, jName, age, height, weight, birthday, bloodType, bwh, hobbies, writingHand, horoscope, hometown, type, cv, profilePic, puchiPic)
 VALUES
   (1, 'Uzuki Shimamura', '島村卯月', '17', 159, 45, 'April 24', 'O', '83/59/87', 'Long Phone Calls with friends', 'Right',
-   'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'uzuki.png', 'uzuki.png'),
+   'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'uzuki1.png', 'uzuki2.png'),
   (2, 'Rin Shibuya', '渋谷凜', '15', 165, 44, 'August 10', 'B', '80/56/81', 'Dog Walking', 'Right', 'Leo', 'Tokyo', 'Cool',
-   'Ayaka Fukuhara', 'rin.png', 'rin.png'),
+   'Ayaka Fukuhara', 'rin1.png', 'rin2.png'),
   (3, 'Mio Honda', '本田未央', 15, 161, 46, 'December 1', 'B', '84/58/87', 'Shopping', 'Right', 'Sagittarius', 'Chiba',
    'Passion',
-   'Sayuri Hara', 'mio.png', 'mio.png');
+   'Sayuri Hara', 'mio1.png', 'mio2.png');
 
 INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, type, t1, t2, t3, t4, t5, t6, t7, pic)
 VALUES
