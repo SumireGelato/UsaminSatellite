@@ -3319,6 +3319,8 @@ input[type="search"] {
 
 .form-group {
     margin-bottom: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .radio,
@@ -3327,6 +3329,7 @@ input[type="search"] {
     display: block;
     margin-top: 10px;
     margin-bottom: 10px;
+    /*margin-right: 20px;*/
 }
 
 .radio label,
@@ -5125,7 +5128,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar {
     position: relative;
     min-height: 50px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     border: 1px solid transparent;
 }
 

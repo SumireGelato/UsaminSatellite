@@ -11,10 +11,10 @@ if (!$this->request->is('ajax'))
 
           <!-- Nav tabs -->
           <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#hide" aria-controls="home" role="tab" data-toggle="tab">Hide</a></li>
-            <li role="presentation"><a href="#search" aria-controls="profile" role="tab" data-toggle="tab">Search</a></li>
-            <li role="presentation"><a href="#filter" aria-controls="messages" role="tab" data-toggle="tab">Filter</a></li>
-            <li role="presentation"><a href="#sort" aria-controls="settings" role="tab" data-toggle="tab">Sort</a></li>
+            <li role="presentation" class="active"><a href="#hide" aria-controls="hide" role="tab" data-toggle="tab">Hide</a></li>
+            <li role="presentation"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">Search</a></li>
+            <li role="presentation"><a href="#filter" aria-controls="filter" role="tab" data-toggle="tab">Filter</a></li>
+            <li role="presentation"><a href="#sort" aria-controls="sort" role="tab" data-toggle="tab">Sort</a></li>
           </ul>
 
           <!-- Tab panes -->
@@ -22,21 +22,91 @@ if (!$this->request->is('ajax'))
                 <div role="tabpanel" class="tab-pane active" id="hide"></div>
 
                 <div role="tabpanel" class="tab-pane" id="search">
-                    <div class="container well well-sm">
-                        I'm a Search Box!
-                    </div>
+                        <?php
+                            echo $this->Form->create('Search', array(
+                                'inputDefaults' => array(
+                                    'div' => 'form-group',
+                                    'label' => false,
+                                    'wrapInput' => false,
+                                    'class' => 'form-control'
+                                ),
+                                'class' => 'container well well-sm form-inline',
+                                'style' => 'width:20%;'
+                            ));
+                            echo $this->Form->input('search');
+                            echo $this->Form->submit('Search', array(
+                                'div' => 'form-group',
+                                'class' => 'btn btn-default'
+                            ));
+                            echo $this->Form->end();
+                        ?>
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="filter">
-                    <div class="container well well-sm">
-                        I'm a Filter Form!
-                    </div>
+                        <?php
+                            echo $this->Form->create('Filter', array(
+                                'inputDefaults' => array(
+                                    'div' => 'form-group',
+                                    'label' => false,
+                                    'wrapInput' => false,
+                                    'class' => 'form-control'
+                                ),
+                                'class' => 'container well well-sm form-inline',
+                                'style' => 'width:20%;'
+                            ));
+                            echo $this->Form->input('search');
+                            echo $this->Form->submit('Search', array(
+                                'div' => 'form-group',
+                                'class' => 'btn btn-default'
+                            ));
+                            echo $this->Form->end();
+                        ?>
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="sort">
-                    <div class="container well well-sm">
-                        I'm a Sort Dropdown!
-                    </div>
+                        <?php
+                            echo $this->Form->create('Sort', array(
+                                'inputDefaults' => array(
+                                    'div' => 'form-group',
+                                    'label' => false,
+                                    'wrapInput' => false,
+                                    'class' => 'form-control'
+                                ),
+                                'class' => 'container well well-sm form-inline',
+                                'style' => ''
+                            ));
+                            echo '<span class="glyphicon glyphicon-sort"></span>';
+                            echo '<p style="font-weight: bold; display: inline">  Sort Cards</p>';
+                            echo $this->Form->input('sort', array(
+                                'options' => array(
+                                    'Release Date', 'Rarity', 'Type', 'Idol'),
+                                'selected' => 'Release Date'
+                            ));
+                            echo $this->Form->input('order', array(
+                                'class' => false,
+                                'label' => 'Reverse order',
+                                'type' => 'checkbox',
+                                'checked' => true
+                            ));
+                            echo $this->Form->input('statSort', array(
+                                'options' => array(
+                                    'Vocal - Base Lvl 1', 'Vocal - Base Max Lvl', 'Vocal - Awakened Lvl 1', 'Vocal - Awakened Max Lvl',
+                                    'Dance - Base Lvl 1', 'Dance - Base Max Lvl', 'Dance - Awakened Lvl 1', 'Dance - Awakened Max Lvl',
+                                    'Visual - Base Lvl 1', 'Visual - Base Max Lvl', 'Visual - Awakened Lvl 1', 'Visual - Awakened Max Lvl',
+                                    'Total - Base Lvl 1', 'Total - Base Max Lvl', 'Total - Awakened Lvl 1', 'Total - Awakened Max Lvl'),
+                                'empty' => 'Card Statistics Sorting (Optional)'
+                            ));
+                            echo $this->Form->input('statsOrder', array(
+                                'class' => false,
+                                'label' => 'Reverse order',
+                                'type' => 'checkbox'
+                            ));
+                            echo $this->Form->submit('Sort', array(
+                                'div' => 'form-group',
+                                'class' => 'btn btn-default'
+                            ));
+                            echo $this->Form->end();
+                        ?>
                 </div>
           </div>
     </div>
