@@ -33,7 +33,9 @@ if (!$this->request->is('ajax'))
                                 'class' => 'container well well-sm form-inline',
                                 'style' => 'width:20%;'
                             ));
-                            echo $this->Form->input('search');
+                            echo '<span class="glyphicon glyphicon-search"></span>';
+                            echo '<p style="font-weight: bold; display: inline">  Search</p>';
+                            echo $this->Form->input('search', array('placeholder' => 'Search'));
                             echo $this->Form->submit('Search', array(
                                 'div' => 'form-group',
                                 'class' => 'btn btn-default'
