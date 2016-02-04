@@ -5,116 +5,152 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 if (!$this->request->is('ajax'))
 {
 ?>
-<!--Search and filter bar-->
-<div class="row">
-    <div class="col-lg-12">
+    <!--Search and filter bar-->
+    <div class="row">
+        <div class="col-lg-12">
 
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#hide" aria-controls="hide" role="tab" data-toggle="tab">Hide</a></li>
-            <li role="presentation"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">Search</a></li>
-            <li role="presentation"><a href="#filter" aria-controls="filter" role="tab" data-toggle="tab">Filter</a></li>
-            <li role="presentation"><a href="#sort" aria-controls="sort" role="tab" data-toggle="tab">Sort</a></li>
-          </ul>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#hide" aria-controls="hide" role="tab" data-toggle="tab">Hide</a></li>
+                <li role="presentation"><a href="#filter" aria-controls="filter" role="tab" data-toggle="tab">Filter</a></li>
+                <li role="presentation"><a href="#sort" aria-controls="sort" role="tab" data-toggle="tab">Sort</a></li>
+            </ul>
 
-          <!-- Tab panes -->
-          <div class="tab-content">
+            <!-- Tab panes -->
+            <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="hide"></div>
 
-                <div role="tabpanel" class="tab-pane" id="search">
-                        <?php
-                            echo $this->Form->create('Search', array(
-                                'inputDefaults' => array(
-                                    'div' => 'form-group',
-                                    'label' => false,
-                                    'wrapInput' => false,
-                                    'class' => 'form-control'
-                                ),
-                                'class' => 'container well well-sm form-inline',
-                                'style' => 'width:20%;'
-                            ));
-                            echo '<span class="glyphicon glyphicon-search"></span>';
-                            echo '<p style="font-weight: bold; display: inline">  Search</p>';
-                            echo $this->Form->input('search', array('placeholder' => 'Search'));
-                            echo $this->Form->submit('Search', array(
-                                'div' => 'form-group',
-                                'class' => 'btn btn-default'
-                            ));
-                            echo $this->Form->end();
-                        ?>
-                </div>
-
                 <div role="tabpanel" class="tab-pane" id="filter">
-                        <?php
-                            echo $this->Form->create('Filter', array(
-                                'inputDefaults' => array(
-                                    'div' => 'form-group',
-                                    'label' => false,
-                                    'wrapInput' => false,
-                                    'class' => 'form-control'
-                                ),
-                                'class' => 'container well well-sm form-inline',
-                                'style' => 'width:20%;'
-                            ));
-                            echo $this->Form->input('search');
-                            echo $this->Form->submit('Search', array(
-                                'div' => 'form-group',
-                                'class' => 'btn btn-default'
-                            ));
-                            echo $this->Form->end();
-                        ?>
+                    <?php
+                    echo $this->Form->create('Filter', array(
+                        'inputDefaults' => array(
+                            'div' => 'form-group',
+                            'label' => false,
+                            'wrapInput' => false,
+                            'class' => 'form-control'
+                        ),
+                        'class' => 'container well well-sm form-inline'
+                    ));
+                    echo '<span class="glyphicon glyphicon-search"></span>';
+                    echo '<p style="font-weight: bold; display: inline">  Filter</p>';
+
+                    $options = array(
+                        0 => array('name' => 'All', 'value' => 'all',
+                            'data-imagesrc' => $this->webroot.'img/all.png'),
+                        1 => array('name' => 'Cute', 'value' => 'cute',
+                            'data-imagesrc' => $this->webroot.'img/cute.png'),
+                        2 => array('name' => 'Cool', 'value' => 'cool',
+                            'data-imagesrc' => $this->webroot.'img/cool.png'),
+                        3 => array('name' => 'Passion', 'value' => 'passion',
+                            'data-imagesrc' => $this->webroot.'img/passion.png'));
+
+                    echo $this->Form->input('type', array(
+                        'type' => 'select',
+//                        'label' => 'Type',
+                        'id' => 'typeDropDown',
+                        'options' => $options
+                    ));
+
+                    echo '<button type="button" id="filterSort" class="btn btn-default" data-toggle="button"
+                            aria-pressed="false" autocomplete="off">Show Sorting Options</button>';
+                    echo $this->Form->submit('Go', array(
+                        'div' => 'form-group',
+                        'class' => 'btn btn-default',
+                    ));
+                    echo '<div id="filterSortForm" style="margin-top: 5px">';
+                    echo '<span class="glyphicon glyphicon-sort"></span>';
+                    echo '<p style="font-weight: bold; display: inline">  Sort</p>';
+                    echo $this->Form->input('sort', array(
+                        'options' => array(
+                            'release' => 'Release Date', 'rarity' => 'Rarity',
+                            'type' => 'Type', 'idol' => 'Idol'),
+                        'selected' => 'Release Date'
+                    ));
+                    echo $this->Form->input('order', array(
+                        'class' => false,
+                        'label' => 'Reverse order',
+                        'type' => 'checkbox',
+                        'checked' => true
+                    ));
+                    echo $this->Form->input('statSort', array(
+                        'options' => array(
+                            'vobasemin' => 'Vocal - Base Lvl 1', 'vobasemax' => 'Vocal - Base Max Lvl',
+                            'voawkmin' => 'Vocal - Awakened Lvl 1', 'voawkmax' => 'Vocal - Awakened Max Lvl',
+                            'dabasemin' => 'Dance - Base Lvl 1', 'dabasemax' => 'Dance - Base Max Lvl',
+                            'daawkmin' => 'Dance - Awakened Lvl 1', 'daawkmax' => 'Dance - Awakened Max Lvl',
+                            'vibasemin' => 'Visual - Base Lvl 1', 'vibasemax' => 'Visual - Base Max Lvl',
+                            'viawkmax' => 'Visual - Awakened Lvl 1', 'viawkmax' => 'Visual - Awakened Max Lvl',
+                            'totalbasemin' => 'Total - Base Lvl 1', 'totalbasemax' => 'Total - Base Max Lvl',
+                            'totalawkmin' => 'Total - Awakened Lvl 1', 'totalawkmax' => 'Total - Awakened Max Lvl'),
+                        'empty' => 'Card Statistics Sorting (Optional)'
+                    ));
+                    echo $this->Form->input('statsOrder', array(
+                        'class' => false,
+                        'hiddenField' => false,
+                        'label' => 'Reverse order',
+                        'type' => 'checkbox'
+                    ));
+                    echo $this->Form->end();
+                    echo '</div>';
+                    ?>
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="sort">
-                        <?php
-                            echo $this->Form->create('Sort', array(
-                                'inputDefaults' => array(
-                                    'div' => 'form-group',
-                                    'label' => false,
-                                    'wrapInput' => false,
-                                    'class' => 'form-control'
-                                ),
-                                'class' => 'container well well-sm form-inline',
-                                'style' => ''
-                            ));
-                            echo '<span class="glyphicon glyphicon-sort"></span>';
-                            echo '<p style="font-weight: bold; display: inline">  Sort Cards</p>';
-                            echo $this->Form->input('sort', array(
-                                'options' => array(
-                                    'Release Date', 'Rarity', 'Type', 'Idol'),
-                                'selected' => 'Release Date'
-                            ));
-                            echo $this->Form->input('order', array(
-                                'class' => false,
-                                'label' => 'Reverse order',
-                                'type' => 'checkbox',
-                                'checked' => true
-                            ));
-                            echo $this->Form->input('statSort', array(
-                                'options' => array(
-                                    'Vocal - Base Lvl 1', 'Vocal - Base Max Lvl', 'Vocal - Awakened Lvl 1', 'Vocal - Awakened Max Lvl',
-                                    'Dance - Base Lvl 1', 'Dance - Base Max Lvl', 'Dance - Awakened Lvl 1', 'Dance - Awakened Max Lvl',
-                                    'Visual - Base Lvl 1', 'Visual - Base Max Lvl', 'Visual - Awakened Lvl 1', 'Visual - Awakened Max Lvl',
-                                    'Total - Base Lvl 1', 'Total - Base Max Lvl', 'Total - Awakened Lvl 1', 'Total - Awakened Max Lvl'),
-                                'empty' => 'Card Statistics Sorting (Optional)'
-                            ));
-                            echo $this->Form->input('statsOrder', array(
-                                'class' => false,
-                                'label' => 'Reverse order',
-                                'type' => 'checkbox'
-                            ));
-                            echo $this->Form->submit('Sort', array(
-                                'div' => 'form-group',
-                                'class' => 'btn btn-default'
-                            ));
-                            echo $this->Form->end();
-                        ?>
+                    <?php
+                    echo $this->Form->create('Sort', array(
+                        'inputDefaults' => array(
+                            'div' => 'form-group',
+                            'label' => false,
+                            'wrapInput' => false,
+                            'class' => 'form-control'
+                        ),
+                        'class' => 'container well well-sm form-inline',
+                        'style' => ''
+                    ));
+                    echo '<span class="glyphicon glyphicon-sort"></span>';
+                    echo '<p style="font-weight: bold; display: inline">  Sort Cards</p>';
+                    echo $this->Form->input('sort', array(
+                        'options' => array(
+                            'release' => 'Release Date', 'rarity' => 'Rarity',
+                            'type' => 'Type', 'idol' => 'Idol'),
+                        'selected' => 'Release Date'
+                    ));
+                    echo $this->Form->input('order', array(
+                        'class' => false,
+                        'label' => 'Reverse order',
+                        'type' => 'checkbox',
+                        'checked' => true
+                    ));
+                    echo $this->Form->input('statSort', array(
+                        'options' => array(
+                            'vobasemin' => 'Vocal - Base Lvl 1', 'vobasemax' => 'Vocal - Base Max Lvl',
+                            'voawkmin' => 'Vocal - Awakened Lvl 1', 'voawkmax' => 'Vocal - Awakened Max Lvl',
+                            'dabasemin' => 'Dance - Base Lvl 1', 'dabasemax' => 'Dance - Base Max Lvl',
+                            'daawkmin' => 'Dance - Awakened Lvl 1', 'daawkmax' => 'Dance - Awakened Max Lvl',
+                            'vibasemin' => 'Visual - Base Lvl 1', 'vibasemax' => 'Visual - Base Max Lvl',
+                            'viawkmax' => 'Visual - Awakened Lvl 1', 'viawkmax' => 'Visual - Awakened Max Lvl',
+                            'totalbasemin' => 'Total - Base Lvl 1', 'totalbasemax' => 'Total - Base Max Lvl',
+                            'totalawkmin' => 'Total - Awakened Lvl 1', 'totalawkmax' => 'Total - Awakened Max Lvl'),
+                        'empty' => 'Card Statistics Sorting (Optional)'
+                    ));
+                    echo $this->Form->input('statsOrder', array(
+                        'class' => false,
+                        'hiddenField' => false,
+                        'label' => 'Reverse order',
+                        'type' => 'checkbox'
+                    ));
+                    echo $this->Form->submit('Sort', array(
+                        'div' => 'form-group',
+                        'class' => 'btn btn-default'
+                    ));
+                    echo $this->Form->end();
+                    ?>
                 </div>
-          </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<!--Cards Gallery-->
+    <!--Cards Gallery-->
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 <?php
 } // End Stuff you don't need if ajax request
@@ -183,14 +219,16 @@ if (!$this->request->is('ajax'))
                 array('controller' => 'idols',
                     'action' => 'index'
                 )
-            );*/?></p>
+            );*/
+?></p>
     </div>
     <div class="col-xs-6">
         <?php /*echo $this->Html->image('profiles/'.$card['Idol']['pic1'],
             array('alt' => 'Profile Picture',
                 'height' => '100%',
                 'width'=>'100%',
-                'style' => 'margin-top: -35px;'))*/?>
+                'style' => 'margin-top: -35px;'))*/
+?>
     </div>
 </div>
 <hr>-->
@@ -584,73 +622,99 @@ if ($numItems == 3) {
 
 <?php
 if ($this->Paginator->counter('{:pages}') > 1) {
-    $this->Paginator->options(array(
-        'url' => array(
-            'pass' => $totalItems
-        )
-    ));
-    echo $this->Paginator->next('Show More ...');
-    ?>
-    <script>
-        $(document).ready(function (e) {
-            var processing;
-            var url = $('.next a').attr('href');
-            $('.next').text('');
-            if (url == undefined) {
+$this->Paginator->options(array(
+    'url' => array(
+        'pass' => $totalItems
+    )
+));
+echo $this->Paginator->next('Show More ...');
+?>
+<script>
+    //Infinite Scrolling
+    $(document).ready(function (e) {
+        var processing;
+        var url = $('.next a').attr('href');
+        $('.next').text('');
+        if (url == undefined) {
+            return false;
+        }
+        $(document).scroll(function (e) {
+            if (processing) {
                 return false;
             }
-            $(document).scroll(function (e) {
-                if (processing) {
-                    return false;
-                }
-                if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
-                    processing = true;
-                    $(this).remove();
-                    $.get(url, function (data) {
-                        $('#accordion').append(data);
-                    });
-                }
-            });
+            if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
+                processing = true;
+                $(this).remove();
+                $.get(url, function (data) {
+                    $('#accordion').append(data);
+                });
+            }
         });
+    });
 
-        $(document).ready(function () {
-            $("[id=regawk1]").click(function () {//Regular
-                $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "none");
-                $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "inherit");
-                $(this).closest("div.panel-body").find(".base").css("display", "inherit");
-                $(this).closest("div.panel-body").find(".awakened").css("display", "none");
-            });
-            $("[id=regawk2]").click(function () {//Awakened
-                $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "inherit");
-                $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "none");
-                $(this).closest("div.panel-body").find(".base").css("display", "none");
-                $(this).closest("div.panel-body").find(".awakened").css("display", "inherit");
-            });
+    //Filter show/hide sort
+    $(document).ready(function() {
+       $("#filterSort").click(function() {
+           if (($("#filterSort").attr('aria-pressed')) == "false") {
+               $("#filterSortForm").css("display", "Block");
+               $("#filterSort").text("Hide Sort Options");
+           }
+           else {
+               $("#filterSortForm").css("display", "None");
+               $("#filterSort").text("Show Sort Options");
+           }
+       });
+    });
+
+    //Filter Dropboxes
+    $(document).ready(function() {
+        $("#typeDropDown").ddslick({
+            onSelected: function(selectedData){
+
+            }
         });
-        //              closest class base > find id table.base > css show/hide
-        $(document).ready(function () {
-            $("[id=lvlBtn1]").click(function () {//Level 1
-//                alert($(this).closest("div.base").find("#level1").attr("id"));
-                $(this).closest("div.base").find("#level1").css("display", "inherit");
-                $(this).closest("div.base").find("#levelMax").css("display", "none");
-            });
-            $("[id=lvlBtn2]").click(function () {//Level Max
-//                alert($(this).closest("div.base").find("#levelMax").attr("id"));
-                $(this).closest("div.base").find("#level1").css("display", "none");
-                $(this).closest("div.base").find("#levelMax").css("display", "inherit");
-            });
-            $("[id=awkLvlBtn1]").click(function () {//Level 1
-//                alert($(this).closest("div.base").find("#level1").attr("id"));
-                $(this).closest("div.awakened").find("#level1").css("display", "inherit");
-                $(this).closest("div.awakened").find("#levelMax").css("display", "none");
-            });
-            $("[id=awkLvlBtn2]").click(function () {//Level Max
-//                alert($(this).closest("div.base").find("#levelMax").attr("id"));
-                $(this).closest("div.awakened").find("#level1").css("display", "none");
-                $(this).closest("div.awakened").find("#levelMax").css("display", "inherit");
-            });
+    })
+
+    //Reg/Awk Image and Stat change
+    $(document).ready(function () {
+        $("[id=regawk1]").click(function () {//Regular
+            $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "none");
+            $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "inherit");
+            $(this).closest("div.panel-body").find(".base").css("display", "inherit");
+            $(this).closest("div.panel-body").find(".awakened").css("display", "none");
         });
-    </script>
+        $("[id=regawk2]").click(function () {//Awakened
+            $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "inherit");
+            $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "none");
+            $(this).closest("div.panel-body").find(".base").css("display", "none");
+            $(this).closest("div.panel-body").find(".awakened").css("display", "inherit");
+        });
+    });
+
+    //Min/Max Lvl Change
+    $(document).ready(function () {
+        $("[id=lvlBtn1]").click(function () {//Level 1
+//                alert($(this).closest("div.base").find("#level1").attr("id"));
+            $(this).closest("div.base").find("#level1").css("display", "inherit");
+            $(this).closest("div.base").find("#levelMax").css("display", "none");
+        });
+        $("[id=lvlBtn2]").click(function () {//Level Max
+//                alert($(this).closest("div.base").find("#levelMax").attr("id"));
+            $(this).closest("div.base").find("#level1").css("display", "none");
+            $(this).closest("div.base").find("#levelMax").css("display", "inherit");
+        });
+        $("[id=awkLvlBtn1]").click(function () {//Level 1
+//                alert($(this).closest("div.base").find("#level1").attr("id"));
+            $(this).closest("div.awakened").find("#level1").css("display", "inherit");
+            $(this).closest("div.awakened").find("#levelMax").css("display", "none");
+        });
+        $("[id=awkLvlBtn2]").click(function () {//Level Max
+//                alert($(this).closest("div.base").find("#levelMax").attr("id"));
+            $(this).closest("div.awakened").find("#level1").css("display", "none");
+            $(this).closest("div.awakened").find("#levelMax").css("display", "inherit");
+        });
+    });
+</script>
 <?php
 }
 ?>

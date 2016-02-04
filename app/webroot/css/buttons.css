@@ -11,6 +11,7 @@ Default Buttons
 .btn-default:focus,
 .btn-default:active,
 .btn-default.active,
+.btn-default.active:hover,
 .open .dropdown-toggle.btn-default {
     color: #9d2068;
     background-color: #FFC66C;
@@ -60,6 +61,7 @@ Cute Buttons
 .btn-cute:focus,
 .btn-cute:active,
 .btn-cute.active,
+.btn-cute.active:hover,
 .open .dropdown-toggle.btn-cute {
     color: #FFFFFF;
     background-color: #FF2B60;
@@ -109,6 +111,7 @@ Cool Buttons
 .btn-cool:focus,
 .btn-cool:active,
 .btn-cool.active,
+.btn-cool.active:hover,
 .open .dropdown-toggle.btn-cool {
     color: #FFFFFF;
     background-color: #004DFF;
@@ -158,6 +161,7 @@ Passion Buttons
 .btn-passion:focus,
 .btn-passion:active,
 .btn-passion.active,
+.btn-passion.active:hover,
 .open .dropdown-toggle.btn-passion {
     color: #FFFFFF;
     background-color: #FF9F0F;

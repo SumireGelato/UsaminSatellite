@@ -6909,6 +6909,7 @@ button.list-group-item-danger.active:focus {
 
 .panel-group {
     margin-bottom: 20px;
+    margin-top: 5px;
 }
 
 .panel-group .panel {

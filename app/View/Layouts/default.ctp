@@ -34,14 +34,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     //    echo $this->Html->css('jquery-ui.css');
     //    echo $this->Html->css('jquery-ui.structure.css');
     //    echo $this->Html->css('jquery-ui.theme.css');
-    echo $this->Html->css('cuteform.css');
     echo $this->Html->css('style.css');
     echo $this->Html->css('buttons.css');
 
     echo $this->Html->script('jquery-1.12.0');
     //echo $this->Html->script('jquery-ui');
     echo $this->Html->script('bootstrap');
-    echo $this->Html->script('cuteform');
+    echo $this->Html->script('jquery.ddslick');
     //echo $this->Html->script('npm');
     ?>
 
