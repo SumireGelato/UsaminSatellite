@@ -32,7 +32,27 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller
 {
-    public $components = array('DebugKit.Toolbar', 'Session');
+    public $components = array(
+        'DebugKit.Toolbar',
+        'Session',
+        'Flash',
+        'Auth' => array(
+            'loginRedirect' => array(
+                'controller' => 'cards',
+                'action' => 'index' //CHANGE TO ADMIN CONTROL PANEL LATER
+            ),
+            'logoutRedirect' => array(
+                'controller' => 'pages',
+                'action' => 'display',
+                'home'
+            ),
+            'authenticate' => array(
+                'Form' => array(
+                    'passwordHasher' => 'Blowfish'
+                )
+            ),
+            'authorize' => array('Controller')
+        ),);
 
     public $helpers = array('Session');
 
@@ -44,6 +64,20 @@ class AppController extends Controller
 
             $this->Session->write('background', $background);
         }
+//        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+//        $this->Auth->logoutRedirect = array('controller' => 'pages', 'action' => 'display', 'home');
+//        $this->set('logged_in', $this->Auth->loggedIn());
+//        $this->set('current_user', $this->Auth->user());
+        $this->Auth->allow('index','view', 'display');
+
+    }
+
+    public function isAuthorized($user) {
+        if (isset($user['role']) && $user['role'] === 'admin') {
+            return true;
+        }
+
+        return false;
     }
 
     public function beforeRender()

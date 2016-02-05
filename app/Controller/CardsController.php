@@ -24,6 +24,15 @@ class CardsController extends AppController
         ),
     );
 
+/*    public function isAuthorized($user) {
+        // All registered users can add posts
+        if ($this->action === 'add' || $this->action === 'edit' || $this->action === 'delete') {
+            return true;
+        }
+
+        return parent::isAuthorized($user);
+    }*/
+
 
     /**
      * index method

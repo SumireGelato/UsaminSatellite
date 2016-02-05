@@ -42,6 +42,7 @@ Router::connect('/aboutUs/*', array('controller' => 'pages', 'action' => 'displa
 Router::connect('/contactUs/*', array('controller' => 'pages', 'action' => 'display', 'contactUs'));
 Router::connect('/donate/*', array('controller' => 'pages', 'action' => 'display', 'donate'));
 Router::connect('/help/*', array('controller' => 'pages', 'action' => 'display', 'help'));
+//Router::connect('/admin/*',array('controller' => 'users', 'action' => 'login'));
 
 
 /**

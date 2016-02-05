@@ -81,8 +81,11 @@ CREATE TABLE events (
 
 CREATE TABLE users (
   id       INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  email    CHARACTER(255) NOT NULL,
-  password CHARACTER(255) NOT NULL,
+  username VARCHAR(255),
+  password VARCHAR(255),
+  role VARCHAR(20),
+  created DATETIME,
+  modified DATETIME,
   CONSTRAINT users_pk PRIMARY KEY (id)
 );
 
