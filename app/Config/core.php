@@ -218,7 +218,7 @@ Configure::write('Session', array(
     'defaults' => 'php',
     'cookie' => 'usamin_cookie',
     'cookieTimeout' => 0,
-    'timeout' => 60,
+    'timeout' => 120,
     'checkAgent' => false
 ));
 

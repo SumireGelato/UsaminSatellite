@@ -19,7 +19,7 @@ if (!$this->request->is('ajax'))
             <!-- Tab panes -->
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="hide"></div>
-
+                <!--Filter Bar-->
                 <div role="tabpanel" class="tab-pane" id="filter">
                     <?php
                     echo $this->Form->create('Filter', array(
@@ -33,22 +33,60 @@ if (!$this->request->is('ajax'))
                     ));
                     echo '<span class="glyphicon glyphicon-search"></span>';
                     echo '<p style="font-weight: bold; display: inline">  Filter</p>';
-
+//                  Type
                     $options = array(
-                        0 => array('name' => 'All', 'value' => 'all',
-                            'data-imagesrc' => $this->webroot.'img/all.png'),
-                        1 => array('name' => 'Cute', 'value' => 'cute',
-                            'data-imagesrc' => $this->webroot.'img/cute.png'),
-                        2 => array('name' => 'Cool', 'value' => 'cool',
-                            'data-imagesrc' => $this->webroot.'img/cool.png'),
-                        3 => array('name' => 'Passion', 'value' => 'passion',
-                            'data-imagesrc' => $this->webroot.'img/passion.png'));
+                        1 => array('name' => 'Cute', 'value' => 'Cute'),
+                        2 => array('name' => 'Cool', 'value' => 'Cool'),
+                        3 => array('name' => 'Passion', 'value' => 'Passion'));
 
                     echo $this->Form->input('type', array(
                         'type' => 'select',
 //                        'label' => 'Type',
                         'id' => 'typeDropDown',
-                        'options' => $options
+                        'options' => $options,
+                        'empty' => 'All Types'
+                    ));
+//                  Rarity
+                    $options = array(
+                        1 => array('name' => 'SS Rare', 'value' => 'SSR'),
+                        2 => array('name' => 'S Rare', 'value' => 'SR'),
+                        3 => array('name' => 'Rare', 'value' => 'R'),
+                        4 => array('name' => 'Normal', 'value' => 'N'));
+
+                    echo $this->Form->input('rarity', array(
+                        'type' => 'select',
+//                        'label' => 'Type',
+                        'id' => 'rarityDropDown',
+                        'options' => $options,
+                        'empty' => 'All Rarities'
+                    ));
+//                  Skill
+                    $options = array(
+                        1 => array('name' => 'Perfect Lock (All Variants)', 'value' => 'Perfect Lock'),
+                        2 => array('name' => 'Combo Lock', 'value' => 'Combo Lock'),
+                        3 => array('name' => 'Healer', 'value' => 'Healer'),
+                        4 => array('name' => 'Damage Guard', 'value' => 'Damage Guard'),
+                        5 => array('name' => 'Combo Bonus', 'value' => 'Combo Bonus'),
+                        6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'));
+
+                    echo $this->Form->input('skill', array(
+                        'type' => 'select',
+//                        'label' => 'Type',
+                        'id' => 'skillDropDown',
+                        'options' => $options,
+                        'empty' => 'All Skills'
+                    ));
+//                  Source
+                    $options = array(
+                        1 => array('name' => 'Event Reward', 'value' => 'Event'),
+                        2 => array('name' => 'Gacha', 'value' => 'Gacha'));
+
+                    echo $this->Form->input('source', array(
+                        'type' => 'select',
+//                        'label' => 'Type',
+                        'id' => 'sourceDropDown',
+                        'options' => $options,
+                        'empty' => 'All Sources'
                     ));
 
                     echo '<button type="button" id="filterSort" class="btn btn-default" data-toggle="button"
@@ -57,6 +95,7 @@ if (!$this->request->is('ajax'))
                         'div' => 'form-group',
                         'class' => 'btn btn-default',
                     ));
+//                    Filter Sort Bar
                     echo '<div id="filterSortForm" style="margin-top: 5px">';
                     echo '<span class="glyphicon glyphicon-sort"></span>';
                     echo '<p style="font-weight: bold; display: inline">  Sort</p>';
@@ -95,6 +134,7 @@ if (!$this->request->is('ajax'))
                     ?>
                 </div>
 
+<!--                Sort Bar-->
                 <div role="tabpanel" class="tab-pane" id="sort">
                     <?php
                     echo $this->Form->create('Sort', array(
@@ -665,15 +705,6 @@ echo $this->Paginator->next('Show More ...');
            }
        });
     });
-
-    //Filter Dropboxes
-    $(document).ready(function() {
-        $("#typeDropDown").ddslick({
-            onSelected: function(selectedData){
-
-            }
-        });
-    })
 
     //Reg/Awk Image and Stat change
     $(document).ready(function () {

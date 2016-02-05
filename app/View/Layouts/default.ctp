@@ -40,7 +40,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->script('jquery-1.12.0');
     //echo $this->Html->script('jquery-ui');
     echo $this->Html->script('bootstrap');
-    echo $this->Html->script('jquery.ddslick');
     //echo $this->Html->script('npm');
     ?>
 
