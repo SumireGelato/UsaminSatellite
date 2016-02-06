@@ -15,14 +15,14 @@ class CardsController extends AppController
      *
      * @var array
      */
-    public $components = array('Paginator', 'Search.Prg');
-
-    public $paginate = array(
-        'limit' => 9,
-        'order' => array(
-            'Card.cardNumber' => 'desc'
-        ),
-    );
+    public $components = array(
+        'Paginator',
+        'Session',
+        'Search.Prg' => array(
+            'commonProcess' => array(
+                'filterEmpty' => true
+            )
+        ));
 
 /*    public function isAuthorized($user) {
         // All registered users can add posts
@@ -50,8 +50,18 @@ class CardsController extends AppController
         }
         $this->set(compact('numItems'));
         $this->set(compact('totalItems'));
-        $this->Paginator->settings = $this->paginate;
-        $this->set('cards', $this->Paginator->paginate());
+        $this->Prg->commonProcess();
+        $this->Paginator->settings['conditions'] = $this->Card->parseCriteria($this->Prg->parsedParams());
+        $this->Paginator->settings['limit'] = 9;
+        $this->Paginator->settings['order'] = array('Card.cardNumber' => 'desc');
+        if(!$this->request->is('ajax')) {
+            $this->Session->write('filter',$this->Prg->parsedParams());
+            $this->set('cards', $this->Paginator->paginate());
+        }
+        else {
+            $filter = $this->Session->read('filter');
+            $this->set('cards', $this->Paginator->paginate($this->Card->parseCriteria($filter)));
+        }
     }
 
     /**

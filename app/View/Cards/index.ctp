@@ -22,14 +22,15 @@ if (!$this->request->is('ajax'))
                 <!--Filter Bar-->
                 <div role="tabpanel" class="tab-pane" id="filter">
                     <?php
-                    echo $this->Form->create('Filter', array(
+                    echo $this->Form->create('Card', array(
                         'inputDefaults' => array(
                             'div' => 'form-group',
                             'label' => false,
                             'wrapInput' => false,
                             'class' => 'form-control'
                         ),
-                        'class' => 'container well well-sm form-inline'
+                        'class' => 'container well well-sm form-inline',
+                        'novalidate' => true
                     ));
                     echo '<span class="glyphicon glyphicon-search"></span>';
                     echo '<p style="font-weight: bold; display: inline">  Filter</p>';
@@ -40,9 +41,9 @@ if (!$this->request->is('ajax'))
                         3 => array('name' => 'Passion', 'value' => 'Passion'));
 
                     echo $this->Form->input('type', array(
-                        'type' => 'select',
+//                        'type' => 'select',
 //                        'label' => 'Type',
-                        'id' => 'typeDropDown',
+//                        'id' => 'typeDropDown',
                         'options' => $options,
                         'empty' => 'All Types'
                     ));
@@ -54,9 +55,9 @@ if (!$this->request->is('ajax'))
                         4 => array('name' => 'Normal', 'value' => 'N'));
 
                     echo $this->Form->input('rarity', array(
-                        'type' => 'select',
+//                        'type' => 'select',
 //                        'label' => 'Type',
-                        'id' => 'rarityDropDown',
+//                        'id' => 'rarityDropDown',
                         'options' => $options,
                         'empty' => 'All Rarities'
                     ));
@@ -70,9 +71,9 @@ if (!$this->request->is('ajax'))
                         6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'));
 
                     echo $this->Form->input('skill', array(
-                        'type' => 'select',
+//                        'type' => 'select',
 //                        'label' => 'Type',
-                        'id' => 'skillDropDown',
+//                        'id' => 'skillDropDown',
                         'options' => $options,
                         'empty' => 'All Skills'
                     ));
@@ -82,9 +83,9 @@ if (!$this->request->is('ajax'))
                         2 => array('name' => 'Gacha', 'value' => 'Gacha'));
 
                     echo $this->Form->input('source', array(
-                        'type' => 'select',
+//                        'type' => 'select',
 //                        'label' => 'Type',
-                        'id' => 'sourceDropDown',
+//                        'id' => 'sourceDropDown',
                         'options' => $options,
                         'empty' => 'All Sources'
                     ));
@@ -137,7 +138,7 @@ if (!$this->request->is('ajax'))
 <!--                Sort Bar-->
                 <div role="tabpanel" class="tab-pane" id="sort">
                     <?php
-                    echo $this->Form->create('Sort', array(
+                    echo $this->Form->create('Card', array(
                         'inputDefaults' => array(
                             'div' => 'form-group',
                             'label' => false,
@@ -145,7 +146,7 @@ if (!$this->request->is('ajax'))
                             'class' => 'form-control'
                         ),
                         'class' => 'container well well-sm form-inline',
-                        'style' => ''
+                        'novalidate' => true
                     ));
                     echo '<span class="glyphicon glyphicon-sort"></span>';
                     echo '<p style="font-weight: bold; display: inline">  Sort Cards</p>';
@@ -668,42 +669,21 @@ $this->Paginator->options(array(
     )
 ));
 echo $this->Paginator->next('Show More ...');
+}
 ?>
 <script>
-    //Infinite Scrolling
-    $(document).ready(function (e) {
-        var processing;
-        var url = $('.next a').attr('href');
-        $('.next').text('');
-        if (url == undefined) {
-            return false;
-        }
-        $(document).scroll(function (e) {
-            if (processing) {
-                return false;
-            }
-            if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
-                processing = true;
-                $(this).remove();
-                $.get(url, function (data) {
-                    $('#accordion').append(data);
-                });
-            }
-        });
-    });
-
     //Filter show/hide sort
     $(document).ready(function() {
-       $("#filterSort").click(function() {
-           if (($("#filterSort").attr('aria-pressed')) == "false") {
-               $("#filterSortForm").css("display", "Block");
-               $("#filterSort").text("Hide Sort Options");
-           }
-           else {
-               $("#filterSortForm").css("display", "None");
-               $("#filterSort").text("Show Sort Options");
-           }
-       });
+        $("#filterSort").click(function() {
+            if (($("#filterSort").attr('aria-pressed')) == "false") {
+                $("#filterSortForm").css("display", "Block");
+                $("#filterSort").text("Hide Sort Options");
+            }
+            else {
+                $("#filterSortForm").css("display", "None");
+                $("#filterSort").text("Show Sort Options");
+            }
+        });
     });
 
     //Reg/Awk Image and Stat change
@@ -745,7 +725,26 @@ echo $this->Paginator->next('Show More ...');
             $(this).closest("div.awakened").find("#levelMax").css("display", "inherit");
         });
     });
+
+    //Infinite Scrolling
+    $(document).ready(function (e) {
+        var processing;
+        var url = $('.next a').attr('href');
+        $('.next').text('');
+        if (url == undefined) {
+            return false;
+        }
+        $(document).scroll(function (e) {
+            if (processing) {
+                return false;
+            }
+            if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
+                processing = true;
+                $(this).remove();
+                $.get(url, function (data) {
+                    $('#accordion').append(data);
+                });
+            }
+        });
+    });
 </script>
-<?php
-}
-?>

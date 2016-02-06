@@ -24,19 +24,34 @@ class Card extends AppModel {
         'Search.Searchable'
     );
 
+//type,rarity,skill,source
     public $filterArgs = array(
-        'username' => array(
-            'type' => 'like',
-            'field' => 'username'
-        ),
-        'email' => array(
-            'type' => 'like',
-            'field' => 'email'
-        ),
-        'active' => array(
+        'type' => array(
             'type' => 'value'
+        ),
+        'rarity' => array(
+            'type' => 'value'
+        ),
+        'skill' => array(
+            'type' => 'value',
+            'field' => 'specialSkillType'
+        ),
+        'source' => array(
+            'type' => 'query',
+            'method' => 'findSource'
         )
     );
+
+    public function findSource($data = array()) {
+        $filter = $data['source'];
+        if($filter == 'Event') {
+            $condition = array('Card.event_id is not NULL');
+        }
+        else {
+            $condition = array('Card.event_id is NULL');
+        }
+        return $condition;
+    }
 
 /**
  * Validation rules
