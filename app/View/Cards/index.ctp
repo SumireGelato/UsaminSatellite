@@ -736,7 +736,7 @@ echo $this->Paginator->next('Show More ...');
         else {
             var url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
         }
-        alert(url);
+//        alert(url);
         $('.next').text('');
         if (url == undefined) {
             return false;
