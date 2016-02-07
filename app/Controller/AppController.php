@@ -38,8 +38,8 @@ class AppController extends Controller
         'Flash',
         'Auth' => array(
             'loginRedirect' => array(
-                'controller' => 'cards',
-                'action' => 'index' //CHANGE TO ADMIN CONTROL PANEL LATER
+                'controller' => 'users',
+                'action' => 'controlpanel'
             ),
             'logoutRedirect' => array(
                 'controller' => 'pages',

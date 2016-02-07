@@ -137,7 +137,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         </div>
     </div>
     <!-- Get Content -->
-<!--        --><?php //echo $this->Session->flash(); ?>
+        <?php echo $this->Session->flash(); ?>
         <?php echo $this->fetch('content'); ?>
     <!--    <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
