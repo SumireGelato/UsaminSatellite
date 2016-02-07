@@ -102,8 +102,8 @@ if (!$this->request->is('ajax'))
                     echo '<p style="font-weight: bold; display: inline">  Sort</p>';
                     echo $this->Form->input('sort', array(
                         'options' => array(
-                            'release' => 'Release Date', 'rarity' => 'Rarity',
-                            'type' => 'Type', 'idol' => 'Idol'),
+                            'cardNumber' => 'Release Date', 'rarity' => 'Rarity',
+                            'type' => 'Type', 'idol_id' => 'Idol'),
                         'selected' => 'Release Date'
                     ));
                     echo $this->Form->input('order', array(
@@ -114,19 +114,19 @@ if (!$this->request->is('ajax'))
                     ));
                     echo $this->Form->input('statSort', array(
                         'options' => array(
-                            'vobasemin' => 'Vocal - Base Lvl 1', 'vobasemax' => 'Vocal - Base Max Lvl',
-                            'voawkmin' => 'Vocal - Awakened Lvl 1', 'voawkmax' => 'Vocal - Awakened Max Lvl',
-                            'dabasemin' => 'Dance - Base Lvl 1', 'dabasemax' => 'Dance - Base Max Lvl',
-                            'daawkmin' => 'Dance - Awakened Lvl 1', 'daawkmax' => 'Dance - Awakened Max Lvl',
-                            'vibasemin' => 'Visual - Base Lvl 1', 'vibasemax' => 'Visual - Base Max Lvl',
-                            'viawkmax' => 'Visual - Awakened Lvl 1', 'viawkmax' => 'Visual - Awakened Max Lvl',
-                            'totalbasemin' => 'Total - Base Lvl 1', 'totalbasemax' => 'Total - Base Max Lvl',
-                            'totalawkmin' => 'Total - Awakened Lvl 1', 'totalawkmax' => 'Total - Awakened Max Lvl'),
+                            'baseVocal' => 'Vocal - Base Lvl 1', 'baseMaxVocal' => 'Vocal - Base Max Lvl',
+                            'awkBaseVocal' => 'Vocal - Awakened Lvl 1', 'awkMaxVocal' => 'Vocal - Awakened Max Lvl',
+                            'baseDance' => 'Dance - Base Lvl 1', 'baseMaxDance' => 'Dance - Base Max Lvl',
+                            'awkBaseDance' => 'Dance - Awakened Lvl 1', 'awkMaxDance' => 'Dance - Awakened Max Lvl',
+                            'baseVisual' => 'Visual - Base Lvl 1', 'baseMaxVisual' => 'Visual - Base Max Lvl',
+                            'awkBaseVisual' => 'Visual - Awakened Lvl 1', 'awkMaxVisual' => 'Visual - Awakened Max Lvl',
+                            'baseTotal' => 'Total - Base Lvl 1', 'baseMaxTotal' => 'Total - Base Max Lvl',
+                            'awkBaseTotal' => 'Total - Awakened Lvl 1', 'awkMaxTotal' => 'Total - Awakened Max Lvl'),
                         'empty' => 'Card Statistics Sorting (Optional)'
                     ));
-                    echo $this->Form->input('statsOrder', array(
+                    echo $this->Form->input('statOrder', array(
                         'class' => false,
-                        'hiddenField' => false,
+//                        'hiddenField' => false,
                         'label' => 'Reverse order',
                         'type' => 'checkbox'
                     ));
@@ -152,8 +152,8 @@ if (!$this->request->is('ajax'))
                     echo '<p style="font-weight: bold; display: inline">  Sort Cards</p>';
                     echo $this->Form->input('sort', array(
                         'options' => array(
-                            'release' => 'Release Date', 'rarity' => 'Rarity',
-                            'type' => 'Type', 'idol' => 'Idol'),
+                            'cardNumber' => 'Release Date', 'rarity' => 'Rarity',
+                            'type' => 'Type', 'idol_id' => 'Idol'),
                         'selected' => 'Release Date'
                     ));
                     echo $this->Form->input('order', array(
@@ -164,19 +164,19 @@ if (!$this->request->is('ajax'))
                     ));
                     echo $this->Form->input('statSort', array(
                         'options' => array(
-                            'vobasemin' => 'Vocal - Base Lvl 1', 'vobasemax' => 'Vocal - Base Max Lvl',
-                            'voawkmin' => 'Vocal - Awakened Lvl 1', 'voawkmax' => 'Vocal - Awakened Max Lvl',
-                            'dabasemin' => 'Dance - Base Lvl 1', 'dabasemax' => 'Dance - Base Max Lvl',
-                            'daawkmin' => 'Dance - Awakened Lvl 1', 'daawkmax' => 'Dance - Awakened Max Lvl',
-                            'vibasemin' => 'Visual - Base Lvl 1', 'vibasemax' => 'Visual - Base Max Lvl',
-                            'viawkmax' => 'Visual - Awakened Lvl 1', 'viawkmax' => 'Visual - Awakened Max Lvl',
-                            'totalbasemin' => 'Total - Base Lvl 1', 'totalbasemax' => 'Total - Base Max Lvl',
-                            'totalawkmin' => 'Total - Awakened Lvl 1', 'totalawkmax' => 'Total - Awakened Max Lvl'),
+                            'baseVocal' => 'Vocal - Base Lvl 1', 'baseMaxVocal' => 'Vocal - Base Max Lvl',
+                            'awkBaseVocal' => 'Vocal - Awakened Lvl 1', 'awkMaxVocal' => 'Vocal - Awakened Max Lvl',
+                            'baseDance' => 'Dance - Base Lvl 1', 'baseMaxDance' => 'Dance - Base Max Lvl',
+                            'awkBaseDance' => 'Dance - Awakened Lvl 1', 'awkMaxDance' => 'Dance - Awakened Max Lvl',
+                            'baseVisual' => 'Visual - Base Lvl 1', 'baseMaxVisual' => 'Visual - Base Max Lvl',
+                            'awkBaseVisual' => 'Visual - Awakened Lvl 1', 'awkMaxVisual' => 'Visual - Awakened Max Lvl',
+                            'baseTotal' => 'Total - Base Lvl 1', 'baseMaxTotal' => 'Total - Base Max Lvl',
+                            'awkBaseTotal' => 'Total - Awakened Lvl 1', 'awkMaxTotal' => 'Total - Awakened Max Lvl'),
                         'empty' => 'Card Statistics Sorting (Optional)'
                     ));
-                    echo $this->Form->input('statsOrder', array(
+                    echo $this->Form->input('statOrder', array(
                         'class' => false,
-                        'hiddenField' => false,
+//                        'hiddenField' => false,
                         'label' => 'Reverse order',
                         'type' => 'checkbox'
                     ));
@@ -444,7 +444,7 @@ if (!$this->request->is('ajax'))
         <div class="col-xs-5ths">
             <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
             <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">'
-                . ($card['Card']['baseVocal'] + $card['Card']['baseDance'] + $card['Card']['baseVisual']) .
+                . ($card['Card']['baseTotal']) .
                 '</p>'; ?>
         </div>
     </div>
@@ -468,7 +468,7 @@ if (!$this->request->is('ajax'))
         <div class="col-xs-5ths">
             <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
             <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">'
-                . ($card['Card']['baseMaxVocal'] + $card['Card']['baseMaxDance'] + $card['Card']['baseMaxVisual']) .
+                . ($card['Card']['baseMaxTotal']) .
                 '</p>'; ?>
         </div>
     </div>
@@ -581,7 +581,7 @@ if (!$this->request->is('ajax'))
         <div class="col-xs-5ths">
             <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
             <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">'
-                . ($card['Card']['awkBaseVocal'] + $card['Card']['awkBaseDance'] + $card['Card']['awkBaseVisual']) .
+                . ($card['Card']['awkBaseTotal']) .
                 '</p>'; ?>
         </div>
     </div>
@@ -605,7 +605,7 @@ if (!$this->request->is('ajax'))
         <div class="col-xs-5ths">
             <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
             <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">'
-                . ($card['Card']['awkMaxVocal'] + $card['Card']['awkMaxDance'] + $card['Card']['awkMaxVisual']) .
+                . ($card['Card']['awkMaxTotal']) .
                 '</p>'; ?>
         </div>
     </div>
@@ -729,7 +729,14 @@ echo $this->Paginator->next('Show More ...');
     //Infinite Scrolling
     $(document).ready(function (e) {
         var processing;
-        var url = $('.next a').attr('href');
+        if(document.URL.split('?')[1] == undefined)
+        {
+            var url = $('.next a').attr('href');
+        }
+        else {
+            var url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
+        }
+        alert(url);
         $('.next').text('');
         if (url == undefined) {
             return false;

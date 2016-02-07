@@ -80,12 +80,12 @@ CREATE TABLE events (
 );
 
 CREATE TABLE users (
-  id       INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  username VARCHAR(255),
-  password VARCHAR(255),
-  role VARCHAR(20),
-  created DATETIME,
-  modified DATETIME,
+  id        INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  username  varchar(255) NOT NULL,
+  password  varchar(255) NOT NULL,
+  role      varchar(20)  NOT NULL,
+  created   datetime,
+  modified  datetime,
   CONSTRAINT users_pk PRIMARY KEY (id)
 );
 
@@ -155,8 +155,8 @@ COLLATE utf8_general_ci NOT NULL;
 
 -- test data (User -> News -> Idol -> Event -> Card -> Song
 -- ---------------------------------
-INSERT INTO users (id, email, password) VALUES
-  (1, 'pangster123@gmail.com', '$2a$10$j2vlpErMLsUgkCGIPv.VKO8k3T3Fa5GI4GpM01WF3sBLwsnzw2HOq');
+INSERT INTO users (id, username, password, role, created, modified) VALUES
+  (1, 'pangster123@gmail.com', '$2a$10$Jzopawbn/OX93Tf8gDCghOHnNodZH/DXQ4l9NDMU6ccvCgbpuwfzO', 'admin', '2016-02-06 08:26:09', '2016-02-06 08:26:09');
 
 INSERT INTO news (id, user_id, title, category, body, created, isPublished) VALUES
   (1, 1, 'Test Post', 'site', '<h1> This is a published test post </h1>', '2015-09-17 15:33:26', TRUE),

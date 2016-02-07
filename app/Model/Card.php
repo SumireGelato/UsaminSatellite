@@ -24,6 +24,13 @@ class Card extends AppModel {
         'Search.Searchable'
     );
 
+	public $virtualFields = array(
+        'baseTotal' => 'Card.baseVocal + Card.baseDance + Card.baseVisual',
+        'baseMaxTotal' => 'Card.baseMaxVocal + Card.baseMaxDance + Card.baseMaxVisual',
+        'awkBaseTotal' => 'Card.awkBaseVocal + Card.awkBaseDance + Card.awkBaseVisual',
+        'awkMaxTotal' => 'Card.awkMaxVocal + Card.awkMaxDance + Card.awkMaxVisual',
+    );
+
 //type,rarity,skill,source
     public $filterArgs = array(
         'type' => array(

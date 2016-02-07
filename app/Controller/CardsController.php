@@ -53,7 +53,34 @@ class CardsController extends AppController
         $this->Prg->commonProcess();
         $this->Paginator->settings['conditions'] = $this->Card->parseCriteria($this->Prg->parsedParams());
         $this->Paginator->settings['limit'] = 9;
-        $this->Paginator->settings['order'] = array('Card.cardNumber' => 'desc');
+        if($this->request->is(array('post', 'put', 'get')) && $this->request->query('sort') != null)
+        {
+            $sortField = $this->request->query('sort');
+            $orderBool = $this->request->query('order');
+            if($orderBool) {
+                $order = 'desc';
+            }
+            else {
+                $order = 'asc';
+            }
+            if($this->request->query('statSort') != null) {
+                $statSortField = $this->request->query('statSort');
+                $statsSortOrderBool = $this->request->query('statOrder');
+                if($statsSortOrderBool) {
+                    $statOrder = 'desc';
+                }
+                else {
+                    $statOrder = 'asc';
+                }
+                $this->Paginator->settings['order'] = array('Card.'.$sortField => $order, 'Card.'.$statSortField => $statOrder);
+            }
+            else {
+                $this->Paginator->settings['order'] = array('Card.'.$sortField => $order);
+            }
+        }
+        else {
+            $this->Paginator->settings['order'] = array('Card.cardNumber' => 'desc');
+        }
         if(!$this->request->is('ajax')) {
             $this->Session->write('filter',$this->Prg->parsedParams());
             $this->set('cards', $this->Paginator->paginate());
