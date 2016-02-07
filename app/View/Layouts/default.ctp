@@ -124,6 +124,14 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                             '/help', array('escape' => false)); ?></li>
                                 </ul>
                             </li>
+                            <?php
+                            if ($this->Session->read('Auth.User')) {
+                                echo '<li>'.$this->Html->link('Control Panel',
+                                        array('controller' => 'users', 'action' => 'controlpanel')).'</li>';
+                                echo '<li>'.$this->Html->link('Log Out',
+                                        array('controller' => 'users', 'action' => 'logout')).'</li>';
+                            }
+                            ?>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <p class="navbar-text" id="clock"></p>

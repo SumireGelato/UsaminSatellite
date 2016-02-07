@@ -30,7 +30,7 @@ class UsersController extends AppController
 
     public function beforeFilter() {
         parent::beforeFilter();
-//        $this->Auth->deny('index');
+        $this->Auth->deny('index');
         // Allow users to register and logout.
         $this->Auth->allow(/*'add',*/ 'logout');
     }
@@ -52,6 +52,10 @@ class UsersController extends AppController
 
     public function logout() {
         return $this->redirect($this->Auth->logout());
+    }
+
+    public function controlpanel() {
+
     }
 
     /**
