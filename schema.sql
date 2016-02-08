@@ -92,7 +92,7 @@ CREATE TABLE users (
 CREATE TABLE cards (
   id               INT UNSIGNED   NOT NULL AUTO_INCREMENT,
   idol_id          INT UNSIGNED   NOT NULL,
-  event_id         INT UNSIGNED,
+  event_id         INT UNSIGNED   NULL,
   cardNumber       INT            NOT NULL,
   eName            CHARACTER(255) NOT NULL,
   jName            CHARACTER(255) NOT NULL,

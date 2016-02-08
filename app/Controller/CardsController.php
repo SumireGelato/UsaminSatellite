@@ -24,6 +24,8 @@ class CardsController extends AppController
             )
         ));
 
+//    public $uses=array('Idol','Event');
+
 /*    public function isAuthorized($user) {
         // All registered users can add posts
         if ($this->action === 'add' || $this->action === 'edit' || $this->action === 'delete') {
@@ -92,6 +94,16 @@ class CardsController extends AppController
     }
 
     /**
+     * admin index
+     *
+     * Datatables list
+     */
+    public function adminindex() {
+        $this->Card->recursive = 0;
+        $this->set('cards', $this->Card->find('all', array('order' => 'Card.cardNumber desc')));
+    }
+
+    /**
      * view method
      *
      * @throws NotFoundException
@@ -116,6 +128,46 @@ class CardsController extends AppController
     {
         if ($this->request->is('post')) {
             $this->Card->create();
+            //Check if image has been uploaded
+            if(!empty($this->request->data['Card']['baseArt']['name']))
+            {
+                $baseArt = $this->request->data['Card']['baseArt'];//put the data into a var for easy use
+
+                $baseExt = substr(strtolower(strrchr($baseArt['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($baseExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($baseArt['tmp_name'], $this->Html->url('/') . 'img/cards/' .
+                        $this->request->data['Card']['cardNumber'].'.'.$baseExt);
+
+                    //prepare the filename for database entry
+                    $this->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.'.$baseExt;
+                }
+            }
+
+            if(!empty($this->request->data['Card']['awkArt']['name']))
+            {
+                $awkArt = $this->request->data['Card']['awkArt'];//put the data into a var for easy use
+
+                $awkExt = substr(strtolower(strrchr($awkArt['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($awkExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($awkArt['tmp_name'], $this->Html->url('/') . 'img/cards/' .
+                        $this->request->data['Card']['cardNumber'].'.'.$awkExt);
+
+                    //prepare the filename for database entry
+                    $this->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.'.$awkExt;
+                }
+            }
             if ($this->Card->save($this->request->data)) {
                 $this->Flash->success(__('The card has been saved.'));
                 return $this->redirect(array('action' => 'index'));
@@ -123,8 +175,8 @@ class CardsController extends AppController
                 $this->Flash->error(__('The card could not be saved. Please, try again.'));
             }
         }
-        $idols = $this->Card->Idol->find('list');
-        $events = $this->Card->Event->find('list');
+        $idols = $this->Card->Idol->find('list', array('order' => array('Idol.eName asc')));
+        $events = $this->Card->Event->find('list', array('order' => array('Event.begin desc')));
         $this->set(compact('idols', 'events'));
     }
 
@@ -141,9 +193,48 @@ class CardsController extends AppController
             throw new NotFoundException(__('Invalid card'));
         }
         if ($this->request->is(array('post', 'put'))) {
+            if(!empty($this->request->data['Card']['baseArt']['name']))
+            {
+                $baseArt = $this->request->data['Card']['baseArt'];//put the data into a var for easy use
+
+                $baseExt = substr(strtolower(strrchr($baseArt['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($baseExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($baseArt['tmp_name'], $this->Html->url('/') . 'img/cards/' .
+                        $this->request->data['Card']['cardNumber'].'.'.$baseExt);
+
+                    //prepare the filename for database entry
+                    $this->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.'.$baseExt;
+                }
+            }
+
+            if(!empty($this->request->data['Card']['awkArt']['name']))
+            {
+                $awkArt = $this->request->data['Card']['awkArt'];//put the data into a var for easy use
+
+                $awkExt = substr(strtolower(strrchr($awkArt['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($awkExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($awkArt['tmp_name'], $this->Html->url('/') . 'img/cards/' .
+                        $this->request->data['Card']['cardNumber'].'.'.$awkExt);
+
+                    //prepare the filename for database entry
+                    $this->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.'.$awkExt;
+                }
+            }
             if ($this->Card->save($this->request->data)) {
                 $this->Flash->success(__('The card has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'adminIndex'));
             } else {
                 $this->Flash->error(__('The card could not be saved. Please, try again.'));
             }
@@ -151,8 +242,8 @@ class CardsController extends AppController
             $options = array('conditions' => array('Card.' . $this->Card->primaryKey => $id));
             $this->request->data = $this->Card->find('first', $options);
         }
-        $idols = $this->Card->Idol->find('list');
-        $events = $this->Card->Event->find('list');
+        $idols = $this->Card->Idol->find('list', array('order' => array('Idol.eName asc')));
+        $events = $this->Card->Event->find('list', array('order' => array('Event.begin desc')));
         $this->set(compact('idols', 'events'));
     }
 

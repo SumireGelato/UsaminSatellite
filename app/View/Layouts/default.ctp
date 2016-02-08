@@ -42,6 +42,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->script('bootstrap');
     //echo $this->Html->script('npm');
     ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->Html->url('/'); ?>DataTables/datatables.css"/>
+    <script type="text/javascript" src="<?php echo $this->Html->url('/'); ?>DataTables/datatables.js"></script>
 
     <!--    Favicon Stuff-->
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>

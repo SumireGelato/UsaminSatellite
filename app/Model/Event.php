@@ -10,6 +10,13 @@ class Event extends AppModel
 {
 
     /**
+     * Display field
+     *
+     * @var string
+     */
+    public $displayField = 'eName';
+
+    /**
      * Validation rules
      *
      * @var array

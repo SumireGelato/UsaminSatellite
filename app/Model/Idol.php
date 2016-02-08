@@ -8,6 +8,12 @@ App::uses('AppModel', 'Model');
  */
 class Idol extends AppModel
 {
+    /**
+     * Display field
+     *
+     * @var string
+     */
+    public $displayField = 'eName';
 
     /**
      * Validation rules
