@@ -17,8 +17,8 @@
         echo $this->Form->input('hometown');
         echo $this->Form->input('type');
         echo $this->Form->input('cv');
-        echo $this->Form->input('pic1');
-        echo $this->Form->input('pic2');
+        echo $this->Form->input('profilePic');
+        echo $this->Form->input('puchiPic');
         ?>
     </fieldset>
     <?php echo $this->Form->end(__('Submit')); ?>

@@ -114,9 +114,9 @@ CREATE TABLE cards (
   awkMaxVocal      INT            NOT NULL,
   awkMaxDance      INT            NOT NULL,
   awkMaxVisual     INT            NOT NULL,
-  centerSkillText  CHARACTER(255) NOT NULL,
-  specialSkillType CHARACTER(50)  NOT NULL,
-  specialSkillText TEXT           NOT NULL,
+  centerSkillText  CHARACTER(255) NULL,
+  specialSkillType CHARACTER(50)  NULL,
+  specialSkillText TEXT           NULL,
   baseArt          CHARACTER(255),
   awkArt           CHARACTER(255),
   CONSTRAINT cards_pk PRIMARY KEY (id)
@@ -161,16 +161,6 @@ INSERT INTO users (id, username, password, role, created, modified) VALUES
 INSERT INTO news (id, user_id, title, category, body, created, isPublished) VALUES
   (1, 1, 'Test Post', 'site', '<h1> This is a published test post </h1>', '2015-09-17 15:33:26', TRUE),
   (2, 1, 'Test Post 2', 'game', '<h1> This is a draft test post</h1>', '2015-09-17 15:33:26', TRUE);
-
-INSERT INTO idols (id, eName, jName, age, height, weight, birthday, bloodType, bwh, hobbies, writingHand, horoscope, hometown, type, cv, profilePic, puchiPic)
-VALUES
-  (1, 'Uzuki Shimamura', '島村卯月', '17', 159, 45, 'April 24', 'O', '83/59/87', 'Long Phone Calls with friends', 'Right',
-   'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'uzuki1.png', 'uzuki2.png'),
-  (2, 'Rin Shibuya', '渋谷凜', '15', 165, 44, 'August 10', 'B', '80/56/81', 'Dog Walking', 'Right', 'Leo', 'Tokyo', 'Cool',
-   'Ayaka Fukuhara', 'rin1.png', 'rin2.png'),
-  (3, 'Mio Honda', '本田未央', 15, 161, 46, 'December 1', 'B', '84/58/87', 'Shopping', 'Right', 'Sagittarius', 'Chiba',
-   'Passion',
-   'Sayuri Hara', 'mio1.png', 'mio2.png');
 
 INSERT INTO events (id, isCurrent, isCaravan, eName, jName, begin, finish, info, type, t1, t2, t3, t4, t5, t6, t7, pic)
 VALUES

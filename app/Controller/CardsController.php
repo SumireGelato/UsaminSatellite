@@ -145,7 +145,7 @@ class CardsController extends AppController
                         $this->request->data['Card']['cardNumber'].'.'.$baseExt);
 
                     //prepare the filename for database entry
-                    $this->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.'.$baseExt;
+                    $this->request->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.'.$baseExt;
                 }
             }
 
@@ -165,12 +165,23 @@ class CardsController extends AppController
                         $this->request->data['Card']['cardNumber'].'.'.$awkExt);
 
                     //prepare the filename for database entry
-                    $this->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.'.$awkExt;
+                    $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.'.$awkExt;
                 }
             }
+            /**
+             * REMOVE THIS LATER!!!!!
+             */
+            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.png';
+            $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.png';
+            /**
+             * REMOVE THIS LATER!!!!!
+             */
+
+            //if no skill / is a n then set skills fields to <no skill>
+
             if ($this->Card->save($this->request->data)) {
                 $this->Flash->success(__('The card has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'adminindex'));
             } else {
                 $this->Flash->error(__('The card could not be saved. Please, try again.'));
             }
@@ -266,6 +277,6 @@ class CardsController extends AppController
         } else {
             $this->Flash->error(__('The card could not be deleted. Please, try again.'));
         }
-        return $this->redirect(array('action' => 'index'));
+        return $this->redirect(array('action' => 'adminindex'));
     }
 }
