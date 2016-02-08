@@ -84,9 +84,9 @@ $num3 = mt_rand(1, 46); //Songs
 
 <hr class="featurette-divider"/>
 <?php
-$num1 = mt_rand(1, 373);
-$num2 = mt_rand(1, 373);
-$num3 = mt_rand(1, 373);
+$num1 = mt_rand(1, 379);
+$num2 = mt_rand(1, 379);
+$num3 = mt_rand(1, 379);
 ?>
 <div class="row" id="puchis">
     <div class="col-lg-2">
