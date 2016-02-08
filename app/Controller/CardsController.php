@@ -177,7 +177,16 @@ class CardsController extends AppController
              * REMOVE THIS LATER!!!!!
              */
 
+            foreach ($this->request->data as $key => $value) {
+                $this->data[$key] = trim($value);
+            }
+
             //if no skill / is a n then set skills fields to <no skill>
+            if($this->request->data['Card']['rarity'] == 'N') {
+                $this->request->data['Card']['centerSkillText'] = 'No Skill';
+                $this->request->data['Card']['specialSkillType'] = 'No Skill';
+                $this->request->data['Card']['specialSkillText'] = 'N/A';
+            }
 
             if ($this->Card->save($this->request->data)) {
                 $this->Flash->success(__('The card has been saved.'));
@@ -243,6 +252,11 @@ class CardsController extends AppController
                     $this->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.'.$awkExt;
                 }
             }
+
+            foreach ($this->request->data as $key => $value) {
+                $this->data[$key] = trim($value);
+            }
+
             if ($this->Card->save($this->request->data)) {
                 $this->Flash->success(__('The card has been saved.'));
                 return $this->redirect(array('action' => 'adminIndex'));

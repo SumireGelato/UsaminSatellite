@@ -68,7 +68,8 @@ if (!$this->request->is('ajax'))
                         3 => array('name' => 'Healer', 'value' => 'Healer'),
                         4 => array('name' => 'Damage Guard', 'value' => 'Damage Guard'),
                         5 => array('name' => 'Combo Bonus', 'value' => 'Combo Bonus'),
-                        6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'));
+                        6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'),
+                        7 => array('name' => 'No Skill', 'value' => 'No Skill'));
 
                     echo $this->Form->input('skill', array(
 //                        'type' => 'select',
@@ -611,6 +612,9 @@ if (!$this->request->is('ajax'))
     </div>
 </div>
 <hr>
+    <?php
+    if($card['Card']['rarity'] != 'N'){
+     ?>
 <div class="row">
     <div class="col-xs-12">
         <h4 style="font-weight: bold">Center Skill:</h4>
@@ -627,6 +631,9 @@ if (!$this->request->is('ajax'))
     </div>
 </div>
 <hr>
+    <?php
+    }
+    ?>
 <div class="row">
     <div class="col-xs-12">
         <h4 style="font-weight: bold">Source:</h4>

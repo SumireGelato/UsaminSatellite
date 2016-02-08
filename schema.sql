@@ -114,9 +114,9 @@ CREATE TABLE cards (
   awkMaxVocal      INT            NOT NULL,
   awkMaxDance      INT            NOT NULL,
   awkMaxVisual     INT            NOT NULL,
-  centerSkillText  CHARACTER(255) NULL,
-  specialSkillType CHARACTER(50)  NULL,
-  specialSkillText TEXT           NULL,
+  centerSkillText  CHARACTER(255) NOT NULL,
+  specialSkillType CHARACTER(50)  NOT NULL,
+  specialSkillText TEXT           NOT NULL,
   baseArt          CHARACTER(255),
   awkArt           CHARACTER(255),
   CONSTRAINT cards_pk PRIMARY KEY (id)
