@@ -11,7 +11,7 @@ if (!$this->request->is('ajax'))
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#hide" aria-controls="hide" role="tab" data-toggle="tab">Hide</a></li>
+                <li role="presentation" class="active"><a class="hideall" href="#hide" aria-controls="hide" role="tab" data-toggle="tab">Hide All</a></li>
                 <li role="presentation"><a href="#filter" aria-controls="filter" role="tab" data-toggle="tab">Filter</a></li>
                 <li role="presentation"><a href="#sort" aria-controls="sort" role="tab" data-toggle="tab">Sort</a></li>
             </ul>
@@ -29,11 +29,11 @@ if (!$this->request->is('ajax'))
                             'wrapInput' => false,
                             'class' => 'form-control'
                         ),
-                        'class' => 'container well well-sm form-inline',
+                        'class' => 'container-fluid well well-sm form-inline',
                         'novalidate' => true
                     ));
                     echo '<span class="glyphicon glyphicon-search"></span>';
-                    echo '<p style="font-weight: bold; display: inline">  Filter</p>';
+                    echo '<p style="display: inline">  Filter</p>';
 //                  Type
                     $options = array(
                         1 => array('name' => 'Cute', 'value' => 'Cute'),
@@ -90,17 +90,28 @@ if (!$this->request->is('ajax'))
                         'options' => $options,
                         'empty' => 'All Sources'
                     ));
+//                  Limited
+                    $options = array(
+                        1 => array('name' => 'No Limited Cards', 'value' => '0'),
+                        2 => array('name' => 'Limited Cards Only', 'value' => '1'));
 
-                    echo '<button type="button" id="filterSort" class="btn btn-default" data-toggle="button"
+                    echo $this->Form->input('limited', array(
+//                        'type' => 'select',
+//                        'label' => 'Type',
+//                        'id' => 'sourceDropDown',
+                        'options' => $options,
+                        'empty' => 'Limited and Standard Cards'
+                    ));
+                    echo '<button type="button" id="filterSort" class="btn btn-passion" data-toggle="button"
                             aria-pressed="false" autocomplete="off">Show Sorting Options</button>';
                     echo $this->Form->submit('Go', array(
                         'div' => 'form-group',
-                        'class' => 'btn btn-default',
+                        'class' => 'btn btn-passion',
                     ));
 //                    Filter Sort Bar
                     echo '<div id="filterSortForm" style="margin-top: 5px">';
                     echo '<span class="glyphicon glyphicon-sort"></span>';
-                    echo '<p style="font-weight: bold; display: inline">  Sort</p>';
+                    echo '<p style="display: inline">  Sort</p>';
                     echo $this->Form->input('sort', array(
                         'options' => array(
                             'cardNumber' => 'Release Date', 'rarity' => 'Rarity',
@@ -146,11 +157,11 @@ if (!$this->request->is('ajax'))
                             'wrapInput' => false,
                             'class' => 'form-control'
                         ),
-                        'class' => 'container well well-sm form-inline',
+                        'class' => 'container-fluid well well-sm form-inline',
                         'novalidate' => true
                     ));
                     echo '<span class="glyphicon glyphicon-sort"></span>';
-                    echo '<p style="font-weight: bold; display: inline">  Sort Cards</p>';
+                    echo '<p style="display: inline">  Sort Cards</p>';
                     echo $this->Form->input('sort', array(
                         'options' => array(
                             'cardNumber' => 'Release Date', 'rarity' => 'Rarity',
@@ -183,7 +194,7 @@ if (!$this->request->is('ajax'))
                     ));
                     echo $this->Form->submit('Sort', array(
                         'div' => 'form-group',
-                        'class' => 'btn btn-default'
+                        'class' => 'btn btn-passion'
                     ));
                     echo $this->Form->end();
                     ?>
@@ -679,6 +690,13 @@ echo $this->Paginator->next('Show More ...');
 }
 ?>
 <script>
+    //hide all card panels that have been opened
+    $(document).ready(function(){
+            $('.hideall').click(function(){
+                $('.panel-collapse.in').collapse('hide');
+            });
+        });
+
     //Filter show/hide sort
     $(document).ready(function() {
         $("#filterSort").click(function() {

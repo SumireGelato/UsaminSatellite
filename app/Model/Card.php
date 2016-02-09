@@ -43,6 +43,9 @@ class Card extends AppModel {
             'type' => 'value',
             'field' => 'specialSkillType'
         ),
+		'limited' => array(
+            'type' => 'value'
+        ),
         'source' => array(
             'type' => 'query',
             'method' => 'findSource'

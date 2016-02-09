@@ -17,6 +17,11 @@ body {
     display: none;
 }
 
+.noLinkStyle {
+    text-decoration: inherit;
+    color: inherit;
+}
+
 #levelMax {
     display: none;
 }
@@ -44,10 +49,8 @@ body {
     border-color: #FFAF3A;
 }
 
-
-
-/* CUSTOMIZE THE NAVBAR
--------------------------------------------------- */
+    /* CUSTOMIZE THE NAVBAR
+    -------------------------------------------------- */
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
@@ -202,7 +205,7 @@ body {
 -------------------------------------------------- */
 
 #contentContainer {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.3);
     color: #000;
 }
 
@@ -324,6 +327,30 @@ body {
 
 /* SEARCH / FILTER BAR
 -------------------------------------------------- */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    background-color: #ffc66c;
+    border-color: #FFC66C;
+    color: #9d2068;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+    background-color: #FF6C99;
+    border-color: #FFC66C;
+    color: #FFE0E9;
+}
+
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    color: #9d2068;
+    text-decoration: underline;
+}
+
 .nav-tabs > li, .nav-pills > li {
     float:none;
     display:inline-block;
@@ -339,6 +366,9 @@ body {
     text-align: center;
     margin-bottom: 0;
     padding: 5px;
+    background-color: #FF6C99;
+    border-color: #FF6C99;
+    color: #ffe0e9;
 }
 
 #filterSortForm {

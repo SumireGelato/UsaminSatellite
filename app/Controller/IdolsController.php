@@ -25,7 +25,14 @@ class IdolsController extends AppController
     public function index()
     {
         $this->Idol->recursive = 0;
-        $this->set('idols', $this->Paginator->paginate());
+        $numItems = 0;
+        if (!$this->request->is('ajax')) {
+            $totalItems = 1;
+        } else {
+            $totalItems = $this->passedArgs['pass'];
+        }
+        $this->set(compact('numItems'));
+        $this->set(compact('totalItems'));
     }
 
     /**

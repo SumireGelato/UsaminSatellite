@@ -7,9 +7,8 @@ $this->set('title_for_layout', 'Add Card');
     </div>
     </div>
 <div class="row">
-        <div class="col-lg-4"><?php echo $this->Html->link(__('Cards List'), array('action' => 'adminindex')); ?></div>
-        <div class="col-lg-4"><?php echo $this->Html->link(__('Add Another Card'), array('action' => 'add')); ?></div>
-        <div class="col-lg-4"><?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users', 'action' => 'controlpanel')); ?></div>
+        <div class="col-lg-4"><?php echo $this->Html->link(__('Cards List'), array('action' => 'adminindex'), array('class' => 'noLinkStyle')); ?></div>
+        <div class="col-lg-4"><?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users', 'action' => 'controlpanel'), array('class' => 'noLinkStyle')); ?></div>
 </div>
 <div class="row">
     <div class="col-lg-12">
@@ -50,8 +49,9 @@ $this->set('title_for_layout', 'Add Card');
                 6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'));
             echo $this->Form->input('specialSkillType', array('options' => $options, 'empty' => 'No Skill'));
             echo $this->Form->input('specialSkillText');
-/*            echo $this->Form->input('baseArt', array('type' => 'file'));
-            echo $this->Form->input('awkArt', array('type' => 'file'));*/
+//            echo $this->Form->input('baseArt', array('type' => 'file'));
+//            echo $this->Form->input('awkArt', array('type' => 'file'));
+            echo $this->Form->input('limited', array('class' => 'form-inline'));
             echo '</div>';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('baseLife');
