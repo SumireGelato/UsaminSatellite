@@ -200,7 +200,7 @@ if (!$this->request->is('ajax'))
 <div class="row">
 <?php foreach ($cards as $card) { ?>
     <!--CARD-->
-<div class="col-lg-4">
+<div class="col-lg-3">
 <div class="panel panel-default">
 <?php if ($card['Card']['type'] == 'Cool') { ?>
 <div class="panel-heading cool" role="tab" id="<?php echo "heading" . $totalItems; ?>">
@@ -658,7 +658,7 @@ if (!$this->request->is('ajax'))
 <?php
 $numItems++;
 $totalItems++;
-if ($numItems == 3) {
+if ($numItems == 4) {
     echo '</div> <div class="row">';
     $numItems = 0;
 }

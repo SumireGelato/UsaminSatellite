@@ -54,7 +54,7 @@ class CardsController extends AppController
         $this->set(compact('totalItems'));
         $this->Prg->commonProcess();
         $this->Paginator->settings['conditions'] = $this->Card->parseCriteria($this->Prg->parsedParams());
-        $this->Paginator->settings['limit'] = 9;
+        $this->Paginator->settings['limit'] = 12;
         if($this->request->is(array('post', 'put', 'get')) && $this->request->query('sort') != null)
         {
             $sortField = $this->request->query('sort');
@@ -177,9 +177,6 @@ class CardsController extends AppController
              * REMOVE THIS LATER!!!!!
              */
 
-            foreach ($this->request->data as $key => $value) {
-                $this->data[$key] = trim($value);
-            }
 
             //if no skill / is a n then set skills fields to <no skill>
             if($this->request->data['Card']['rarity'] == 'N') {
@@ -253,8 +250,21 @@ class CardsController extends AppController
                 }
             }
 
-            foreach ($this->request->data as $key => $value) {
-                $this->data[$key] = trim($value);
+            /**
+             * REMOVE THIS LATER!!!!!
+             */
+            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.png';
+            $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.png';
+            /**
+             * REMOVE THIS LATER!!!!!
+             */
+
+
+            //if no skill / is a n then set skills fields to <no skill>
+            if($this->request->data['Card']['rarity'] == 'N') {
+                $this->request->data['Card']['centerSkillText'] = 'No Skill';
+                $this->request->data['Card']['specialSkillType'] = 'No Skill';
+                $this->request->data['Card']['specialSkillText'] = 'N/A';
             }
 
             if ($this->Card->save($this->request->data)) {
