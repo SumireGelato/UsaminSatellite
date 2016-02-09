@@ -33,6 +33,7 @@ class IdolsController extends AppController
         }
         $this->set(compact('numItems'));
         $this->set(compact('totalItems'));
+        $this->set('idols', $this->Paginator->paginate());
     }
 
     /**

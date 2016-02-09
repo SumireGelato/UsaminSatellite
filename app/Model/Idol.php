@@ -16,6 +16,21 @@ class Idol extends AppModel
     public $displayField = 'eName';
 
     /**
+     * Virtual Field to calculate whether a idol is voiced or not
+     */
+    public $virtualFields = array(
+        'voiced' => "
+            CASE
+                WHEN cv =  THEN 'new student'
+                WHEN status = 2 THEN 'new student - transferee'
+                WHEN status = 3 THEN 'old student - shiftee'
+                WHEN status = 4 THEN 'old student'
+                ELSE 'unkown status'
+            END
+        ",
+    );
+
+    /**
      * Validation rules
      *
      * @var array
