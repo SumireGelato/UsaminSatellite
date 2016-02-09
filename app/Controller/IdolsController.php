@@ -33,6 +33,8 @@ class IdolsController extends AppController
         }
         $this->set(compact('numItems'));
         $this->set(compact('totalItems'));
+        $this->Paginator->settings['limit'] = 12;
+        $this->Paginator->settings['order'] = array('Idol.voiced' => 'desc');
         $this->set('idols', $this->Paginator->paginate());
     }
 

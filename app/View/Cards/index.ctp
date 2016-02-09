@@ -10,7 +10,7 @@ if (!$this->request->is('ajax'))
         <div class="col-lg-12">
 
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
+            <ul class="nav nav-tabs" role="tablist" id="toolTabs">
                 <li role="presentation" class="active"><a class="hideall" href="#hide" aria-controls="hide" role="tab" data-toggle="tab">Hide All</a></li>
                 <li role="presentation"><a href="#filter" aria-controls="filter" role="tab" data-toggle="tab">Filter</a></li>
                 <li role="presentation"><a href="#sort" aria-controls="sort" role="tab" data-toggle="tab">Sort</a></li>
@@ -18,9 +18,9 @@ if (!$this->request->is('ajax'))
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="hide"></div>
+                <div role="tabpanel" class="tab-pane fade in active" id="hide"></div>
                 <!--Filter Bar-->
-                <div role="tabpanel" class="tab-pane" id="filter">
+                <div role="tabpanel" class="tab-pane fade" id="filter">
                     <?php
                     echo $this->Form->create('Card', array(
                         'inputDefaults' => array(
@@ -148,7 +148,7 @@ if (!$this->request->is('ajax'))
                 </div>
 
 <!--                Sort Bar-->
-                <div role="tabpanel" class="tab-pane" id="sort">
+                <div role="tabpanel" class="tab-pane fade" id="sort">
                     <?php
                     echo $this->Form->create('Card', array(
                         'inputDefaults' => array(
@@ -690,6 +690,14 @@ echo $this->Paginator->next('Show More ...');
 }
 ?>
 <script>
+    //transistion effects for tabs
+    $(document).ready(function () {
+        $('#toolTabs a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+
     //hide all card panels that have been opened
     $(document).ready(function(){
             $('.hideall').click(function(){

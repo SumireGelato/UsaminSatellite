@@ -21,11 +21,8 @@ class Idol extends AppModel
     public $virtualFields = array(
         'voiced' => "
             CASE
-                WHEN cv =  THEN 'new student'
-                WHEN status = 2 THEN 'new student - transferee'
-                WHEN status = 3 THEN 'old student - shiftee'
-                WHEN status = 4 THEN 'old student'
-                ELSE 'unkown status'
+                WHEN cv = 'N/A' THEN 'false'
+                ELSE 'true'
             END
         ",
     );

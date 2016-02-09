@@ -98,7 +98,7 @@ CREATE TABLE cards (
   jName            CHARACTER(255) NOT NULL,
   rarity           CHARACTER(5)   NOT NULL,
   type             CHARACTER(10)  NOT NULL,
-  limted           BOOLEAN        NOT NULL,
+  limited           BOOLEAN        NOT NULL,
   baseLife         INT            NOT NULL,
   baseVocal        INT            NOT NULL,
   baseDance        INT            NOT NULL,
