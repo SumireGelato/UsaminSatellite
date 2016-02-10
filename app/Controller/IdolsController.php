@@ -44,6 +44,16 @@ class IdolsController extends AppController
     }
 
     /**
+     * admin index
+     *
+     * Datatables list
+     */
+    public function adminindex() {
+        $this->Idol->recursive = 0;
+        $this->set('idols', $this->Idol->find('all', array('order' => 'Idol.type asc')));
+    }
+
+    /**
      * view method
      *
      * @throws NotFoundException
@@ -68,9 +78,68 @@ class IdolsController extends AppController
     {
         if ($this->request->is('post')) {
             $this->Idol->create();
+            $this->request->data['Idol']['bwh'] = $this->request->data['Idol']['b'].'/'.$this->request->data['Idol']['w'].'/'.$this->request->data['Idol']['h'];
+            unset($this->request->data['Idol']['b']);
+            unset($this->request->data['Idol']['w']);
+            unset($this->request->data['Idol']['h']);
+
+            //Check if image has been uploaded
+            if(!empty($this->request->data['Idol']['profilePic']['name']))
+            {
+                $profilePic = $this->request->data['Idol']['profilePic'];//put the data into a var for easy use
+
+                $profileExt = substr(strtolower(strrchr($profilePic['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($profileExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($profilePic['tmp_name'], $this->Html->url('/') . 'img/profiles/' .
+                        explode(' ', lcfirst(trim($this->request->data['Idol']['eName']))[0]).'1.'.$profileExt);
+
+                    //prepare the filename for database entry
+                    $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+                    $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
+                }
+            }
+
+            if(!empty($this->request->data['Idol']['puchiPic']['name']))
+            {
+                $puchiPic = $this->request->data['Idol']['puchiPic'];//put the data into a var for easy use
+
+                $puchiExt = substr(strtolower(strrchr($puchiPic['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($puchiExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($puchiPic['tmp_name'], $this->Html->url('/') . 'img/profiles/' .
+                        explode(' ', lcfirst(trim($this->request->data['Idol']['eName']))[0]).'2.'.$puchiExt);
+
+                    //prepare the filename for database entry
+                    $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+                    $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
+                }
+            }
+
+            /*
+             * REMOVE THIS LATER
+             */
+            $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+            $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
+            $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+            $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
+            /*
+             * REMOVE THIS LATER
+             */
+
             if ($this->Idol->save($this->request->data)) {
                 $this->Flash->success(__('The idol has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'adminindex'));
             } else {
                 $this->Flash->error(__('The idol could not be saved. Please, try again.'));
             }
@@ -92,7 +161,7 @@ class IdolsController extends AppController
         if ($this->request->is(array('post', 'put'))) {
             if ($this->Idol->save($this->request->data)) {
                 $this->Flash->success(__('The idol has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'adminindex'));
             } else {
                 $this->Flash->error(__('The idol could not be saved. Please, try again.'));
             }
@@ -121,6 +190,6 @@ class IdolsController extends AppController
         } else {
             $this->Flash->error(__('The idol could not be deleted. Please, try again.'));
         }
-        return $this->redirect(array('action' => 'index'));
+        return $this->redirect(array('action' => 'adminindex'));
     }
 }

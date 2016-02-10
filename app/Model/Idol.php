@@ -65,7 +65,7 @@ class Idol extends AppModel
         ),
         'height' => array(
             'numeric' => array(
-                'rule' => array('numeric'),
+                'rule' => array('notBlank'),
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
@@ -75,7 +75,7 @@ class Idol extends AppModel
         ),
         'weight' => array(
             'numeric' => array(
-                'rule' => array('numeric'),
+                'rule' => array('notBlank'),
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,

@@ -77,7 +77,6 @@ $this->set('title_for_layout', 'Edit Card');
                 'class' => 'btn btn-default'
             ));
             echo $this->Form->end();
-            echo $this->Form->end();
             echo '</div>';
             echo '</div>';
             ?>
