@@ -17,19 +17,25 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
 <div class="row">
     <!-- Tab panes -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active" id="cute">
-            <div class="col-xs-2">
-
+        <div role="tabpanel" class="tab-pane fade in active cute container-fluid" id="cute">
+            <div class="row">
+                <div class="col-xs-2">
+                Blah
+                </div>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="cool">
-            <div class="col-xs-2">
-
+        <div role="tabpanel" class="tab-pane fade cool container-fluid" id="cool">
+            <div class="row">
+                <div class="col-xs-2">
+                    Blah
+                </div>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="passion">
-            <div class="col-xs-2">
-
+        <div role="tabpanel" class="tab-pane fade passion container-fluid" id="passion">
+            <div class="row">
+                <div class="col-xs-2">
+                    Blah
+                </div>
             </div>
         </div>
     </div>

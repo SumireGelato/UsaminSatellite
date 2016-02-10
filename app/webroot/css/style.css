@@ -35,33 +35,33 @@ body {
 }*/
 
 .panel-heading.cute {
-    background-color: #FF547F;
-    border-color: #FF547F;
+    background-color: #ff6c99;
+    border-color: #ff6c99;
 }
 
 .panel-heading.cool {
-    background-color: #0275F2;
-    border-color: #0275F2;
+    background-color: #80BCF0;
+    border-color: #80BCF0;
 }
 
 .panel-heading.passion {
-    background-color: #FFAF3A;
-    border-color: #FFAF3A;
+    background-color: #F8D060;
+    border-color: #F8D060;
 }
 
 .cute {
-    background-color: #FF547F;
-    border-color: #FF547F;
+    background-color: #ff6c99;
+    border-color: #ff6c99;
 }
 
 .cool {
-    background-color: #0275F2;
-    border-color: #0275F2;
+    background-color: #80BCF0;
+    border-color: #80BCF0;
 }
 
 .passion {
-    background-color: #FFAF3A;
-    border-color: #FFAF3A;
+    background-color: #F8D060;
+    border-color: #F8D060;
 }
 
     /* CUSTOMIZE THE NAVBAR
