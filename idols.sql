@@ -50,7 +50,16 @@ INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthda
 (40, 'Miyo Harada', '原田美世', '20', '163', '46', 'November 14', 'O', '86/59/85', 'Tinkering with cars and bikes', 'Right', 'Scorpio', 'Ishikawa', 'Cute', 'N/A', 'miyo1.png', 'miyo2.png'),
 (41, 'Kana Imai', '今井加奈', '16', '153', '41', 'March 3', 'O', '81/56/79', 'Talking to Friends', 'Right', 'Pisces', 'Kouchi', 'Cute', 'N/A', 'kana1.png', 'kana2.png'),
 (42, 'Mirei Hayasaka', '早坂美玲', '14', '147', '39', 'May 9', 'B', '75/54/77', 'Collecting stuffed toys', 'Right', 'Taurus', 'Miyagi', 'Cute', 'N/A', 'mirei1.png', 'mirei2.png'),
-(43, 'Atsumi Munakata', '棟方愛海', '14', '151', '41', 'August 1', 'A', '73/56/75', 'Finger Exercises', 'Both', 'Leo', 'Aomori', 'Cute', 'N/A', 'atsumi1.png', 'atsumi2.png');
+(43, 'Atsumi Munakata', '棟方愛海', '14', '151', '41', 'August 1', 'A', '73/56/75', 'Finger Exercises', 'Both', 'Leo', 'Aomori', 'Cute', 'N/A', 'atsumi1.png', 'atsumi2.png'),
+(44, 'Riina Tada', '多田李衣菜', '17', '152', '41', 'June 30', 'A', '80/55/81', 'Listening to music', 'Right', 'Cancer', 'Tokyo', 'Cool', 'Ruriko Aoki', 'riina1.png', 'riina2.png'),
+(45, 'Kaede Takagaki', '高垣楓', '25', '171', '49', 'June 14', 'AB', '81/57/83', 'Onsen excursions', 'Left', 'Gemini', 'Wakayama', 'Cool', 'Saori Hayami', 'kaede1.png', 'kaede2.png'),
+(46, 'Koume Shirasaka', '白坂小梅', '13', '142', '34', 'March 28', 'AB', '65/50/70', 'Watching horror movies, visiting haunted places', 'Left', 'Aries', 'Hyogo', 'Cool', 'Chiyo Ousaki', 'koume1.png', 'koume2.png'),
+(47, 'Kanade Hayami', '速水奏', '17', '162', '43', 'July 1', 'O', '86/55/84', 'Watching movies', 'Right', 'Cancer', 'Tokyo', 'Cool', 'Yuuko Iida', 'kanade1.png', 'kanade2.png'),
+(48, 'Syuko Shiomi', '塩見周子', '18', '163', '45', 'December 12', 'B', '82/56/81', 'Darts, blood donation', 'Right', 'Sagittarius', 'Kyoto', 'Cool', 'Ru Thing', 'syuko1.png', 'syuko2.png'),
+(49, 'Arisu Tachibana', '橘ありす', '12', '141', '34', 'July 31', 'B', '68/52/67', 'Games, reading (mystery)', 'Right', 'Aries', 'Hyogo', 'Cool', 'Amina Satou', 'arisu1.png', 'arisu2.png'),
+(50, 'Haruna Kamijo', '上条春菜', '18', '156', '42', 'April 10', 'O', '79/56/80', 'Napping with her cat in the balcony', 'Right', 'Aries', 'Shizuoka', 'Cool', 'Mina Nagajima', 'haruna1.png', 'haruna2.png'),
+(51, 'Yukimi Sajo', '佐城雪美', '10', '137', '30', 'September 28', 'AB', '63/47/65', 'Talking to her pet (black cat)', 'Right', 'Libra', 'Kyoto', 'Cool', 'N/A', 'yukimi1.png', 'yukimi2.png'),
+(52, 'Chie Sasaki', '佐々木千枝', '11', '139', '33', 'June 7', 'A', '73/49/73', 'Sewing', 'Left', 'Gemini', 'Toyama', 'Cool', 'Asaka Imai', 'chie1.png', 'chie2.png');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
