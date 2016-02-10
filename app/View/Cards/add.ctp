@@ -6,7 +6,7 @@ $this->set('title_for_layout', 'Add Card');
         <h3>Add Card</h3>
     </div>
     </div>
-<div class="row">
+<div class="row container">
         <div class="col-lg-4"><?php echo $this->Html->link(__('Cards List'), array('action' => 'adminindex'), array('class' => 'noLinkStyle')); ?></div>
         <div class="col-lg-4"><?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users', 'action' => 'controlpanel'), array('class' => 'noLinkStyle')); ?></div>
 </div>
