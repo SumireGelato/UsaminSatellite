@@ -7,7 +7,6 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 
-TRUNCATE TABLE `idols`;
 INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthday`, `bloodType`, `bwh`, `hobbies`, `writingHand`, `horoscope`, `hometown`, `type`, `cv`, `profilePic`, `puchiPic`) VALUES
 (1, 'Uzuki Shimamura', '島村卯月', '17', '159', '45', 'April 24', 'O', '83/59/87', 'Long Phone Calls with friends', 'Right', 'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'uzuki1.png', 'uzuki2.png'),
 (2, 'Rin Shibuya', '渋谷凜', '15', '165', '44', 'August 10', 'B', '80/56/81', 'Dog Walking', 'Right', 'Leo', 'Tokyo', 'Cool', 'Ayaka Fukuhara', 'rin1.png', 'rin2.png'),
