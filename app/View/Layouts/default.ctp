@@ -31,6 +31,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('http://mplus-fonts.osdn.jp/webfonts/general-j/mplus_webfonts.css');
     echo $this->Html->css('bootstrap.css');
     echo $this->Html->css('bootstrap-datetimepicker.css');
+    echo $this->Html->css('easing.css');
+    echo $this->Html->css('scrollToTop.css');
     //		echo $this->Html->css('bootstrap-theme.css');
     //    echo $this->Html->css('jquery-ui.css');
     //    echo $this->Html->css('jquery-ui.structure.css');
@@ -43,6 +45,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->script('bootstrap');
     echo $this->Html->script('moment');
     echo $this->Html->script('bootstrap-datetimepicker.min');
+    echo $this->Html->script('jquery-scrollToTop');
+    echo $this->Html->script('scrolltop');
     //echo $this->Html->script('npm');
     ?>
     <link rel="stylesheet" type="text/css" href="<?php echo $this->Html->url('/'); ?>DataTables/datatables.css"/>
@@ -159,7 +163,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </div>
 <!-- End get Content -->
 
-<a href="#0" class="cd-top">Top</a>
 </body>
 
 <script>
