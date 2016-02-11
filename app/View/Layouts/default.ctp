@@ -159,7 +159,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </div>
 <!-- End get Content -->
 
-
+<a href="#0" class="cd-top">Top</a>
 </body>
 
 <script>

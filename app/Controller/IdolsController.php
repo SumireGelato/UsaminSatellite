@@ -34,7 +34,8 @@ class IdolsController extends AppController
         $this->set(compact('numItems'));
         $this->set(compact('totalItems'));
         $this->Paginator->settings['limit'] = 12;
-        $this->Paginator->settings['order'] = array('Idol.voiced' => 'desc');
+        $this->Paginator->settings['order'] = array('Idol.voiced' => 'desc', 'Idol.id' => 'asc');
+        $this->Paginator->settings['fields'] = array('Idol.eName', 'Idol.puchiPic', 'Idol.voiced');
         $this->Paginator->settings['conditions'] = array('Idol.type' => 'Cute');
         $this->set('cuteIdols', $this->Paginator->paginate());
         $this->Paginator->settings['conditions'] = array('Idol.type' => 'Cool');
@@ -129,10 +130,10 @@ class IdolsController extends AppController
             /*
              * REMOVE THIS LATER
              */
-            $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
-            $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
-            $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
-            $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
+//            $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+//            $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
+//            $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+//            $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
             /*
              * REMOVE THIS LATER
              */
@@ -159,6 +160,66 @@ class IdolsController extends AppController
             throw new NotFoundException(__('Invalid idol'));
         }
         if ($this->request->is(array('post', 'put'))) {
+
+            $this->request->data['Idol']['bwh'] = $this->request->data['Idol']['b'].'/'.$this->request->data['Idol']['w'].'/'.$this->request->data['Idol']['h'];
+            unset($this->request->data['Idol']['b']);
+            unset($this->request->data['Idol']['w']);
+            unset($this->request->data['Idol']['h']);
+
+            //Check if image has been uploaded
+            if(!empty($this->request->data['Idol']['profilePic']['name']))
+            {
+                $profilePic = $this->request->data['Idol']['profilePic'];//put the data into a var for easy use
+
+                $profileExt = substr(strtolower(strrchr($profilePic['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($profileExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($profilePic['tmp_name'], $this->Html->url('/') . 'img/profiles/' .
+                        explode(' ', lcfirst(trim($this->request->data['Idol']['eName']))[0]).'1.'.$profileExt);
+
+                    //prepare the filename for database entry
+                    $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+                    $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
+                }
+            }
+
+            if(!empty($this->request->data['Idol']['puchiPic']['name']))
+            {
+                $puchiPic = $this->request->data['Idol']['puchiPic'];//put the data into a var for easy use
+
+                $puchiExt = substr(strtolower(strrchr($puchiPic['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($puchiExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($puchiPic['tmp_name'], $this->Html->url('/') . 'img/profiles/' .
+                        explode(' ', lcfirst(trim($this->request->data['Idol']['eName']))[0]).'2.'.$puchiExt);
+
+                    //prepare the filename for database entry
+                    $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+                    $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
+                }
+            }
+
+            /*
+             * REMOVE THIS LATER
+             */
+//            $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+//            $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
+//            $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+//            $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
+            /*
+             * REMOVE THIS LATER
+             */
+
             if ($this->Idol->save($this->request->data)) {
                 $this->Flash->success(__('The idol has been saved.'));
                 return $this->redirect(array('action' => 'adminindex'));
@@ -166,8 +227,14 @@ class IdolsController extends AppController
                 $this->Flash->error(__('The idol could not be saved. Please, try again.'));
             }
         } else {
+            $this->Idol->recursive = 0;
             $options = array('conditions' => array('Idol.' . $this->Idol->primaryKey => $id));
             $this->request->data = $this->Idol->find('first', $options);
+            $bwhArray = explode('/',trim($this->request->data['Idol']['bwh']));
+            $this->request->data['Idol']['b'] = $bwhArray[0];
+            $this->request->data['Idol']['w'] = $bwhArray[1];
+            $this->request->data['Idol']['h'] = $bwhArray[2];
+            unset($this->request->data['Idol']['bwh']);
         }
     }
 

@@ -4,7 +4,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 
 INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthday`, `bloodType`, `bwh`, `hobbies`, `writingHand`, `horoscope`, `hometown`, `type`, `cv`, `profilePic`, `puchiPic`) VALUES
@@ -22,7 +22,7 @@ INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthda
 (12, 'Minami Nitta', '新田美波', '19', '165', '45', 'July 27', 'O', '82/55/85', 'Lacrosse, Qualifying', 'Right', 'Leo', 'Hiroshima', 'Cool', 'Aya Suzaki', 'minami1.png', 'minami2.png'),
 (13, 'Ranko Kanzaki', '神崎蘭子 ', '14', '156', '41', 'April 8', 'A', '81/57/80', 'Drawing', 'Right', 'Aries', 'Kumamoto', 'Cool', 'Maaya Uchida', 'ranko1.png', 'ranko2.png'),
 (14, 'Karen Hojo', '北条加蓮', '16', '155', '42', 'September 5', 'B', '83/55/81', 'Nail art', 'Right', 'Virgo', 'Tokyo', 'Cool', 'Mai Fuchigami', 'karen1.png', 'karen2.png'),
-(15, 'Anastasia', ' ｱﾅｽﾀｼｱ', '15', '165', '43', 'September 19', 'O', '80/54/80', 'House parties, stargazing', 'Both', 'Virgo', 'Hokkaido', 'Cool', 'Sumire Uesaka', 'anastasia1.png', 'anastasia2.png'),
+(15, 'Anastasia', 'アナスタシア', '15', '165', '43', 'September 19', 'O', '80/54/80', 'House parties, stargazing', 'Both', 'Virgo', 'Hokkaido', 'Cool', 'Sumire Uesaka', 'anastasia1.png', 'anastasia2.png'),
 (16, 'Nao Kamiya', '神谷奈緒', '17', '154', '44', 'September 16', 'AB', '83/58/81', 'Watching anime', 'Left', 'Virgo', 'Chiba', 'Cool', 'Eriko Matsui', 'nao1.png', 'nao2.png'),
 (17, 'Chieri Ogata', '緒方智絵里', '16', '153', '42', 'June 11', 'A', '79/57/80', 'Collecting four-leaf clovers', 'Right', 'Gemini', 'Mie', 'Cute', 'Naomi Oozora', 'chieri1.png', 'chieri2.png'),
 (18, 'Nana Abe', '安部菜々', 'Eternally 17', '146', '40', 'May 15', 'O', '84/57/84', 'Communicating with Planet Usamin', 'Right', 'Taurus', 'Planet Usamin', 'Cute', 'Marie Miyake', 'nana1.png', 'nana2.png'),
@@ -59,7 +59,56 @@ INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthda
 (49, 'Arisu Tachibana', '橘ありす', '12', '141', '34', 'July 31', 'B', '68/52/67', 'Games, reading (mystery)', 'Right', 'Aries', 'Hyogo', 'Cool', 'Amina Satou', 'arisu1.png', 'arisu2.png'),
 (50, 'Haruna Kamijo', '上条春菜', '18', '156', '42', 'April 10', 'O', '79/56/80', 'Napping with her cat in the balcony', 'Right', 'Aries', 'Shizuoka', 'Cool', 'Mina Nagajima', 'haruna1.png', 'haruna2.png'),
 (51, 'Yukimi Sajo', '佐城雪美', '10', '137', '30', 'September 28', 'AB', '63/47/65', 'Talking to her pet (black cat)', 'Right', 'Libra', 'Kyoto', 'Cool', 'N/A', 'yukimi1.png', 'yukimi2.png'),
-(52, 'Chie Sasaki', '佐々木千枝', '11', '139', '33', 'June 7', 'A', '73/49/73', 'Sewing', 'Left', 'Gemini', 'Toyama', 'Cool', 'Asaka Imai', 'chie1.png', 'chie2.png');
+(52, 'Chie Sasaki', '佐々木千枝', '11', '139', '33', 'June 7', 'A', '73/49/73', 'Sewing', 'Left', 'Gemini', 'Toyama', 'Cool', 'Asaka Imai', 'chie1.png', 'chie2.png'),
+(53, 'Chinatsu Aikawa', '相川千夏', '23', '161', '43', 'November 11', 'B', '82/56/85', 'Reading at cafes', 'Right', 'Scorpio', 'Hokkaido', 'Cool', 'N/A', 'chinatsu1.png', 'chinatsu2.png'),
+(54, 'Hina Araki', '荒木比奈', '20', '157', '43', 'April 9', 'A', '83/57/82', 'Drawing Manga', 'Right', 'Aries', 'Kanagawa', 'Cool', 'N/A', 'hina1.png', 'hina2.png'),
+(55, 'Mizuki Kawashima', '川島瑞樹', '28', '159', '46', 'November 25', 'A', '87/57/85', 'Cleaning, Laundry', 'Right', 'Sagittarius', 'Osaka', 'Cool', 'Nao Touyama', 'mizuki1.png', 'mizuki2.png'),
+(56, 'Sarina Matsumoto', '松本沙理奈', '22', '165', '48', 'September 1', 'A', '92/58/85', 'Shopping', 'Right', 'Virgo', 'Tokyo', 'Cool', 'N/A', 'sarina1.png', 'sarina2.png'),
+(57, 'Ayase Honoka', '綾瀬穂乃香', '17', '161', '46', 'May 29', 'A', '85/57/84', 'Ballet', 'Right', 'Gemini', 'Miyagi', 'Cool', 'N/A', 'ayase1.png', 'ayase2.png'),
+(58, 'Ryo Matsunaga', '松永涼', '18', '160', '47', 'October 1', 'AB', '90/56/86', 'Horror Movie Appreciation', 'Right', 'Libra', 'Tokyo', 'Cool', 'Haruka Chisuga ', 'ryo1.png', 'ryo2.png'),
+(59, 'Fumika Sagisawa', '鷺沢文香', '19', '162', '45', 'October 27', 'AB', '84/54/81', 'Going to Bookstores, Making Bookmarks', 'Right', 'Scorpio', 'Nagano', 'Cool', 'MAO', 'fumika1.png', 'fumika2.png'),
+(60, 'Asuka Ninomiya', '二宮飛鳥', '14', '154', '42', 'February 3', 'B', '75/55/78', 'Hair arrangement, Listening to the Radio, Drawing manga', 'Right', 'Aquarius', 'Shizuoka', 'Cool', 'Shiki Aoki', 'asuka1.png', 'asuka2.png'),
+(61, 'Tamami Wakiyama', '脇山珠美', '16', '145', '38', 'September 20', 'B', '72/53/75', ' Kendo, Reading Historical Novels ', 'Right', 'Virgo', 'Saga', 'Cool', 'Misa Kayama', 'tamami1.png', 'tamami2.png'),
+(62, 'Chiaki Kurokawa', '黒川千秋', '20', '163', '45', 'February 26', 'B', '86/57/86', 'Classic arts appreciation', 'Right', 'Pisces', 'Hokkaido', 'Cool', 'N/A', 'chiaki1.png', 'chiaki2.png'),
+(63, 'Nono Morikubo', '森久保乃々', '14', '149', '38', 'August 27', 'AB', '73/55/76', 'Writing poems, collecting shoujo manga', 'Right', 'Virgo', 'Kanagawa', 'Cool', 'N/A', 'nono1.png', 'nono2.png'),
+(64, 'Miyu Mifune', '三船美優', '26', '165', '46', 'February 25', 'AB', '85/60/85', 'Aromatherapy', 'Right', 'Pisces', 'Iwate', 'Cool', 'N/A', 'miyu1.png', 'miyu2.png'),
+(65, 'Aki Yamato', '大和亜季', '21', '165', '51', 'December 16', 'O', '92/60/85', 'Survival Games, Collecting Plastic Models', 'Left', 'Sagittarius', 'Fukuoka', 'Cool', 'Tomo Muranaka', 'aki1.png', 'aki2.png'),
+(66, 'Makino Yagami', '八神マキノ', '18', '160', '45', 'November 7', 'B', '85/56/83', 'Espionage', 'Right', 'Scorpio', 'Gifu', 'Cool', 'N/A', 'makino1.png', 'makino2.png'),
+(67, 'Fujiwara Hajime', '藤原肇', '16', '161', '43', 'June 15', 'B', '80/55/84', 'Pottery, Fishing', 'Both', 'Gemini', 'Okayama', 'Cool', 'N/A', 'fujiwara1.png', 'fujiwara2.png'),
+(68, 'Yuuki Haru', '結城晴', '12', '140', '37', 'July 17', 'A', '74/55/78', 'Soccer', 'Right', 'Cancer', 'Ehime', 'Cool', 'N/A', 'yuuki1.png', 'yuuki2.png'),
+(69, 'Layla', 'ライラ', '16', '150', '40', 'May 21', 'O', '75/54/78', 'Chatting with strangers in the park', 'Right', 'Gemini', 'Dubai', 'Cool', 'N/A', 'layla1.png', 'layla2.png'),
+(70, 'Yasuha Okazaki', '岡崎泰葉', '16', '153', '43', 'July 16', 'A', '79/55/80', 'Making Dollhouses', 'Left', 'Cancer', 'Nagasaki', 'Cool', 'N/A', 'yasuha1.png', 'yasuha2.png'),
+(71, 'Seira Mizuki', '水木聖來', '23', '155', '43', 'April 27', 'B', '82/55/80', 'Dog Walking', 'Right', 'Taurus', 'Ibaraki', 'Cool', 'N/A', 'seira1.png', 'seira2.png'),
+(72, 'Izumi Ohishi', '大石泉', '15', '157', '41', 'November 11', 'A', '83/55/82', 'Programming', 'Right', 'Scorpio', 'Shizuoka', 'Cool', 'N/A', 'izumi1.png', 'izumi2.png'),
+(73, 'Tomo Fuji', '藤居朋', '19', '163', '45', 'July 1', 'O', '78/57/83', ' Fortune-telling', 'Right', 'Cancer', 'Shiga', 'Cool', 'N/A', 'tomo1.png', 'tomo2.png'),
+(74, 'Rika Jougasaki', '城ヶ崎莉嘉', '12', '149', '36', 'July 30', 'B', '72/54/75', 'Collecting Stickers', 'Left', 'Leo', 'Saitama', 'Passion', 'Nozomi Yamamoto', 'rika1.png', 'rika2.png'),
+(75, 'Yuki Himekawa', '姫川友紀', '20', '161', '44', 'September 14', 'B', '80/57/80', 'Watching baseball games', 'Right', 'Virgo', 'Miyazaki', 'Passion', 'Mako Morino', 'yuki1.png', 'yuki2.png'),
+(76, 'Akane Hino', '日野茜', '17', '148', '40', 'August 4', 'AB', '80/60/82', 'Watching Rugby', 'Right', 'Leo', 'Tochigi', 'Passion', 'Chinatsu Akasaki', 'akane1.png', 'akane2.png'),
+(77, 'Takamori Aiko', '高森藍子', '16', '155', '42', 'July 25', 'O', '74/60/79', 'Walking in the neighbourhood park', 'Right', 'Leo', 'Tokyo', 'Passion', 'Yuuki Kaneko', 'takamori1.png', 'takamori2.png'),
+(78, 'Syoko Hoshi', '星輝子', '15', '142', '35', 'June 6', 'B', '73/53/75', 'Cultivating Mushrooms', 'Left', 'Gemini', 'Fukushima', 'Passion', 'Satsumi Matsuda', 'syoko1.png', 'syoko2.png'),
+(79, 'Natsuki Kimura', '木村夏樹', '18', '159', '41', 'August 19', 'AB', '82/57/83', 'Touring', 'Left', 'Leo', 'Ibaraki', 'Passion', 'Kiyono Yasuno', 'natsuki1.png', 'natsuki2.png'),
+(80, 'Yuko Hori', '堀裕子', '16', '157', '36', 'March 13', 'AB', '81/58/80', 'Psychic training', 'Left', 'Pisces', 'Fukui', 'Passion', 'Eri Suzuki', 'yuko1.png', 'yuko2.png'),
+(81, 'Yui Ohtsuki', '大槻唯', '17', '155', '42', 'May 7', 'B', '84/56/83', 'Karaoke', 'Left', 'Taurus', 'Saitama', 'Passion', 'Nanami Yamashita', 'yui1.png', 'yui2.png'),
+(82, 'Sanae Katagiri', '片桐早苗', '28', '152', '47', 'March 7', 'O', '92/58/84', 'Massages, large bathhouses', 'Right', 'Pisces', 'Niigata', 'Passion', 'Azumi Waki', 'sanae1.png', 'sanae2.png'),
+(83, 'Natalia', 'ナターリア', '14', '155', '43', 'June 29', 'A', '84/55/86', 'Belly Dancing', 'Right', 'Cancer', 'Rio de Janeiro', 'Passion', 'N/A', 'natalia1.png', 'natalia2.png'),
+(84, 'Kaoru Ryuzaki', '龍崎薫', '9', '132', '32', 'July 20', 'O', '65/51/70', 'Cooking', 'Right', 'Cancer', 'Ehime', 'Passion', 'Natsumi Haruse', 'kaoru1.png', 'kaoru2.png'),
+(85, 'Aiba Yumi', '相葉夕美', '18', '158', '42', 'April 15', 'O', '81/57/80', 'Gardening', 'Right', 'Aries', 'Kanagawa', 'Passion', 'Juri Kimura', 'aiba1.png', 'aiba2.png'),
+(86, 'Tomoka Wakabayashi', '若林智香', '17', '156', '45', 'March 7', 'A', '82/57/83', 'Cheerleading', 'Right', 'Virgo', 'Kagoshima', 'Passion', 'N/A', 'tomoka1.png', 'tomoka2.png'),
+(87, 'Shizuku Oikawa', '及川雫', '16', '170', '56', 'June 3', 'O', '105/64/92', 'Milking, Driving tractors', 'Both', 'Gemini', 'Iwate', 'Passion', 'Yuri Noguchi', 'shizuku1.png', 'shizuku2.png'),
+(88, 'Ayame Hamaguchi', '浜口あやめ', '15', '154', '42', 'January 13', 'A', '78/55/80', 'Watching historical plays, collecting ninja goods, touring film studios', 'Left', 'Capricorn', 'Mie', 'Passion', 'Masumi Tazawa', 'ayame1.png', 'ayame2.png'),
+(89, 'Kumiko Matsuyama', '松山久美子', '21', '161', '44', 'January 21', 'A', '81/56/81', 'Piano', 'Right', 'Aquarius', 'Kanagawa', 'Passion', 'N/A', 'kumiko1.png', 'kumiko2.png'),
+(90, 'Mary Cochran', 'メアリ・コクラン', '11', '152', '41', 'January 19', 'B', '71/59/73', 'Beauty routines, Gourmet tours', 'Left', 'Capricorn', 'San Francisco', 'Passion', 'N/A', 'mary1.png', 'mary2.png'),
+(91, 'Miu Yaguchi', '矢口美羽', '14', '150', '41', 'July 10', 'B', '81/56/80', 'E-mail', 'Right', 'Cancer', 'Chiba', 'Passion', 'N/A', 'miu1.png', 'miu2.png'),
+(92, 'Nina Ichihara', '市原仁奈', '9', '128', '29', 'February 8', 'B', '61/57/67', 'Collecting Kigurumi', 'Left', 'Aquarius', 'Shizuoka', 'Passion', 'Misaki Kuno', 'nina1.png', 'nina2.png'),
+(93, 'Ema Senzaki', '仙崎恵磨', '21', '156', '45', 'June 27', 'O', '81/55/81', 'Collecting Leather Accessories', 'Left', 'Cancer', 'Osaka', 'Passion', 'N/A', 'ema1.png', 'ema2.png'),
+(94, 'Takumi Mukai', '向井拓海', '18', '163', '53', 'August 7', 'A', '95/60/87', 'Bike tinkering', 'Right', 'Leo', 'Kanagawa', 'Passion', 'Yuuko Hara', 'takumi1.png', 'takumi2.png'),
+(95, 'Hinako Kita', '喜多日菜子', '15', '158', '38', 'April 6', 'AB', '78/56/78', 'Having Delusions', 'Right', 'Aries', 'Akita', 'Passion', 'N/A', 'hinako1.png', 'hinako2.png'),
+(96, 'Yuzu Kitami', '喜多見柚', '15', '156', '43', 'December 2', 'B', '82/57/82', 'Badminton', 'Left', 'Sagittarius', 'Saitama', 'Passion', 'N/A', 'yuzu1.png', 'yuzu2.png'),
+(97, 'Tomoe Murakami', '村上巴', '13', '146', '37', 'January 3', 'A', '74/53/76', 'Enka, Shogi', 'Right', 'Capricorn', 'Hiroshima', 'Passion', 'N/A', 'tomoe1.png', 'tomoe2.png'),
+(98, 'Yoshino Yorita', '依田芳乃', '16', '151', '40', 'July 3', 'O', '73/53/73', 'Resolving troubles, Collecting stones, Finding lost items', 'Right', 'Cancer', 'Kagoshima', 'Passion', 'N/A', 'yoshino1.png', 'yoshino2.png'),
+(99, 'Emi Namba', '難波笑美', '17', '158', '45', 'May 1', 'O', '82/56/80', 'Live Comedy, Imitation', 'Right', 'Taurus', 'Osaka', 'Passion', 'Arisa Date', 'emi1.png', 'emi2.png'),
+(100, 'Reina Koseki', '小関麗奈', '13', '148', '36', 'April 14', 'B', '75/50/77', 'Pranks', 'Left', 'Aries', 'Yamagata', 'Passion', 'N/A', 'reina1.png', 'reina2.png'),
+(101, 'Risa Matoba', '的場梨沙', '12', '143', '38', 'November 19', 'B', '71/58/73', 'Dancing, Dates with Daddy', 'Right', 'Scorpio', 'Yamaguchi', 'Passion', 'N/A', 'risa1.png', 'risa2.png');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

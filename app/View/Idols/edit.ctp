@@ -1,36 +1,88 @@
-<div class="idols form">
-    <?php echo $this->Form->create('Idol'); ?>
-    <fieldset>
-        <legend><?php echo __('Edit Idol'); ?></legend>
+<?php
+$this->set('title_for_layout', 'Edit Idol');
+?>
+<div class="row container">
+    <div class="col-lg-12">
+        <h3>Edit Idol</h3>
+    </div>
+</div>
+<div class="row container">
+    <div class="col-lg-4"><?php echo $this->Html->link(__('Idols List'), array('action' => 'adminindex'), array('class' => 'noLinkStyle')); ?></div>
+    <div class="col-lg-4"><?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users', 'action' => 'controlpanel'), array('class' => 'noLinkStyle')); ?></div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
         <?php
-        echo $this->Form->input('id');
-        echo $this->Form->input('eName');
-        echo $this->Form->input('jName');
-        echo $this->Form->input('age');
-        echo $this->Form->input('height');
-        echo $this->Form->input('weight');
-        echo $this->Form->input('birthday');
-        echo $this->Form->input('bloodType');
-        echo $this->Form->input('bwh');
-        echo $this->Form->input('hobbies');
-        echo $this->Form->input('writingHand');
-        echo $this->Form->input('horoscope');
-        echo $this->Form->input('hometown');
-        echo $this->Form->input('type');
-        echo $this->Form->input('cv');
-        echo $this->Form->input('pic1');
-        echo $this->Form->input('pic2');
-        ?>
-    </fieldset>
-    <?php echo $this->Form->end(__('Submit')); ?>
+        echo $this->Form->create('Idol', array(
+            'inputDefaults' => array(
+                'div' => 'form-group',
+                'class' => 'form-control',
+//                'style' => 'width:auto'
+            ),
+            'class' => 'container',
+            'enctype' => 'multipart/form-data',
+            'novalidate' => true
+        )); ?>
+        <fieldset>
+            <?php
+            echo '<div class="row">';
+            echo '<div class="col-lg-3">';
+            echo $this->Form->input('eName');
+            echo $this->Form->input('jName');
+            echo $this->Form->input('age');
+            echo $this->Form->input('height');
+            echo $this->Form->input('weight');
+            echo '</div>';
+            echo '<div class="col-lg-3">';
+            echo $this->Form->input('birthday', array('div' => false, 'id' => 'datepicker'));
+            $bloodOptions = array('A' => 'A', 'B' => 'B', 'AB' => 'AB', 'O' => 'O');
+            echo $this->Form->input('bloodType', array('options' => $bloodOptions));
+            echo '<div class="form-group">';
+            echo '<div class="col-xs-4">';
+            echo $this->Form->input('b', array('div' => false));
+            echo '</div>';
+            echo '<div class="col-xs-4">';
+            echo $this->Form->input('w', array('div' => false));
+            echo '</div>';
+            echo '<div class="col-xs-4">';
+            echo $this->Form->input('h', array('div' => false));
+            echo '</div>';
+            echo '</div>';
+            echo $this->Form->input('hobbies');
+            echo '</div>';
+            echo '<div class="col-lg-3">';
+            $handOptions = array('Right' => 'Right', 'Left' => 'Left', 'Both' => 'Both');
+            echo $this->Form->input('writingHand', array('options' => $handOptions));
+            $westernZodiacOptions = array('Aries' => 'Aries', 'Taurus' => 'Taurus', 'Gemini' => 'Gemini', 'Cancer' => 'Cancer',
+                'Leo' => 'Leo', 'Virgo' => 'Virgo', 'Libra' => 'Libra', 'Scorpio' => 'Scorpio', 'Sagittarius' => 'Sagittarius',
+                'Capricorn' => 'Capricorn', 'Aquarius' => 'Aquarius', 'Pisces' => 'Pisces');
+            echo $this->Form->input('horoscope', array('options' => $westernZodiacOptions));
+            echo $this->Form->input('hometown');
+            $typeOptions = array('Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion');
+            echo $this->Form->input('type', array('options' => $typeOptions));
+            echo $this->Form->input('cv', array('default' => 'N/A'));
+            echo '</div>';
+            echo '<div class="col-lg-3">';
+            echo $this->Form->input('profilePic', array('type' => 'file'));
+            echo 'Current filename is: '.$this->request->data['Idol']['profilePic'];
+            echo $this->Form->input('puchiPic', array('type' => 'file'));
+            echo 'Current filename is: '.$this->request->data['Idol']['puchiPic'];
+            echo $this->Form->submit('Save', array(
+                'div' => 'form-group',
+                'class' => 'btn btn-default'
+            ));
+            echo '</div>';
+            echo '</div>';
+            ?>
+        </fieldset>
+        <?php echo $this->Form->end(); ?>
+    </div>
 </div>
-<div class="actions">
-    <h3><?php echo __('Actions'); ?></h3>
-    <ul>
-
-        <li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Idol.id')), array('confirm' => __('Are you sure you want to delete # %s?', $this->Form->value('Idol.id')))); ?></li>
-        <li><?php echo $this->Html->link(__('List Idols'), array('action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(__('List Cards'), array('controller' => 'cards', 'action' => 'index')); ?> </li>
-        <li><?php echo $this->Html->link(__('New Card'), array('controller' => 'cards', 'action' => 'add')); ?> </li>
-    </ul>
-</div>
+<script type="text/javascript">
+    $(function () {
+        $('#datepicker').datetimepicker({
+            format: 'MMMM D',
+            dayViewHeaderFormat: 'MMMM D'
+        });
+    });
+</script>

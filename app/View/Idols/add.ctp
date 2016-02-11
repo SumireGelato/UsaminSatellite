@@ -24,7 +24,6 @@ $this->set('title_for_layout', 'Add Idol');
             'novalidate' => true
         )); ?>
     <fieldset>
-        <legend><?php echo __('Add Idol'); ?></legend>
         <?php
         echo '<div class="row">';
         echo '<div class="col-lg-3">';
@@ -64,8 +63,8 @@ $this->set('title_for_layout', 'Add Idol');
         echo $this->Form->input('cv', array('default' => 'N/A'));
         echo '</div>';
         echo '<div class="col-lg-3">';
-//        echo $this->Form->input('profilePic', array('type' => 'file'));
-//        echo $this->Form->input('puchiPic', array('type' => 'file'));
+        echo $this->Form->input('profilePic', array('type' => 'file'));
+        echo $this->Form->input('puchiPic', array('type' => 'file'));
         echo $this->Form->submit('Save', array(
             'div' => 'form-group',
             'class' => 'btn btn-default'

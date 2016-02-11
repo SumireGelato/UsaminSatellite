@@ -53,8 +53,10 @@ $this->set('title_for_layout', 'Edit Card');
                 6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'));
             echo $this->Form->input('specialSkillType', array('options' => $options));
             echo $this->Form->input('specialSkillText');
-            /*            echo $this->Form->input('baseArt', array('type' => 'file'));
-                        echo $this->Form->input('awkArt', array('type' => 'file'));*/
+//            echo $this->Form->input('baseArt', array('type' => 'file'));
+            echo 'Current filename is: '.$this->request->data['Card']['baseArt'];
+//            echo $this->Form->input('awkArt', array('type' => 'file'));
+            echo 'Current filename is: '.$this->request->data['Card']['awkArt'];
             echo $this->Form->input('limited', array('class' => 'form-inline'));
             echo '</div>';
             echo '<div class="col-lg-3">';

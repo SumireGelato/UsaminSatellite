@@ -32,7 +32,7 @@
             <th><?php echo $this->Paginator->sort('writingHand'); ?></th>
             <th><?php echo $this->Paginator->sort('hometown'); ?></th>
             <th><?php echo $this->Paginator->sort('type'); ?></th>
-            <th><?php echo $this->Paginator->sort('cv'); ?></th>
+            <th><?php echo $this->Paginator->sort('voiced'); ?></th>
             <th class="actions"><?php echo __('Actions'); ?></th>
         </tr>
         </thead>
@@ -49,7 +49,7 @@
                 <td><?php echo h($idol['Idol']['writingHand']); ?>&nbsp;</td>
                 <td><?php echo h($idol['Idol']['hometown']); ?>&nbsp;</td>
                 <td><?php echo h($idol['Idol']['type']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['cv']); ?>&nbsp;</td>
+                <td><?php echo h($idol['Idol']['voiced']); ?>&nbsp;</td>
                 <td class="actions">
                     <?php echo $this->Html->link(__('View'), array('action' => 'view', $idol['Idol']['id'])); ?>
                     <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $idol['Idol']['id'])); ?>
