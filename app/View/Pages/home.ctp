@@ -90,17 +90,17 @@ $num3 = mt_rand(1, 391);
 ?>
 <div class="row" id="puchis">
     <div class="col-lg-2">
-        <?php echo $this->Html->link($this->Html->image('puchis/' . $num1 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi1', 'height' => 180)) .
+        <?php echo $this->Html->link($this->Html->image('puchis/' . $num1 . '.png', array('class' => 'img-square', 'alt' => 'Puchi1', 'height' => 180)) .
             '<h3>About The Game</h3>', '/about', array('escape' => false)) ?>
         <p>What is Starlight Stage?</p>
     </div>
     <div class="col-lg-2">
-        <?php echo $this->Html->link($this->Html->image('puchis/' . $num2 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi2', 'height' => 180)) .
+        <?php echo $this->Html->link($this->Html->image('puchis/' . $num2 . '.png', array('class' => 'img-square', 'alt' => 'Puchi2', 'height' => 180)) .
             '<h3>About This Website</h3>', '/about', array('escape' => false)) ?>
         <p>What is Usamin S@telite?</p>
     </div>
     <div class="col-lg-2">
-        <?php echo $this->Html->link($this->Html->image('puchis/' . $num3 . '.png', array('class' => 'img-sqaure', 'alt' => 'Puchi3', 'height' => 180)) .
+        <?php echo $this->Html->link($this->Html->image('puchis/' . $num3 . '.png', array('class' => 'img-square', 'alt' => 'Puchi3', 'height' => 180)) .
             '<h3>Donate</h3>', '/donate', array('escape' => false)) ?>
         <p>Usamin S@telite survives on your donations! Help keep Usamin S@telite ad free!</p>
     </div>

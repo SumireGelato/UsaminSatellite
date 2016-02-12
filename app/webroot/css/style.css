@@ -390,6 +390,135 @@ body {
     display: none;
 }
 
+/* IDOLS LIST
+-------------------------------------------------- */
+.nav-tabs#idolTabs {
+    padding-top: 5px;
+}
+
+/*Cute Colored Tab*/
+.nav-tabs > li.active#cute > a,
+.nav-tabs > li.active#cute > a:hover,
+.nav-tabs > li.active#cute > a:focus {
+    background-color: #ff6c99;
+    border-color: #ff6c99;
+    color: #FFE0E9;
+}
+
+.nav-tabs > li#cute > a,
+.nav-tabs > li#cute > a:hover,
+.nav-tabs > li#cute > a:focus {
+    background-color: #ff6c99;
+    border-color: #ff6c99;
+    color: #FFE0E9;
+}
+
+.nav-tabs > li#cute > a:hover,
+.nav-tabs > li#cute > a:focus,
+.nav-tabs > li.active#cute > a:hover,
+.nav-tabs > li.active#cute > a:focus {
+    color: #FFE0E9;
+    text-decoration: underline;
+}
+
+/*Cool Colored Tab*/
+.nav-tabs > li.active#cool > a,
+.nav-tabs > li.active#cool > a:hover,
+.nav-tabs > li.active#cool > a:focus {
+    background-color: #80BCF0;
+    border-color: #80BCF0;
+    color: #FFFFFF;
+}
+
+.nav-tabs > li#cool > a,
+.nav-tabs > li#cool > a:hover,
+.nav-tabs > li#cool > a:focus {
+    background-color: #80BCF0;
+    border-color: #80BCF0;
+    color: #FFFFFF;
+}
+
+.nav-tabs > li#cool > a:hover,
+.nav-tabs > li#cool > a:focus,
+.nav-tabs > li.active#cool > a:hover,
+.nav-tabs > li.active#cool > a:focus {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+/*Passion Colored Tab*/
+.nav-tabs > li.active#passion > a,
+.nav-tabs > li.active#passion > a:hover,
+.nav-tabs > li.active#passion > a:focus {
+    background-color: #F8D060;
+    border-color: #F8D060;
+    color: #4a3e1c;
+}
+
+.nav-tabs > li#passion > a,
+.nav-tabs > li#passion > a:hover,
+.nav-tabs > li#passion > a:focus {
+    background-color: #F8D060;
+    border-color: #F8D060;
+    color: #4a3e1c;
+}
+
+.nav-tabs > li#passion > a:hover,
+.nav-tabs > li#passion > a:focus,
+.nav-tabs > li.active#passion > a:hover,
+.nav-tabs > li.active#passion > a:focus {
+    color: #4a3e1c;
+    text-decoration: underline;
+}
+
+.tab-content #cute{
+    padding-top: 10px;
+    border-radius: 10px;
+}
+
+#cuteIdols img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+#cuteIdols p{
+    text-align: center;
+    color: #FFE0E9;
+}
+
+.tab-content #cool{
+    padding-top: 10px;
+    border-radius: 10px;
+}
+
+#coolIdols img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+#coolIdols p{
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.tab-content #passion{
+    padding-top: 10px;
+    border-radius: 10px;
+}
+
+#passionIdols img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+#passionIdols p{
+    text-align: center;
+    color: #4a3e1c;
+}
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 

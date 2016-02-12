@@ -28,20 +28,25 @@ class IdolsController extends AppController
         $numItems = 0;
         if (!$this->request->is('ajax')) {
             $totalItems = 1;
+            $type = 'cute';
+            $this->set('type', $type);
+            $this->set('idols', $this->Idol->find('all', array(
+                'conditions' => array('Idol.type' => 'Cute'),
+                'fields' => array('Idol.eName', 'Idol.puchiPic', 'Idol.voiced'),
+                'order' => array('Idol.voiced' => 'desc', 'Idol.id' => 'asc')
+            )));
         } else {
-            $totalItems = $this->passedArgs['pass'];
+            $type = $this->request->query('type');
+            $this->set('type', $type);
+            $this->set('idols', $this->Idol->find('all', array(
+                'conditions' => array('Idol.type' => $type),
+                'fields' => array('Idol.eName', 'Idol.puchiPic', 'Idol.voiced'),
+                'order' => array('Idol.voiced' => 'desc', 'Idol.id' => 'asc')
+            )));
+            $totalItems = 1;
         }
         $this->set(compact('numItems'));
         $this->set(compact('totalItems'));
-        $this->Paginator->settings['limit'] = 12;
-        $this->Paginator->settings['order'] = array('Idol.voiced' => 'desc', 'Idol.id' => 'asc');
-        $this->Paginator->settings['fields'] = array('Idol.eName', 'Idol.puchiPic', 'Idol.voiced');
-        $this->Paginator->settings['conditions'] = array('Idol.type' => 'Cute');
-        $this->set('cuteIdols', $this->Paginator->paginate());
-        $this->Paginator->settings['conditions'] = array('Idol.type' => 'Cool');
-        $this->set('coolIdols', $this->Paginator->paginate());
-        $this->Paginator->settings['conditions'] = array('Idol.type' => 'Passion');
-        $this->set('passionIdols', $this->Paginator->paginate());
     }
 
     /**

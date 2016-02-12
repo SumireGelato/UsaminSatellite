@@ -1,9 +1,7 @@
-<!-- page title -->
 <?php
-$this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
-
 if (!$this->request->is('ajax'))
-{
+{//Page Title
+$this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 ?>
     <!--Search and filter bar-->
     <div class="row">
@@ -689,10 +687,11 @@ $this->Paginator->options(array(
 echo $this->Paginator->next('Show More ...');
 }
 ?>
+<?php if (!$this->request->is('ajax')) { ?>
 <script>
     //transistion effects for tabs
     $(document).ready(function () {
-        $('#toolTabs a').click(function (e) {
+        $('#toolTabs').find('a').click(function (e) {
             e.preventDefault();
             $(this).tab('show');
         });
@@ -761,13 +760,14 @@ echo $this->Paginator->next('Show More ...');
 
     //Infinite Scrolling
     $(document).ready(function (e) {
+        var url;
         var processing;
         if(document.URL.split('?')[1] == undefined)
         {
-            var url = $('.next a').attr('href');
+            url = $('.next a').attr('href');
         }
         else {
-            var url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
+            url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
         }
 //        alert(url);
         $('.next').text('');
@@ -788,3 +788,4 @@ echo $this->Paginator->next('Show More ...');
         });
     });
 </script>
+<?php } ?>
