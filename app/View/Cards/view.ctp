@@ -1,3 +1,7 @@
+<?php
+//Page Title
+$this->set('title_for_layout', 'Usamin S@telite | ');
+?>
 <div class="cards view">
     <h2><?php echo __('Card'); ?></h2>
     <dl>
@@ -162,17 +166,4 @@
             &nbsp;
         </dd>
     </dl>
-</div>
-<div class="actions">
-    <h3><?php echo __('Actions'); ?></h3>
-    <ul>
-        <li><?php echo $this->Html->link(__('Edit Card'), array('action' => 'edit', $card['Card']['id'])); ?> </li>
-        <li><?php echo $this->Form->postLink(__('Delete Card'), array('action' => 'delete', $card['Card']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $card['Card']['id']))); ?> </li>
-        <li><?php echo $this->Html->link(__('List Cards'), array('action' => 'index')); ?> </li>
-        <li><?php echo $this->Html->link(__('New Card'), array('action' => 'add')); ?> </li>
-        <li><?php echo $this->Html->link(__('List Idols'), array('controller' => 'idols', 'action' => 'index')); ?> </li>
-        <li><?php echo $this->Html->link(__('New Idol'), array('controller' => 'idols', 'action' => 'add')); ?> </li>
-        <li><?php echo $this->Html->link(__('List Events'), array('controller' => 'events', 'action' => 'index')); ?> </li>
-        <li><?php echo $this->Html->link(__('New Event'), array('controller' => 'events', 'action' => 'add')); ?> </li>
-    </ul>
 </div>

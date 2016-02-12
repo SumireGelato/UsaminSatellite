@@ -71,6 +71,7 @@ class IdolsController extends AppController
         if (!$this->Idol->exists($id)) {
             throw new NotFoundException(__('Invalid idol'));
         }
+        $this->Idol->recursive = 1;
         $options = array('conditions' => array('Idol.' . $this->Idol->primaryKey => $id));
         $this->set('idol', $this->Idol->find('first', $options));
     }

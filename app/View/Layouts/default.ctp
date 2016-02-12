@@ -189,7 +189,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 //    $(document).ready(function() {
         if ($('#back-to-top').length) {
-            var scrollTrigger = 10, // px
+            var scrollTrigger = 200, // px
                 backToTop = function () {
                     var scrollTop = $(window).scrollTop();
                     if (scrollTop > scrollTrigger) {
