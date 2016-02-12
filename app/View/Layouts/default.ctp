@@ -152,13 +152,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <!-- Get Content -->
         <?php echo $this->Session->flash(); ?>
         <?php echo $this->fetch('content'); ?>
+    <a href="#" id="back-to-top" title="Back to top"><span class="glyphicon glyphicon-chevron-up"></span></a>
     <!--    <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
             <p>&copy; &middot;</p>
         </footer>-->
 </div>
 <!-- End get Content -->
-
 </body>
 
 <script>
@@ -186,6 +186,30 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         ;  // add zero in front of numbers < 10
         return i;
     }
+
+//    $(document).ready(function() {
+        if ($('#back-to-top').length) {
+            var scrollTrigger = 10, // px
+                backToTop = function () {
+                    var scrollTop = $(window).scrollTop();
+                    if (scrollTop > scrollTrigger) {
+                        $('#back-to-top').addClass('show');
+                    } else {
+                        $('#back-to-top').removeClass('show');
+                    }
+                };
+            backToTop();
+            $(window).on('scroll', function () {
+                backToTop();
+            });
+            $('#back-to-top').on('click', function (e) {
+                e.preventDefault();
+                $('html,body').animate({
+                    scrollTop: 0
+                }, 700);
+            });
+        }
+//    });
 </script>
 
 <style>

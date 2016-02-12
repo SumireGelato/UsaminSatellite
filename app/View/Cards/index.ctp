@@ -676,7 +676,7 @@ if ($numItems == 4) {
 ?>
 </div>
 </div>
-
+<?php if (!$this->request->is('ajax')) { ?>
 <?php
 if ($this->Paginator->counter('{:pages}') > 1) {
 $this->Paginator->options(array(
@@ -687,7 +687,7 @@ $this->Paginator->options(array(
 echo $this->Paginator->next('Show More ...');
 }
 ?>
-<?php if (!$this->request->is('ajax')) { ?>
+
 <script>
     //transistion effects for tabs
     $(document).ready(function () {
@@ -720,13 +720,15 @@ echo $this->Paginator->next('Show More ...');
 
     //Reg/Awk Image and Stat change
     $(document).ready(function () {
-        $("[id=regawk1]").click(function () {//Regular
+        $(".panel-group").on("click", "label#regawk1", function () {//Regular
+//        alert('hi');
             $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "none");
             $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "inherit");
             $(this).closest("div.panel-body").find(".base").css("display", "inherit");
             $(this).closest("div.panel-body").find(".awakened").css("display", "none");
         });
-        $("[id=regawk2]").click(function () {//Awakened
+        $(".panel-group").on("click", "label#regawk2", function () {//Awakened
+//        alert('hi2');
             $(this).closest(".panel.panel-default").find(".awkSRCardImage").css("display", "inherit");
             $(this).closest(".panel.panel-default").find(".baseSRCardImage").css("display", "none");
             $(this).closest("div.panel-body").find(".base").css("display", "none");
@@ -736,22 +738,22 @@ echo $this->Paginator->next('Show More ...');
 
     //Min/Max Lvl Change
     $(document).ready(function () {
-        $("[id=lvlBtn1]").click(function () {//Level 1
+        $(".panel-group").on("click", "label#lvlBtn1", function () {//Level 1
 //                alert($(this).closest("div.base").find("#level1").attr("id"));
             $(this).closest("div.base").find("#level1").css("display", "inherit");
             $(this).closest("div.base").find("#levelMax").css("display", "none");
         });
-        $("[id=lvlBtn2]").click(function () {//Level Max
+        $(".panel-group").on("click", "label#lvlBtn2", function () {//Level Max
 //                alert($(this).closest("div.base").find("#levelMax").attr("id"));
             $(this).closest("div.base").find("#level1").css("display", "none");
             $(this).closest("div.base").find("#levelMax").css("display", "inherit");
         });
-        $("[id=awkLvlBtn1]").click(function () {//Level 1
+        $(".panel-group").on("click", "label#awkLvlBtn1", function () {//Level 1
 //                alert($(this).closest("div.base").find("#level1").attr("id"));
             $(this).closest("div.awakened").find("#level1").css("display", "inherit");
             $(this).closest("div.awakened").find("#levelMax").css("display", "none");
         });
-        $("[id=awkLvlBtn2]").click(function () {//Level Max
+        $(".panel-group").on("click", "label#awkLvlBtn2", function () {//Level Max
 //                alert($(this).closest("div.base").find("#levelMax").attr("id"));
             $(this).closest("div.awakened").find("#level1").css("display", "none");
             $(this).closest("div.awakened").find("#levelMax").css("display", "inherit");
