@@ -209,7 +209,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 <div class="row">
 <?php foreach ($cards as $card) { ?>
     <!--CARD-->
-<div class="col-lg-3">
+<div class="col-lg-4">
 <div class="panel panel-default">
 <?php if ($card['Card']['type'] == 'Cool') { ?>
 <div class="panel-heading cool" role="tab" id="<?php echo "heading" . $totalItems; ?>">
@@ -667,7 +667,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 <?php
 $numItems++;
 $totalItems++;
-if ($numItems == 4) {
+if ($numItems == 3) {
     echo '</div> <div class="row">';
     $numItems = 0;
 }

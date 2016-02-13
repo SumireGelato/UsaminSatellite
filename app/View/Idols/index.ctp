@@ -15,7 +15,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
         </ul>
     </div>
 </div>
-<div class="row container-fluid">
+<div class="row">
     <div class="col-lg-12">
         <!-- Tab panes -->
         <div class="tab-content">
