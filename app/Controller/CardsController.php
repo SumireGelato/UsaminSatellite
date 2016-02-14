@@ -147,6 +147,8 @@ class CardsController extends AppController
                     //prepare the filename for database entry
                     $this->request->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.'.$baseExt;
                 }
+            }else {
+                unset($this->request->data['Card']['baseArt']);
             }
 
             if(!empty($this->request->data['Card']['awkArt']['name']))
@@ -167,6 +169,8 @@ class CardsController extends AppController
                     //prepare the filename for database entry
                     $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.'.$awkExt;
                 }
+            }else {
+                unset($this->request->data['Card']['awkArt']);
             }
             /**
              * REMOVE THIS LATER!!!!!

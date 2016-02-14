@@ -63,6 +63,7 @@ $this->set('title_for_layout', 'Add Idol');
         echo $this->Form->input('cv', array('default' => 'N/A'));
         echo '</div>';
         echo '<div class="col-lg-3">';
+        echo $this->Form->input('bio');
         echo $this->Form->input('profilePic', array('type' => 'file'));
         echo $this->Form->input('puchiPic', array('type' => 'file'));
         echo $this->Form->submit('Save', array(

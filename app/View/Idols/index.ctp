@@ -64,7 +64,10 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
                                         <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
                                                 array('class' => 'img-square', 'alt' => $idol['Idol']['eName'], 'height' => 180)) .
                                             '<p>' . $idol['Idol']['eName'] . '</p>',
-                                            array('action' => 'view', $idol['Idol']['id']),
+                                            array('controller' => 'idols',
+                                                'action' => 'view',
+                                                'id' => $idol['Idol']['id'],
+                                                'title' => Inflector::slug($idol['Idol']['eName'])),
                                             array('escape' => false)) ?>
                                     </div>
                                 <?php
@@ -89,7 +92,10 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
                                             <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
                                                     array('class' => 'img-square', 'alt' => $idol['Idol']['eName'], 'height' => 180)) .
                                                 '<p>' . $idol['Idol']['eName'] . '</p>',
-                                                array('action' => 'view', $idol['Idol']['id']),
+                                                array('controller' => 'idols',
+                                                    'action' => 'view',
+                                                    'id' => $idol['Idol']['id'],
+                                                    'title' => Inflector::slug($idol['Idol']['eName'])),
                                                 array('escape' => false)) ?>
                                         </div>
                                     <?php

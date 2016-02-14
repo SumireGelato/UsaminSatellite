@@ -30,6 +30,7 @@ $this->set('title_for_layout', 'Edit Card');
         <fieldset>
             <p>Remember to add events and idols before the cards for easier data entry!</p>
             <?php
+            echo $this->Form->input('id');
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('idol_id');

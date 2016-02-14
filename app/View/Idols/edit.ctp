@@ -25,6 +25,7 @@ $this->set('title_for_layout', 'Edit Idol');
         )); ?>
         <fieldset>
             <?php
+            echo $this->Form->input('id');
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('eName');
@@ -63,6 +64,7 @@ $this->set('title_for_layout', 'Edit Idol');
             echo $this->Form->input('cv', array('default' => 'N/A'));
             echo '</div>';
             echo '<div class="col-lg-3">';
+            echo $this->Form->input('bio');
             echo $this->Form->input('profilePic', array('type' => 'file'));
             echo 'Current filename is: '.$this->request->data['Idol']['profilePic'];
             echo $this->Form->input('puchiPic', array('type' => 'file'));

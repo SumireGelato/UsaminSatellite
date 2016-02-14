@@ -1,44 +1,169 @@
-<?php $this->set('title_for_layout', 'Usamin S@telite | ' . $idol['Idol']['eName']); ?>
-<!--Idol Title-->
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="text-center"><?php echo $this->Html->image('cute.png', array('height' => '5%', 'width' => '5%', 'style' => 'padding-right:5px'))?><strong><?php echo $idol['Idol']['eName'] ?></strong>
-            <small><em><?php echo $idol['Idol']['jName'] ?></em></small>
-        </h1>
-        <p class="text-center">CV: <?php echo $idol['Idol']['cv'] ?></p>
-    </div>
-</div>
-<!--Idol Bio-->
-<div class="row">
-    <div class="col-lg-4">
-        <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512)); ?>
-    </div>
-    <div class="col-lg-4" id="idolBio">
-        <div class="row">
-            <div class="col-lg-6">
-                <p><span class="label label-cute">Height:</span> <?php echo $idol['Idol']['height'];?>cm</p>
-                <p><span class="label label-cute">Weight:</span> <?php echo $idol['Idol']['weight'];?>kg</p>
-                <p><span class="label label-cute">Blood Type:</span> <?php echo $idol['Idol']['bloodType'];?></p>
-            </div>
-            <div class="col-lg-6">
-                <p><span class="label label-cute">Age:</span> <?php echo $idol['Idol']['age'];?></p>
-                <p><span class="label label-cute">Birthday:</span> <?php echo $idol['Idol']['birthday'];?></p>
-                <p><span class="label label-cute">Writing Hand:</span> <?php echo $idol['Idol']['writingHand'];?></p>
-            </div>
-        </div>
+<?php $this->set('title_for_layout', 'Usamin S@telite | ' . $idol['Idol']['eName']);
+switch ($idol['Idol']['type']) {
+    case 'Cute':
+        ?>
+        <!--Idol Title-->
         <div class="row">
             <div class="col-lg-12">
-                <p><span class="label label-cute">Three Sizes:</span> <?php echo $idol['Idol']['bwh'];?></p>
-                <p><span class="label label-cute">Horoscope:</span> <?php echo $idol['Idol']['horoscope'];?></p>
-                <p><span class="label label-cute">Hometown:</span> <?php echo $idol['Idol']['hometown'];?></p>
-                <p><span class="label label-cute">Hobbies:</span> <?php echo $idol['Idol']['hobbies'];?></p>
+                <h1 class="text-center"><?php echo $this->Html->image('cute.png', array('height' => '5%', 'width' => '5%', 'style' => 'padding-right:5px')) ?>
+                    <strong><?php echo $idol['Idol']['eName'] ?></strong>
+                    <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
+                </h1>
+
+                <p class="text-center">CV: <?php echo $idol['Idol']['cv'] ?></p>
             </div>
         </div>
-    </div>
-    <div class="col-lg-4" id="idolBio">
-        <?php echo $this->Html->image('profiles/' . $idol['Idol']['puchiPic'], array('class' => 'img-responsive pull-left')); ?>
-    </div>
-</div>
+        <!--Idol Bio-->
+        <div class="row">
+            <div class="col-lg-4">
+                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512)); ?>
+            </div>
+            <div class="col-lg-6" id="idolBio">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><span class="label label-cute">Height:</span> <?php echo $idol['Idol']['height']; ?>cm</p>
+
+                        <p><span class="label label-cute">Weight:</span> <?php echo $idol['Idol']['weight']; ?>kg</p>
+
+                        <p><span class="label label-cute">Blood Type:</span> <?php echo $idol['Idol']['bloodType']; ?>
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><span class="label label-cute">Age:</span> <?php echo $idol['Idol']['age']; ?></p>
+
+                        <p><span class="label label-cute">Birthday:</span> <?php echo $idol['Idol']['birthday']; ?></p>
+
+                        <p><span
+                                class="label label-cute">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p><span class="label label-cute">Three Sizes:</span> <?php echo $idol['Idol']['bwh']; ?></p>
+
+                        <p><span class="label label-cute">Horoscope:</span> <?php echo $idol['Idol']['horoscope']; ?>
+                        </p>
+
+                        <p><span class="label label-cute">Hometown:</span> <?php echo $idol['Idol']['hometown']; ?></p>
+
+                        <p><span class="label label-cute">Hobbies:</span> <?php echo $idol['Idol']['hobbies']; ?></p>
+
+                        <p><span class="label label-cute">Bio:</span> <?php echo $idol['Idol']['bio'];?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php break;
+    case 'Cool': ?>
+        <!--Idol Title-->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="text-center"><?php echo $this->Html->image('cool.png', array('height' => '5%', 'width' => '5%', 'style' => 'padding-right:5px')) ?>
+                    <strong><?php echo $idol['Idol']['eName'] ?></strong>
+                    <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
+                </h1>
+
+                <p class="text-center">CV: <?php echo $idol['Idol']['cv'] ?></p>
+            </div>
+        </div>
+        <!--Idol Bio-->
+        <div class="row">
+            <div class="col-lg-4">
+                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512)); ?>
+            </div>
+            <div class="col-lg-6" id="idolBio">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><span class="label label-info">Height:</span> <?php echo $idol['Idol']['height']; ?>cm</p>
+
+                        <p><span class="label label-info">Weight:</span> <?php echo $idol['Idol']['weight']; ?>kg</p>
+
+                        <p><span class="label label-info">Blood Type:</span> <?php echo $idol['Idol']['bloodType']; ?>
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><span class="label label-info">Age:</span> <?php echo $idol['Idol']['age']; ?></p>
+
+                        <p><span class="label label-info">Birthday:</span> <?php echo $idol['Idol']['birthday']; ?></p>
+
+                        <p><span
+                                class="label label-info">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p><span class="label label-info">Three Sizes:</span> <?php echo $idol['Idol']['bwh']; ?></p>
+
+                        <p><span class="label label-info">Horoscope:</span> <?php echo $idol['Idol']['horoscope']; ?>
+                        </p>
+
+                        <p><span class="label label-info">Hometown:</span> <?php echo $idol['Idol']['hometown']; ?></p>
+
+                        <p><span class="label label-info">Hobbies:</span> <?php echo $idol['Idol']['hobbies']; ?></p>
+
+                        <p><span class="label label-info">Bio:</span> <?php echo $idol['Idol']['bio'];?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php break;
+    case 'Passion': ?>
+        <!--Idol Title-->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="text-center"><?php echo $this->Html->image('passion.png', array('height' => '5%', 'width' => '5%', 'style' => 'padding-right:5px')) ?>
+                    <strong><?php echo $idol['Idol']['eName'] ?></strong>
+                    <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
+                </h1>
+
+                <p class="text-center">CV: <?php echo $idol['Idol']['cv'] ?></p>
+            </div>
+        </div>
+        <!--Idol Bio-->
+        <div class="row">
+            <div class="col-lg-4">
+                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512)); ?>
+            </div>
+            <div class="col-lg-6" id="idolBio">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><span class="label label-warning">Height:</span> <?php echo $idol['Idol']['height']; ?>cm</p>
+
+                        <p><span class="label label-warning">Weight:</span> <?php echo $idol['Idol']['weight']; ?>kg</p>
+
+                        <p><span class="label label-warning">Blood Type:</span> <?php echo $idol['Idol']['bloodType']; ?>
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><span class="label label-warning">Age:</span> <?php echo $idol['Idol']['age']; ?></p>
+
+                        <p><span class="label label-warning">Birthday:</span> <?php echo $idol['Idol']['birthday']; ?></p>
+
+                        <p><span
+                                class="label label-warning">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p><span class="label label-warning">Three Sizes:</span> <?php echo $idol['Idol']['bwh']; ?></p>
+
+                        <p><span class="label label-warning">Horoscope:</span> <?php echo $idol['Idol']['horoscope']; ?>
+                        </p>
+
+                        <p><span class="label label-warning">Hometown:</span> <?php echo $idol['Idol']['hometown']; ?></p>
+
+                        <p><span class="label label-warning">Hobbies:</span> <?php echo $idol['Idol']['hobbies']; ?></p>
+
+                        <p><span class="label label-warning">Bio:</span> <?php echo $idol['Idol']['bio'];?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php break;
+} ?>
 <!--Cards Heading-->
 <div class="row">
     <div class="col-lg-12">
@@ -108,7 +233,7 @@
                                     </div>
                                 </div>
                                 <hr>
-                               <div class="row">
+                                <div class="row">
                                     <div class="col-xs-6">
                                         <p><span
                                                 style="font-weight: bold">Rarity: </span><?php echo $card['rarity']; ?>

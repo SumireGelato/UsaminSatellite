@@ -71,7 +71,7 @@ class IdolsController extends AppController
         if (!$this->Idol->exists($id)) {
             throw new NotFoundException(__('Invalid idol'));
         }
-        $this->Idol->recursive = 1;
+        $this->Idol->recursive = 2;
         $options = array('conditions' => array('Idol.' . $this->Idol->primaryKey => $id));
         $this->set('idol', $this->Idol->find('first', $options));
     }
@@ -110,6 +110,8 @@ class IdolsController extends AppController
                     $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
                     $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
                 }
+            }else {
+                unset($this->request->data['Idol']['profilePic']);
             }
 
             if(!empty($this->request->data['Idol']['puchiPic']['name']))
@@ -131,6 +133,8 @@ class IdolsController extends AppController
                     $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
                     $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
                 }
+            }else {
+                unset($this->request->data['Idol']['puchiPic']);
             }
 
             /*
@@ -193,6 +197,9 @@ class IdolsController extends AppController
                     $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
                 }
             }
+            else {
+                unset($this->request->data['Idol']['profilePic']);
+            }
 
             if(!empty($this->request->data['Idol']['puchiPic']['name']))
             {
@@ -213,6 +220,9 @@ class IdolsController extends AppController
                     $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
                     $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
                 }
+            }
+            else {
+                unset($this->request->data['Idol']['puchiPic']);
             }
 
             /*
