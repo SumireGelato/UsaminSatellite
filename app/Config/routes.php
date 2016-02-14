@@ -44,7 +44,7 @@ Router::connect('/donate/*', array('controller' => 'pages', 'action' => 'display
 Router::connect('/help/*', array('controller' => 'pages', 'action' => 'display', 'help'));
 Router::connect('/admin/*',array('controller' => 'users', 'action' => 'login'));
 //Human friendly idol addresses
-Router::connect('/idols/:id-:eName', array('controller' => 'idols', 'action' => 'view'));
+Router::connect('/idols/:id-:title', array('controller' => 'idols', 'action' => 'view'), array('pass' => array('id', 'title')));
 
 
 /**

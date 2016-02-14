@@ -49,6 +49,27 @@ body {
     border-color: #F8D060;
 }
 
+#idolBio {
+    margin-top: 75px;
+}
+
+#idolBio p{
+    margin-bottom: 20px;
+}
+
+.label {
+    font-size: 1em;
+}
+
+.label-cute {
+    background-color: #ff6c99;
+}
+
+.label-cute[href]:hover,
+.label-cute[href]:focus {
+    background-color: #ff6c99;
+}
+
 .cute {
     background-color: #ff6c99;
     border-color: #ff6c99;
