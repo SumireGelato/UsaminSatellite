@@ -28,7 +28,7 @@ CREATE TABLE idols (
   hometown    VARCHAR(50)   NOT NULL,
   type        VARCHAR(10)   NOT NULL,
   cv          VARCHAR(255)  NOT NULL,
-  bio         TEXT,
+  bio         TEXT			NOT NULL,
   profilePic  VARCHAR(255),
   puchiPic    VARCHAR(255),
   CONSTRAINT idols_pk PRIMARY KEY (id)
