@@ -50,12 +50,15 @@ body {
 }
 
 #idolBio {
-    margin-top: 50px;
-    font-size: 1.3em;
+    margin-top: 20px;
+}
+
+#idolBio span {
+    font-size: 1.0em;
 }
 
 #idolBio p{
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .label-cute {

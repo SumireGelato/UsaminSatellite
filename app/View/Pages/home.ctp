@@ -3,9 +3,8 @@
 $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources directly from Planet Usamin!');
 ?>
 
-
-<!-- Marketing messaging and featurettes
-================================================== -->
+<div class="container">
+<!-- Marketing messaging and featurettes-->
 <div class="row" id="homeHeading">
     <div class="col-lg-12">
         <h1>Welcome to Usamin S@telite!</h1>
@@ -125,7 +124,6 @@ $num3 = mt_rand(1, 391);
     </div>
 </div>
 
-<hr class="featurette-divider"/>
-<!--</div>-->
+</div>
 
 <!-- /END THE FEATURETTES -->

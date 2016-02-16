@@ -9,14 +9,20 @@ switch ($idol['Idol']['type']) {
                     <strong><?php echo $idol['Idol']['eName'] ?></strong>
                     <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
                 </h1>
-
-                <p class="text-center">CV: <?php echo $idol['Idol']['cv'] ?></p>
+                <?php if($idol['Idol']['cv'] == 'N/A') { ?>
+                    <p class="text-center">Unvoiced</p>
+                <?php } else { ?>
+                    <p class="text-center" style="font-size: 0.9em"><span class="label label-cute" style="font-size: 1em">CV:</span> <?php echo
+                        $idol['Idol']['cv']
+                        ?></p>
+                <?php } ?>
             </div>
         </div>
         <!--Idol Bio-->
         <div class="row">
             <div class="col-lg-4">
-                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512)); ?>
+                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded
+                center-block', 'height' => 512, 'style' => 'margin-top: -100px')); ?>
             </div>
             <div class="col-lg-6" id="idolBio">
                 <div class="row">
@@ -49,7 +55,15 @@ switch ($idol['Idol']['type']) {
 
                         <p><span class="label label-cute">Hobbies:</span> <?php echo $idol['Idol']['hobbies']; ?></p>
 
-                        <p><span class="label label-cute">Bio:</span> <?php echo $idol['Idol']['bio'];?></p>
+                        <p><span class="label label-cute" style="padding-top: 0.2em; padding-bottom: 0.1em">Bio:</span> <?php echo
+                            $idol['Idol']['bio'];?></p>
+
+                        <?php $nameSlug = Inflector::slug($idol['Idol']['eName']); ?>
+                        <p><span class="label label-cute">Source:</span> <?php echo $this->Html->link('Project Im@s Wiki',
+                                'http://www.project-imas.com/wiki/'.$nameSlug, array('target' => '_blank')); ?> -
+                            <?php echo $this->Html->link('Starlight Stage JP Wiki',
+                                'http://imascg-slstage-wiki.gamerch.com/'.$idol['Idol']['jName'], array('target' => '_blank')); ?>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -64,13 +78,20 @@ switch ($idol['Idol']['type']) {
                     <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
                 </h1>
 
-                <p class="text-center">CV: <?php echo $idol['Idol']['cv'] ?></p>
+                <?php if($idol['Idol']['cv'] == 'N/A') { ?>
+                    <p class="text-center">Unvoiced</p>
+                <?php } else { ?>
+                    <p class="text-center" style="font-size: 0.9em"><span class="label label-info" style="font-size: 1em">CV:</span> <?php echo
+                        $idol['Idol']['cv']
+                        ?></p>
+                <?php } ?>
             </div>
         </div>
         <!--Idol Bio-->
         <div class="row">
             <div class="col-lg-4">
-                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512)); ?>
+                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded
+                center-block', 'height' => 512, 'style' => 'margin-top: -100px')); ?>
             </div>
             <div class="col-lg-6" id="idolBio">
                 <div class="row">
@@ -103,7 +124,14 @@ switch ($idol['Idol']['type']) {
 
                         <p><span class="label label-info">Hobbies:</span> <?php echo $idol['Idol']['hobbies']; ?></p>
 
-                        <p><span class="label label-info">Bio:</span> <?php echo $idol['Idol']['bio'];?></p>
+                        <p><span class="label label-info" style="padding-top: 0.2em; padding-bottom: 0.1em">Bio:</span> <?php echo $idol['Idol']['bio'];?></p>
+
+                        <?php $nameSlug = Inflector::slug($idol['Idol']['eName']); ?>
+                        <p><span class="label label-info">Source:</span> <?php echo $this->Html->link('Project Im@s Wiki',
+                                'http://www.project-imas.com/wiki/'.$nameSlug, array('target' => '_blank')); ?> -
+                            <?php echo $this->Html->link('Starlight Stage JP Wiki',
+                                'http://imascg-slstage-wiki.gamerch.com/'.$idol['Idol']['jName'], array('target' => '_blank')); ?>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -118,13 +146,19 @@ switch ($idol['Idol']['type']) {
                     <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
                 </h1>
 
-                <p class="text-center">CV: <?php echo $idol['Idol']['cv'] ?></p>
+                <?php if($idol['Idol']['cv'] == 'N/A') { ?>
+                    <p class="text-center">Unvoiced</p>
+                <?php } else { ?>
+                    <p class="text-center" style="font-size: 0.9em"><span class="label label-warning" style="font-size: 1em">CV:</span> <?php echo
+                        $idol['Idol']['cv']
+                        ?></p>
+                <?php } ?>
             </div>
         </div>
         <!--Idol Bio-->
         <div class="row">
             <div class="col-lg-4">
-                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512)); ?>
+                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512, 'style' => 'margin-top: -100px')); ?>
             </div>
             <div class="col-lg-6" id="idolBio">
                 <div class="row">
@@ -157,7 +191,14 @@ switch ($idol['Idol']['type']) {
 
                         <p><span class="label label-warning">Hobbies:</span> <?php echo $idol['Idol']['hobbies']; ?></p>
 
-                        <p><span class="label label-warning">Bio:</span> <?php echo $idol['Idol']['bio'];?></p>
+                        <p><span class="label label-warning" style="padding-top: 0.2em; padding-bottom: 0.1em">Bio:</span> <?php echo $idol['Idol']['bio'];?></p>
+
+                        <?php $nameSlug = Inflector::slug($idol['Idol']['eName']); ?>
+                        <p><span class="label label-warning">Source:</span> <?php echo $this->Html->link('Project Im@s Wiki',
+                                'http://www.project-imas.com/wiki/'.$nameSlug, array('target' => '_blank')); ?> -
+                            <?php echo $this->Html->link('Starlight Stage JP Wiki',
+                                'http://imascg-slstage-wiki.gamerch.com/'.$idol['Idol']['jName'], array('target' => '_blank')); ?>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -630,7 +671,7 @@ switch ($idol['Idol']['type']) {
                                 ?>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <h4 style="font-weight: bold">Source:</h4>
+                                        <h4 style="font-weight: bold">Drop:</h4>
                                         <?php if ($card['event_id'] == null) { ?>
                                             <p>Gacha</p>
                                             <?php
@@ -643,6 +684,23 @@ switch ($idol['Idol']['type']) {
                                                 array('escape' => false)
                                             );
                                         } ?>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 style="font-weight: bold">Sources:</h4>
+                                        <?php if($card['rarity'] == 'R' || $card['rarity'] == 'N') {
+                                        echo '<p>'.$this->Html->link('Starlight Stage JP Wiki',
+                                            'http://imascg-slstage-wiki.gamerch.com/' . $card['jName'].'【'.$card['rarity'].'】',
+                                                array('target' => '_blank')).'</p>';
+                                        ?>
+                                        <?php } else {
+                                                echo '<p>'.$this->Html->link('Starlight Stage JP Wiki',
+                                                    'http://imascg-slstage-wiki.gamerch.com/' . $card['jName'], array('target' => '_blank')).'</p>';
+                                            }?>
+                                        <p><?php echo $this->Html->link('Starlight Kirara',
+                                                'https://starlight.kirara.ca/', array('target' => '_blank')); ?></p>
                                     </div>
                                 </div>
                             </div>

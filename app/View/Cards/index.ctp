@@ -660,6 +660,23 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
         } ?>
     </div>
 </div>
+<hr>
+<div class="row">
+    <div class="col-xs-12">
+        <h4 style="font-weight: bold">Sources:</h4>
+        <?php if($card['Card']['rarity'] == 'R' || $card['Card']['rarity'] == 'N') {
+            echo '<p>'.$this->Html->link('Starlight Stage JP Wiki',
+                    'http://imascg-slstage-wiki.gamerch.com/' . $card['Card']['jName'].'【'.$card['Card']['rarity'].'】',
+                    array('target' => '_blank')).'</p>';
+            ?>
+        <?php } else {
+            echo '<p>'.$this->Html->link('Starlight Stage JP Wiki',
+                    'http://imascg-slstage-wiki.gamerch.com/' . $card['Card']['jName'], array('target' => '_blank')).'</p>';
+        }?>
+        <p><?php echo $this->Html->link('Starlight Kirara',
+                'https://starlight.kirara.ca/', array('target' => '_blank')); ?></p>
+    </div>
+</div>
 </div>
 </div>
 </div>

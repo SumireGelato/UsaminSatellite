@@ -110,14 +110,14 @@ class CardsController extends AppController
      * @param string $id
      * @return void
      */
-    public function view($id = null)
+    /*public function view($id = null)
     {
         if (!$this->Card->exists($id)) {
             throw new NotFoundException(__('Invalid card'));
         }
         $options = array('conditions' => array('Card.' . $this->Card->primaryKey => $id));
         $this->set('card', $this->Card->find('first', $options));
-    }
+    }*/
 
     /**
      * add method
@@ -141,7 +141,7 @@ class CardsController extends AppController
                 {
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
-                    move_uploaded_file($baseArt['tmp_name'], $this->Html->url('/') . 'img/cards/' .
+                    move_uploaded_file($baseArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         $this->request->data['Card']['cardNumber'].'.'.$baseExt);
 
                     //prepare the filename for database entry
@@ -163,7 +163,7 @@ class CardsController extends AppController
                 {
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
-                    move_uploaded_file($awkArt['tmp_name'], $this->Html->url('/') . 'img/cards/' .
+                    move_uploaded_file($awkArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         $this->request->data['Card']['cardNumber'].'.'.$awkExt);
 
                     //prepare the filename for database entry
@@ -226,7 +226,7 @@ class CardsController extends AppController
                 {
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
-                    move_uploaded_file($baseArt['tmp_name'], $this->Html->url('/') . 'img/cards/' .
+                    move_uploaded_file($baseArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         $this->request->data['Card']['cardNumber'].'.'.$baseExt);
 
                     //prepare the filename for database entry
@@ -246,7 +246,7 @@ class CardsController extends AppController
                 {
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
-                    move_uploaded_file($awkArt['tmp_name'], $this->Html->url('/') . 'img/cards/' .
+                    move_uploaded_file($awkArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         $this->request->data['Card']['cardNumber'].'.'.$awkExt);
 
                     //prepare the filename for database entry
