@@ -22,34 +22,34 @@
         <table cellpadding="0" id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
         <tr>
-            <th><?php echo $this->Paginator->sort('eName'); ?></th>
-            <th><?php echo $this->Paginator->sort('jName'); ?></th>
-            <th><?php echo $this->Paginator->sort('age'); ?></th>
-            <th><?php echo $this->Paginator->sort('height'); ?></th>
-            <th><?php echo $this->Paginator->sort('weight'); ?></th>
-            <th><?php echo $this->Paginator->sort('birthday'); ?></th>
-            <th><?php echo $this->Paginator->sort('bwh'); ?></th>
-            <th><?php echo $this->Paginator->sort('writingHand'); ?></th>
-            <th><?php echo $this->Paginator->sort('hometown'); ?></th>
-            <th><?php echo $this->Paginator->sort('type'); ?></th>
-            <th><?php echo $this->Paginator->sort('voiced'); ?></th>
+            <th>eName</th>
+            <th>jName</th>
+            <th>age</th>
+            <th>height</th>
+            <th>weight</th>
+            <th>birthday</th>
+            <th>bwh</th>
+            <th>writingHand</th>
+            <th>hometown</th>
+            <th>type</th>
+            <th>voiced</th>
             <th class="actions"><?php echo __('Actions'); ?></th>
         </tr>
         </thead>
         <tbody>
         <?php foreach ($idols as $idol): ?>
             <tr>
-                <td><?php echo h($idol['Idol']['eName']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['jName']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['age']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['height']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['weight']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['birthday']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['bwh']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['writingHand']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['hometown']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['type']); ?>&nbsp;</td>
-                <td><?php echo h($idol['Idol']['voiced']); ?>&nbsp;</td>
+                <td><?php echo h($idol['Idol']['eName']); ?></td>
+                <td><?php echo h($idol['Idol']['jName']); ?></td>
+                <td><?php echo h($idol['Idol']['age']); ?></td>
+                <td><?php echo h($idol['Idol']['height']); ?></td>
+                <td><?php echo h($idol['Idol']['weight']); ?></td>
+                <td><?php echo h($idol['Idol']['birthday']); ?></td>
+                <td><?php echo h($idol['Idol']['bwh']); ?></td>
+                <td><?php echo h($idol['Idol']['writingHand']); ?></td>
+                <td><?php echo h($idol['Idol']['hometown']); ?></td>
+                <td><?php echo h($idol['Idol']['type']); ?></td>
+                <td><?php echo h($idol['Idol']['voiced']); ?></td>
                 <td class="actions">
                     <?php echo $this->Html->link(__('View'), array('action' => 'view', $idol['Idol']['id'])); ?>
                     <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $idol['Idol']['id'])); ?>

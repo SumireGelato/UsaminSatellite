@@ -13,6 +13,12 @@ body {
     display: none;
 }
 
+.baseSRCardImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
 .awakened {
     display: none;
 }
@@ -88,8 +94,8 @@ body {
     /*BACK TO TOP*/
 #back-to-top {
     position: fixed;
-    bottom: 40px;
-    right: 40px;
+    bottom: 50px;
+    right: 20px;
     z-index: 9999;
     width: 32px;
     height: 32px;
@@ -108,7 +114,7 @@ body {
     background: #e9ebec;
 }
 #back-to-top.show {
-    opacity: 1;
+    opacity: 0.7;
 }
 #content {
     height: 2000px;
@@ -302,6 +308,9 @@ body {
 /* Center align the text within the three columns below the carousel */
 .marketing .col-lg-4 {
     margin-bottom: 20px;
+}
+
+.marketing .col-xs-12 {
     text-align: center;
 }
 
@@ -309,7 +318,7 @@ body {
     font-weight: normal;
 }
 
-.marketing .col-lg-4 p {
+.marketing .col-xs-12 p {
     margin-right: 10px;
     margin-left: 10px;
 }

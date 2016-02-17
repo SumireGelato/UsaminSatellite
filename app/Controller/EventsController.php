@@ -29,6 +29,17 @@ class EventsController extends AppController
     }
 
     /**
+     * index method
+     *
+     * @return void
+     */
+    public function adminindex()
+    {
+        $this->Event->recursive = 0;
+        $this->set('events', $this->Paginator->paginate());
+    }
+
+    /**
      * view method
      *
      * @throws NotFoundException

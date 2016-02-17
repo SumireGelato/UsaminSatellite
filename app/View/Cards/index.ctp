@@ -236,9 +236,30 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
             echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '100%', 'width' => '97%',
                 'class' => 'awkSRCardImage'));
         }
+        switch($card['Card']['specialSkillType']) {
+            case 'Perfect Lock':
+                break;
+            case 'Combo Lock':
+                break;
+            case 'Healer':
+                break;
+            case 'Damage Guard':
+                break;
+            case 'Combo Bonus':
+                break;
+            case 'Score Boost':
+                break;
+            case 'No Skill':
+                break;
+        }
+        if($card['Card']['limited']) {
+
+        } else {
+
+        }
         ?>
-        <!--                            <h4>-->
-        <?php //echo $card['Card']['eName']; ?><!--</h4>-->
+        <i>aaa</i>
+        <i class="pull-right">aaa</i>
     </a>
 </div>
 <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"

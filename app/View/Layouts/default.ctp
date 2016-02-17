@@ -31,6 +31,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('http://mplus-fonts.osdn.jp/webfonts/general-j/mplus_webfonts.css');
     echo $this->Html->css('bootstrap.css');
     echo $this->Html->css('bootstrap-datetimepicker.css');
+    echo $this->Html->css('icons.css');
     //		echo $this->Html->css('bootstrap-theme.css');
     //    echo $this->Html->css('jquery-ui.css');
     //    echo $this->Html->css('jquery-ui.structure.css');
@@ -152,7 +153,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <!-- Get Content -->
         <?php echo $this->Session->flash(); ?>
         <?php echo $this->fetch('content'); ?>
-    <a href="#" id="back-to-top" title="Back to top"><span class="glyphicon glyphicon-chevron-up"></span></a>
+    <a href="#" id="back-to-top" title="Back to top"><span class="glyphicon glyphicon-chevron-up" style="font-size: 1.5em"></span></a>
     <!--    <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
             <p>&copy; &middot;</p>

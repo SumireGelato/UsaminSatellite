@@ -46,7 +46,8 @@ switch ($idol['Idol']['type']) {
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <p><span class="label label-cute">Three Sizes:</span> <?php echo $idol['Idol']['bwh']; ?></p>
+                        <p><span class="label label-cute">Three Sizes:</span> <?php echo 'B'.$idol['Idol']['b'].' / W'.$idol['Idol']['w'].' / H'
+                                .$idol['Idol']['h']; ?></p>
 
                         <p><span class="label label-cute">Horoscope:</span> <?php echo $idol['Idol']['horoscope']; ?>
                         </p>
@@ -115,7 +116,8 @@ switch ($idol['Idol']['type']) {
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <p><span class="label label-info">Three Sizes:</span> <?php echo $idol['Idol']['bwh']; ?></p>
+                        <p><span class="label label-info">Three Sizes:</span> <?php echo 'B'.$idol['Idol']['b'].' / W'.$idol['Idol']['w'].' / H'
+                                .$idol['Idol']['h']; ?></p>
 
                         <p><span class="label label-info">Horoscope:</span> <?php echo $idol['Idol']['horoscope']; ?>
                         </p>
@@ -182,7 +184,8 @@ switch ($idol['Idol']['type']) {
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <p><span class="label label-warning">Three Sizes:</span> <?php echo $idol['Idol']['bwh']; ?></p>
+                        <p><span class="label label-warning">Three Sizes:</span> <?php echo 'B'.$idol['Idol']['b'].' / W'.$idol['Idol']['w'].' / H'
+                                .$idol['Idol']['h']; ?></p>
 
                         <p><span class="label label-warning">Horoscope:</span> <?php echo $idol['Idol']['horoscope']; ?>
                         </p>

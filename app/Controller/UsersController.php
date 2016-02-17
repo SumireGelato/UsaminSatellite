@@ -51,12 +51,11 @@ class UsersController extends AppController
     }
 
     public function logout() {
+        $this->Session->destroy();
         return $this->redirect($this->Auth->logout());
     }
 
-    public function controlpanel() {
-
-    }
+    public function controlpanel() {}
 
     /**
      * view method

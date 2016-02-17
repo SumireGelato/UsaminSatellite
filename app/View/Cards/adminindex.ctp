@@ -41,17 +41,17 @@
         <?php foreach ($cards as $card): ?>
             <tr>
                 <td><?php echo h($card['Card']['cardNumber']); ?></td>
-                <td><?php echo h($card['Card']['eName']); ?>&nbsp;</td>
-                <td><?php echo h($card['Card']['jName']); ?>&nbsp;</td>
-                <td><?php echo h($card['Card']['rarity']); ?>&nbsp;</td>
-                <td><?php echo h($card['Card']['type']); ?>&nbsp;</td>
-                <td><?php echo h($card['Card']['centerSkillText']); ?>&nbsp;</td>
-                <td><?php echo h($card['Card']['specialSkillType']); ?>&nbsp;</td>
-                <td><?php echo h($card['Card']['specialSkillText']); ?>&nbsp;</td>
-                <td><?php echo h($card['Idol']['eName']); ?>&nbsp;</td>
-                <td><?php echo h($card['Event']['eName']); ?>&nbsp;</td>
-                <td><?php echo h($card['Card']['baseArt']); ?>&nbsp;</td>
-                <td><?php echo h($card['Card']['awkArt']); ?>&nbsp;</td>
+                <td><?php echo h($card['Card']['eName']); ?></td>
+                <td><?php echo h($card['Card']['jName']); ?></td>
+                <td><?php echo h($card['Card']['rarity']); ?></td>
+                <td><?php echo h($card['Card']['type']); ?></td>
+                <td><?php echo h($card['Card']['centerSkillText']); ?></td>
+                <td><?php echo h($card['Card']['specialSkillType']); ?></td>
+                <td><?php echo h($card['Card']['specialSkillText']); ?></td>
+                <td><?php echo h($card['Idol']['eName']); ?></td>
+                <td><?php echo h($card['Event']['eName']); ?></td>
+                <td><?php echo h($card['Card']['baseArt']); ?></td>
+                <td><?php echo h($card['Card']['awkArt']); ?></td>
                 <td class="actions">
                     <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $card['Card']['id'])); ?>
                     <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $card['Card']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $card['Card']['id']))); ?>

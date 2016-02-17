@@ -25,9 +25,7 @@ class IdolsController extends AppController
     public function index()
     {
         $this->Idol->recursive = 0;
-        $numItems = 0;
         if (!$this->request->is('ajax')) {
-            $totalItems = 1;
             $type = 'cute';
             $this->set('type', $type);
             $this->set('idols', $this->Idol->find('all', array(
@@ -43,10 +41,7 @@ class IdolsController extends AppController
                 'fields' => array('Idol.eName', 'Idol.puchiPic', 'Idol.voiced'),
                 'order' => array('Idol.voiced' => 'desc', 'Idol.id' => 'asc')
             )));
-            $totalItems = 1;
         }
-        $this->set(compact('numItems'));
-        $this->set(compact('totalItems'));
     }
 
     /**
@@ -73,7 +68,13 @@ class IdolsController extends AppController
         }
         $this->Idol->recursive = 2;
         $options = array('conditions' => array('Idol.' . $this->Idol->primaryKey => $id));
-        $this->set('idol', $this->Idol->find('first', $options));
+        $idol = $this->Idol->find('first', $options);
+        $bwh = explode('/', $idol['Idol']['bwh']);
+        $idol['Idol']['b'] = $bwh[0];
+        $idol['Idol']['w'] = $bwh[1];
+        $idol['Idol']['h'] = $bwh[2];
+        unset($idol['Idol']['bwh']);
+        $this->set('idol', $idol);
     }
 
     /**
