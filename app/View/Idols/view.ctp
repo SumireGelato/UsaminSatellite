@@ -251,9 +251,38 @@ switch ($idol['Idol']['type']) {
                                         'class' => 'awkSRCardImage'));
                                 }
                                 ?>
-                                <!--                            <h4>-->
-                                <?php //echo $card['eName']; ?><!--</h4>-->
                             </a>
+                            <?php
+                            switch($card['specialSkillType']) {
+                                case 'Perfect Lock':
+                                    echo '<i class="icon-perfectlock" data-toggle="tooltip" title="Perfect Lock"></i>';
+                                    break;
+                                case 'Combo Lock':
+                                    echo '<i class="icon-combolock" data-toggle="tooltip" title="Combo Lock"></i>';
+                                    break;
+                                case 'Healer':
+                                    echo '<i class="icon-healer" data-toggle="tooltip" title="HP Recovery"></i>';
+                                    break;
+                                case 'Damage Guard':
+                                    echo '<i class="icon-damageguard" data-toggle="tooltip" title="Damage Guard"></i>';
+                                    break;
+                                case 'Combo Bonus':
+                                    echo '<i class="icon-combobonus" data-toggle="tooltip" title="Combo Bonus"></i>';
+                                    break;
+                                case 'Score Boost':
+                                    echo '<i class="icon-scorebonus" data-toggle="tooltip" title="Score Boost"></i>';
+                                    break;
+                                case 'No Skill':
+                                    echo '<span class="glyphicon glyphicon-ban-circle" data-toggle="tooltip" title="No Skill"></span>';
+                                    break;
+                            }
+                            if($card['limited']) {
+                                echo '<i class="icon-limited pull-right" data-toggle="tooltip" title="Limited Card"></i>';
+                            } else {
+                                echo '<i class="icon-standard pull-right" data-toggle="tooltip" title="Standard Card"></i>';
+                            }
+                            //#ff0a55 cute text  #187ace cool text #b38608 passion text
+                            ?>
                         </div>
                         <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"
                              role="tabpanel"
@@ -717,6 +746,10 @@ switch ($idol['Idol']['type']) {
             </div>
         </div>
         <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+            
             //Reg/Awk Image and Stat change
             $(document).ready(function () {
                 $(".panel-group").on("click", "label#regawk1", function () {//Regular

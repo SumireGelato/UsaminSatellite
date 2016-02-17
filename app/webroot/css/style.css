@@ -43,16 +43,43 @@ body {
 .panel-heading.cute {
     background-color: #ff6c99;
     border-color: #ff6c99;
+    color: #ce003f;
+}
+
+.panel-heading.cute i{
+    font-size: 1.5em;
+}
+
+.panel-heading.cute span{
+    font-size: 1.5em;
 }
 
 .panel-heading.cool {
     background-color: #80BCF0;
     border-color: #80BCF0;
+    color: #187ace;
+}
+
+.panel-heading.cool i{
+    font-size: 1.5em;
+}
+
+.panel-heading.cool span{
+    font-size: 1.5em;
 }
 
 .panel-heading.passion {
     background-color: #F8D060;
     border-color: #F8D060;
+    color: #b38608;
+}
+
+.panel-heading.passion i{
+    font-size: 1.5em;
+}
+
+.panel-heading.passion span{
+    font-size: 1.5em;
 }
 
 #idolBio {
@@ -312,6 +339,10 @@ body {
 
 .marketing .col-xs-12 {
     text-align: center;
+}
+
+.marketing .col-lg-4 img{
+    margin-bottom: 5px;
 }
 
 .marketing h2 {
