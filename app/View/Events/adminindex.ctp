@@ -55,7 +55,6 @@
                 <td><?php echo h($event['Event']['t7']); ?></td>
                 <td><?php echo h($event['Event']['pic']); ?></td>
                 <td class="actions">
-                    <?php echo $this->Html->link(__('View'), array('action' => 'view', $event['Event']['id'])); ?>
                     <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $event['Event']['id'])); ?>
                     <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $event['Event']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $event['Event']['id']))); ?>
                 </td>

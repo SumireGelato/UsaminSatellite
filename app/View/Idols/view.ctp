@@ -749,7 +749,7 @@ switch ($idol['Idol']['type']) {
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
-            
+
             //Reg/Awk Image and Stat change
             $(document).ready(function () {
                 $(".panel-group").on("click", "label#regawk1", function () {//Regular

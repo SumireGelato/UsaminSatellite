@@ -1,35 +1,76 @@
-<div class="events form">
-    <?php echo $this->Form->create('Event'); ?>
-    <fieldset>
-        <legend><?php echo __('Edit Event'); ?></legend>
+<?php
+$this->set('title_for_layout', 'Edit Event');
+?>
+<div class="row container">
+    <div class="col-lg-12">
+        <h3>Edit Event</h3>
+    </div>
+</div>
+<div class="row container">
+    <div class="col-lg-4"><?php echo $this->Html->link(__('Event List'), array('action' => 'adminindex'), array('class' => 'noLinkStyle')); ?></div>
+    <div class="col-lg-4"><?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users', 'action' => 'controlpanel'), array('class' => 'noLinkStyle')); ?></div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
         <?php
-        echo $this->Form->input('id');
-        echo $this->Form->input('isCurrent');
-        echo $this->Form->input('isCaravan');
-        echo $this->Form->input('eName');
-        echo $this->Form->input('jName');
-        echo $this->Form->input('begin');
-        echo $this->Form->input('finish');
-        echo $this->Form->input('info');
-        echo $this->Form->input('t1');
-        echo $this->Form->input('t2');
-        echo $this->Form->input('t3');
-        echo $this->Form->input('t4');
-        echo $this->Form->input('t5');
-        echo $this->Form->input('t6');
-        echo $this->Form->input('t7');
-        echo $this->Form->input('pic');
-        ?>
-    </fieldset>
-    <?php echo $this->Form->end(__('Submit')); ?>
+        echo $this->Form->create('Event', array(
+            'inputDefaults' => array(
+                'div' => 'form-group',
+                'class' => 'form-control',
+//                'style' => 'width:auto'
+            ),
+            'class' => 'container',
+            'enctype' => 'multipart/form-data',
+            'novalidate' => true
+        )); ?>
+        <fieldset>
+            <?php
+            echo $this->Form->input('id');
+            echo '<div class="row">';
+            echo '<div class="col-lg-4">';
+            echo $this->Form->input('eName');
+            echo $this->Form->input('jName');
+            echo $this->Form->input('begin', array('type' => 'text',/* 'div' => false,*/ 'class' => 'form-control datepicker'));
+            echo $this->Form->input('finish', array('type' => 'text',/* 'div' => false,*/ 'class' => 'form-control datepicker'));
+            $options = array('Token' => 'Token', 'Medley' => 'Live Groove', 'Caravan' => 'Cinderella Caravan');
+            echo $this->Form->input('type', array('options' => $options));
+            echo '</div>';
+            echo '<div class="col-lg-4">';
+            echo '<div class="row">';
+            echo '<div class="col-xs-6">';
+            echo $this->Form->input('t1', array('type' => 'text'));
+            echo $this->Form->input('t2', array('type' => 'text'));
+            echo $this->Form->input('t3', array('type' => 'text'));
+            echo $this->Form->input('t4', array('type' => 'text'));
+            echo '</div>';
+            echo '<div class="col-xs-6">';
+            echo $this->Form->input('t5', array('type' => 'text'));
+            echo $this->Form->input('t6', array('type' => 'text'));
+            echo $this->Form->input('t7', array('type' => 'text'));
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            echo '<div class="col-lg-4">';
+            echo $this->Form->input('pic', array('type' => 'file'));
+            echo $this->Form->submit('Save', array(
+                'div' => 'form-group',
+                'class' => 'btn btn-default'
+            ));
+            echo '</div>';
+            echo '</div>';
+            ?>
+        </fieldset>
+        <?php echo $this->Form->end(); ?>
+    </div>
 </div>
-<div class="actions">
-    <h3><?php echo __('Actions'); ?></h3>
-    <ul>
 
-        <li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Event.id')), array('confirm' => __('Are you sure you want to delete # %s?', $this->Form->value('Event.id')))); ?></li>
-        <li><?php echo $this->Html->link(__('List Events'), array('action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(__('List Cards'), array('controller' => 'cards', 'action' => 'index')); ?> </li>
-        <li><?php echo $this->Html->link(__('New Card'), array('controller' => 'cards', 'action' => 'add')); ?> </li>
-    </ul>
-</div>
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            dayViewHeaderFormat: 'YYYY-MM-DD',
+            sideBySide: true,
+            widgetPositioning: {vertical:'bottom'}
+        });
+    });
+</script>

@@ -24,7 +24,7 @@ class EventsController extends AppController
      */
     public function index()
     {
-        $this->Event->recursive = 0;
+        $this->Event->recursive = 2;
         $this->set('events', $this->Paginator->paginate());
     }
 
@@ -46,14 +46,14 @@ class EventsController extends AppController
      * @param string $id
      * @return void
      */
-    public function view($id = null)
-    {
-        if (!$this->Event->exists($id)) {
-            throw new NotFoundException(__('Invalid event'));
-        }
-        $options = array('conditions' => array('Event.' . $this->Event->primaryKey => $id));
-        $this->set('event', $this->Event->find('first', $options));
-    }
+    /*    public function view($id = null)
+        {
+            if (!$this->Event->exists($id)) {
+                throw new NotFoundException(__('Invalid event'));
+            }
+            $options = array('conditions' => array('Event.' . $this->Event->primaryKey => $id));
+            $this->set('event', $this->Event->find('first', $options));
+        }*/
 
     /**
      * add method
@@ -64,9 +64,39 @@ class EventsController extends AppController
     {
         if ($this->request->is('post')) {
             $this->Event->create();
+
+            //Check if image has been uploaded
+            if (!empty($this->request->data['Event']['pic']['name'])) {
+                $pic = $this->request->data['Event']['pic'];//put the data into a var for easy use
+
+                $picExt = substr(strtolower(strrchr($pic['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if (in_array($picExt, $arr_ext)) {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    $picFilenameDateArray = explode('-', trim($this->request->data['Event']['begin']));
+                    $picFilename = trim($this->request->data['Event']['eName']) .' '. $picFilenameDateArray[0] . '-' . $picFilenameDateArray[1];
+
+                    move_uploaded_file($pic['tmp_name'], WWW_ROOT . 'img/events/' .
+                        $picFilename . '.' . $picExt);
+
+                    //prepare the filename for database entry
+                    $this->request->data['Event']['pic'] = $picFilename .'.'. $picExt;
+                }
+            } else {
+                unset($this->request->data['Event']['pic']);
+            }
+
+            $picFilenameDateArray = explode('-', trim($this->request->data['Event']['begin']));
+            $picFilename = trim($this->request->data['Event']['eName']) .' '. $picFilenameDateArray[0] . '-' . $picFilenameDateArray[1];
+            $this->request->data['Event']['pic'] = $picFilename .'.'. $picExt;
+
+
             if ($this->Event->save($this->request->data)) {
                 $this->Flash->success(__('The event has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'adminindex'));
             } else {
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }
@@ -86,9 +116,38 @@ class EventsController extends AppController
             throw new NotFoundException(__('Invalid event'));
         }
         if ($this->request->is(array('post', 'put'))) {
+
+            //Check if image has been uploaded
+            if (!empty($this->request->data['Event']['pic']['name'])) {
+                $pic = $this->request->data['Event']['pic'];//put the data into a var for easy use
+
+                $picExt = substr(strtolower(strrchr($pic['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if (in_array($picExt, $arr_ext)) {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    $picFilenameDateArray = explode('-', trim($this->request->data['Event']['begin']));
+                    $picFilename = trim($this->request->data['Event']['eName']) .' '. $picFilenameDateArray[0] . '-' . $picFilenameDateArray[1];
+
+                    move_uploaded_file($pic['tmp_name'], WWW_ROOT . 'img/events/' .
+                        $picFilename . '.' . $picExt);
+
+                    //prepare the filename for database entry
+                    $this->request->data['Event']['pic'] = $picFilename .'.'. $picExt;
+                }
+            } else {
+                unset($this->request->data['Event']['pic']);
+            }
+
+//            $picFilenameDateArray = explode('-', trim($this->request->data['Event']['begin']));
+//            $picFilename = trim($this->request->data['Event']['eName']) .' '. $picFilenameDateArray[0] . '-' . $picFilenameDateArray[1];
+//            $this->request->data['Event']['pic'] = $picFilename .'.'. $picExt;
+
             if ($this->Event->save($this->request->data)) {
                 $this->Flash->success(__('The event has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'adminindex'));
             } else {
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }
@@ -117,6 +176,6 @@ class EventsController extends AppController
         } else {
             $this->Flash->error(__('The event could not be deleted. Please, try again.'));
         }
-        return $this->redirect(array('action' => 'index'));
+        return $this->redirect(array('action' => 'adminindex'));
     }
 }

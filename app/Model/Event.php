@@ -22,26 +22,6 @@ class Event extends AppModel
      * @var array
      */
     public $validate = array(
-        'isCurrent' => array(
-            'boolean' => array(
-                'rule' => array('boolean'),
-                //'message' => 'Your custom message here',
-                //'allowEmpty' => false,
-                //'required' => false,
-                //'last' => false, // Stop validation after this rule
-                //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        'isCaravan' => array(
-            'boolean' => array(
-                'rule' => array('boolean'),
-                //'message' => 'Your custom message here',
-                //'allowEmpty' => false,
-                //'required' => false,
-                //'last' => false, // Stop validation after this rule
-                //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
         'eName' => array(
             'notBlank' => array(
                 'rule' => array('notBlank'),
@@ -82,7 +62,7 @@ class Event extends AppModel
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
-        'info' => array(
+        'type' => array(
             'notBlank' => array(
                 'rule' => array('notBlank'),
                 //'message' => 'Your custom message here',

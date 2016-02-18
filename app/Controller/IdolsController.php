@@ -109,7 +109,7 @@ class IdolsController extends AppController
 
                     //prepare the filename for database entry
                     $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
-                    $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
+                    $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.'.$profileExt;
                 }
             }else {
                 unset($this->request->data['Idol']['profilePic']);
@@ -132,7 +132,7 @@ class IdolsController extends AppController
 
                     //prepare the filename for database entry
                     $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
-                    $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
+                    $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.'.$puchiExt;
                 }
             }else {
                 unset($this->request->data['Idol']['puchiPic']);
