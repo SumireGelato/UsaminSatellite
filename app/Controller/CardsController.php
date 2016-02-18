@@ -273,7 +273,7 @@ class CardsController extends AppController
 
             if ($this->Card->save($this->request->data)) {
                 $this->Flash->success(__('The card has been saved.'));
-                return $this->redirect(array('action' => 'adminIndex'));
+                return $this->redirect(array('action' => 'adminindex'));
             } else {
                 $this->Flash->error(__('The card could not be saved. Please, try again.'));
             }
