@@ -35,13 +35,15 @@ $this->set('title_for_layout', 'Edit Card');
             echo '<div class="col-lg-3">';
             echo $this->Form->input('idol_id');
             echo $this->Form->input('event_id', array('empty' => 'Gacha'));
-            echo $this->Form->input('cardNumber');
+            echo $this->Form->input('card_id', array('type' => 'text', 'label' => 'Card Number'));
             echo $this->Form->input('eName');
             echo $this->Form->input('jName');
             $rarityOptions = array('N' => 'N', 'R' => 'R', 'SR' => 'SR', 'SSR' => 'SSR');
             echo $this->Form->input('rarity', array('options' => $rarityOptions));
             $typeOptions = array('Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion');
             echo $this->Form->input('type', array('options' => $typeOptions));
+            echo $this->Form->input('dateAdded', array('type' => 'text',/* 'div' => false,*/ 'class' => 'form-control datepicker'));
+            echo $this->Form->input('limited', array('class' => 'form-inline'));
             echo '</div>';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('centerSkillText');
@@ -54,11 +56,12 @@ $this->set('title_for_layout', 'Edit Card');
                 6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'));
             echo $this->Form->input('specialSkillType', array('options' => $options));
             echo $this->Form->input('specialSkillText');
-//            echo $this->Form->input('baseArt', array('type' => 'file'));
+            echo $this->Form->input('baseArt', array('type' => 'file'));
             echo 'Current filename is: '.$this->request->data['Card']['baseArt'];
-//            echo $this->Form->input('awkArt', array('type' => 'file'));
+            echo $this->Form->input('awkArt', array('type' => 'file'));
             echo 'Current filename is: '.$this->request->data['Card']['awkArt'];
-            echo $this->Form->input('limited', array('class' => 'form-inline'));
+            echo $this->Form->input('iconArt', array('type' => 'file'));
+            echo 'Current filename is: '.$this->request->data['Card']['iconArt'];
             echo '</div>';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('baseLife');
@@ -90,3 +93,15 @@ $this->set('title_for_layout', 'Edit Card');
         </fieldset>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datetimepicker({
+            format: 'YYYY-MM-DD',
+            dayViewHeaderFormat: 'YYYY-MM-DD',
+//                sideBySide: true,
+            useCurrent: true,
+            widgetPositioning: {vertical:'bottom'}
+        });
+    });
+</script>

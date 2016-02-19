@@ -69,7 +69,7 @@ class Card extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'cardNumber' => array(
+		'card_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',

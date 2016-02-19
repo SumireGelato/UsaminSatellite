@@ -81,7 +81,7 @@ class CardsController extends AppController
             }
         }
         else {
-            $this->Paginator->settings['order'] = array('Card.cardNumber' => 'desc');
+            $this->Paginator->settings['order'] = array('Card.card_id' => 'desc');
         }
         if(!$this->request->is('ajax')) {
             $this->Session->write('filter',$this->Prg->parsedParams());
@@ -100,7 +100,7 @@ class CardsController extends AppController
      */
     public function adminindex() {
         $this->Card->recursive = 0;
-        $this->set('cards', $this->Card->find('all', array('order' => 'Card.cardNumber desc')));
+        $this->set('cards', $this->Card->find('all'));
     }
 
     /**
@@ -142,10 +142,10 @@ class CardsController extends AppController
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
                     move_uploaded_file($baseArt['tmp_name'], WWW_ROOT . 'img/cards/' .
-                        $this->request->data['Card']['cardNumber'].'.'.$baseExt);
+                        $this->request->data['Card']['card_id'].'.'.$baseExt);
 
                     //prepare the filename for database entry
-                    $this->request->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.'.$baseExt;
+                    $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.'.$baseExt;
                 }
             }else {
                 unset($this->request->data['Card']['baseArt']);
@@ -164,19 +164,42 @@ class CardsController extends AppController
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
                     move_uploaded_file($awkArt['tmp_name'], WWW_ROOT . 'img/cards/' .
-                        $this->request->data['Card']['cardNumber'].'.'.$awkExt);
+                        ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt);
 
                     //prepare the filename for database entry
-                    $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.'.$awkExt;
+                    $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt;
                 }
             }else {
                 unset($this->request->data['Card']['awkArt']);
             }
+
+            if(!empty($this->request->data['Card']['iconArt']['name']))
+            {
+                $iconArt = $this->request->data['Card']['iconArt'];//put the data into a var for easy use
+
+                $iconExt = substr(strtolower(strrchr($iconArt['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($iconExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($iconArt['tmp_name'], WWW_ROOT . 'img/cards/' .
+                        $this->request->data['Card']['card_id']."_icon".'.'.$iconExt);
+
+                    //prepare the filename for database entry
+                    $this->request->data['Card']['iconArt'] = $this->request->data['Card']['card_id']."_icon".'.'.$iconExt;
+                }
+            }else {
+                unset($this->request->data['Card']['iconArt']);
+            }
             /**
              * REMOVE THIS LATER!!!!!
              */
-            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.png';
-            $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.png';
+            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.png';
+            $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['card_id'] + 1).'.png';
+            $this->request->data['Card']['iconArt'] = $this->request->data['Card']['card_id']."_icon".'.png';
             /**
              * REMOVE THIS LATER!!!!!
              */
@@ -214,6 +237,7 @@ class CardsController extends AppController
             throw new NotFoundException(__('Invalid card'));
         }
         if ($this->request->is(array('post', 'put'))) {
+            //Check if image has been uploaded
             if(!empty($this->request->data['Card']['baseArt']['name']))
             {
                 $baseArt = $this->request->data['Card']['baseArt'];//put the data into a var for easy use
@@ -227,11 +251,13 @@ class CardsController extends AppController
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
                     move_uploaded_file($baseArt['tmp_name'], WWW_ROOT . 'img/cards/' .
-                        $this->request->data['Card']['cardNumber'].'.'.$baseExt);
+                        $this->request->data['Card']['card_id'].'.'.$baseExt);
 
                     //prepare the filename for database entry
-                    $this->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.'.$baseExt;
+                    $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.'.$baseExt;
                 }
+            }else {
+                unset($this->request->data['Card']['baseArt']);
             }
 
             if(!empty($this->request->data['Card']['awkArt']['name']))
@@ -247,18 +273,42 @@ class CardsController extends AppController
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
                     move_uploaded_file($awkArt['tmp_name'], WWW_ROOT . 'img/cards/' .
-                        $this->request->data['Card']['cardNumber'].'.'.$awkExt);
+                        ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt);
 
                     //prepare the filename for database entry
-                    $this->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.'.$awkExt;
+                    $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt;
                 }
+            }else {
+                unset($this->request->data['Card']['awkArt']);
             }
 
+            if(!empty($this->request->data['Card']['iconArt']['name']))
+            {
+                $iconArt = $this->request->data['Card']['iconArt'];//put the data into a var for easy use
+
+                $iconExt = substr(strtolower(strrchr($iconArt['name'], '.')), 1);//get the extension
+                $arr_ext = array('jpg', 'jpeg', 'gif', 'png'); //set allowed extensions
+
+                //only process if the extension is valid
+                if(in_array($iconExt, $arr_ext))
+                {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($iconArt['tmp_name'], WWW_ROOT . 'img/cards/' .
+                        $this->request->data['Card']['card_id']."_icon".'.'.$iconExt);
+
+                    //prepare the filename for database entry
+                    $this->request->data['Card']['iconArt'] = $this->request->data['Card']['card_id']."_icon".'.'.$iconExt;
+                }
+            }else {
+                unset($this->request->data['Card']['iconArt']);
+            }
             /**
              * REMOVE THIS LATER!!!!!
              */
-            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['cardNumber'].'.png';
-            $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['cardNumber'] + 1).'.png';
+            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.png';
+            $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['card_id'] + 1).'.png';
+            $this->request->data['Card']['iconArt'] = $this->request->data['Card']['card_id']."_icon".'.png';
             /**
              * REMOVE THIS LATER!!!!!
              */

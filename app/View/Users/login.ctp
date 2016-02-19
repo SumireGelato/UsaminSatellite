@@ -1,3 +1,6 @@
+<?php
+$this->set('title_for_layout', 'Login');
+?>
 <div class="users form">
     <?php echo $this->Flash->render('auth'); ?>
     <?php echo $this->Form->create('User'); ?>
