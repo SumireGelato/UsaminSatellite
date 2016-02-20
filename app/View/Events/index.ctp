@@ -8,10 +8,12 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
 <div class="row text-center center-block">
     <div class="col-lg-12">
         <?php
+        $eventFinish = '';
         foreach($events as $event) {
             if(!$this->Time->isPast($event['Event']['finish'])){
+                $eventFinish = $event['Event']['finish'];
                 echo $this->Html->image('events/' . $event['Event']['pic'], array('width' => '800', 'height' => '201'));
-                echo '<h2 id="counter">Countdown</h2>';
+                echo '<div class="row countdown"><span id="eventCountdown"></span></div>';
             }
         }
         ?>
@@ -37,9 +39,12 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
         }
         ?>
 </div>
-
 <script>
-    $(document).ready(function() {
-        $('#counter').innerHTML = moment("1982-05-25").countdown().toString();
-    })
+    $('#eventCountdown').countdown('<?php echo $eventFinish ?>')
+        .on('update.countdown', function(event) {
+            $(this).html(event.strftime('%D days %H:%M:%S'));
+        })
+        .on('finish.countdown', function(event) {
+            $(this).html('Event Over!');
+        });
 </script>
