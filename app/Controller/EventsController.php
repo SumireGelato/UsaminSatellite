@@ -25,7 +25,7 @@ class EventsController extends AppController
     public function index()
     {
         $this->Event->recursive = 2;
-        $this->set('events', $this->Paginator->paginate());
+        $this->set('events', $this->Event->find('all', array('order' => 'Event.finish desc')));
     }
 
     /**
@@ -36,7 +36,7 @@ class EventsController extends AppController
     public function adminindex()
     {
         $this->Event->recursive = 0;
-        $this->set('events', $this->Paginator->paginate());
+        $this->set('events', $this->Event->find('all'));
     }
 
     /**
