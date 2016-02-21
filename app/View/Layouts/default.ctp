@@ -44,7 +44,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->script('bootstrap');
     echo $this->Html->script('moment');
     echo $this->Html->script('bootstrap-datetimepicker.min');
-    echo $this->Html->script('moment-timezone');
     echo $this->Html->script('moment-timezone-with-data');
     echo $this->Html->script('jquery.countdown');
     //echo $this->Html->script('npm');
