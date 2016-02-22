@@ -26,6 +26,7 @@ $this->set('title_for_layout', 'Add Card');
         <fieldset>
             <p>Remember to add events and idols before the cards for easier data entry!</p>
             <?php
+            echo $this->Form->input('id');
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('idol_id');
@@ -33,15 +34,17 @@ $this->set('title_for_layout', 'Add Card');
             echo $this->Form->input('card_id', array('type' => 'text', 'label' => 'Card Number'));
             echo $this->Form->input('eName');
             echo $this->Form->input('jName');
+            echo '</div>';
+            echo '<div class="col-lg-3">';
             $rarityOptions = array('N' => 'N', 'R' => 'R', 'SR' => 'SR', 'SSR' => 'SSR');
             echo $this->Form->input('rarity', array('options' => $rarityOptions));
             $typeOptions = array('Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion');
             echo $this->Form->input('type', array('options' => $typeOptions));
-            echo $this->Form->input('dateAdded', array('type' => 'text',/* 'div' => false,*/ 'class' => 'form-control datepicker'));
+            echo $this->Form->input('dateAdded', array('type' => 'text', 'class' => 'form-control', 'id' => 'datepicker'));
             echo $this->Form->input('limited', array('class' => 'form-inline'));
+            echo $this->Form->input('centerSkillText', array('type' => 'textarea', 'rows' => '2'));
             echo '</div>';
             echo '<div class="col-lg-3">';
-            echo $this->Form->input('centerSkillText');
             $options = array(
                 1 => array('name' => 'Perfect Lock (All Variants)', 'value' => 'Perfect Lock'),
                 2 => array('name' => 'Combo Lock', 'value' => 'Combo Lock'),
@@ -49,17 +52,24 @@ $this->set('title_for_layout', 'Add Card');
                 4 => array('name' => 'Damage Guard', 'value' => 'Damage Guard'),
                 5 => array('name' => 'Combo Bonus', 'value' => 'Combo Bonus'),
                 6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'));
-            echo $this->Form->input('specialSkillType', array('options' => $options, 'empty' => 'No Skill'));
+            echo $this->Form->input('specialSkillType', array('options' => $options));
             echo $this->Form->input('specialSkillText');
+            echo '</div>';
+            echo '<div class="col-lg-3">';
             echo $this->Form->input('baseArt', array('type' => 'file'));
             echo $this->Form->input('awkArt', array('type' => 'file'));
-            echo $this->Form->input('iconArt', array('type' => 'file'));
+            echo $this->Form->input('baseIconArt', array('type' => 'file'));
+            echo $this->Form->input('awkIconArt', array('type' => 'file'));
             echo '</div>';
+            echo '</div>';
+            echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('baseLife');
             echo $this->Form->input('baseVocal');
             echo $this->Form->input('baseDance');
             echo $this->Form->input('baseVisual');
+            echo '</div>';
+            echo '<div class="col-lg-3">';
             echo $this->Form->input('baseMaxLife');
             echo $this->Form->input('baseMaxVocal');
             echo $this->Form->input('baseMaxDance');
@@ -70,6 +80,8 @@ $this->set('title_for_layout', 'Add Card');
             echo $this->Form->input('awkBaseVocal');
             echo $this->Form->input('awkBaseDance');
             echo $this->Form->input('awkBaseVisual');
+            echo '</div>';
+            echo '<div class="col-lg-3">';
             echo $this->Form->input('awkMaxLife');
             echo $this->Form->input('awkMaxVocal');
             echo $this->Form->input('awkMaxDance');
@@ -88,12 +100,24 @@ $this->set('title_for_layout', 'Add Card');
 
 <script type="text/javascript">
     $(function () {
-        $('.datepicker').datetimepicker({
-            format: 'YYYY-MM-DD',
-            dayViewHeaderFormat: 'YYYY-MM-DD',
-//                sideBySide: true,
-            useCurrent: true,
-            widgetPositioning: {vertical:'bottom'}
-        });
+
+        var $fp = $( "#datepicker" );
+
+        $fp.filthypillow( {
+            steps: ["month", "day"],
+            startStep: "month",
+            calendar: {
+                saveOnDateSelect: true
+            }
+        } );
+
+        $fp.on( "focus", function( ) {
+            $fp.filthypillow( "show" );
+        } );
+
+        $fp.on( "fp:save", function( e, dateObj ) {
+            $fp.val( dateObj.format( "YYYY-MM-DD" ) );
+            $fp.filthypillow( "hide" );
+        } );
     });
 </script>

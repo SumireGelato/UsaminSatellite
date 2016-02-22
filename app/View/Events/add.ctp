@@ -29,8 +29,8 @@ $this->set('title_for_layout', 'Add Event');
         echo '<div class="col-lg-4">';
         echo $this->Form->input('eName');
         echo $this->Form->input('jName');
-        echo $this->Form->input('begin', array('type' => 'text',/* 'div' => false,*/ 'class' => 'form-control datepicker'));
-        echo $this->Form->input('finish', array('type' => 'text',/* 'div' => false,*/ 'class' => 'form-control datepicker'));
+        echo $this->Form->input('begin', array('type' => 'text', 'class' => 'form-control', 'id' => 'beginPicker'));
+        echo $this->Form->input('finish', array('type' => 'text', 'class' => 'form-control', 'id' => 'finishPicker'));
         $options = array('Token' => 'Token', 'Medley' => 'Live Groove', 'Caravan' => 'Cinderella Caravan');
         echo $this->Form->input('type', array('options' => $options));
         echo '</div>';
@@ -63,14 +63,37 @@ $this->set('title_for_layout', 'Add Event');
     </div>
 </div>
 
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker').datetimepicker({
-                format: 'YYYY-MM-DD HH:mm:ss',
-                dayViewHeaderFormat: 'YYYY-MM-DD',
-//                sideBySide: true,
-                useCurrent: true,
-                widgetPositioning: {vertical:'bottom'}
-            });
-        });
-    </script>
+<script type="text/javascript">
+    $(function () {
+
+        var $begin = $( "#beginPicker" );
+        var $finish = $( "#finishPicker" );
+
+        $begin.filthypillow( {
+            startStep: "month"
+        } );
+
+        $begin.on( "focus", function( ) {
+            $begin.filthypillow( "show" );
+        } );
+
+        $begin.on( "fp:save", function( e, dateObj ) {
+            $begin.val( dateObj.format( "YYYY-MM-DD HH:mm:ss" ) );
+            $begin.filthypillow( "hide" );
+        } );
+
+        $finish.filthypillow( {
+            startStep: "month"
+        } );
+
+        $finish.on( "focus", function( ) {
+            $finish.filthypillow( "show" );
+        } );
+
+        $finish.on( "fp:save", function( e, dateObj ) {
+            $finish.val( dateObj.format( "YYYY-MM-DD HH:mm:ss" ) );
+            $finish.filthypillow( "hide" );
+        } );
+    });
+
+</script>

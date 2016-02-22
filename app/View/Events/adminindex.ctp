@@ -66,8 +66,9 @@
 <script type="text/javascript">
     $(document).ready( function () {
         $('#table').DataTable({
-            responsive:     true,
-            order:          [[ 3, 'desc' ]]
+            "responsive":     true,
+            "order":          [[ 3, 'desc' ]],
+            "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
         });
     } );
 </script>

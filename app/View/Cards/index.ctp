@@ -77,15 +77,15 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
                         'empty' => 'All Skills'
                     ));
 //                  Source
-                    $options = array(
-                        1 => array('name' => 'Event Reward', 'value' => 'Event'),
-                        2 => array('name' => 'Gacha', 'value' => 'Gacha'));
+//                    $options = array(
+//                        1 => array('name' => 'Event Reward', 'value' => 'Event'),
+//                        2 => array('name' => 'Gacha', 'value' => 'Gacha'));
 
                     echo $this->Form->input('source', array(
 //                        'type' => 'select',
 //                        'label' => 'Type',
 //                        'id' => 'sourceDropDown',
-                        'options' => $options,
+                        'options' => $eventsList,
                         'empty' => 'All Sources'
                     ));
 //                  Limited
@@ -112,7 +112,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
                     echo '<p style="display: inline">  Sort</p>';
                     echo $this->Form->input('sort', array(
                         'options' => array(
-                            'cardNumber' => 'Release Date', 'rarity' => 'Rarity',
+                            'dateAdded' => 'Release Date', 'rarity' => 'Rarity',
                             'type' => 'Type', 'idol_id' => 'Idol'),
                         'selected' => 'Release Date'
                     ));
@@ -162,7 +162,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
                     echo '<p style="display: inline">  Sort Cards</p>';
                     echo $this->Form->input('sort', array(
                         'options' => array(
-                            'cardNumber' => 'Release Date', 'rarity' => 'Rarity',
+                            'dateAdded' => 'Release Date', 'rarity' => 'Rarity',
                             'type' => 'Type', 'idol_id' => 'Idol'),
                         'selected' => 'Release Date'
                     ));

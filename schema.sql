@@ -90,7 +90,7 @@ CREATE TABLE users (
 CREATE TABLE cards (
   id               INT UNSIGNED   NOT NULL AUTO_INCREMENT,
   idol_id          INT UNSIGNED   NOT NULL,
-  event_id         INT UNSIGNED   NULL,
+  event_id         INT UNSIGNED       NULL,
   card_id          INT            NOT NULL,
   eName            CHARACTER(255) NOT NULL,
   jName            CHARACTER(255) NOT NULL,
@@ -119,7 +119,8 @@ CREATE TABLE cards (
   dateAdded        DATE           NOT NULL,
   baseArt          CHARACTER(255),
   awkArt           CHARACTER(255),
-  iconArt          CHARACTER(255),
+  baseIconArt      CHARACTER(255),
+  awkIconArt       CHARACTER(255),
   CONSTRAINT cards_pk PRIMARY KEY (id)
 );
 

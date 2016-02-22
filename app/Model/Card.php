@@ -54,11 +54,11 @@ class Card extends AppModel {
 
     public function findSource($data = array()) {
         $filter = $data['source'];
-        if($filter == 'Event') {
-            $condition = array('Card.event_id is not NULL');
+        if($filter == 'gacha') {
+            $condition = array('Card.event_id is NULL');
         }
         else {
-            $condition = array('Card.event_id is NULL');
+            $condition = array('Card.event_id' => $filter);
         }
         return $condition;
     }

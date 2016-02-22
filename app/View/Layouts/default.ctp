@@ -30,23 +30,17 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('http://mplus-fonts.osdn.jp/webfonts/basic_latin/mplus_webfonts.css');
     echo $this->Html->css('http://mplus-fonts.osdn.jp/webfonts/general-j/mplus_webfonts.css');
     echo $this->Html->css('bootstrap.css');
-    echo $this->Html->css('bootstrap-datetimepicker.css');
+    echo $this->Html->css('jquery.filthypillow.css');
     echo $this->Html->css('icons.css');
-    //		echo $this->Html->css('bootstrap-theme.css');
-    //    echo $this->Html->css('jquery-ui.css');
-    //    echo $this->Html->css('jquery-ui.structure.css');
-    //    echo $this->Html->css('jquery-ui.theme.css');
     echo $this->Html->css('style.css');
     echo $this->Html->css('buttons.css');
 
     echo $this->Html->script('jquery-1.12.0');
-    //echo $this->Html->script('jquery-ui');
     echo $this->Html->script('bootstrap');
     echo $this->Html->script('moment');
-    echo $this->Html->script('bootstrap-datetimepicker.min');
     echo $this->Html->script('moment-timezone-with-data');
     echo $this->Html->script('jquery.countdown');
-    //echo $this->Html->script('npm');
+    echo $this->Html->script('jquery.filthypillow');
     ?>
     <link rel="stylesheet" type="text/css" href="<?php echo $this->Html->url('/'); ?>DataTables/datatables.css"/>
     <script type="text/javascript" src="<?php echo $this->Html->url('/'); ?>DataTables/datatables.js"></script>
@@ -62,99 +56,99 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <div class="container-fluid marketing" id="contentContainer">
     <div class="row">
         <div class="col-lg-12">
-    <noscript>
-        <div class="alert alert-danger" role="alert">This site makes extensive use of JavaScript.
-            Please enable JavaScript in your browser. Here are the <a href="http://www.enable-javascript.com/" target="_blank">
-                instructions how to enable JavaScript in your web browser</a></div>
-    </noscript>
+            <noscript>
+                <div class="alert alert-danger" role="alert">This site makes extensive use of JavaScript.
+                    Please enable JavaScript in your browser. Here are the <a href="http://www.enable-javascript.com/" target="_blank">
+                        instructions how to enable JavaScript in your web browser</a></div>
+            </noscript>
         </div>
-        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
-<!--    <div class="navbar-wrapper">-->
-        <div class="container-fluid">
+            <!--    <div class="navbar-wrapper">-->
+            <div class="container-fluid">
 
-            <nav class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <?php
-                        if ($this->here == $this->base . '/') {
-                            echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
-                                array('class' => 'navbar-brand', 'id' => 'showText'));
-                            echo $this->Html->link($this->Html->image('usamin-logo.png',
-                                    array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'),
-                                array('class' => 'navbar-brand', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0'));
-                        } else {
-                            echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
-                                array('class' => 'navbar-brand'));
-                        }
-                        ?>
-                    </div>
-                    <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-th-large"></span> Cards',
-                                    array('controller' => 'cards', 'action' => 'index'), array('escape' => false)); ?></li>
-                            <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-bullhorn"></span> Events',
-                                    array('controller' => 'events', 'action' => 'index'), array('escape' => false)); ?></li>
-                            <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-music"></span> Songs',
-                                    array('controller' => 'songs', 'action' => 'index'), array('escape' => false)); ?></li>
-                            <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-heart"></span> Idols',
-                                    array('controller' => 'idols', 'action' => 'index'), array('escape' => false)); ?></li>
-                            <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-list"></span> Translations',
-                                    '/translations', array('escape' => false)); ?></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
-                                    Other<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-flag"></span> News',
-                                            array('controller' => 'news', 'action' => 'index'), array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About Game & Site',
-                                            '/about', array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-user"></span> About the Staff',
-                                            '/aboutUs', array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-link"></span> Links',
-                                            '/links', array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-book"></span> Credits',
-                                            '/credits', array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-envelope"></span> Contact Us',
-                                            '/contactUs', array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-usd"></span> Donate',
-                                            '/donate', array('escape' => false)); ?></li>
-                                    <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-question-sign"></span> Help',
-                                            '/help', array('escape' => false)); ?></li>
-                                </ul>
-                            </li>
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                    data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
                             <?php
-                            if ($this->Session->read('Auth.User')) {
-                                echo '<li>'.$this->Html->link('Control Panel',
-                                        array('controller' => 'users', 'action' => 'controlpanel')).'</li>';
-                                echo '<li>'.$this->Html->link('Log Out',
-                                        array('controller' => 'users', 'action' => 'logout')).'</li>';
+                            if ($this->here == $this->base . '/') {
+                                echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
+                                    array('class' => 'navbar-brand', 'id' => 'showText'));
+                                echo $this->Html->link($this->Html->image('usamin-logo.png',
+                                        array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'),
+                                    array('class' => 'navbar-brand', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0'));
+                            } else {
+                                echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
+                                    array('class' => 'navbar-brand'));
                             }
                             ?>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <p class="navbar-text" id="clock"></p>
-                        </ul>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-th-large"></span> Cards',
+                                        array('controller' => 'cards', 'action' => 'index'), array('escape' => false)); ?></li>
+                                <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-bullhorn"></span> Events',
+                                        array('controller' => 'events', 'action' => 'index'), array('escape' => false)); ?></li>
+                                <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-music"></span> Songs',
+                                        array('controller' => 'songs', 'action' => 'index'), array('escape' => false)); ?></li>
+                                <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-heart"></span> Idols',
+                                        array('controller' => 'idols', 'action' => 'index'), array('escape' => false)); ?></li>
+                                <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-list"></span> Translations',
+                                        '/translations', array('escape' => false)); ?></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                       aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
+                                        Other<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-flag"></span> News',
+                                                array('controller' => 'news', 'action' => 'index'), array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About Game & Site',
+                                                '/about', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-user"></span> About the Staff',
+                                                '/aboutUs', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-link"></span> Links',
+                                                '/links', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-book"></span> Credits',
+                                                '/credits', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-envelope"></span> Contact Us',
+                                                '/contactUs', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-usd"></span> Donate',
+                                                '/donate', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-question-sign"></span> Help',
+                                                '/help', array('escape' => false)); ?></li>
+                                    </ul>
+                                </li>
+                                <?php
+                                if ($this->Session->read('Auth.User')) {
+                                    echo '<li>' . $this->Html->link('Control Panel',
+                                            array('controller' => 'users', 'action' => 'controlpanel')) . '</li>';
+                                    echo '<li>' . $this->Html->link('Log Out',
+                                            array('controller' => 'users', 'action' => 'logout')) . '</li>';
+                                }
+                                ?>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <p class="navbar-text" id="clock" data-toggle="tooltip" data-placement="bottom" title="Starlight Server Time"></p>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
 
-<!--        </div>-->
-    </div>
+                <!--        </div>-->
+            </div>
         </div>
     </div>
     <!-- Get Content -->
-        <?php echo $this->Session->flash(); ?>
-        <?php echo $this->fetch('content'); ?>
+    <?php echo $this->Session->flash(); ?>
+    <?php echo $this->fetch('content'); ?>
     <a href="#" id="back-to-top" title="Back to top"><span class="glyphicon glyphicon-chevron-up" style="font-size: 1.5em"></span></a>
     <!--    <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
@@ -179,7 +173,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         s = checkTime(s);
 
         document.getElementById('clock').innerHTML =
-            "It is currently " + h + ":" + m + ":" + s + " JST";
+            "It is currently " + h + ":" + m + ":" + s + " SST";
         var t = setTimeout(startTime, 500);
     }
     function checkTime(i) {
@@ -190,29 +184,31 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         return i;
     }
 
-//    $(document).ready(function() {
-        if ($('#back-to-top').length) {
-            var scrollTrigger = 200, // px
-                backToTop = function () {
-                    var scrollTop = $(window).scrollTop();
-                    if (scrollTop > scrollTrigger) {
-                        $('#back-to-top').addClass('show');
-                    } else {
-                        $('#back-to-top').removeClass('show');
-                    }
-                };
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    if ($('#back-to-top').length) {
+        var scrollTrigger = 200, // px
+            backToTop = function () {
+                var scrollTop = $(window).scrollTop();
+                if (scrollTop > scrollTrigger) {
+                    $('#back-to-top').addClass('show');
+                } else {
+                    $('#back-to-top').removeClass('show');
+                }
+            };
+        backToTop();
+        $(window).on('scroll', function () {
             backToTop();
-            $(window).on('scroll', function () {
-                backToTop();
-            });
-            $('#back-to-top').on('click', function (e) {
-                e.preventDefault();
-                $('html,body').animate({
-                    scrollTop: 0
-                }, 700);
-            });
-        }
-//    });
+        });
+        $('#back-to-top').on('click', function (e) {
+            e.preventDefault();
+            $('html,body').animate({
+                scrollTop: 0
+            }, 700);
+        });
+    }
 </script>
 
 <style>
