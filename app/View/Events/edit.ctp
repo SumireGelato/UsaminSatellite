@@ -54,6 +54,7 @@ $this->set('title_for_layout', 'Edit Event');
             echo '</div>';
             echo '<div class="col-lg-4">';
             echo $this->Form->input('pic', array('type' => 'file'));
+            echo '<p style="font-size: small">Current filename is: '.$this->request->data['Event']['pic'].'</p>';
             echo $this->Form->submit('Save', array(
                 'div' => 'form-group',
                 'class' => 'btn btn-default'

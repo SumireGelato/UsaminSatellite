@@ -28,6 +28,17 @@ body {
     color: inherit;
 }
 
+.cardInfo {
+    display: none;
+}
+
+.popover-title {
+    text-align: center;
+}
+.popover-content {
+    text-align: center;
+}
+
 #levelMax {
     display: none;
 }
@@ -160,6 +171,11 @@ body {
 }
 
 #clock {
+    margin: 0px -15px;
+    padding: 13px 15px 15px 15px;
+}
+
+.clock {
     margin: 0px -15px;
     padding: 13px 15px 15px 15px;
 }

@@ -81,13 +81,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             <?php
                             if ($this->here == $this->base . '/') {
                                 echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
-                                    array('class' => 'navbar-brand', 'id' => 'showText'));
+                                    array('class' => 'navbar-brand active', 'id' => 'showText'));
                                 echo $this->Html->link($this->Html->image('usamin-logo.png',
                                         array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'),
-                                    array('class' => 'navbar-brand', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0'));
+                                    array('class' => 'navbar-brand active', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0'));
                             } else {
                                 echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
-                                    array('class' => 'navbar-brand'));
+                                    array('class' => 'navbar-brand active'));
                             }
                             ?>
                         </div>
@@ -136,7 +136,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 ?>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <p class="navbar-text" id="clock" data-toggle="tooltip" data-placement="bottom" title="Starlight Server Time"></p>
+                                <p class="navbar-text" id="clock"></p>
+                                <abbr title="Starlight Server Time" class="navbar-text clock">SST</abbr>
                             </ul>
                         </div>
                     </div>
@@ -160,55 +161,59 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 <script>
     function startTime() {
-        var today = new Date();
-        utc = today.getTime() + (today.getTimezoneOffset() * 60000);
-        offset = +9.0;
-        var now = utc + (3600000 * offset);
-        var now = new Date(utc + (3600000 * offset));
-
-        var h = now.getHours();
-        var m = now.getMinutes();
-        var s = now.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
-
-        document.getElementById('clock').innerHTML =
-            "It is currently " + h + ":" + m + ":" + s + " SST";
+        var jstNow = moment().tz('Japan');
+        var $clock = $('#clock');
+        $clock.html(jstNow.format("HH:mm:ss"));
         var t = setTimeout(startTime, 500);
-    }
-    function checkTime(i) {
-        if (i < 10) {
-            i = "0" + i
-        }
-        ;  // add zero in front of numbers < 10
-        return i;
-    }
+    };
 
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+        var jstNow = moment().tz('Japan');
+        $('#clock').tooltip({
+            toggle: "tooltip",
+            placement: "bottom",
+            title: jstNow.format("YYYY/MM/DD")
+        });
+    });
 
-    if ($('#back-to-top').length) {
-        var scrollTrigger = 200, // px
-            backToTop = function () {
-                var scrollTop = $(window).scrollTop();
-                if (scrollTop > scrollTrigger) {
-                    $('#back-to-top').addClass('show');
-                } else {
-                    $('#back-to-top').removeClass('show');
-                }
-            };
-        backToTop();
-        $(window).on('scroll', function () {
+    /*Menu handler*/
+    $(function(){
+        var url = window.location;
+        // Will only work if string in href matches with location
+        $('ul.nav a[href="'+ url +'"]').parent().addClass('active');
+
+        // Relative URLs
+        $('ul.nav a').filter(function() {
+            var pageName = location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
+            var lowercased = location.pathname.replace(pageName, pageName.toLowerCase());
+            return this.href == location.protocol + '//' + location.host + lowercased;
+        }).parent().addClass('active');
+    });
+
+    $(function() {
+        var $backtotop = $('#back-to-top');
+        if ($backtotop.length) {
+            var scrollTrigger = 200, // px
+                backToTop = function () {
+                    var scrollTop = $(window).scrollTop();
+                    if (scrollTop > scrollTrigger) {
+                        $backtotop.addClass('show');
+                    } else {
+                        $backtotop.removeClass('show');
+                    }
+                };
             backToTop();
-        });
-        $('#back-to-top').on('click', function (e) {
-            e.preventDefault();
-            $('html,body').animate({
-                scrollTop: 0
-            }, 700);
-        });
-    }
+            $(window).on('scroll', function () {
+                backToTop();
+            });
+            $backtotop.on('click', function (e) {
+                e.preventDefault();
+                $('html,body').animate({
+                    scrollTop: 0
+                }, 700);
+            });
+        }
+    });
 </script>
 
 <style>

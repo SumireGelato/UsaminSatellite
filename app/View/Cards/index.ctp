@@ -85,7 +85,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
 //                        'type' => 'select',
 //                        'label' => 'Type',
 //                        'id' => 'sourceDropDown',
-                        'options' => $eventsList,
+                        'options' => $sourceList,
                         'empty' => 'All Sources'
                     ));
 //                  Limited
