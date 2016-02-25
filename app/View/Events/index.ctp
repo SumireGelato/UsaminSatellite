@@ -12,8 +12,12 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
         foreach ($events as $event) {
             if (!$this->Time->isPast($event['Event']['finish'])) {
                 $currentEventExists = true;
-                echo $this->Html->image('events/' . $event['Event']['pic'], array('width' => '800', 'height' => '201'));
                 ?>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <?php echo $this->Html->image('events/' . $event['Event']['pic'], array('class' => 'img-responsive center-block')); ?>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div id="jstCountdown" data-countdown="<?php echo $event['Event']['finish']; ?>"></div>
@@ -39,10 +43,10 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                                     '<div class="cardInfo">
                                         <div class="row">
                                             <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>'.$card['rarity'].'</p>
+                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '</p>
                                             </div>
                                             <div class="col-xs-6">
-                                                <p><strong>Type: </strong>'.$card['type'].'</p>
+                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -67,27 +71,27 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">'. ($card['baseMaxTotal']) . '</p>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['baseMaxTotal']) . '</p>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <h5>Card Skill - '.$card['specialSkillType'].'</h5>
+                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
                                         </div>
                                         <div class="row">
-                                            <p>'.$card['specialSkillText'].'</p>
+                                            <p>' . $card['specialSkillText'] . '</p>
                                         </div>
                                     </div>';
                                 echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
                                 echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
                                     'class' => 'btn btn-xs rewardIcons'));
                                 echo
-                                '<div class="cardInfo">
+                                    '<div class="cardInfo">
                                     <div class="row">
                                             <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>'.$card['rarity'].'+</p>
+                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '+</p>
                                             </div>
                                             <div class="col-xs-6">
-                                                <p><strong>Type: </strong>'.$card['type'].'</p>
+                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -112,14 +116,14 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">'. ($card['awkMaxTotal']) . '</p>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['awkMaxTotal']) . '</p>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <h5>Card Skill - '.$card['specialSkillType'].'</h5>
+                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
                                         </div>
                                         <div class="row">
-                                            <p>'.$card['specialSkillText'].'</p>
+                                            <p>' . $card['specialSkillText'] . '</p>
                                         </div>
                                 </div>';
                             }
@@ -128,7 +132,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                         <div class="row">
                             <?php echo $this->Html->link('Click here to view more details on these cards on the cards page!',
                                 array('controller' => 'cards',
-                                'action' => 'index', '?' => 'source='.$event['Event']['id'].'&sort=dateAdded&order=1&statOrder=0')); ?>
+                                    'action' => 'index', '?' => 'source=' . $event['Event']['id'] . '&sort=dateAdded&order=1&statOrder=0')); ?>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -148,7 +152,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
             <?php
             }
         }
-        if(!$currentEventExists) {
+        if (!$currentEventExists) {
             echo '<p>No Current Event!</p>';
         }
         ?>
@@ -157,22 +161,113 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
 <div class="row text-center">
     <h1>Past Events</h1>
 </div>
-<div class="row text-center center-block">
-    <?php
-    $numItems = 0;
-    foreach ($events as $event) {
-        if ($this->Time->isPast($event['Event']['finish'])) {
-            echo '<div class="col-lg-6">';
-            echo $this->Html->image('events/' . $event['Event']['pic'], array('width' => '575', 'height' => '150'));
-            echo '</div>';
-            $numItems++;
-            if ($numItems == 2) {
-                echo '</div>';
-                echo '<div class="row text-center center-block">';
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="row text-center center-block">
+        <?php
+        $numItems = 0;
+        $totalItems = 1;
+        foreach ($events as $event) {
+            if ($this->Time->isPast($event['Event']['finish'])) {
+                ?>
+
+                <div class="col-lg-6" style="padding-bottom: 10px">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="padding: 0" role="tab" id="heading<?php echo $totalItems;?>">
+                                <a class="collapsed" role="button" data-toggle="collapse"
+                                   data-parent="#accordion"
+                                   href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
+                                   aria-controls="<?php echo "collapse" . $totalItems; ?>"
+                                   style="text-decoration: none; color: black">
+                                    <?php echo $this->Html->image('events/' . $event['Event']['pic'], array('class' => 'img-responsive')); ?>
+                                </a>
+                        </div>
+                        <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"
+                             role="tabpanel"
+                             aria-labelledby="<?php echo "heading" . $totalItems; ?>">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 style="font-weight: bold"><?php echo $event['Event']['eName']; ?></h4>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <p style="font-style: italic"><?php echo $event['Event']['jName'] ?></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <p><span
+                                                style="font-weight: bold">Date Started: </span><?php echo $card['Event']['begin']; ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><span
+                                                style="font-weight: bold">Date Finish: </span><?php echo $card['Event']['finish']; ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><span
+                                                style="font-weight: bold">Type: </span><?php echo $card['Event']['type']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <?php if($event['Event']['type'] != 'Caravan' && $event['Event']['t1'] != null) { ?>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h4>Event Rankings</h4>
+                                        </div>
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tier 1</th>
+                                                <th>Tier 2</th>
+                                                <th>Tier 3</th>
+                                                <th>Tier 4</th>
+                                                <th>Tier 5</th>
+                                                <th>Tier 6</th>
+                                                <th>Tier 7</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><?php echo $event['Event']['t1']; ?></td>
+                                            <td><?php echo $event['Event']['t2']; ?></td>
+                                            <td><?php echo $event['Event']['t3']; ?></td>
+                                            <td><?php echo $event['Event']['t4']; ?></td>
+                                            <td><?php echo $event['Event']['t5']; ?></td>
+                                            <td><?php echo $event['Event']['t6']; ?></td>
+                                            <td><?php echo $event['Event']['t7']; ?></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                <?php } else { ?>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h4>Event Rankings Coming Soon!</h4>
+                                        </div>
+                                    </div>
+                              <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <?php
+                $numItems++;
+                $totalItems++;
+                if ($numItems == 2) {
+                    echo '</div>';
+                    echo '<div class="row text-center center-block">';
+                    $numItems = 0;
+                }
             }
         }
-    }
-    ?>
+        ?>
+    </div>
 </div>
 <script>
     var countdownElement = $("#jstCountdown");
@@ -204,7 +299,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
             $(this).html("<h2>" + event.strftime('%-D day%!D %-H hour%!H %-M minute%!M %-S second%!S') + " left</h2>");
         })
         .on('finish.countdown', function (event) {
-            $(this).html('Event Over!');
+            $(this).html('<h2>Event Over!</h2>');
         });
     $(function () {
         var $reward = $('.reward');

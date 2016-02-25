@@ -23,52 +23,62 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
             } //end stuff need if not ajax
             if ($type == 'cute'){
             ?>
-            <div role="tabpanel" class="tab-pane fade in active cute container-fluid" id="cute">
+            <div role="tabpanel" class="tab-pane fade in active cute" id="cute">
                 <?php }else{ ?>
-                <div role="tabpanel" class="tab-pane fade cute container-fluid" id="cute">
+                <div role="tabpanel" class="tab-pane fade cute" id="cute">
                     <?php } ?>
                     <div class="row" id="cuteIdols">
                         <?php
                         if ($type == 'cute') {
                             foreach ($idols as $idol) {
                                 ?>
-                                <div class="col-xs-2">
-                                    <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
-                                            array('alt' => $idol['Idol']['eName'], 'height' => 180)) .
-                                        '<p>' . $idol['Idol']['eName'] . '</p>',
+                                <div class="col-xs-6 col-lg-2 center-block text-center" style="height: 194px;">
+                                <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
+                                        array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
+                                    array('controller' => 'idols',
+                                        'action' => 'view',
+                                        'id' => $idol['Idol']['id'],
+                                        'title' => Inflector::slug($idol['Idol']['eName'])),
+                                    array('escape' => false)) ?>
+                                    <?php echo $this->Html->link($idol['Idol']['eName'],
                                         array('controller' => 'idols',
                                             'action' => 'view',
                                             'id' => $idol['Idol']['id'],
                                             'title' => Inflector::slug($idol['Idol']['eName'])),
-                                        array('escape' => false)) ?>
+                                        array('class' => 'noLinkStyle'));?>
                                 </div>
                             <?php
                             }
                         }
                         ?>
-                    </div>
+                        </div>
                 </div>
                 <?php
                 if ($type == 'cool'){
                 ?>
-                <div role="tabpanel" class="tab-pane fade in active cool container-fluid" id="cool">
+                <div role="tabpanel" class="tab-pane fade in active cool" id="cool">
                     <?php }else{ ?>
-                    <div role="tabpanel" class="tab-pane fade cool container-fluid" id="cool">
+                    <div role="tabpanel" class="tab-pane fade cool" id="cool">
                         <?php } ?>
                         <div class="row" id="coolIdols">
                             <?php
                             if ($type == 'cool') {
                                 foreach ($idols as $idol) {
                                     ?>
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-6 col-lg-2 center-block text-center" style="height: 194px;">
                                         <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
-                                                array('class' => 'img-square', 'alt' => $idol['Idol']['eName'], 'height' => 180)) .
-                                            '<p>' . $idol['Idol']['eName'] . '</p>',
+                                                array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
                                             array('controller' => 'idols',
                                                 'action' => 'view',
                                                 'id' => $idol['Idol']['id'],
                                                 'title' => Inflector::slug($idol['Idol']['eName'])),
                                             array('escape' => false)) ?>
+                                        <?php echo $this->Html->link($idol['Idol']['eName'],
+                                            array('controller' => 'idols',
+                                                'action' => 'view',
+                                                'id' => $idol['Idol']['id'],
+                                                'title' => Inflector::slug($idol['Idol']['eName'])),
+                                            array('class' => 'noLinkStyle'));?>
                                     </div>
                                 <?php
                                 }
@@ -79,24 +89,29 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
                     <?php
                     if ($type == 'passion'){
                     ?>
-                    <div role="tabpanel" class="tab-pane fade in active passion container-fluid" id="passion">
+                    <div role="tabpanel" class="tab-pane fade in active passion" id="passion">
                         <?php }else{ ?>
-                        <div role="tabpanel" class="tab-pane fade passion container-fluid" id="passion">
+                        <div role="tabpanel" class="tab-pane fade passion" id="passion">
                             <?php } ?>
                             <div class="row" id="passionIdols">
                                 <?php
                                 if ($type == 'passion') {
                                     foreach ($idols as $idol) {
                                         ?>
-                                        <div class="col-xs-2">
+                                        <div class="col-xs-6 col-lg-2 center-block text-center" style="height: 194px;">
                                             <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
-                                                    array('class' => 'img-square', 'alt' => $idol['Idol']['eName'], 'height' => 180)) .
-                                                '<p>' . $idol['Idol']['eName'] . '</p>',
+                                                    array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
                                                 array('controller' => 'idols',
                                                     'action' => 'view',
                                                     'id' => $idol['Idol']['id'],
                                                     'title' => Inflector::slug($idol['Idol']['eName'])),
                                                 array('escape' => false)) ?>
+                                            <?php echo $this->Html->link($idol['Idol']['eName'],
+                                                array('controller' => 'idols',
+                                                    'action' => 'view',
+                                                    'id' => $idol['Idol']['id'],
+                                                    'title' => Inflector::slug($idol['Idol']['eName'])),
+                                                array('class' => 'noLinkStyle'));?>
                                         </div>
                                     <?php
                                     }

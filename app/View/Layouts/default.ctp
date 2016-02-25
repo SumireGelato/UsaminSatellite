@@ -34,6 +34,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('icons.css');
     echo $this->Html->css('style.css');
     echo $this->Html->css('buttons.css');
+    echo $this->Html->css('navbar-color.css');
 
     echo $this->Html->script('jquery-1.12.0');
     echo $this->Html->script('bootstrap');

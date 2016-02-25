@@ -9,14 +9,16 @@ body {
     font-size: 1.6em;
 }
 
-.awkSRCardImage {
+.awkCardImage {
     display: none;
 }
 
-.baseSRCardImage {
+.baseCardImage {
     display: block;
+/*
     margin-left: auto;
     margin-right: auto
+*/
 }
 
 .awakened {
@@ -158,8 +160,8 @@ body {
     height: 2000px;
 }
 
-    /* CUSTOMIZE THE NAVBAR
-    -------------------------------------------------- */
+/* CUSTOMIZE THE NAVBAR
+-------------------------------------------------- */
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
@@ -193,126 +195,6 @@ body {
 
 .navbar-wrapper .navbar .container {
     width: auto;
-}
-
-/*Change navbar color*/
-.navbar-default {
-    background-color: #ff6c99;
-    border-color: #ffc66c;
-    width: inherit;
-}
-
-.navbar-default .btn-default {
-    background-color: #ffc66c;
-}
-
-.navbar-default .btn-default:hover,
-.navbar-default .btn-default:focus {
-    color: #ffc66c;
-    background-color: #9d2068;
-}
-
-.navbar-default h1 {
-    color: #ffe0e9;
-    margin: 0px -15px;
-    padding: 15px;
-}
-
-.navbar-default h2 {
-    color: #ffe0e9;
-    margin: 0px -15px;
-    padding: 15px;
-}
-
-.navbar-default h3 {
-    color: #ffe0e9;
-    margin: 0px -15px;
-    padding: 15px;
-}
-
-.navbar-default h4 {
-    color: #ffe0e9;
-    margin: 0px -15px;
-    padding: 15px;
-}
-
-.navbar-default h5 {
-    color: #ffe0e9;
-    margin: 0px -15px;
-    padding: 15px;
-}
-
-.navbar-default .navbar-brand {
-    color: #ffe0e9;
-}
-
-.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
-    color: #9d2068;
-}
-
-.navbar-default .navbar-text {
-    color: #ffe0e9;
-}
-
-.navbar-default .navbar-nav > li > a {
-    color: #ffe0e9;
-}
-
-.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-    color: #9d2068;
-}
-
-.navbar-default .navbar-nav > li > .dropdown-menu {
-    background-color: #ff6c99;
-}
-
-.navbar-default .navbar-nav > li > .dropdown-menu > li > a {
-    color: #ffe0e9;
-}
-
-.navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
-.navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
-    color: #9d2068;
-    background-color: #ffc66c;
-}
-
-.navbar-default .navbar-nav > li > .dropdown-menu > li > .divider {
-    background-color: #ff6c99;
-}
-
-.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
-    color: #9d2068;
-    background-color: #ffc66c;
-}
-
-.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-    color: #9d2068;
-    background-color: #ffc66c;
-}
-
-.navbar-default .navbar-toggle {
-    border-color: #ffc66c;
-}
-
-.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-    background-color: #ffc66c;
-}
-
-.navbar-default .navbar-toggle .icon-bar {
-    background-color: #ffe0e9;
-}
-
-.navbar-default .navbar-collapse,
-.navbar-default .navbar-form {
-    border-color: #ffe0e9;
-}
-
-.navbar-default .navbar-link {
-    color: #ffe0e9;
-}
-
-.navbar-default .navbar-link:hover {
-    color: #9d2068;
 }
 
 /* MARKETING CONTENT
@@ -350,7 +232,7 @@ body {
 
 /* Center align the text within the three columns below the carousel */
 .marketing .col-lg-4 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .marketing .col-xs-12 {
@@ -588,7 +470,7 @@ body {
     margin-right: auto
 }
 
-#cuteIdols p{
+#cuteIdols a{
     text-align: center;
     color: #FFE0E9;
 }
@@ -604,7 +486,7 @@ body {
     margin-right: auto
 }
 
-#coolIdols p{
+#coolIdols a{
     text-align: center;
     color: #FFFFFF;
 }
@@ -620,7 +502,7 @@ body {
     margin-right: auto
 }
 
-#passionIdols p{
+#passionIdols a{
     text-align: center;
     color: #4a3e1c;
 }
