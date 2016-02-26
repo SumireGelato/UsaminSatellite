@@ -79,21 +79,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <?php
-                            if ($this->here == $this->base . '/') {
-                                echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
-                                    array('class' => 'navbar-brand active', 'id' => 'showText'));
-                                echo $this->Html->link($this->Html->image('usamin-logo.png',
-                                        array('width' => 297, 'height' => 150)), array('controller' => 'pages', 'action' => 'display', 'home'),
-                                    array('class' => 'navbar-brand active', 'id' => 'hideLogo', 'escape' => false, 'style' => 'padding: 0'));
-                            } else {
-                                echo $this->Html->link('Usamin S@telite', array('controller' => 'pages', 'action' => 'display', 'home'),
-                                    array('class' => 'navbar-brand active'));
-                            }
-                            ?>
+                            <?php echo $this->Html->link($this->Html->image('favicon.ico',
+                                array('alt' => 'Usamin S@telite', 'class' => 'img-responsive')),
+                                array('controller' => 'pages', 'action' => 'display', 'home'),
+                                array('class' => 'navbar-brand', 'escape' => false, 'style' => 'padding-top: 0;')); ?>
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
+                                <li><?php echo $this->Html->link('<span class=" glyphicon glyphicon-home"></span> Home',
+                                        array('controller' => 'pages', 'action' => 'display', 'home'), array('escape' => false)); ?></li>
                                 <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-th-large"></span> Cards',
                                         array('controller' => 'cards', 'action' => 'index'), array('escape' => false)); ?></li>
                                 <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-bullhorn"></span> Events',

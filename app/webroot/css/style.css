@@ -222,13 +222,13 @@ body {
     margin: 0;
 }
 
-#showText {
+/*#showText {
     display: none;
 }
 
 #hideLogo {
     display: none;
-}
+}*/
 
 /* Center align the text within the three columns below the carousel */
 .marketing .col-lg-4 {
@@ -534,13 +534,13 @@ body {
         font-size: 50px;
     }
 
-    #hideLogo {
-        /*display: none;*/
+/*    #hideLogo {
+        /!*display: none;*!/
     }
 
     #showText {
         display: block;
-    }
+    }*/
 }
 
 @media (min-width: 992px) {
@@ -548,13 +548,13 @@ body {
         margin-top: 120px;
     }
 
-    #hideLogo {
+/*    #hideLogo {
         display: block;
     }
 
     #showText {
         display: none;
-    }
+    }*/
 }
 
 @media (max-width: 767px) {
@@ -571,11 +571,11 @@ body {
         background-color: #ffc66c;
     }
 
-    #hideLogo {
+/*    #hideLogo {
         display: none;
     }
 
     #showText {
         display: block;
-    }
+    }*/
 }

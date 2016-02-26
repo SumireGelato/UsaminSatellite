@@ -170,7 +170,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
             if ($this->Time->isPast($event['Event']['finish'])) {
                 ?>
 
-                <div class="col-lg-6" style="padding-bottom: 10px">
+                <div class="col-md-6" style="padding-bottom: 10px">
                     <div class="panel panel-default">
                         <div class="panel-heading" style="padding: 0" role="tab" id="heading<?php echo $totalItems;?>">
                                 <a class="collapsed" role="button" data-toggle="collapse"
@@ -178,7 +178,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                                    href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
                                    aria-controls="<?php echo "collapse" . $totalItems; ?>"
                                    style="text-decoration: none; color: black">
-                                    <?php echo $this->Html->image('events/' . $event['Event']['pic'], array('class' => 'img-responsive')); ?>
+                                    <?php echo $this->Html->image('events/' . $event['Event']['pic'], array('class' => 'img-responsive center-block')); ?>
                                 </a>
                         </div>
                         <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"
@@ -187,64 +187,168 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <h4 style="font-weight: bold"><?php echo $event['Event']['eName']; ?></h4>
+                                        <h4 style="font-weight: bold"><?php echo $event['Event']['eName']; ?><small> - <?php echo $event['Event']['jName'] ?></small></h4>
                                     </div>
                                 </div>
                                 <hr>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <p><span
+                                                style="font-weight: bold">Date Started: </span><br/><?php echo $event['Event']['begin']; ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><span
+                                                style="font-weight: bold">Date Finished: </span><br/><?php echo $event['Event']['finish']; ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><span
+                                                style="font-weight: bold">Type: </span><br/><?php echo $event['Event']['type']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr/>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <p style="font-style: italic"><?php echo $event['Event']['jName'] ?></p>
+                                        <h4 style="font-weight: bold">Event Rewards</h4>
                                     </div>
                                 </div>
-                                <hr>
+                                <div class="row reward">
+                                    <?php
+                                    foreach ($event['Card'] as $card) {
+                                        echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '</p></div>';
+                                        echo $this->Html->image('cards/' . $card['baseIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-base',
+                                            'class' => 'btn btn-xs rewardIcons img-responsive'));
+                                        echo
+                                            '<div class="cardInfo">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '</p>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <h5>Max Stats</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-5ths">
+                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['baseMaxLife'] . '</p>
+                                            </div>
+                                            <div class="col-xs-5ths">
+                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
+                                                <p>' . $card['baseMaxVocal'] . '</p>
+                                            </div>
+                                            <div class="col-xs-5ths">
+                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
+                                                <p>' . $card['baseMaxDance'] . '</p>
+                                            </div>
+                                            <div class="col-xs-5ths">
+                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
+                                                <p>' . $card['baseMaxVisual'] . '</p>
+                                            </div>
+                                            <div class="col-xs-5ths">
+                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['baseMaxTotal']) . '</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
+                                        </div>
+                                        <div class="row">
+                                            <p>' . $card['specialSkillText'] . '</p>
+                                        </div>
+                                    </div>';
+                                        echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
+                                        echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
+                                            'class' => 'btn btn-xs rewardIcons'));
+                                        echo
+                                            '<div class="cardInfo">
+                                    <div class="row">
+                                            <div class="col-xs-6">
+                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '+</p>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <h5>Max Stats</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-5ths">
+                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['awkMaxLife'] . '</p>
+                                            </div>
+                                            <div class="col-xs-5ths">
+                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
+                                                <p>' . $card['awkMaxVocal'] . '</p>
+                                            </div>
+                                            <div class="col-xs-5ths">
+                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
+                                                <p>' . $card['awkMaxDance'] . '</p>
+                                            </div>
+                                            <div class="col-xs-5ths">
+                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
+                                                <p>' . $card['awkMaxVisual'] . '</p>
+                                            </div>
+                                            <div class="col-xs-5ths">
+                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['awkMaxTotal']) . '</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
+                                        </div>
+                                        <div class="row">
+                                            <p>' . $card['specialSkillText'] . '</p>
+                                        </div>
+                                </div>';
+                                    }
+                                    ?>
+                                </div>
                                 <div class="row">
-                                    <div class="col-xs-4">
-                                        <p><span
-                                                style="font-weight: bold">Date Started: </span><?php echo $card['Event']['begin']; ?>
-                                        </p>
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <p><span
-                                                style="font-weight: bold">Date Finish: </span><?php echo $card['Event']['finish']; ?>
-                                        </p>
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <p><span
-                                                style="font-weight: bold">Type: </span><?php echo $card['Event']['type']; ?>
-                                        </p>
-                                    </div>
+                                    <?php echo $this->Html->link('Click here to view more details on these cards on the cards page!',
+                                        array('controller' => 'cards',
+                                            'action' => 'index', '?' => 'source=' . $event['Event']['id'] . '&sort=dateAdded&order=1&statOrder=0')); ?>
                                 </div>
+                                <hr/>
                                 <?php if($event['Event']['type'] != 'Caravan' && $event['Event']['t1'] != null) { ?>
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <h4>Event Rankings</h4>
+                                            <h4 style="font-weight: bold">Event Rankings</h4>
                                         </div>
                                     </div>
-                                    <table class="table">
-                                        <thead>
+                                    <div class="table-responsive">
+                                        <table class="table text-left">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tier 1<br/>2001st</th>
+                                                    <th>Tier 2<br/>10001st</th>
+                                                    <th>Tier 3<br/>20001st</th>
+                                                    <th>Tier 4<br/>50001st</th>
+                                                    <th>Tier 5<br/>100001st</th>
+                                                    <th>Tier 6<br/>300001st</th>
+                                                    <th>Tier 7<br/>500001st</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                             <tr>
-                                                <th>Tier 1</th>
-                                                <th>Tier 2</th>
-                                                <th>Tier 3</th>
-                                                <th>Tier 4</th>
-                                                <th>Tier 5</th>
-                                                <th>Tier 6</th>
-                                                <th>Tier 7</th>
+                                                <td><?php echo $event['Event']['t1']; ?></td>
+                                                <td><?php echo $event['Event']['t2']; ?></td>
+                                                <td><?php echo $event['Event']['t3']; ?></td>
+                                                <td><?php echo $event['Event']['t4']; ?></td>
+                                                <td><?php echo $event['Event']['t5']; ?></td>
+                                                <td><?php echo $event['Event']['t6']; ?></td>
+                                                <td><?php echo $event['Event']['t7']; ?></td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td><?php echo $event['Event']['t1']; ?></td>
-                                            <td><?php echo $event['Event']['t2']; ?></td>
-                                            <td><?php echo $event['Event']['t3']; ?></td>
-                                            <td><?php echo $event['Event']['t4']; ?></td>
-                                            <td><?php echo $event['Event']['t5']; ?></td>
-                                            <td><?php echo $event['Event']['t6']; ?></td>
-                                            <td><?php echo $event['Event']['t7']; ?></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                <?php } else { ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <?php } elseif($event['Event']['type'] != 'Caravan' && $event['Event']['t1'] == null) { ?>
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <h4>Event Rankings Coming Soon!</h4>

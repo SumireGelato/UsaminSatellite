@@ -7,22 +7,17 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 <!-- Marketing messaging and featurettes-->
 <div class="row" id="homeHeading">
     <div class="col-lg-12">
-        <h1>Welcome to Usamin S@telite!</h1>
+        <h1 style="padding: 0; margin: 0">Welcome to <?php echo $this->Html->image('usamin-logo.png', array('alt' => 'Site Logo', /*'class' => 'img-responsive',*/ 'height' => '150.5px', 'width' => '297.5px'));?></h1>
     </div>
     <div class="col-lg-12">
-        <h3>The website dedicated to all things <img src="img/gameLogo.png" alt="Game Logo">!</h3>
+        <h3 style="padding-bottom: 20px">The website dedicated to all things <img src="img/gameLogo.png" alt="Game Logo"></h3>
     </div>
 </div>
 
 
 <!-- 2 Columns of content -->
 <!--<div id="pageContent">-->
-<?php
-$num1 = mt_rand(1, 362); //Cards
-$num2 = mt_rand(1, 11); //Events
-$num3 = mt_rand(1, 46); //Songs
-?>
-<div class="row">
+<div class="row text-center center-block">
     <div class="col-lg-4">
         <img class="img-circle"
              src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
