@@ -34,7 +34,7 @@ $this->set('title_for_layout', 'Edit Card');
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('idol_id');
-            echo $this->Form->input('event_id', array('empty' => 'Gacha'));
+            echo $this->Form->input('event_id', array('options' => $sourceList, 'empty' => 'Gacha'));
             echo $this->Form->input('card_id', array('type' => 'text', 'label' => 'Card Number'));
             echo $this->Form->input('eName');
             echo $this->Form->input('jName');

@@ -131,8 +131,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 ?>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <p class="navbar-text" id="clock"></p>
-                                <abbr title="Starlight Server Time" class="navbar-text clock">SST</abbr>
+                                <p><span class="navbar-text" id="clock"></span><abbr title="Starlight Server Time" class="navbar-text
+                                clock">SST</abbr></p>
                             </ul>
                         </div>
                     </div>

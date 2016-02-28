@@ -30,7 +30,7 @@ $this->set('title_for_layout', 'Add Card');
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('idol_id');
-            echo $this->Form->input('event_id', array('empty' => 'Gacha'));
+            echo $this->Form->input('event_id', array('options' => $sourceList, 'empty' => 'Gacha'));
             echo $this->Form->input('card_id', array('type' => 'text', 'label' => 'Card Number'));
             echo $this->Form->input('eName');
             echo $this->Form->input('jName');
@@ -62,6 +62,7 @@ $this->set('title_for_layout', 'Add Card');
             echo $this->Form->input('awkIconArt', array('type' => 'file'));
             echo '</div>';
             echo '</div>';
+            echo '<hr/>';
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('baseLife');
@@ -120,4 +121,46 @@ $this->set('title_for_layout', 'Add Card');
             $fp.filthypillow( "hide" );
         } );
     });
+
+    $(function() {
+        var idolSelector = $("#CardIdolId");
+
+        idolSelector.change(function() {
+            var selected = idolSelector.find("option:selected").text();
+            $("#CardEName").val('"name" '+selected);
+        });
+
+        $("#CardCenterSkillText").val('Vocal Appeal of all Cool idols up 60%');
+
+        var skillSelector = $("#CardSpecialSkillType");
+
+        skillSelector.change(function() {
+            var selected = skillSelector.find("option:selected").val();
+            var skillBox = $("#CardSpecialSkillText");
+            switch(selected) {
+                case "Perfect Lock":
+                    skillBox.val('GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 15 seconds for a ' +
+                    'considerable length of time.');
+                    break;
+                case "Combo Lock":
+                    skillBox.val('COMBO is maintained on NICEs temporarily, medium probability of triggering every 12 seconds for some time.');
+                    break;
+                case "Healer":
+                    skillBox.val('PERFECTs recover 3 life, high probability of triggering every 13 seconds for some time.');
+                    break;
+                case "Damage Guard":
+                    skillBox.val('Life does not decrease temporarily, medium probability of triggering every 11 seconds for a considerable length ' +
+                    'of time.');
+                    break;
+                case "Combo Bonus":
+                    skillBox.val('COMBO pt bonus 15% up, medium probability of triggering every 7 seconds for a short time.');
+                    break;
+                case "Score Boost":
+                    skillBox.val('PERFECT/GREAT score 15% up, medium probability of triggering every 9 seconds for some time.');
+                    break;
+            }
+        });
+    });
+
+
 </script>

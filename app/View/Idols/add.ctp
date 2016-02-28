@@ -34,7 +34,7 @@ $this->set('title_for_layout', 'Add Idol');
         echo $this->Form->input('weight');
         echo '</div>';
         echo '<div class="col-lg-3">';
-        echo $this->Form->input('birthday', array('div' => false, 'id' => 'datepicker'));
+        echo $this->Form->input('birthday', array('type' => 'text', 'class' => 'form-control', 'id' => 'datepicker'));
         $bloodOptions = array('A' => 'A', 'B' => 'B', 'AB' => 'AB', 'O' => 'O');
         echo $this->Form->input('bloodType', array('options' => $bloodOptions));
         echo '<div class="form-group">';
@@ -79,9 +79,24 @@ $this->set('title_for_layout', 'Add Idol');
 </div>
 <script type="text/javascript">
     $(function () {
-        $('#datepicker').datetimepicker({
-            format: 'MMMM D',
-            dayViewHeaderFormat: 'MMMM D'
-        });
+
+        var $fp = $( "#datepicker" );
+
+        $fp.filthypillow( {
+            steps: ["month", "day"],
+            startStep: "month",
+            calendar: {
+                saveOnDateSelect: true
+            }
+        } );
+
+        $fp.on( "focus", function( ) {
+            $fp.filthypillow( "show" );
+        } );
+
+        $fp.on( "fp:save", function( e, dateObj ) {
+            $fp.val( dateObj.format( "MMMM D" ) );
+            $fp.filthypillow( "hide" );
+        } );
     });
 </script>

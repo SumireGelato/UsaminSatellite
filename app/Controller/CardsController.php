@@ -270,8 +270,32 @@ class CardsController extends AppController
             }
         }
         $idols = $this->Card->Idol->find('list', array('order' => array('Idol.eName asc')));
-        $events = $this->Card->Event->find('list', array('order' => array('Event.begin desc')));
-        $this->set(compact('idols', 'events'));
+        $this->set(compact('idols'));
+
+        $eventsList = $this->Card->Event->find('list', array(
+            'fields' => array('Event.id', 'Event.eName', 'Event.type'),
+            'order' => 'Event.finish desc'));
+
+        $eventDate = $this->Card->Event->find('list', array(
+            'fields' => array('Event.id', 'Event.finish'),
+            'order' => 'Event.finish desc'));
+        $dateKey = array_keys($eventDate);
+        $size = sizeof($dateKey);
+        for ($i=0; $i<$size; $i++) {
+            $dateOnly = explode(' ', $eventDate[$dateKey[$i]])[0];
+            $dateExplode = explode('-', $dateOnly);
+            //0 => Year, 1 => Month, 2 => Day
+            $eventDate[$dateKey[$i]] = $dateExplode[1].'/'.$dateExplode[0];
+        }
+        foreach($eventsList as &$type) {
+                $size = sizeOf($type);
+                $key = array_keys($type);
+                for ($i=0; $i<$size; $i++) {
+                    $type[$key[$i]] = $type[$key[$i]]." ".$eventDate[$key[$i]];
+                }
+
+        }
+        $this->set('sourceList', $eventsList);
     }
 
     /**
@@ -408,6 +432,31 @@ class CardsController extends AppController
         $idols = $this->Card->Idol->find('list', array('order' => array('Idol.eName asc')));
         $events = $this->Card->Event->find('list', array('order' => array('Event.begin desc')));
         $this->set(compact('idols', 'events'));
+
+        $eventsList = $this->Card->Event->find('list', array(
+            'fields' => array('Event.id', 'Event.eName', 'Event.type'),
+            'order' => 'Event.finish desc'));
+
+        $eventDate = $this->Card->Event->find('list', array(
+            'fields' => array('Event.id', 'Event.finish'),
+            'order' => 'Event.finish desc'));
+        $dateKey = array_keys($eventDate);
+        $size = sizeof($dateKey);
+        for ($i=0; $i<$size; $i++) {
+            $dateOnly = explode(' ', $eventDate[$dateKey[$i]])[0];
+            $dateExplode = explode('-', $dateOnly);
+            //0 => Year, 1 => Month, 2 => Day
+            $eventDate[$dateKey[$i]] = $dateExplode[1].'/'.$dateExplode[0];
+        }
+        foreach($eventsList as &$type) {
+                $size = sizeOf($type);
+                $key = array_keys($type);
+                for ($i=0; $i<$size; $i++) {
+                    $type[$key[$i]] = $type[$key[$i]]." ".$eventDate[$key[$i]];
+                }
+
+        }
+        $this->set('sourceList', $eventsList);
     }
 
     /**

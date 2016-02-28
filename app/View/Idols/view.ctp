@@ -3,16 +3,17 @@ switch ($idol['Idol']['type']) {
     case 'Cute':
         ?>
         <!--Idol Title-->
-        <div class="row">
+        <div class="row text-center">
             <div class="col-lg-12">
-                <h1 class="text-center"><?php echo $this->Html->image('cute.png', array('height' => '5%', 'width' => '5%', 'style' => 'padding-right:5px')) ?>
-                    <strong><?php echo $idol['Idol']['eName'] ?></strong>
-                    <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
+                <h1 style="margin-bottom: 0"><?php echo $this->Html->image('cute.png', array('height' => '56', 'width' => '62',
+                        'style' => 'padding-right:5px', 'class' => 'img-responsive center-block')) ?>
+                    <?php echo $idol['Idol']['eName'] ?>
                 </h1>
+                <p style="margin-bottom: 5px"><em><?php echo $idol['Idol']['jName'] ?></em></p>
                 <?php if ($idol['Idol']['cv'] == 'N/A') { ?>
-                    <p class="text-center">Unvoiced</p>
+                    <p>Unvoiced</p>
                 <?php } else { ?>
-                    <p class="text-center" style="font-size: 0.9em"><span class="label label-cute" style="font-size: 1em">CV:</span> <?php echo
+                    <p style="font-size: 0.9em"><span class="label label-cute" style="font-size: 1em">CV:</span> <?php echo
                         $idol['Idol']['cv']
                         ?></p>
                 <?php } ?>
@@ -21,8 +22,18 @@ switch ($idol['Idol']['type']) {
         <!--Idol Bio-->
         <div class="row">
             <div class="col-lg-4">
-                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded
-                center-block', 'height' => 512, 'style' => 'margin-top: -100px')); ?>
+                <?php
+                list($width, $height) = getimagesize(WWW_ROOT.'img/profiles/' . $idol['Idol']['profilePic']);
+                $dimensions = array('h' => $height, 'w' => $width );
+                if($dimensions['w'] == 256) {
+                    echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'center-block img-responsive',
+                        'height' => 512, 'style' => 'margin-top: -60px'));
+                }
+                elseif($dimensions['w'] == 512) {
+                    echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'center-block profilePic',
+                        'height' => 512, 'style' => 'margin-top: -60px;'));
+                }
+                ?>
             </div>
             <div class="col-lg-6" id="idolBio">
                 <div class="row">
@@ -74,17 +85,17 @@ switch ($idol['Idol']['type']) {
     case 'Cool':
         ?>
         <!--Idol Title-->
-        <div class="row">
+        <div class="row text-center">
             <div class="col-lg-12">
-                <h1 class="text-center"><?php echo $this->Html->image('cool.png', array('height' => '5%', 'width' => '5%', 'style' => 'padding-right:5px')) ?>
-                    <strong><?php echo $idol['Idol']['eName'] ?></strong>
-                    <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
+                <h1 style="margin-bottom: 0"><?php echo $this->Html->image('cool.png', array('height' => '56', 'width' => '62',
+                        'style' => 'padding-right:5px', 'class' => 'img-responsive center-block')) ?>
+                    <?php echo $idol['Idol']['eName'] ?>
                 </h1>
-
+                <p style="margin-bottom: 5px"><em><?php echo $idol['Idol']['jName'] ?></em></p>
                 <?php if ($idol['Idol']['cv'] == 'N/A') { ?>
-                    <p class="text-center">Unvoiced</p>
+                    <p>Unvoiced</p>
                 <?php } else { ?>
-                    <p class="text-center" style="font-size: 0.9em"><span class="label label-info" style="font-size: 1em">CV:</span> <?php echo
+                    <p style="font-size: 0.9em"><span class="label label-cool" style="font-size: 1em">CV:</span> <?php echo
                         $idol['Idol']['cv']
                         ?></p>
                 <?php } ?>
@@ -93,8 +104,18 @@ switch ($idol['Idol']['type']) {
         <!--Idol Bio-->
         <div class="row">
             <div class="col-lg-4">
-                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded
-                center-block', 'height' => 512, 'style' => 'margin-top: -100px')); ?>
+                <?php
+                list($width, $height) = getimagesize(WWW_ROOT.'img/profiles/' . $idol['Idol']['profilePic']);
+                $dimensions = array('h' => $height, 'w' => $width );
+                if($dimensions['w'] == 256) {
+                    echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'center-block img-responsive',
+                        'height' => 512, 'style' => 'margin-top: -60px'));
+                }
+                elseif($dimensions['w'] == 512) {
+                    echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'center-block profilePic',
+                        'height' => 512, 'style' => 'margin-top: -60px;'));
+                }
+                ?>
             </div>
             <div class="col-lg-6" id="idolBio">
                 <div class="row">
@@ -146,17 +167,17 @@ switch ($idol['Idol']['type']) {
     case 'Passion':
         ?>
         <!--Idol Title-->
-        <div class="row">
+        <div class="row text-center">
             <div class="col-lg-12">
-                <h1 class="text-center"><?php echo $this->Html->image('passion.png', array('height' => '5%', 'width' => '5%', 'style' => 'padding-right:5px')) ?>
-                    <strong><?php echo $idol['Idol']['eName'] ?></strong>
-                    <em style="font-size: 0.7em"><?php echo $idol['Idol']['jName'] ?></em>
+                <h1 style="margin-bottom: 0"><?php echo $this->Html->image('passion.png', array('height' => '56', 'width' => '62',
+                        'style' => 'padding-right:5px', 'class' => 'img-responsive center-block')) ?>
+                    <?php echo $idol['Idol']['eName'] ?>
                 </h1>
-
+                <p style="margin-bottom: 5px"><em><?php echo $idol['Idol']['jName'] ?></em></p>
                 <?php if ($idol['Idol']['cv'] == 'N/A') { ?>
-                    <p class="text-center">Unvoiced</p>
+                    <p>Unvoiced</p>
                 <?php } else { ?>
-                    <p class="text-center" style="font-size: 0.9em"><span class="label label-warning" style="font-size: 1em">CV:</span> <?php echo
+                    <p style="font-size: 0.9em"><span class="label label-passion" style="font-size: 1em">CV:</span> <?php echo
                         $idol['Idol']['cv']
                         ?></p>
                 <?php } ?>
@@ -165,7 +186,18 @@ switch ($idol['Idol']['type']) {
         <!--Idol Bio-->
         <div class="row">
             <div class="col-lg-4">
-                <?php echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'img-responsive img-rounded center-block', 'height' => 512, 'style' => 'margin-top: -100px')); ?>
+                <?php
+                list($width, $height) = getimagesize(WWW_ROOT.'img/profiles/' . $idol['Idol']['profilePic']);
+                $dimensions = array('h' => $height, 'w' => $width );
+                if($dimensions['w'] == 256) {
+                    echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'center-block img-responsive',
+                        'height' => 512, 'style' => 'margin-top: -60px'));
+                }
+                elseif($dimensions['w'] == 512) {
+                    echo $this->Html->image('profiles/' . $idol['Idol']['profilePic'], array('class' => 'center-block profilePic',
+                        'height' => 512, 'style' => 'margin-top: -60px;'));
+                }
+                ?>
             </div>
             <div class="col-lg-6" id="idolBio">
                 <div class="row">
