@@ -692,19 +692,18 @@ if (!$this->request->is('ajax')) {//Page Title
 }
 ?>
 </div>
-</div>
+<?php
+if ($this->Paginator->counter('{:pages}') > 1) {
+    $this->Paginator->options(array(
+        'url' => array(
+            'pass' => $totalItems
+        )
+    ));
+    echo $this->Paginator->next('Show More ...', array('class' => 'next text-center center-block btn btn-default'));
+}
+?>
 <?php if (!$this->request->is('ajax')) { ?>
-    <?php
-    if ($this->Paginator->counter('{:pages}') > 1) {
-        $this->Paginator->options(array(
-            'url' => array(
-                'pass' => $totalItems
-            )
-        ));
-        echo $this->Paginator->next('Show More ...');
-    }
-    ?>
-
+    </div>
     <script>
         //transistion effects for tabs
         $(document).ready(function () {
@@ -781,30 +780,63 @@ if (!$this->request->is('ajax')) {//Page Title
             });
         });
 
-        //Infinite Scrolling
+        //Infinite Scrolling + backup link for large screens
         $(document).ready(function (e) {
             var url;
-            var processing;
-            if (document.URL.split('?')[1] == undefined) {
-                url = $('.next a').attr('href');
-            }
-            else {
-                url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
-            }
-//        alert(url);
-            $('.next').text('');
-            if (url == undefined) {
-                return false;
-            }
-            $(document).scroll(function (e) {
-                if (processing) {
+            var ready = true;
+            var scrollTrigger = 100;
+            var container = $("#accordion");
+
+            container.on("click", ".next", function() {
+                if (document.URL.split('?')[1] == undefined) {
+                    url = $('.next a').attr('href');
+                }
+                else {
+                    url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
+                }
+                $(this).remove();
+                if (url == undefined) {
                     return false;
                 }
-                if (($(window).scrollTop() + $(window).height()) >= $(document).height()) {
-                    processing = true;
-                    $(this).remove();
+                $.get(url, function (data) {
+                    $('#accordion').append(data);
+                });
+            });
+
+            container.on("click", ".next a", function(e) {
+                e.preventDefault();
+                if (document.URL.split('?')[1] == undefined) {
+                    url = $('.next a').attr('href');
+                }
+                else {
+                    url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
+                }
+                $(this).remove();
+                if (url == undefined) {
+                    return false;
+                }
+                $.get(url, function (data) {
+                    $('#accordion').append(data);
+                });
+            });
+
+            $(window).scroll(function() {
+                if(ready && $(window).scrollTop() > $(document).height() - $(window).height() - scrollTrigger) {
+                    ready = false;
+                    if (document.URL.split('?')[1] == undefined) {
+                        url = $('.next a').attr('href');
+                    }
+                    else {
+                        url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
+                    }
+                    $('.next').remove();
+                    if (url == undefined) {
+                        return false;
+                    }
                     $.get(url, function (data) {
                         $('#accordion').append(data);
+                    }).always(function() {
+                        ready = true;
                     });
                 }
             });

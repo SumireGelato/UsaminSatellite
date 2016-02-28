@@ -37,7 +37,7 @@ $this->set('title_for_layout', 'Add Card');
             echo '</div>';
             echo '<div class="col-lg-3">';
             $rarityOptions = array('N' => 'N', 'R' => 'R', 'SR' => 'SR', 'SSR' => 'SSR');
-            echo $this->Form->input('rarity', array('options' => $rarityOptions));
+            echo $this->Form->input('rarity', array('options' => $rarityOptions, 'empty' => ''));
             $typeOptions = array('Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion');
             echo $this->Form->input('type', array('options' => $typeOptions));
             echo $this->Form->input('dateAdded', array('type' => 'text', 'class' => 'form-control', 'id' => 'datepicker'));
@@ -51,8 +51,9 @@ $this->set('title_for_layout', 'Add Card');
                 3 => array('name' => 'Healer', 'value' => 'Healer'),
                 4 => array('name' => 'Damage Guard', 'value' => 'Damage Guard'),
                 5 => array('name' => 'Combo Bonus', 'value' => 'Combo Bonus'),
-                6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'));
-            echo $this->Form->input('specialSkillType', array('options' => $options));
+                6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'),
+                7 => array('name' => 'No Skill', 'value' => 'No Skill'));
+            echo $this->Form->input('specialSkillType', array('options' => $options, 'empty' => ''));
             echo $this->Form->input('specialSkillText');
             echo '</div>';
             echo '<div class="col-lg-3">';
@@ -66,26 +67,26 @@ $this->set('title_for_layout', 'Add Card');
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('baseLife');
+            echo $this->Form->input('baseMaxLife');
             echo $this->Form->input('baseVocal');
-            echo $this->Form->input('baseDance');
-            echo $this->Form->input('baseVisual');
+            echo $this->Form->input('baseMaxVocal');
             echo '</div>';
             echo '<div class="col-lg-3">';
-            echo $this->Form->input('baseMaxLife');
-            echo $this->Form->input('baseMaxVocal');
+            echo $this->Form->input('baseDance');
             echo $this->Form->input('baseMaxDance');
+            echo $this->Form->input('baseVisual');
             echo $this->Form->input('baseMaxVisual');
             echo '</div>';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('awkBaseLife');
+            echo $this->Form->input('awkMaxLife');
             echo $this->Form->input('awkBaseVocal');
-            echo $this->Form->input('awkBaseDance');
-            echo $this->Form->input('awkBaseVisual');
+            echo $this->Form->input('awkMaxVocal');
             echo '</div>';
             echo '<div class="col-lg-3">';
-            echo $this->Form->input('awkMaxLife');
-            echo $this->Form->input('awkMaxVocal');
+            echo $this->Form->input('awkBaseDance');
             echo $this->Form->input('awkMaxDance');
+            echo $this->Form->input('awkBaseVisual');
             echo $this->Form->input('awkMaxVisual');
             echo $this->Form->submit('Save', array(
                 'div' => 'form-group',
@@ -158,6 +159,19 @@ $this->set('title_for_layout', 'Add Card');
                 case "Score Boost":
                     skillBox.val('PERFECT/GREAT score 15% up, medium probability of triggering every 9 seconds for some time.');
                     break;
+            }
+        });
+
+        $("#CardBaseMaxLife").change(function() {
+            $("#CardAwkBaseLife").val($("#CardBaseMaxLife").val());
+        });
+
+        var rarityBox = $("#CardRarity");
+        rarityBox.change(function() {
+            if(rarityBox.find("option:selected").val() == 'N') {
+                $('#CardCenterSkillText').val('');
+                $('#CardSpecialSkillType').find('option:contains("No Skill")').prop('selected', true);
+                $('#CardSpecialSkillText').val('');
             }
         });
     });
