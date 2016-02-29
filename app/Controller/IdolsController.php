@@ -102,13 +102,14 @@ class IdolsController extends AppController
                 //only process if the extension is valid
                 if(in_array($profileExt, $arr_ext))
                 {
+                    $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
                     move_uploaded_file($profilePic['tmp_name'], WWW_ROOT . 'img/profiles/' .
-                        explode(' ', lcfirst(trim($this->request->data['Idol']['eName']))[0]).'1.'.$profileExt);
+                        lcfirst($profileFilename).'1.'.$profileExt);
 
                     //prepare the filename for database entry
-                    $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
                     $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.'.$profileExt;
                 }
             }else {
@@ -125,13 +126,14 @@ class IdolsController extends AppController
                 //only process if the extension is valid
                 if(in_array($puchiExt, $arr_ext))
                 {
+                    $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
+
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
                     move_uploaded_file($puchiPic['tmp_name'], WWW_ROOT . 'img/profiles/' .
-                        explode(' ', lcfirst(trim($this->request->data['Idol']['eName']))[0]).'2.'.$puchiExt);
+                        lcfirst($puchiFilename).'2.'.$puchiExt);
 
                     //prepare the filename for database entry
-                    $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
                     $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.'.$puchiExt;
                 }
             }else {

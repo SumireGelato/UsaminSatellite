@@ -162,8 +162,21 @@ $this->set('title_for_layout', 'Add Card');
             }
         });
 
-        $("#CardBaseMaxLife").change(function() {
-            $("#CardAwkBaseLife").val($("#CardBaseMaxLife").val());
+        var baseMax = $("#CardBaseMaxLife");
+        var awkBase = $("#CardAwkBaseLife");
+        $("#CardBaseLife").change(function() {
+            baseMax.val(parseInt($("#CardBaseLife").val())+2);
+            baseMax.trigger("change");
+            awkBase.trigger("change");
+        });
+
+        baseMax.change(function() {
+            awkBase.val(baseMax.val());
+            awkBase.trigger("change");
+        });
+
+        awkBase.change(function() {
+            $("#CardAwkMaxLife").val(parseInt(baseMax.val())+2);
         });
 
         var rarityBox = $("#CardRarity");

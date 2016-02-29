@@ -211,7 +211,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                                 <hr/>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <h4 style="font-weight: bold">Event Rewards</h4>
+                                        <h4 style="font-weight: bold">Limited Event Rewards</h4>
                                     </div>
                                 </div>
                                 <div class="row reward">

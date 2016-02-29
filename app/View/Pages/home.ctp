@@ -71,9 +71,9 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 
 <hr class="featurette-divider"/>
 <?php
-$num1 = mt_rand(1, 405);
-$num2 = mt_rand(1, 405);
-$num3 = mt_rand(1, 405);
+$num1 = mt_rand(1, 421);
+$num2 = mt_rand(1, 421);
+$num3 = mt_rand(1, 421);
 ?>
 <div class="row text-center center-block" id="puchis">
     <div class="col-lg-3">

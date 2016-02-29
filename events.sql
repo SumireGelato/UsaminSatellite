@@ -21,7 +21,8 @@ INSERT INTO `events` (`id`, `eName`, `jName`, `begin`, `finish`, `type`, `t1`, `
 (11, 'Nation Blue', 'Nation Blue', '2015-10-19 15:00:00', '2015-10-27 20:59:59', 'Token', 67627, 39108, 31860, 24863, 21949, 7310, 1253, 'Nation Blue 2015-10.png'),
 (12, 'Cinderella Caravan', 'シンデレラキャラバン', '2015-10-09 15:00:00', '2015-10-16 20:59:59', 'Caravan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Cinderella Caravan 2015-10.png'),
 (13, 'Atashi Ponkotsu Android', 'アタシポンコツアンドロイド', '2015-09-25 12:00:00', '2015-10-05 20:59:59', 'Token', 78330, 45409, 36308, 28527, 24542, 7419, 1494, 'Atashi Ponkotsu Android 2015-09.png'),
-(14, 'Orugooru no Kobako', 'オルゴールの小箱', '2016-02-18 15:00:00', '2016-02-25 20:59:59', 'Token', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Orugooru no Kobako 2016-02.png');
+(14, 'Orugooru no Kobako', 'オルゴールの小箱', '2016-02-18 15:00:00', '2016-02-25 20:59:59', 'Token', 56737, 29807, 24300, 19783, 17424, 2757, 139, 'Orugooru no Kobako 2016-02.png'),
+(15, 'LIVE Groove Vocal burst', 'LIVE Groove Vocal burst', '2016-02-29 15:00:00', '2016-03-08 20:59:59', 'Medley', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'LIVE Groove Vocal burst 2016-02.png');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
