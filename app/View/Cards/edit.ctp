@@ -14,6 +14,43 @@ $this->set('title_for_layout', 'Edit Card');
             class="col-lg-4"><?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users', 'action' => 'controlpanel'), array('class' => 'noLinkStyle')); ?></div>
     </div>
 </div>
+<div class="row container">
+    <div class="col-lg-12">
+        <p>Remember to add events and idols before the cards for easier data entry!</p>
+    </div>
+</div>
+<div class="row container table-responsive" style="font-size: 0.8em">
+    <div class="col-lg-6">
+        <table class="table table-condensed table-bordered">
+            <tr>
+                <td><strong>Low Probability</strong></td>
+                <td><strong>Medium Probability</strong></td>
+                <td><strong>High Probability</strong></td>
+            </tr>
+            <tr>
+                <td>30% - 45%</td>
+                <td>35% - 52.5%</td>
+                <td>40% - 60%</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <table class="table table-condensed table-bordered">
+            <tr>
+                <td><strong>considerable length of time</strong></td>
+                <td><strong>some time</strong></td>
+                <td><strong>short time</strong></td>
+                <td><strong>very short time</strong></td>
+            </tr>
+            <tr>
+                <td>6 - 9 sec</td>
+                <td>5 - 7.5 sec</td>
+                <td>4 - 6 sec</td>
+                <td>3 - 4.5 sec or less</td>
+            </tr>
+        </table>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <?php
@@ -28,7 +65,6 @@ $this->set('title_for_layout', 'Edit Card');
             'novalidate' => true
         )); ?>
         <fieldset>
-            <p>Remember to add events and idols before the cards for easier data entry!</p>
             <?php
             echo $this->Form->input('id');
             echo '<div class="row">';
@@ -75,26 +111,26 @@ $this->set('title_for_layout', 'Edit Card');
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('baseLife');
+            echo $this->Form->input('baseMaxLife');
             echo $this->Form->input('baseVocal');
-            echo $this->Form->input('baseDance');
-            echo $this->Form->input('baseVisual');
+            echo $this->Form->input('baseMaxVocal');
             echo '</div>';
             echo '<div class="col-lg-3">';
-            echo $this->Form->input('baseMaxLife');
-            echo $this->Form->input('baseMaxVocal');
+            echo $this->Form->input('baseDance');
             echo $this->Form->input('baseMaxDance');
+            echo $this->Form->input('baseVisual');
             echo $this->Form->input('baseMaxVisual');
             echo '</div>';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('awkBaseLife');
+            echo $this->Form->input('awkMaxLife');
             echo $this->Form->input('awkBaseVocal');
-            echo $this->Form->input('awkBaseDance');
-            echo $this->Form->input('awkBaseVisual');
+            echo $this->Form->input('awkMaxVocal');
             echo '</div>';
             echo '<div class="col-lg-3">';
-            echo $this->Form->input('awkMaxLife');
-            echo $this->Form->input('awkMaxVocal');
+            echo $this->Form->input('awkBaseDance');
             echo $this->Form->input('awkMaxDance');
+            echo $this->Form->input('awkBaseVisual');
             echo $this->Form->input('awkMaxVisual');
             echo $this->Form->submit('Save', array(
                 'div' => 'form-group',
@@ -133,4 +169,70 @@ $this->set('title_for_layout', 'Edit Card');
             $fp.filthypillow( "hide" );
         } );
     });
+
+    $(function() {
+        var idolSelector = $("#CardIdolId");
+
+        idolSelector.change(function() {
+            var selected = idolSelector.find("option:selected").text();
+            $("#CardEName").val('"name" '+selected);
+        });
+
+        var skillSelector = $("#CardSpecialSkillType");
+
+        skillSelector.change(function() {
+            var selected = skillSelector.find("option:selected").val();
+            var skillBox = $("#CardSpecialSkillText");
+            switch(selected) {
+                case "Perfect Lock":
+                    skillBox.val('GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 15 seconds for a ' +
+                    'considerable length of time.');
+                    break;
+                case "Combo Lock":
+                    skillBox.val('COMBO is maintained on NICEs temporarily, medium probability of triggering every 12 seconds for some time.');
+                    break;
+                case "Healer":
+                    skillBox.val('PERFECTs recover 3 life, high probability of triggering every 13 seconds for some time.');
+                    break;
+                case "Damage Guard":
+                    skillBox.val('Life does not decrease temporarily, medium probability of triggering every 11 seconds for a considerable length ' +
+                    'of time.');
+                    break;
+                case "Combo Bonus":
+                    skillBox.val('COMBO pt bonus 15% up, medium probability of triggering every 7 seconds for a short time.');
+                    break;
+                case "Score Boost":
+                    skillBox.val('PERFECT/GREAT score 15% up, medium probability of triggering every 9 seconds for some time.');
+                    break;
+            }
+        });
+
+        var baseMax = $("#CardBaseMaxLife");
+        var awkBase = $("#CardAwkBaseLife");
+        $("#CardBaseLife").change(function() {
+            baseMax.val(parseInt($("#CardBaseLife").val())+2);
+            baseMax.trigger("change");
+            awkBase.trigger("change");
+        });
+
+        baseMax.change(function() {
+            awkBase.val(baseMax.val());
+            awkBase.trigger("change");
+        });
+
+        awkBase.change(function() {
+            $("#CardAwkMaxLife").val(parseInt(baseMax.val())+2);
+        });
+
+        var rarityBox = $("#CardRarity");
+        rarityBox.change(function() {
+            if(rarityBox.find("option:selected").val() == 'N') {
+                $('#CardCenterSkillText').val('');
+                $('#CardSpecialSkillType').find('option:contains("No Skill")').prop('selected', true);
+                $('#CardSpecialSkillText').val('');
+            }
+        });
+    });
+
+
 </script>

@@ -59,7 +59,7 @@
     $(document).ready( function () {
         $('#table').DataTable({
             "responsive":     true,
-            "order":     [[ 7, 'desc' ], [ 0, 'asc' ]],
+            "order":     [[ 7, 'desc' ], [ 3, 'desc' ]],
             "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
         });
     } );
