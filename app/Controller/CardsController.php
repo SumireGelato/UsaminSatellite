@@ -81,7 +81,7 @@ class CardsController extends AppController
             }
         }
         else {
-            $this->Paginator->settings['order'] = array('Card.dateAdded' => 'desc', 'Card.rarity' => 'desc');
+            $this->Paginator->settings['order'] = array('Card.dateAdded' => 'desc', 'Card.rarity' => 'desc', 'Card.type' => 'desc');
         }
         if(!$this->request->is('ajax')) {
             $this->Session->write('filter',$this->Prg->parsedParams());

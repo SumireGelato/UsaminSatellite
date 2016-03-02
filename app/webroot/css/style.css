@@ -496,7 +496,18 @@ body {
     }
 }
 
+@media (max-width: 1600px) {
+    #accordion > .row > .col-xl-3:nth-child(4n+1) {
+        clear: none;
+    }
+
+    #accordion > .row > .col-lg-4:nth-child(3n+1) {
+        clear: both;
+    }
+}
+
 @media (min-width: 768px) {
+
     /* Navbar positioning foo */
     .navbar-wrapper {
         margin-top: 20px;
@@ -532,6 +543,16 @@ body {
 
     .featurette-heading {
         font-size: 50px;
+    }
+}
+
+@media (min-width: 1601px) {
+    #accordion > .row > .col-xl-3:nth-child(4n+1) {
+        clear: both;
+    }
+
+    #accordion > .row > .col-lg-4:nth-child(3n+1) {
+        clear: none;
     }
 }
 
