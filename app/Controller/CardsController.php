@@ -74,14 +74,14 @@ class CardsController extends AppController
                 else {
                     $statOrder = 'asc';
                 }
-                $this->Paginator->settings['order'] = array('Card.'.$sortField => $order, 'Card.'.$statSortField => $statOrder);
+                $this->Paginator->settings['order'] = array('Card.'.$sortField => $order, 'Card.'.$statSortField => $statOrder, 'Card.dateAdded' => 'desc', 'Card.rarity' => 'desc', 'Card.limited' => 'desc');
             }
             else {
-                $this->Paginator->settings['order'] = array('Card.'.$sortField => $order);
+                $this->Paginator->settings['order'] = array('Card.'.$sortField => $order, 'Card.dateAdded' => 'desc', 'Card.rarity' => 'desc', 'Card.limited' => 'desc');
             }
         }
         else {
-            $this->Paginator->settings['order'] = array('Card.dateAdded' => 'desc', 'Card.rarity' => 'desc', 'Card.type' => 'desc');
+            $this->Paginator->settings['order'] = array('Card.dateAdded' => 'desc', 'Card.rarity' => 'desc', 'Card.limited' => 'desc');
         }
         if(!$this->request->is('ajax')) {
             $this->Session->write('filter',$this->Prg->parsedParams());
@@ -246,10 +246,10 @@ class CardsController extends AppController
             /**
              * REMOVE THIS LATER!!!!!
              */
-            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.png';
+/*            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.png';
             $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['card_id'] + 1).'.png';
             $this->request->data['Card']['baseIconArt'] = $this->request->data['Card']['card_id']."_icon".'.png';
-            $this->request->data['Card']['awkIconArt'] = ($this->request->data['Card']['card_id'] + 1)."_icon".'.png';
+            $this->request->data['Card']['awkIconArt'] = ($this->request->data['Card']['card_id'] + 1)."_icon".'.png';*/
             /**
              * REMOVE THIS LATER!!!!!
              */

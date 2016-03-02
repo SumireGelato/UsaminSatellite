@@ -87,6 +87,7 @@ if (!$this->request->is('ajax')) {//Page Title
                         'div' => 'form-group',
                         'class' => 'btn btn-passion',
                     ));
+                    echo '<button type="button" id="resetForm" class="btn btn-passion" role="button">Reset Filters</button>';
                     //                    Filter Sort Bar
                     echo '<div id="filterSortForm" style="margin-top: 5px">';
                     echo '<span class="glyphicon glyphicon-sort"></span>';
@@ -729,9 +730,16 @@ if ($this->Paginator->counter('{:pages}') > 1) {
             });
         });
 
+        //Filter reset
+        $(document).ready(function() {
+            $("#resetForm").click(function () {
+                //go though each filter and set it to default and submit
+            });
+        });
+
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
-        })
+        });
 
         //Reg/Awk Image and Stat change
         $(document).ready(function () {
