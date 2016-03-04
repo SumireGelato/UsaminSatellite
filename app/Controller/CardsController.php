@@ -65,6 +65,16 @@ class CardsController extends AppController
             else {
                 $order = 'asc';
             }
+            switch($sortField) {
+                case 'dateAdded':
+                    $sort = array('Card.'.$sortField => $order, 'Card.rarity' => 'desc', 'Card.limited' => 'desc');
+                    break;
+                case 'rarity':
+                    $sort = array('Card.'.$sortField => $order, 'Card.limited' => 'desc', 'Card.dateAdded' => 'desc');
+                    break;
+                default:
+                    $sort = array('Card.'.$sortField => $order, 'Card.rarity' => 'desc', 'Card.dateAdded' => 'desc', 'Card.limited' => 'desc');
+            }
             if($this->request->query('statSort') != null) {
                 $statSortField = $this->request->query('statSort');
                 $statsSortOrderBool = $this->request->query('statOrder');
@@ -74,10 +84,12 @@ class CardsController extends AppController
                 else {
                     $statOrder = 'asc';
                 }
-                $this->Paginator->settings['order'] = array('Card.'.$sortField => $order, 'Card.'.$statSortField => $statOrder, 'Card.dateAdded' => 'desc', 'Card.rarity' => 'desc', 'Card.limited' => 'desc');
+                $statSort = array('Card'.$statSortField => $statOrder);
+                $this->Paginator->settings['order'] = array_merge($statSort, $sort);
+
             }
             else {
-                $this->Paginator->settings['order'] = array('Card.'.$sortField => $order, 'Card.dateAdded' => 'desc', 'Card.rarity' => 'desc', 'Card.limited' => 'desc');
+                $this->Paginator->settings['order'] = $sort;
             }
         }
         else {
@@ -403,11 +415,11 @@ class CardsController extends AppController
             /**
              * REMOVE THIS LATER!!!!!
              */
-            $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.png';
+            /*$this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.png';
             $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['card_id'] + 1).'.png';
             $this->request->data['Card']['baseIconArt'] = $this->request->data['Card']['card_id']."_icon".'.png';
             $this->request->data['Card']['awkIconArt'] = ($this->request->data['Card']['card_id'] + 1)."_icon".'.png';
-            /**
+            *//**
              * REMOVE THIS LATER!!!!!
              */
 

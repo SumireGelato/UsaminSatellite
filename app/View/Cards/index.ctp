@@ -180,20 +180,22 @@ if (!$this->request->is('ajax')) {//Page Title
             </div>
         </div>
     </div>
-
-    <!--Cards Gallery-->
+        <!--Cards Gallery-->
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-<?php
-} // End Stuff you don't need if ajax request
-?>
+    <?php
+    } // End Stuff you don't need if ajax request
+    ?>
 <div class="row">
-<?php foreach ($cards as $card) { ?>
+    <?php
+if(empty($cards)) {
+    echo '<h4 class="text-center">No results! Try to broaden your filter(s)!</h4>';
+}
+foreach ($cards as $card) { ?>
     <!--CARD-->
 <div class="col-lg-4 col-xl-3">
 <div class="panel panel-default">
 <?php if ($card['Card']['type'] == 'Cool') { ?>
-    <div class="panel-heading cool" role="tab"
-    <?php echo 'id="heading' . $totalItems . '"';
+    <div class="panel-heading cool" role="tab" <?php echo 'id="heading' . $totalItems . '"';
     if ($card['Card']['rarity'] != 'N' || $card['Card']['rarity'] != 'R') echo 'style="padding: 0"';?>>
     <?php } elseif ($card['Card']['type'] == 'Cute') { ?>
     <div class="panel-heading cute" role="tab" <?php echo 'id="heading' . $totalItems . '"';
@@ -251,6 +253,7 @@ if (!$this->request->is('ajax')) {//Page Title
                         echo '<span class="glyphicon glyphicon-ban-circle pull-left" data-toggle="tooltip" title="No Skill"></span>';
                         break;
                 }
+                echo '<strong>'.$card['Card']['rarity'].'</strong>';
                 if ($card['Card']['limited']) {
                     echo '<i class="icon-limited pull-right" data-toggle="tooltip" title="Limited Card"></i>';
                 } else {
@@ -283,27 +286,41 @@ if (!$this->request->is('ajax')) {//Page Title
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-xs-6">
-            <p><span
-                    style="font-weight: bold">Rarity: </span><?php echo $card['Card']['rarity']; ?>
-            </p>
+    <div class="row text-center center-block">
+        <div class="col-xs-2">
+            <?php echo $this->Html->image('cards/'.$card['Card']['baseIconArt'], array(
+                'width' => '63px',
+                'class' => 'baseIcon',
+                'url' => array('controller' => 'idols',
+                    'action' => 'view',
+                    'id' => $card['Idol']['id'],
+                    'title' => Inflector::slug($card['Idol']['eName'])))); ?>
+            <?php echo $this->Html->image('cards/'.$card['Card']['awkIconArt'], array(
+                'width' => '63px',
+                'class'=>'awkIcon',
+                'url' => array('controller' => 'idols',
+                    'action' => 'view',
+                    'id' => $card['Idol']['id'],
+                    'title' => Inflector::slug($card['Idol']['eName'])))); ?>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-5">
+            <p><span style="font-weight: bold">Rarity: </span><?php echo $card['Card']['rarity']; ?></p>
+        </div>
+        <div class="col-xs-5" id="cardType">
             <?php switch ($card['Card']['type']) {
                 case "Cute":
                     echo '<p><span style="font-weight: bold">Type: </span>' .
-                        $this->Html->image('cute.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                        $this->Html->image('cute.png', array('height' => '26px', 'width' => '25px', 'style' => 'padding-bottom:5px')) . ' ' .
                         $card['Card']['type'] . '</p>';
                     break;
                 case "Cool":
                     echo '<p><span style="font-weight: bold">Type: </span>' .
-                        $this->Html->image('cool.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                        $this->Html->image('cool.png', array('height' => '26px', 'width' => '25px', 'style' => 'padding-bottom:5px')) . ' ' .
                         $card['Card']['type'] . '</p>';
                     break;
                 case "Passion":
                     echo '<p><span style="font-weight: bold">Type: </span>' .
-                        $this->Html->image('passion.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                        $this->Html->image('passion.png', array('height' => '26px', 'width' => '25px', 'style' => 'padding-bottom:5px')) . ' ' .
                         $card['Card']['type'] . '</p>';
                     break;
             } ?>
@@ -434,7 +451,7 @@ if (!$this->request->is('ajax')) {//Page Title
             </div>
         </div>
         <hr>
-        <div class="row" id="level1">
+        <div class="row text-center center-block" id="level1">
             <div class="col-xs-5ths">
                 <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
                 <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">' . $card['Card']['baseLife'] . '</p>'; ?>
@@ -458,7 +475,7 @@ if (!$this->request->is('ajax')) {//Page Title
                     '</p>'; ?>
             </div>
         </div>
-        <div class="row" id="levelMax">
+        <div class="row text-center center-block" id="levelMax">
             <div class="col-xs-5ths">
                 <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
                 <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">' . $card['Card']['baseMaxLife'] . '</p>'; ?>
@@ -571,7 +588,7 @@ if (!$this->request->is('ajax')) {//Page Title
             </div>
         </div>
         <hr>
-        <div class="row" id="level1">
+        <div class="row text-center center-block" id="level1">
             <div class="col-xs-5ths">
                 <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
                 <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">' . $card['Card']['awkBaseLife'] . '</p>'; ?>
@@ -595,7 +612,7 @@ if (!$this->request->is('ajax')) {//Page Title
                     '</p>'; ?>
             </div>
         </div>
-        <div class="row" id="levelMax">
+        <div class="row text-center center-block" id="levelMax">
             <div class="col-xs-5ths">
                 <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
                 <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">' . $card['Card']['awkMaxLife'] . '</p>'; ?>
@@ -646,9 +663,8 @@ if (!$this->request->is('ajax')) {//Page Title
     <div class="row">
         <div class="col-xs-12">
             <h4 style="font-weight: bold">Source:</h4>
-            <?php if ($card['Card']['event_id'] == null) { ?>
-                <p>Gacha</p>
-            <?php
+            <?php if ($card['Card']['event_id'] == null) {
+                echo '<p>Gacha</p>';
             } else {
                 echo $this->Html->link(
                     $this->Html->image('events/' . $card['Event']['pic'], array('alt' => $card['Event']['eName'], 'width' => '75%',
@@ -660,7 +676,21 @@ if (!$this->request->is('ajax')) {//Page Title
             } ?>
         </div>
     </div>
-    <hr>
+    <hr/>
+    <div class="row text-center">
+        <div class="col-xs-12">
+            <h4 style="font-weight: bold">Full Size Art Links</h4>
+        </div>
+        <div class="col-xs-6">
+            <?php echo $this->Html->link('Base <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>',
+                '/img/cards/'.$card['Card']['baseArt'], array('escape' => false, 'target' => '_blank')); ?>
+        </div>
+        <div class="col-xs-6">
+            <?php echo $this->Html->link('Awakened <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>',
+                '/img/cards/'.$card['Card']['awkArt'], array('escape' => false, 'target' => '_blank')); ?>
+        </div>
+    </div>
+    <hr/>
     <div class="row">
         <div class="col-xs-12">
             <h4 style="font-weight: bold">Sources:</h4>
@@ -686,163 +716,168 @@ if (!$this->request->is('ajax')) {//Page Title
     $numItems++;
     $totalItems++;
 }
-?>
+    ?>
 </div>
-<?php
-if ($this->Paginator->counter('{:pages}') > 1) {
-    $this->Paginator->options(array(
-        'url' => array(
-            'pass' => $totalItems
-        )
-    ));
-    echo $this->Paginator->next('Show More ...', array('class' => 'next text-center center-block btn btn-default'));
-}
-?>
-<?php if (!$this->request->is('ajax')) { ?>
-    </div>
-    <script>
-        //transistion effects for tabs
-        $(document).ready(function () {
-            $('#toolTabs').find('a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            });
-        });
-
-        //hide all card panels that have been opened
-        $(document).ready(function () {
-            $('.hideall').click(function () {
-                $('.panel-collapse.in').collapse('hide');
-            });
-        });
-
-        //Filter show/hide sort
-        $(document).ready(function () {
-            $("#filterSort").click(function () {
-                if (($("#filterSort").attr('aria-pressed')) == "false") {
-                    $("#filterSortForm").css("display", "Block");
-                    $("#filterSort").text("Hide Sort Options");
-                }
-                else {
-                    $("#filterSortForm").css("display", "None");
-                    $("#filterSort").text("Show Sort Options");
-                }
-            });
-        });
-
-        //Filter reset
-        $(document).ready(function() {
-            $("#resetForm").click(function () {
-                //go though each filter and set it to default and submit
-            });
-        });
-
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-
-        //Reg/Awk Image and Stat change
-        $(document).ready(function () {
-            $(".panel-group").on("click", "label#regawk1", function () {//Regular
-//        alert('hi');
-                $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "none");
-                $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "inherit");
-                $(this).closest("div.panel-body").find(".base").css("display", "inherit");
-                $(this).closest("div.panel-body").find(".awakened").css("display", "none");
-            });
-            $(".panel-group").on("click", "label#regawk2", function () {//Awakened
-//        alert('hi2');
-                $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "inherit");
-                $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "none");
-                $(this).closest("div.panel-body").find(".base").css("display", "none");
-                $(this).closest("div.panel-body").find(".awakened").css("display", "inherit");
-            });
-        });
-
-        //Min/Max Lvl Change
-        $(document).ready(function () {
-            $(".panel-group").on("click", "label#lvlBtn1", function () {//Level 1
-//                alert($(this).closest("div.base").find("#level1").attr("id"));
-                $(this).closest("div.base").find("#level1").css("display", "inherit");
-                $(this).closest("div.base").find("#levelMax").css("display", "none");
-            });
-            $(".panel-group").on("click", "label#lvlBtn2", function () {//Level Max
-//                alert($(this).closest("div.base").find("#levelMax").attr("id"));
-                $(this).closest("div.base").find("#level1").css("display", "none");
-                $(this).closest("div.base").find("#levelMax").css("display", "inherit");
-            });
-            $(".panel-group").on("click", "label#awkLvlBtn1", function () {//Level 1
-//                alert($(this).closest("div.base").find("#level1").attr("id"));
-                $(this).closest("div.awakened").find("#level1").css("display", "inherit");
-                $(this).closest("div.awakened").find("#levelMax").css("display", "none");
-            });
-            $(".panel-group").on("click", "label#awkLvlBtn2", function () {//Level Max
-//                alert($(this).closest("div.base").find("#levelMax").attr("id"));
-                $(this).closest("div.awakened").find("#level1").css("display", "none");
-                $(this).closest("div.awakened").find("#levelMax").css("display", "inherit");
-            });
-        });
-
-        //Infinite Scrolling + backup link for large screens
-        $(document).ready(function (e) {
-            var url;
-            var ready = true;
-            var scrollTrigger = 100;
-            var container = $("#accordion");
-
-            container.on("click", ".next", function() {
-                if (document.URL.split('?')[1] == undefined) {
-                    url = $('.next a').attr('href');
-                }
-                else {
-                    url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
-                }
-                $(this).remove();
-                if (url == undefined) {
-                    return false;
-                }
-                $.get(url, function (data) {
-                    $('#accordion').append(data);
+    <?php
+    if ($this->Paginator->counter('{:pages}') > 1) {
+        $this->Paginator->options(array(
+            'url' => array(
+                'pass' => $totalItems
+            )
+        ));
+        echo $this->Paginator->next('Show More ...', array('class' => 'next text-center center-block btn btn-default'));
+    }
+    ?>
+    <?php if (!$this->request->is('ajax')) { ?>
+        </div>
+        <script>
+            //transistion effects for tabs
+            $(document).ready(function () {
+                $('#toolTabs').find('a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
                 });
             });
 
-            container.on("click", ".next a", function(e) {
-                e.preventDefault();
-                if (document.URL.split('?')[1] == undefined) {
-                    url = $('.next a').attr('href');
-                }
-                else {
-                    url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
-                }
-                $(this).remove();
-                if (url == undefined) {
-                    return false;
-                }
-                $.get(url, function (data) {
-                    $('#accordion').append(data);
+            //hide all card panels that have been opened
+            $(document).ready(function () {
+                $('.hideall').click(function () {
+                    $('.panel-collapse.in').collapse('hide');
                 });
             });
 
-            $(window).scroll(function() {
-                if(ready && $(window).scrollTop() > $(document).height() - $(window).height() - scrollTrigger) {
-                    ready = false;
+            //Filter show/hide sort
+            $(document).ready(function () {
+                var $filterSort = $("#filterSort");
+                $filterSort.click(function () {
+                    if (($filterSort.attr('aria-pressed')) == "false") {
+                        $("#filterSortForm").css("display", "Block");
+                        $filterSort.text("Hide Sort Options");
+                    }
+                    else {
+                        $("#filterSortForm").css("display", "None");
+                        $filterSort.text("Show Sort Options");
+                    }
+                });
+            });
+
+            //Filter reset
+            $(document).ready(function () {
+                $("#resetForm").click(function () {
+                    window.location.href = ((window.location.href).split('?'))[0];
+                });
+            });
+
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+
+            //Reg/Awk Image/Icon and Stat change
+            $(document).ready(function () {
+                var $panelgroup = $(".panel-group");
+                $panelgroup.on("click", "label#regawk1", function () {//Regular
+                    $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "none");
+                    $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "inherit");
+                    $(this).closest("div.panel-body").find(".baseIcon").css("display", "inherit");
+                    $(this).closest("div.panel-body").find(".awkIcon").css("display", "none");
+                    $(this).closest("div.panel-body").find(".base").css("display", "inherit");
+                    $(this).closest("div.panel-body").find(".awakened").css("display", "none");
+                });
+                $panelgroup.on("click", "label#regawk2", function () {//Awakened
+                    $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "inherit");
+                    $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "none");
+                    $(this).closest("div.panel-body").find(".baseIcon").css("display", "none");
+                    $(this).closest("div.panel-body").find(".awkIcon").css("display", "inherit");
+                    $(this).closest("div.panel-body").find(".base").css("display", "none");
+                    $(this).closest("div.panel-body").find(".awakened").css("display", "inherit");
+                });
+            });
+
+            //Min/Max Lvl Change
+            $(document).ready(function () {
+                var $panelgroup = $(".panel-group");
+                $panelgroup.on("click", "label#lvlBtn1", function () {//Level 1
+                    $(this).closest("div.base").find("#level1").css("display", "inherit");
+                    $(this).closest("div.base").find("#levelMax").css("display", "none");
+                });
+                $panelgroup.on("click", "label#lvlBtn2", function () {//Level Max
+                    $(this).closest("div.base").find("#level1").css("display", "none");
+                    $(this).closest("div.base").find("#levelMax").css("display", "inherit");
+                });
+                $panelgroup.on("click", "label#awkLvlBtn1", function () {//Level 1
+                    $(this).closest("div.awakened").find("#level1").css("display", "inherit");
+                    $(this).closest("div.awakened").find("#levelMax").css("display", "none");
+                });
+                $panelgroup.on("click", "label#awkLvlBtn2", function () {//Level Max
+                    $(this).closest("div.awakened").find("#level1").css("display", "none");
+                    $(this).closest("div.awakened").find("#levelMax").css("display", "inherit");
+                });
+            });
+
+            //Infinite Scrolling + backup link for large screens
+            $(document).ready(function (e) {
+                var url;
+                var ready = true;
+                var scrollTrigger = 100;
+                var container = $("#accordion");
+
+                container.on("click", ".next", function () {
                     if (document.URL.split('?')[1] == undefined) {
                         url = $('.next a').attr('href');
                     }
                     else {
                         url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
                     }
-                    $('.next').remove();
-                    if (url == undefined) {
+                    $(this).remove();
+                    if ((url.split('?')[0]) === "undefined") {
                         return false;
                     }
                     $.get(url, function (data) {
                         $('#accordion').append(data);
-                    }).always(function() {
-                        ready = true;
                     });
-                }
+                });
+
+                container.on("click", ".next a", function (e) {
+                    e.preventDefault();
+                    if (document.URL.split('?')[1] == undefined) {
+                        url = $('.next a').attr('href');
+                    }
+                    else {
+                        url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
+                    }
+                    $(this).remove();
+                    if ((url.split('?')[0]) === "undefined") {
+                        return false;
+                    }
+                    $.get(url, function (data) {
+                        $('#accordion').append(data);
+                    });
+                });
+
+                $(window).scroll(function () {
+                    if (ready && $(window).scrollTop() > $(document).height() - $(window).height() - scrollTrigger) {
+                        ready = false;
+                        if (document.URL.split('?')[1] == undefined) {
+                            url = $('.next a').attr('href');
+                        }
+                        else {
+                            url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
+                        }
+                        $('.next').remove();
+                        console.log((url.split('?')[0]) === "undefined");
+                        if ((url.split('?')[0]) === "undefined") {
+                            return false;
+                        } else {
+                            $.get(url, function (data) {
+                                $('#accordion').append(data);
+                            }).always(function () {
+                                ready = true;
+                            });
+                        }
+                    }
+                });
             });
-        });
-    </script>
-<?php } ?>
+        </script>
+    <?php
+    }
+?>

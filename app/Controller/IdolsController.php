@@ -25,23 +25,18 @@ class IdolsController extends AppController
     public function index()
     {
         $this->Idol->recursive = 0;
-        if (!$this->request->is('ajax')) {
+        if($this->request->query('type') === null) {
             $type = 'cute';
-            $this->set('type', $type);
-            $this->set('idols', $this->Idol->find('all', array(
-                'conditions' => array('Idol.type' => 'Cute'),
-                'fields' => array('Idol.eName', 'Idol.puchiPic', 'Idol.voiced'),
-                'order' => array('Idol.voiced' => 'desc', 'Idol.id' => 'asc')
-            )));
-        } else {
-            $type = $this->request->query('type');
-            $this->set('type', $type);
-            $this->set('idols', $this->Idol->find('all', array(
-                'conditions' => array('Idol.type' => $type),
-                'fields' => array('Idol.eName', 'Idol.puchiPic', 'Idol.voiced'),
-                'order' => array('Idol.voiced' => 'desc', 'Idol.id' => 'asc')
-            )));
         }
+        else {
+            $type = $this->request->query('type');
+        }
+        $this->set('type', $type);
+        $this->set('idols', $this->Idol->find('all', array(
+            'conditions' => array('Idol.type' => $type),
+            'fields' => array('Idol.eName', 'Idol.puchiPic', 'Idol.voiced'),
+            'order' => array('Idol.voiced' => 'desc', 'Idol.id' => 'asc')
+        )));
     }
 
     /**

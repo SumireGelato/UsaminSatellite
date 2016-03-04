@@ -60,6 +60,19 @@ CREATE TABLE `events` (
   `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `gacha` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `eName` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `dateStart` datetime NOT NULL,
+  `dateFinish` datetime NOT NULL,
+  `cardId1` int(11) NOT NULL,
+  `cardId2` int(11) DEFAULT NULL,
+  `cardId3` int(11) DEFAULT NULL,
+  `cardId4` int(11) DEFAULT NULL,
+  `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `idols` (
   `id` int(10) UNSIGNED NOT NULL,
   `eName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -145,6 +158,9 @@ ALTER TABLE `cards`
 ALTER TABLE `events`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `gacha`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `idols`
   ADD PRIMARY KEY (`id`);
 
@@ -160,9 +176,11 @@ ALTER TABLE `users`
 
 
 ALTER TABLE `cards`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=215;
 ALTER TABLE `events`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+ALTER TABLE `gacha`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE `idols`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 ALTER TABLE `news`

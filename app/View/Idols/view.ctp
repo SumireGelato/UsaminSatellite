@@ -1,6 +1,8 @@
 <?php $this->set('title_for_layout', 'Usamin S@telite | ' . $idol['Idol']['eName']);
 switch ($idol['Idol']['type']) {
     case 'Cute':
+        echo $this->Html->link('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to Idols list', array('action' => 'index',
+            '?' => 'type=cute'), array('class' => 'btn label-cute', 'role' => 'button', 'id' => 'backToIdols', 'escape' => false));
         ?>
         <!--Idol Title-->
         <div class="row text-center">
@@ -83,6 +85,8 @@ switch ($idol['Idol']['type']) {
         </div>
         <?php break;
     case 'Cool':
+        echo $this->Html->link('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to Idols list', array('action' => 'index',
+            '?' => 'type=cool'), array('class' => 'btn label-info', 'role' => 'button', 'id' => 'backToIdols', 'escape' => false));
         ?>
         <!--Idol Title-->
         <div class="row text-center">
@@ -95,7 +99,7 @@ switch ($idol['Idol']['type']) {
                 <?php if ($idol['Idol']['cv'] == 'N/A') { ?>
                     <p>Unvoiced</p>
                 <?php } else { ?>
-                    <p style="font-size: 0.9em"><span class="label label-cool" style="font-size: 1em">CV:</span> <?php echo
+                    <p style="font-size: 0.9em"><span class="label label-info" style="font-size: 1em">CV:</span> <?php echo
                         $idol['Idol']['cv']
                         ?></p>
                 <?php } ?>
@@ -165,6 +169,8 @@ switch ($idol['Idol']['type']) {
         </div>
         <?php break;
     case 'Passion':
+        echo $this->Html->link('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to Idols list', array('action' => 'index',
+            '?' => 'type=passion'), array('class' => 'btn label-warning', 'role' => 'button', 'id' => 'backToIdols', 'escape' => false));
         ?>
         <!--Idol Title-->
         <div class="row text-center">
@@ -177,7 +183,7 @@ switch ($idol['Idol']['type']) {
                 <?php if ($idol['Idol']['cv'] == 'N/A') { ?>
                     <p>Unvoiced</p>
                 <?php } else { ?>
-                    <p style="font-size: 0.9em"><span class="label label-passion" style="font-size: 1em">CV:</span> <?php echo
+                    <p style="font-size: 0.9em"><span class="label label-warning" style="font-size: 1em">CV:</span> <?php echo
                         $idol['Idol']['cv']
                         ?></p>
                 <?php } ?>
@@ -258,15 +264,16 @@ switch ($idol['Idol']['type']) {
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 <div class="row">
 <?php
-$totalItems = 1;
-foreach ($idol['Card'] as $card) {
-?>
-<!--CARD-->
-<div class="col-lg-3">
+if(empty($idol['Card'])) {
+    echo '<h4 class="text-center">No results! Try to broaden your filter(s)!</h4>';
+}
+$totalItems = 0;
+$numItems = 0;
+foreach ($idol['Card'] as $card) { ?>
+<div class="col-lg-4 col-xl-3">
 <div class="panel panel-default">
 <?php if ($card['type'] == 'Cool') { ?>
-<div class="panel-heading cool" role="tab"
-<?php echo 'id="heading' . $totalItems . '"';
+<div class="panel-heading cool" role="tab" <?php echo 'id="heading' . $totalItems . '"';
 if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';?>>
 <?php } elseif ($card['type'] == 'Cute') { ?>
 <div class="panel-heading cute" role="tab" <?php echo 'id="heading' . $totalItems . '"';
@@ -324,6 +331,7 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                     echo '<span class="glyphicon glyphicon-ban-circle pull-left" data-toggle="tooltip" title="No Skill"></span>';
                     break;
             }
+            echo '<strong>'.$card['rarity'].'</strong>';
             if ($card['limited']) {
                 echo '<i class="icon-limited pull-right" data-toggle="tooltip" title="Limited Card"></i>';
             } else {
@@ -356,27 +364,41 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
     </div>
 </div>
 <hr>
-<div class="row">
-    <div class="col-xs-6">
-        <p><span
-                style="font-weight: bold">Rarity: </span><?php echo $card['rarity']; ?>
-        </p>
+<div class="row text-center center-block">
+    <div class="col-xs-2">
+        <?php echo $this->Html->image('cards/'.$card['baseIconArt'], array(
+            'width' => '63px',
+            'class' => 'baseIcon',
+            'url' => array('controller' => 'idols',
+                'action' => 'view',
+                'id' => $idol['Idol']['id'],
+                'title' => Inflector::slug($idol['Idol']['eName'])))); ?>
+        <?php echo $this->Html->image('cards/'.$card['awkIconArt'], array(
+            'width' => '63px',
+            'class'=>'awkIcon',
+            'url' => array('controller' => 'idols',
+                'action' => 'view',
+                'id' => $idol['Idol']['id'],
+                'title' => Inflector::slug($idol['Idol']['eName'])))); ?>
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-5">
+        <p><span style="font-weight: bold">Rarity: </span><?php echo $card['rarity']; ?></p>
+    </div>
+    <div class="col-xs-5" id="cardType">
         <?php switch ($card['type']) {
             case "Cute":
                 echo '<p><span style="font-weight: bold">Type: </span>' .
-                    $this->Html->image('cute.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                    $this->Html->image('cute.png', array('height' => '26px', 'width' => '25px', 'style' => 'padding-bottom:5px')) . ' ' .
                     $card['type'] . '</p>';
                 break;
             case "Cool":
                 echo '<p><span style="font-weight: bold">Type: </span>' .
-                    $this->Html->image('cool.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                    $this->Html->image('cool.png', array('height' => '26px', 'width' => '25px', 'style' => 'padding-bottom:5px')) . ' ' .
                     $card['type'] . '</p>';
                 break;
             case "Passion":
                 echo '<p><span style="font-weight: bold">Type: </span>' .
-                    $this->Html->image('passion.png', array('height' => '10%', 'width' => '10%', 'style' => 'padding-bottom:5px')) . ' ' .
+                    $this->Html->image('passion.png', array('height' => '26px', 'width' => '25px', 'style' => 'padding-bottom:5px')) . ' ' .
                     $card['type'] . '</p>';
                 break;
         } ?>
@@ -427,30 +449,25 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                     case "Cute":
                         ?>
                         <label class="btn btn-cute active" id="lvlBtn1">
-                            <input type="radio" name="options" id="option1"
-                                   autocomplete="off" checked>Level 1
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                         </label>
                         <label class="btn btn-cute" id="lvlBtn2">
                             <?php switch ($card['rarity']) {
                                 case "N":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 20 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 20 (Max)
                                     <?php break;
                                 case "R":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 40 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 40 (Max)
                                     <?php break;
                                 case "SR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 60 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 60 (Max)
                                     <?php break;
                                 case "SSR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 80 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 80 (Max)
                                     <?php break;
                             } ?>
                         </label>
@@ -458,30 +475,25 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                     case "Cool":
                         ?>
                         <label class="btn btn-cool active" id="lvlBtn1">
-                            <input type="radio" name="options" id="option1"
-                                   autocomplete="off" checked>Level 1
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                         </label>
                         <label class="btn btn-cool" id="lvlBtn2">
                             <?php switch ($card['rarity']) {
                                 case "N":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 20 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 20 (Max)
                                     <?php break;
                                 case "R":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 40 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 40 (Max)
                                     <?php break;
                                 case "SR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 60 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 60 (Max)
                                     <?php break;
                                 case "SSR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 80 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 80 (Max)
                                     <?php break;
                             } ?>
                         </label>
@@ -489,30 +501,25 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                     case "Passion":
                         ?>
                         <label class="btn btn-passion active" id="lvlBtn1">
-                            <input type="radio" name="options" id="option1"
-                                   autocomplete="off" checked>Level 1
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                         </label>
                         <label class="btn btn-passion" id="lvlBtn2">
                             <?php switch ($card['rarity']) {
                                 case "N":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 20 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 20 (Max)
                                     <?php break;
                                 case "R":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 40 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 40 (Max)
                                     <?php break;
                                 case "SR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 60 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 60 (Max)
                                     <?php break;
                                 case "SSR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 80 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 80 (Max)
                                     <?php break;
                             } ?>
                         </label>
@@ -522,10 +529,9 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
         </div>
     </div>
     <hr>
-    <div class="row" id="level1">
+    <div class="row text-center center-block" id="level1">
         <div class="col-xs-5ths">
-                                            <span style="font-size: 1.3em; color: lawngreen"
-                                                  class="glyphicon glyphicon-heart"></span>
+            <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
             <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">' . $card['baseLife'] . '</p>'; ?>
         </div>
         <div class="col-xs-5ths">
@@ -547,10 +553,9 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                 '</p>'; ?>
         </div>
     </div>
-    <div class="row" id="levelMax">
+    <div class="row text-center center-block" id="levelMax">
         <div class="col-xs-5ths">
-                                            <span style="font-size: 1.3em; color: lawngreen"
-                                                  class="glyphicon glyphicon-heart"></span>
+            <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
             <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">' . $card['baseMaxLife'] . '</p>'; ?>
         </div>
         <div class="col-xs-5ths">
@@ -581,30 +586,25 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                     case "Cute":
                         ?>
                         <label class="btn btn-cute active" id="awkLvlBtn1">
-                            <input type="radio" name="options" id="option1"
-                                   autocomplete="off" checked>Level 1
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                         </label>
                         <label class="btn btn-cute" id="awkLvlBtn2">
                             <?php switch ($card['rarity']) {
                                 case "N":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 30 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
                                     <?php break;
                                 case "R":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 50 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 50 (Max)
                                     <?php break;
                                 case "SR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 70 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 70 (Max)
                                     <?php break;
                                 case "SSR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 90 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 90 (Max)
                                     <?php break;
                             } ?>
                         </label>
@@ -612,30 +612,25 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                     case "Cool":
                         ?>
                         <label class="btn btn-cool active" id="awkLvlBtn1">
-                            <input type="radio" name="options" id="option1"
-                                   autocomplete="off" checked>Level 1
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                         </label>
                         <label class="btn btn-cool" id="awkLvlBtn2">
                             <?php switch ($card['rarity']) {
                                 case "N":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 30 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
                                     <?php break;
                                 case "R":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 50 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 50 (Max)
                                     <?php break;
                                 case "SR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 70 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 70 (Max)
                                     <?php break;
                                 case "SSR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 90 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 90 (Max)
                                     <?php break;
                             } ?>
                         </label>
@@ -643,30 +638,25 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                     case "Passion":
                         ?>
                         <label class="btn btn-passion active" id="awkLvlBtn1">
-                            <input type="radio" name="options" id="option1"
-                                   autocomplete="off" checked>Level 1
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Level 1
                         </label>
                         <label class="btn btn-passion" id="awkLvlBtn2">
                             <?php switch ($card['rarity']) {
                                 case "N":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 30 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 30 (Max)
                                     <?php break;
                                 case "R":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 50 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 50 (Max)
                                     <?php break;
                                 case "SR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 70 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 70 (Max)
                                     <?php break;
                                 case "SSR":
                                     ?>
-                                    <input type="radio" name="options" id="option2"
-                                           autocomplete="off">Level 90 (Max)
+                                    <input type="radio" name="options" id="option2" autocomplete="off">Level 90 (Max)
                                     <?php break;
                             } ?>
                         </label>
@@ -676,10 +666,9 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
         </div>
     </div>
     <hr>
-    <div class="row" id="level1">
+    <div class="row text-center center-block" id="level1">
         <div class="col-xs-5ths">
-                                            <span style="font-size: 1.3em; color: lawngreen"
-                                                  class="glyphicon glyphicon-heart"></span>
+            <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
             <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">' . $card['awkBaseLife'] . '</p>'; ?>
         </div>
         <div class="col-xs-5ths">
@@ -701,10 +690,9 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
                 '</p>'; ?>
         </div>
     </div>
-    <div class="row" id="levelMax">
+    <div class="row text-center center-block" id="levelMax">
         <div class="col-xs-5ths">
-                                            <span style="font-size: 1.3em; color: lawngreen"
-                                                  class="glyphicon glyphicon-heart"></span>
+            <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
             <?php echo '<p style="margin-bottom: 0px; margin-top: -3px;">' . $card['awkMaxLife'] . '</p>'; ?>
         </div>
         <div class="col-xs-5ths">
@@ -741,8 +729,7 @@ if ($card['rarity'] != 'N') {
     <hr>
     <div class="row">
         <div class="col-xs-12">
-            <h4 style="font-weight: bold">Special
-                Skill: <?php echo $card['specialSkillType'] ?></h4>
+            <h4 style="font-weight: bold">Special Skill: <?php echo $card['specialSkillType'] ?></h4>
 
             <p><?php echo $card['specialSkillText'] ?></p>
         </div>
@@ -753,10 +740,9 @@ if ($card['rarity'] != 'N') {
 ?>
 <div class="row">
     <div class="col-xs-12">
-        <h4 style="font-weight: bold">Drop:</h4>
-        <?php if ($card['event_id'] == null) { ?>
-            <p>Gacha</p>
-        <?php
+        <h4 style="font-weight: bold">Source:</h4>
+        <?php if ($card['event_id'] == null) {
+            echo '<p>Gacha</p>';
         } else {
             echo $this->Html->link(
                 $this->Html->image('events/' . $card['Event']['pic'], array('alt' => $card['Event']['eName'], 'width' => '75%',
@@ -768,7 +754,21 @@ if ($card['rarity'] != 'N') {
         } ?>
     </div>
 </div>
-<hr>
+<hr/>
+<div class="row text-center">
+    <div class="col-xs-12">
+        <h4 style="font-weight: bold">Full Size Art Links</h4>
+    </div>
+    <div class="col-xs-6">
+        <?php echo $this->Html->link('Base <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>',
+            '/img/cards/'.$card['baseArt'], array('escape' => false, 'target' => '_blank')); ?>
+    </div>
+    <div class="col-xs-6">
+        <?php echo $this->Html->link('Awakened <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>',
+            '/img/cards/'.$card['awkArt'], array('escape' => false, 'target' => '_blank')); ?>
+    </div>
+</div>
+<hr/>
 <div class="row">
     <div class="col-xs-12">
         <h4 style="font-weight: bold">Sources:</h4>
@@ -791,29 +791,34 @@ if ($card['rarity'] != 'N') {
 </div>
 </div>
 <?php
+$numItems++;
 $totalItems++;
 }
 ?>
 </div>
 </div>
+
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
-    })
+    });
 
-    //Reg/Awk Image and Stat change
+    //Reg/Awk Image/Icon and Stat change
     $(document).ready(function () {
-        $(".panel-group").on("click", "label#regawk1", function () {//Regular
-//        alert('hi');
+        var $panelgroup = $(".panel-group");
+        $panelgroup.on("click", "label#regawk1", function () {//Regular
             $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "none");
             $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "inherit");
+            $(this).closest("div.panel-body").find(".baseIcon").css("display", "inherit");
+            $(this).closest("div.panel-body").find(".awkIcon").css("display", "none");
             $(this).closest("div.panel-body").find(".base").css("display", "inherit");
             $(this).closest("div.panel-body").find(".awakened").css("display", "none");
         });
-        $(".panel-group").on("click", "label#regawk2", function () {//Awakened
-//        alert('hi2');
+        $panelgroup.on("click", "label#regawk2", function () {//Awakened
             $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "inherit");
             $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "none");
+            $(this).closest("div.panel-body").find(".baseIcon").css("display", "none");
+            $(this).closest("div.panel-body").find(".awkIcon").css("display", "inherit");
             $(this).closest("div.panel-body").find(".base").css("display", "none");
             $(this).closest("div.panel-body").find(".awakened").css("display", "inherit");
         });
@@ -821,23 +826,20 @@ $totalItems++;
 
     //Min/Max Lvl Change
     $(document).ready(function () {
-        $(".panel-group").on("click", "label#lvlBtn1", function () {//Level 1
-//                alert($(this).closest("div.base").find("#level1").attr("id"));
+        var $panelgroup = $(".panel-group");
+        $panelgroup.on("click", "label#lvlBtn1", function () {//Level 1
             $(this).closest("div.base").find("#level1").css("display", "inherit");
             $(this).closest("div.base").find("#levelMax").css("display", "none");
         });
-        $(".panel-group").on("click", "label#lvlBtn2", function () {//Level Max
-//                alert($(this).closest("div.base").find("#levelMax").attr("id"));
+        $panelgroup.on("click", "label#lvlBtn2", function () {//Level Max
             $(this).closest("div.base").find("#level1").css("display", "none");
             $(this).closest("div.base").find("#levelMax").css("display", "inherit");
         });
-        $(".panel-group").on("click", "label#awkLvlBtn1", function () {//Level 1
-//                alert($(this).closest("div.base").find("#level1").attr("id"));
+        $panelgroup.on("click", "label#awkLvlBtn1", function () {//Level 1
             $(this).closest("div.awakened").find("#level1").css("display", "inherit");
             $(this).closest("div.awakened").find("#levelMax").css("display", "none");
         });
-        $(".panel-group").on("click", "label#awkLvlBtn2", function () {//Level Max
-//                alert($(this).closest("div.base").find("#levelMax").attr("id"));
+        $panelgroup.on("click", "label#awkLvlBtn2", function () {//Level Max
             $(this).closest("div.awakened").find("#level1").css("display", "none");
             $(this).closest("div.awakened").find("#levelMax").css("display", "inherit");
         });

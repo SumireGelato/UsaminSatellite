@@ -144,10 +144,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         </div>
     </div>
     <!-- Get Content -->
-    <?php echo $this->Session->flash(); ?>
-    <?php echo $this->fetch('content'); ?>
-    <a href="#" id="back-to-top" title="Back to top"><span class="glyphicon glyphicon-chevron-up" style="font-size: 1.5em"></span></a>
-    <!--    <footer>
+    <div class="mobileOnly">
+        <?php echo $this->Session->flash(); ?>
+        <?php echo $this->fetch('content'); ?>
+        <a href="#" id="back-to-top" title="Back to top"><span class="glyphicon glyphicon-chevron-up" style="font-size: 1.5em"></span></a>
+    </div>
+        <!--    <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
             <p>&copy; &middot;</p>
         </footer>-->

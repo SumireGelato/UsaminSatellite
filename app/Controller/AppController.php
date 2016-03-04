@@ -60,7 +60,7 @@ class AppController extends Controller
     {
         parent::beforeFilter();
         if (!$this->Session->check('background')) {
-            $background = mt_rand(1, 15);
+            $background = mt_rand(1, 17);
 
             $this->Session->write('background', $background);
         }
