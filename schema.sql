@@ -66,7 +66,7 @@ CREATE TABLE `gacha` (
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `dateStart` datetime NOT NULL,
   `dateFinish` datetime NOT NULL,
-  `cardId1` int(11) NOT NULL,
+  `cardId1` int(11) DEFAULT NULL,
   `cardId2` int(11) DEFAULT NULL,
   `cardId3` int(11) DEFAULT NULL,
   `cardId4` int(11) DEFAULT NULL,

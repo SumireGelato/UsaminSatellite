@@ -22,7 +22,7 @@ class SongsController extends AppController
      *
      * @return void
      */
-    public function index()
+    public function adminindex()
     {
         $this->Song->recursive = 0;
         $this->set('songs', $this->Paginator->paginate());

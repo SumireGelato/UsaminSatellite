@@ -27,13 +27,6 @@
             <th>begin</th>
             <th>finish</th>
             <th>type</th>
-            <th>t1</th>
-            <th>t2</th>
-            <th>t3</th>
-            <th>t4</th>
-            <th>t5</th>
-            <th>t6</th>
-            <th>t7</th>
             <th>pic</th>
             <th class="actions"><?php echo __('Actions'); ?></th>
         </tr>
@@ -46,13 +39,6 @@
                 <td><?php echo h($event['Event']['begin']); ?></td>
                 <td><?php echo h($event['Event']['finish']); ?></td>
                 <td><?php echo h($event['Event']['type']); ?></td>
-                <td><?php echo h($event['Event']['t1']); ?></td>
-                <td><?php echo h($event['Event']['t2']); ?></td>
-                <td><?php echo h($event['Event']['t3']); ?></td>
-                <td><?php echo h($event['Event']['t4']); ?></td>
-                <td><?php echo h($event['Event']['t5']); ?></td>
-                <td><?php echo h($event['Event']['t6']); ?></td>
-                <td><?php echo h($event['Event']['t7']); ?></td>
                 <td><?php echo h($event['Event']['pic']); ?></td>
                 <td class="actions">
                     <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $event['Event']['id'])); ?>
