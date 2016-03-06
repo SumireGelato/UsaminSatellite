@@ -35,7 +35,7 @@ class EventsController extends AppController
      */
     public function adminindex()
     {
-        $this->Event->recursive = 0;
+        $this->Event->recursive = 1;
         $this->set('events', $this->Event->find('all'));
     }
 

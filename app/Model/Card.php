@@ -302,6 +302,13 @@ class Card extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		)
+		),
+        'Gacha' => array(
+            'className' => 'Gacha',
+            'foreignKey' => 'gacha_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        )
 	);
 }

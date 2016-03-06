@@ -11,6 +11,7 @@ CREATE TABLE `cards` (
   `id` int(10) UNSIGNED NOT NULL,
   `idol_id` int(10) UNSIGNED NOT NULL,
   `event_id` int(10) UNSIGNED DEFAULT NULL,
+  `gacha_id` int(10) UNSIGNED DEFAULT NULL,
   `card_id` int(11) NOT NULL,
   `eName` char(255) COLLATE utf8_unicode_ci NOT NULL,
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -66,10 +67,6 @@ CREATE TABLE `gacha` (
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `dateStart` datetime NOT NULL,
   `dateFinish` datetime NOT NULL,
-  `cardId1` int(11) DEFAULT NULL,
-  `cardId2` int(11) DEFAULT NULL,
-  `cardId3` int(11) DEFAULT NULL,
-  `cardId4` int(11) DEFAULT NULL,
   `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -153,7 +150,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `created`, `modified`
 ALTER TABLE `cards`
   ADD PRIMARY KEY (`id`),
   ADD KEY `cards_idols_fk` (`idol_id`),
-  ADD KEY `cards_events_fk` (`event_id`);
+  ADD KEY `cards_events_fk` (`event_id`),
+  ADD KEY `cards_gachas_fk` (`gacha_id`);
 
 ALTER TABLE `events`
   ADD PRIMARY KEY (`id`);
@@ -192,7 +190,8 @@ ALTER TABLE `users`
 
 ALTER TABLE `cards`
   ADD CONSTRAINT `cards_events_fk` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
-  ADD CONSTRAINT `cards_idols_fk` FOREIGN KEY (`idol_id`) REFERENCES `idols` (`id`);
+  ADD CONSTRAINT `cards_idols_fk` FOREIGN KEY (`idol_id`) REFERENCES `idols` (`id`),
+  ADD CONSTRAINT `cards_gachas_fk` FOREIGN KEY (`gacha_id`) REFERENCES `gacha` (`id`);
 
 ALTER TABLE `news`
   ADD CONSTRAINT `news_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);

@@ -26,11 +26,10 @@
                 <th>jName</th>
                 <th>begin</th>
                 <th>finish</th>
-                <th>card1</th>
-                <th>card2</th>
-                <th>card3</th>
-                <th>card4</th>
-                <th>pic</th>
+                <th>card</th>
+                <th>card</th>
+                <th>card</th>
+                <th>card</th>
                 <th class="actions"><?php echo __('Actions'); ?></th>
             </tr>
             </thead>
@@ -41,13 +40,30 @@
                     <td><?php echo h($gacha['Gacha']['jName']); ?></td>
                     <td><?php echo h($gacha['Gacha']['dateStart']); ?></td>
                     <td><?php echo h($gacha['Gacha']['dateFinish']); ?></td>
-                    <td><?php echo h($gacha['Gacha']['cardId1']); ?></td>
-                    <td><?php echo h($gacha['Gacha']['cardId2']); ?></td>
-                    <td><?php echo h($gacha['Gacha']['cardId3']); ?></td>
-                    <td><?php echo h($gacha['Gacha']['cardId4']); ?></td>
-                    <td><?php echo h($gacha['Gacha']['pic']); ?></td>
+                    <?php
+                    $numCards = sizeof($gacha['Card']);
+                    foreach($gacha['Card'] as $card) {
+                        echo '<td>'.h($card['eName']).'</td>';
+                    }
+                    switch($numCards) {
+                        case 1:
+                            echo '<td></td>';
+                            echo '<td></td>';
+                            echo '<td></td>';
+                            break;
+                        case 2:
+                            echo '<td></td>';
+                            echo '<td></td>';
+                            break;
+                        case 3:
+                            echo '<td></td>';
+                            break;
+                        case 4:
+                            break;
+                    }
+                    ?>
                     <td class="actions">
-                        <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $gacha['Gacha']['id'])); ?>
+                        <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $gacha['Gacha']['id'])); ?><br/>
                         <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $gacha['Gacha']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $gacha['Gacha']['id']))); ?>
                     </td>
                 </tr>
