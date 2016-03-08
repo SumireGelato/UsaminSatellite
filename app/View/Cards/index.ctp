@@ -864,7 +864,6 @@ foreach ($cards as $card) { ?>
                             url = $('.next a').attr('href') + '?' + document.URL.split('?')[1];
                         }
                         $('.next').remove();
-                        console.log((url.split('?')[0]) === "undefined");
                         if ((url.split('?')[0]) === "undefined") {
                             return false;
                         } else {

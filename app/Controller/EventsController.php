@@ -40,22 +40,6 @@ class EventsController extends AppController
     }
 
     /**
-     * view method
-     *
-     * @throws NotFoundException
-     * @param string $id
-     * @return void
-     */
-    /*    public function view($id = null)
-        {
-            if (!$this->Event->exists($id)) {
-                throw new NotFoundException(__('Invalid event'));
-            }
-            $options = array('conditions' => array('Event.' . $this->Event->primaryKey => $id));
-            $this->set('event', $this->Event->find('first', $options));
-        }*/
-
-    /**
      * add method
      *
      * @return void

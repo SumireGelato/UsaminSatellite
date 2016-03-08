@@ -84,7 +84,7 @@ class Gacha extends AppModel
             'dependent' => false,
             'conditions' => '',
             'fields' => '',
-            'order' => '',
+            'order' => 'Card.rarity DESC',
             'limit' => '',
             'offset' => '',
             'exclusive' => '',

@@ -20,6 +20,17 @@ class GachasController extends AppController
     public $components = array('Paginator', 'Flash', 'Session');
 
     /**
+     * index method
+     *
+     * @return void
+     */
+    public function index()
+    {
+        $this->Gacha->recursive = 2;
+        $this->set('gachas', $this->Gacha->find('all', array('order' => 'Gacha.dateFinish desc')));
+    }
+
+    /**
      * adminindex method
      *
      * @return void
@@ -63,11 +74,33 @@ class GachasController extends AppController
             }
             if ($this->Gacha->save($this->request->data['Gacha'])) {
                 $this->Flash->success(__('The gacha has been saved.'));
+                if(isset($this->request->data['Card']['add'])) {
+                    $cardsToBeAdded = $this->request->data['Card']['add'];
+                }
+                if(isset($this->request->data['Card']['remove'])) {
+                    $cardsToBeRemoved = $this->request->data['Card']['remove'];
+                }
+                if(!empty($cardsToBeRemoved)) {
+                    foreach($cardsToBeRemoved as $cardId) {
+                        $this->Gacha->Card->id = $cardId;
+                        $this->Gacha->Card->saveField('gacha_id', NULL);
+                    }
+                }
+                if(!empty($cardsToBeAdded)) {
+                    foreach($cardsToBeAdded as $cardId) {
+                        $this->Gacha->Card->id = $cardId;
+                        $this->Gacha->Card->saveField('gacha_id', $this->Gacha->id);
+                    }
+                }
                 return $this->redirect(array('action' => 'adminindex'));
             } else {
                 $this->Flash->error(__('The gacha could not be saved. Please, try again.'));
             }
         }
+        $cards = $this->Gacha->Card->find('all', array(
+            'fields' => array('Card.id', 'Card.eName', 'Card.rarity', 'Card.dateAdded')
+        ));
+        $this->set('cards', $cards);
     }
 
     /**
@@ -104,22 +137,41 @@ class GachasController extends AppController
             } else {
                 unset($this->request->data['Gacha']['pic']);
             }
-            /*if ($this->Gacha->save($this->request->data['Gacha'])) {
+            if ($this->Gacha->save($this->request->data['Gacha'])) {
                 $this->Flash->success(__('The gacha has been saved.'));
+                if(isset($this->request->data['Card']['add'])) {
+                    $cardsToBeAdded = $this->request->data['Card']['add'];
+                }
+                if(isset($this->request->data['Card']['remove'])) {
+                    $cardsToBeRemoved = $this->request->data['Card']['remove'];
+                }
+                if(!empty($cardsToBeRemoved)) {
+                    foreach($cardsToBeRemoved as $cardId) {
+                        $this->Gacha->Card->id = $cardId;
+                        $this->Gacha->Card->saveField('gacha_id', NULL);
+                    }
+                }
+                if(!empty($cardsToBeAdded)) {
+                    foreach($cardsToBeAdded as $cardId) {
+                        $this->Gacha->Card->id = $cardId;
+                        $this->Gacha->Card->saveField('gacha_id', $this->request->data['Gacha']['id']);
+                    }
+                }
                 return $this->redirect(array('action' => 'adminindex'));
             } else {
                 $this->Flash->error(__('The gacha could not be saved. Please, try again.'));
-            }*/
+            }
         }
-        $options = array('conditions' => array('Gacha.' . $this->Gacha->primaryKey => $id));
+        $options = array(
+            'conditions' => array('Gacha.' . $this->Gacha->primaryKey => $id));
         $this->request->data = $this->Gacha->find('first', $options);
         $this->set('numCards', sizeof($this->request->data['Card']));
         $cards = $this->Gacha->Card->find('all', array(
-            'fields' => array('Card.id', 'Card.eName', 'Card.dateAdded')
+            'fields' => array('Card.id', 'Card.eName', 'Card.rarity', 'Card.dateAdded')
         ));
         $this->set('cards', $cards);
-//        $こころぴょんぴょん = 'lol';
-//        debug($こころぴょんぴょん);
+//            $こころぴょんぴょん = 'lol';
+//            debug($こころぴょんぴょん);
     }
 
     /**

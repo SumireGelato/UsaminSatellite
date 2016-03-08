@@ -49,15 +49,13 @@ $this->set('title_for_layout', 'Edit Gacha');
             <div class="row">
                 <ul class="list-group">
                 <?php
-                $i = 0;
                 foreach($this->request->data['Card'] as $card) {
-                    $i++;
                     ?>
                     <div class="col-lg-6">
                         <li class="list-group-item list-group-item-info">
                             <?php
                             echo $card['eName'];
-                            echo $this->Form->hidden('id'.$i, array('value' => $card['id']));
+                            echo $this->Form->hidden('Card.add.gacha_id'.$card['id'], array('value' => $card['id']));
                             ?>
                             <button type="button" class="btn btn-default" id="remove">Remove</button>
                         </li>
@@ -101,6 +99,7 @@ $this->set('title_for_layout', 'Edit Gacha');
                                 <th>Select</th>
                                 <th>Card Name</th>
                                 <th>Date Added</th>
+                                <th>Rarity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -110,6 +109,7 @@ $this->set('title_for_layout', 'Edit Gacha');
                                         'data-name'=>$card['Card']['eName'])); ?></td>
                                 <td><?php echo $card['Card']['eName']; ?></td>
                                 <td><?php echo $card['Card']['dateAdded']; ?></td>
+                                <td><?php echo $card['Card']['rarity']; ?></td>
                             </tr>
                         <?php } ?>
                         </tbody>
@@ -129,17 +129,19 @@ $this->set('title_for_layout', 'Edit Gacha');
     //remove card
     $(document).ready(function() {
         $("ul.list-group").on("click", "button#remove", function() {
+            var id = $(this).closest("li").find("input").attr("value");
+            $(this).closest("li").find("input").attr("name", "data[Card][remove][gacha_id"+id+"]");
+            $("ul.list-group").append($(this).closest("li").find("input"));
             $(this).parent().parent().remove();
         });
     });
-
     /**
      * MODAL STUFF BEGINS HERE
      */
     $(document).ready( function () {
         $('#table').DataTable({
             "responsive":     true,
-            "order":          [[ 2, 'desc' ]],
+            "order":          [[ 2, 'desc' ], [ 3, 'desc' ]],
             "lengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]]
         });
 
@@ -153,17 +155,19 @@ $this->set('title_for_layout', 'Edit Gacha');
 
         $('#addToList').click(function() {
             $('#currentlySelected').children().each(function(index, element) {
-                console.log('id:' + $(this).attr('id'));
-                console.log('text:' + $(this).text());
-//                append to .list-group: <div class="col-lg-6">
-//                <li class="list-group-item list-group-item-info">
-//                "Luxury Memory" Mizuki Kawashima<input name="data[Gacha][id1]" value="39" id="GachaId1" type="hidden">                            <button type="button" class="btn btn-default" id="remove">Remove</button>
-//                </li>
-//                </div>
+                $('.list-group').append(
+                    '<div class="col-lg-6">' +
+                        '<li class="list-group-item list-group-item-info">' +
+                            $(this).text() +
+                            '<input name="data[Card][add][gacha_id' + $(this).attr('id') + ']" value="' + $(this).attr('id') + '" ' +
+                                'id="CardGachaId' + $(this).attr('id') + '" ' + 'type="hidden">' +
+                            '<button type="button" class="btn btn-default" id="remove">Remove</button>' +
+                        '</li>' +
+                    '</div>');
                 $('#addCards').modal('hide');
             });
         });
-    } );
+    });
 
     //Date picker stuff
     $(function () {

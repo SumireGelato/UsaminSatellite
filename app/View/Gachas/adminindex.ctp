@@ -60,6 +60,12 @@
                             break;
                         case 4:
                             break;
+                        default:
+                            echo '<td></td>';
+                            echo '<td></td>';
+                            echo '<td></td>';
+                            echo '<td></td>';
+                            break;
                     }
                     ?>
                     <td class="actions">

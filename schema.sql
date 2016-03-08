@@ -70,6 +70,15 @@ CREATE TABLE `gacha` (
   `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `gacha` (`id`, `eName`, `jName`, `dateStart`, `dateFinish`, `pic`) VALUES
+(1, 'Made with Love Valentines Day Gacha', 'メイド with LOVE バレンタインデーガシャ', '2016-01-31 15:00:00', '2016-02-10 14:59:59', 'Made with Love Valentines Day Gacha.png'),
+(2, 'Starry Moments Nighttime Gacha', '星々のひととき ナイトタイムガシャ', '2016-02-29 15:00:00', '2016-03-11 14:59:00', 'Starry Moments Nighttime Gacha.png'),
+(3, 'Happy New Year Gacha', 'ハッピーニューイヤーガシャ', '2015-12-30 15:00:00', '2016-01-16 14:59:59', 'Happy New Year Gacha.png'),
+(4, 'Present for you! Chrismas Gift Gacha', 'キミに届け！クリスマスプレゼントガシャ', '2015-11-30 15:00:00', '2015-12-14 14:59:59', 'Present for you! Chrismas Gift Gacha.png'),
+(5, 'Laid Back and Relaxing, Cosy Hot Springs Gacha', 'まったりのんびりぽかぽか温泉ガシャ', '2015-10-31 15:00:00', '2015-11-13 14:59:59', 'Laid Back and Relaxing, Cosy Hot Springs Gacha.png'),
+(6, 'Sweet Moments Sweet Halloween Gacha', '甘いひととき スウィートハロウィンガシャ', '2015-09-30 15:00:00', '2015-10-13 14:59:59', 'Sweet Moments Sweet Halloween Gacha.png'),
+(7, 'Platinum Gacha (Non-Limited)', 'プラチナガシャ', '2016-02-23 15:00:00', '2016-02-29 14:59:59', NULL);
+
 CREATE TABLE `idols` (
   `id` int(10) UNSIGNED NOT NULL,
   `eName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -178,7 +187,7 @@ ALTER TABLE `cards`
 ALTER TABLE `events`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 ALTER TABLE `gacha`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 ALTER TABLE `idols`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 ALTER TABLE `news`
@@ -190,8 +199,8 @@ ALTER TABLE `users`
 
 ALTER TABLE `cards`
   ADD CONSTRAINT `cards_events_fk` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
-  ADD CONSTRAINT `cards_idols_fk` FOREIGN KEY (`idol_id`) REFERENCES `idols` (`id`),
-  ADD CONSTRAINT `cards_gachas_fk` FOREIGN KEY (`gacha_id`) REFERENCES `gacha` (`id`);
+  ADD CONSTRAINT `cards_gachas_fk` FOREIGN KEY (`gacha_id`) REFERENCES `gacha` (`id`),
+  ADD CONSTRAINT `cards_idols_fk` FOREIGN KEY (`idol_id`) REFERENCES `idols` (`id`);
 
 ALTER TABLE `news`
   ADD CONSTRAINT `news_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
