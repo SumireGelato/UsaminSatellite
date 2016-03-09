@@ -70,11 +70,6 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 <!-- START THE FEATURETTES -->
 
 <hr class="featurette-divider"/>
-<?php
-$num1 = mt_rand(1, 421);
-$num2 = mt_rand(1, 421);
-$num3 = mt_rand(1, 421);
-?>
 <div class="row text-center center-block" id="puchis">
     <div class="col-lg-3">
         <?php echo $this->Html->link($this->Html->image('puchis/' . $num1 . '.png', array('class' => 'img-square', 'alt' => 'Puchi1', 'height' => 180)) .

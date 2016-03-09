@@ -60,16 +60,16 @@ class AppController extends Controller
     {
         parent::beforeFilter();
         if (!$this->Session->check('background')) {
-            $background = mt_rand(1, 17);
-
+            $this->loadModel('Website');
+            $background = $this->Website->find('first', array('fields' => array('Website.currentWallpaper', 'Website.numWallpapers')));
+            if($background['Website']['currentWallpaper'] == 0) {
+                $background = mt_rand(1, $background['Website']['numWallpapers']);
+            } else {
+                $background = $background['Website']['currentWallpaper'];
+            }
             $this->Session->write('background', $background);
         }
-//        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
-//        $this->Auth->logoutRedirect = array('controller' => 'pages', 'action' => 'display', 'home');
-//        $this->set('logged_in', $this->Auth->loggedIn());
-//        $this->set('current_user', $this->Auth->user());
         $this->Auth->allow('index','view', 'display');
-
     }
 
     public function isAuthorized($user) {

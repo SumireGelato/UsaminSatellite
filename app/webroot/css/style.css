@@ -9,6 +9,18 @@ body {
     font-size: 1.6em;
 }
 
+a {
+    color: #ff6c99;
+}
+
+a:hover {
+    color: #ffc66c;
+}
+
+a:active {
+    color: lightblue;
+}
+
 .awkCardImage {
     display: none;
 }

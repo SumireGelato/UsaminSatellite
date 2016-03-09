@@ -19,3 +19,51 @@ $this->set('title_for_layout', 'Admin Control Panel');
         ?>
     </div>
 </div>
+<div class="row text-center">
+    <h4 style="font-weight: bold">Wallpaper and Chibi Settings</h4>
+    <p> 0 = random </p>
+</div>
+<div class="row">
+    <?php
+    echo $this->Form->create('Website', array(
+        'inputDefaults' => array(
+            'div' => 'form-group',
+            'class' => 'form-control'
+        ),
+        'class' => 'container',
+        'novalidate' => true
+    ));
+    ?>
+    <div class="col-lg-4">
+        <?php
+        echo $this->Form->input('id', array('value' => 1));
+        echo $this->Form->input('numWallpapers');
+        echo $this->Form->input('currentWallpaper');
+        ?>
+    </div>
+    <div class="col-lg-4">
+        <?php
+        echo $this->Form->input('numChibis');
+        echo '<div class="form-group">';
+        echo '<div class="col-xs-4">';
+        echo $this->Form->input('chibi1', array('div' => false));
+        echo '</div>';
+        echo '<div class="col-xs-4">';
+        echo $this->Form->input('chibi2', array('div' => false));
+        echo '</div>';
+        echo '<div class="col-xs-4">';
+        echo $this->Form->input('chibi3', array('div' => false));
+        echo '</div>';
+        echo '</div>';
+        ?>
+    </div>
+    <div class="col-lg-4">
+        <?php
+        echo $this->Form->submit('Save', array(
+            'div' => 'form-group',
+            'class' => 'btn btn-default'
+        ));
+        echo $this->Form->end();
+        ?>
+    </div>
+</div>

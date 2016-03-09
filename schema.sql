@@ -155,6 +155,18 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `created`, `modified`) VALUES
 (1, 'pangster123@gmail.com', '$2a$10$Jzopawbn/OX93Tf8gDCghOHnNodZH/DXQ4l9NDMU6ccvCgbpuwfzO', 'admin', '2016-02-06 08:26:09', '2016-02-06 08:26:09');
 
+CREATE TABLE `websites` (
+  `id`  int(10) UNSIGNED NOT NULL,
+  `numWallpapers` int(10) NOT NULL,
+  `currentWallpaper` int(10) NOT NULL,
+  `numChibis` int(10) NOT NULL,
+  `chibi1` int(10) NOT NULL,
+  `chibi2` int(10) NOT NULL,
+  `chibi3` int(10) NOT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `websites` (id, numWallpapers, currentWallpaper, numChibis, chibi1, chibi2, chibi3) VALUES
+(1, 17, 0, 421, 0, 0, 0);
 
 ALTER TABLE `cards`
   ADD PRIMARY KEY (`id`),
@@ -181,6 +193,8 @@ ALTER TABLE `songs`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `websites`
+    ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `cards`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=215;

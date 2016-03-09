@@ -29,7 +29,11 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                     </div>
                 </div>
                 <div class="row">
+                <?php if($event['Event']['type'] != 'Caravan') { ?>
                     <div class="col-lg-6">
+                <?php } else { ?>
+                    <div class="col-lg-12">
+                <?php } ?>
                         <div class="row">
                             <h3>Event Rewards</h3>
                         </div>
@@ -135,19 +139,21 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                                     'action' => 'index', '?' => 'source=' . $event['Event']['id'] . '&sort=dateAdded&order=1&statOrder=0')); ?>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <a class="twitter-timeline" data-chrome="nofooter" data-dnt="true" href="https://twitter.com/deresute_border"
-                           data-widget-id="701579824934965249">Tweets by @deresute_border</a>
-                        <script>!function (d, s, id) {
-                                var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-                                if (!d.getElementById(id)) {
-                                    js = d.createElement(s);
-                                    js.id = id;
-                                    js.src = p + "://platform.twitter.com/widgets.js";
-                                    fjs.parentNode.insertBefore(js, fjs);
-                                }
-                            }(document, "script", "twitter-wjs");</script>
-                    </div>
+                    <?php if($event['Event']['type'] != 'Caravan') { ?>
+                        <div class="col-lg-6">
+                            <a class="twitter-timeline" data-chrome="nofooter" data-dnt="true" href="https://twitter.com/deresute_border"
+                               data-widget-id="701579824934965249">Tweets by @deresute_border</a>
+                            <script>!function (d, s, id) {
+                                    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                                    if (!d.getElementById(id)) {
+                                        js = d.createElement(s);
+                                        js.id = id;
+                                        js.src = p + "://platform.twitter.com/widgets.js";
+                                        fjs.parentNode.insertBefore(js, fjs);
+                                    }
+                                }(document, "script", "twitter-wjs");</script>
+                        </div>
+                    <?php } ?>
                 </div>
             <?php
             }

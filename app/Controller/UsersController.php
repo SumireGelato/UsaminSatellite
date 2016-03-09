@@ -55,7 +55,24 @@ class UsersController extends AppController
         return $this->redirect($this->Auth->logout());
     }
 
-    public function controlpanel() {}
+    public function controlpanel() {
+        $this->loadModel('Website');
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->Website->save($this->request->data)) {
+                if($this->request->data['Website']['currentWallpaper'] == 0) {
+                    $background = mt_rand(1, $this->request->data['Website']['numWallpapers']);
+                } else {
+                    $background = $this->request->data['Website']['currentWallpaper'];
+                }
+                $this->Session->write('background', $background);
+                $this->Flash->success(__('The website has been saved.'));
+                return $this->redirect(array('action' => 'controlpanel'));
+            } else {
+                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            }
+        }
+        $this->request->data = $this->Website->find('first');
+    }
 
     /**
      * view method

@@ -5,15 +5,11 @@
     </div>
 <div class="row" style="margin-bottom: 10px">
     <div class="col-lg-6">
-        <div class="btn btn-default">
-        <?php echo $this->Html->link(__('Add Card'), array('action' => 'add')); ?>
-        </div>
+        <?php echo $this->Html->link(__('Add Card'), array('action' => 'add'), array('class' => 'btn btn-default')); ?>
     </div>
     <div class="col-lg-6">
-        <div class="btn btn-default">
         <?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users',
-            'action' => 'controlpanel')); ?>
-        </div>
+            'action' => 'controlpanel'), array('class' => 'btn btn-default')); ?>
     </div>
 </div>
 
