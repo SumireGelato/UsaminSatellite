@@ -25,8 +25,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <?php echo $title_for_layout; ?>
     </title>
     <?php
-    //		echo $this->Html->meta('icon');
-    //echo $this->Html->css('cake.generic.css');
     echo $this->Html->css('http://mplus-fonts.osdn.jp/webfonts/basic_latin/mplus_webfonts.css');
     echo $this->Html->css('http://mplus-fonts.osdn.jp/webfonts/general-j/mplus_webfonts.css');
     echo $this->Html->css('bootstrap.css');
@@ -67,7 +65,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <!--    <div class="navbar-wrapper">-->
             <div class="container-fluid">
 
                 <nav class="navbar navbar-default" role="navigation">
@@ -126,10 +123,21 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 </li>
                                 <?php
                                 if ($this->Session->read('Auth.User')) {
-                                    echo '<li>' . $this->Html->link('Control Panel',
-                                            array('controller' => 'users', 'action' => 'controlpanel')) . '</li>';
-                                    echo '<li>' . $this->Html->link('Log Out',
-                                            array('controller' => 'users', 'action' => 'logout')) . '</li>';
+                                ?>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><?php echo $this->Html->link('Control Panel', array('controller' => 'users', 'action' => 'controlpanel')); ?></li>
+                                            <li><?php echo $this->Html->link('Cards', array('controller' => 'cards', 'action' => 'adminindex')); ?></li>
+                                            <li><?php echo $this->Html->link('Events', array('controller' => 'events', 'action' => 'adminindex')); ?></li>
+                                            <li><?php echo $this->Html->link('Songs', array('controller' => 'songs', 'action' => 'adminindex')); ?></li>
+                                            <li><?php echo $this->Html->link('Idols', array('controller' => 'idols', 'action' => 'adminindex')); ?></li>
+                                            <li><?php echo $this->Html->link('Gacha', array('controller' => 'gachas', 'action' => 'adminindex')); ?></li>
+                                        </ul>
+                                    </li>
+                                <?php
+                                    echo '<li>' . $this->Html->link('Log Out', array('controller' => 'users', 'action' => 'logout')) . '</li>';
                                 }
                                 ?>
                             </ul>
@@ -140,8 +148,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         </div>
                     </div>
                 </nav>
-
-                <!--        </div>-->
             </div>
         </div>
     </div>
@@ -151,10 +157,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <?php echo $this->fetch('content'); ?>
         <a href="#" id="back-to-top" title="Back to top"><span class="glyphicon glyphicon-chevron-up" style="font-size: 1.5em"></span></a>
     </div>
-        <!--    <footer>
-            <p class="pull-right"><a href="#">Back to top</a></p>
-            <p>&copy; &middot;</p>
-        </footer>-->
 </div>
 <!-- End get Content -->
 </body>
