@@ -205,4 +205,10 @@ class Song extends AppModel
             ),
         ),
     );
+
+    public $hasOne = array(
+        'Event' => array(
+            'className' => 'Event'
+        )
+    );
 }

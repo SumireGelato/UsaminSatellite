@@ -107,4 +107,14 @@ class Event extends AppModel
         )
     );
 
+    public $belongsTo = array(
+        'Song' => array(
+            'className' => 'Song',
+            'foreignKey' => 'song_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        )
+    );
+
 }

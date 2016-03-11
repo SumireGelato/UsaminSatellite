@@ -10,6 +10,11 @@ $this->set('title_for_layout', 'Edit Event');
     <div class="col-lg-4"><?php echo $this->Html->link(__('Event List'), array('action' => 'adminindex'), array('class' => 'noLinkStyle')); ?></div>
     <div class="col-lg-4"><?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users', 'action' => 'controlpanel'), array('class' => 'noLinkStyle')); ?></div>
 </div>
+<div class="row container">
+    <div class="col-lg-12">
+        <p>Remember to add the song before the event for easier data entry!</p>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <?php
@@ -38,6 +43,7 @@ $this->set('title_for_layout', 'Edit Event');
             echo $this->Form->input('type', array('options' => $options));
             echo '</div>';
             echo '<div class="col-lg-4">';
+            echo $this->Form->input('song_id', array('options' => $songs, 'empty' => 'No Song'));
             echo '<div class="row">';
             echo '<div class="col-xs-6">';
             echo $this->Form->input('t1', array('type' => 'text'));

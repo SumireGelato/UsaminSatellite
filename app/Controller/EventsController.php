@@ -85,6 +85,7 @@ class EventsController extends AppController
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }
         }
+        $this->set('songs', $this->Event->Song->find('list', array('fields' => array('Song.eName'))));
     }
 
     /**
@@ -138,6 +139,7 @@ class EventsController extends AppController
         } else {
             $options = array('conditions' => array('Event.' . $this->Event->primaryKey => $id));
             $this->request->data = $this->Event->find('first', $options);
+            $this->set('songs', $this->Event->Song->find('list', array('fields' => array('Song.eName'))));
         }
     }
 

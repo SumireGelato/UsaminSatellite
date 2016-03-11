@@ -18,7 +18,7 @@ class SongsController extends AppController
     public $components = array('Paginator');
 
     /**
-     * index method
+     * adminindex method
      *
      * @return void
      */
@@ -29,19 +29,14 @@ class SongsController extends AppController
     }
 
     /**
-     * view method
+     * index method
      *
-     * @throws NotFoundException
-     * @param string $id
      * @return void
      */
-    public function view($id = null)
+    public function index()
     {
-        if (!$this->Song->exists($id)) {
-            throw new NotFoundException(__('Invalid song'));
-        }
-        $options = array('conditions' => array('Song.' . $this->Song->primaryKey => $id));
-        $this->set('song', $this->Song->find('first', $options));
+        $this->Song->recursive = 0;
+        $this->set('songs', $this->Paginator->paginate());
     }
 
     /**
