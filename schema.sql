@@ -71,15 +71,6 @@ CREATE TABLE `gacha` (
   `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `gacha` (`id`, `eName`, `jName`, `dateStart`, `dateFinish`, `pic`) VALUES
-(1, 'Made with Love Valentines Day Gacha', 'メイド with LOVE バレンタインデーガシャ', '2016-01-31 15:00:00', '2016-02-10 14:59:59', 'Made with Love Valentines Day Gacha.png'),
-(2, 'Starry Moments Nighttime Gacha', '星々のひととき ナイトタイムガシャ', '2016-02-29 15:00:00', '2016-03-11 14:59:00', 'Starry Moments Nighttime Gacha.png'),
-(3, 'Happy New Year Gacha', 'ハッピーニューイヤーガシャ', '2015-12-30 15:00:00', '2016-01-16 14:59:59', 'Happy New Year Gacha.png'),
-(4, 'Present for you! Chrismas Gift Gacha', 'キミに届け！クリスマスプレゼントガシャ', '2015-11-30 15:00:00', '2015-12-14 14:59:59', 'Present for you! Chrismas Gift Gacha.png'),
-(5, 'Laid Back and Relaxing, Cosy Hot Springs Gacha', 'まったりのんびりぽかぽか温泉ガシャ', '2015-10-31 15:00:00', '2015-11-13 14:59:59', 'Laid Back and Relaxing, Cosy Hot Springs Gacha.png'),
-(6, 'Sweet Moments Sweet Halloween Gacha', '甘いひととき スウィートハロウィンガシャ', '2015-09-30 15:00:00', '2015-10-13 14:59:59', 'Sweet Moments Sweet Halloween Gacha.png'),
-(7, 'Platinum Gacha (Non-Limited)', 'プラチナガシャ', '2016-03-11 15:00:00', '2016-03-18 14:59:00', NULL);
-
 CREATE TABLE `idols` (
   `id` int(10) UNSIGNED NOT NULL,
   `eName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -120,6 +111,7 @@ CREATE TABLE `songs` (
   `id` int(10) UNSIGNED NOT NULL,
   `eName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `translated` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `bpm` int(11) NOT NULL,
   `unlockCon` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -139,10 +131,6 @@ CREATE TABLE `songs` (
   `masterNotes` int(11) NOT NULL,
   `dateAdded` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-INSERT INTO `songs` (`id`, `eName`, `jName`, `type`, `bpm`, `unlockCon`, `availability`, `coverArt`, `debutLvl`, `debutStam`, `debutNotes`, `regLvl`, `regStam`, `regNotes`, `proLvl`, `proStam`, `proNotes`, `masterLvl`, `masterStam`, `masterNotes`, `dateAdded`) VALUES
-(1, 'Please! Cinderella', 'お願い！シンデレラ', 'All', 175, 'Complete Tutorial', 'Always', 'Onegai! Cinderella.jpg', 5, 10, 46, 10, 12, 205, 15, 15, 341, 20, 18, 477, '2015-09-03'),
-(2, 'Orange Sapphire', 'Orange Sapphire', 'Passion', 162, 'Past Event Song', 'Always', 'Orange Sapphire.jpg', 8, 11, 116, 13, 13, 214, 17, 16, 411, 26, 19, 719, '2015-12-28');
 
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
@@ -211,7 +199,7 @@ ALTER TABLE `idols`
 ALTER TABLE `news`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 ALTER TABLE `songs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 

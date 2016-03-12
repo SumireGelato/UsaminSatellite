@@ -25,26 +25,30 @@ $this->set('title_for_layout', 'Add Song');
         <fieldset>
             <?php
             echo '<div class="row">';
-            echo '<div class="col-lg-4">';
+            echo '<div class="col-lg-3">';
             echo $this->Form->input('eName');
             echo $this->Form->input('jName');
+            echo $this->Form->input('translated');
+            echo '</div>';
+            echo '<div class="col-lg-3">';
             $options = array('All' => 'All', 'Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion');
             echo $this->Form->input('type', array('options' => $options));
+            echo $this->Form->input('bpm', array('type' => 'text'));
+            echo $this->Form->input('unlockCon');
             echo '</div>';
-            echo '<div class="col-lg-4">';
-            echo $this->Form->input('bpm');
+            echo '<div class="col-lg-3">';
             //Avail checkboxes
             $options = array(
                 'Always' => array(
                     'Always' => 'Always Available',
-                    'Event' => 'Event Song'
+                    'Limited' => 'Limited(Past Event Song, etc.)'
                 ),
                 'Sometimes' => array(
                     'Weekday' => 'Limited by weekdays'
                 ),
                 'Unavailable' => array(
-                    'Past Event' => 'Past Event',
-                    'Other' => 'Other'
+                    'Unavailable - Past Event' => 'Past Event',
+                    'Unavailable - Other' => 'Other'
                 )
             );
             echo $this->Form->input('availDropdown', array('options' => $options, 'empty' => '', 'id' => 'availDropdown'));
@@ -52,8 +56,7 @@ $this->set('title_for_layout', 'Add Song');
             echo '<div id="fieldSwitch"></div>';
             echo '</div>';
             echo '</div>';
-            echo '<div class="col-lg-4">';
-            echo $this->Form->input('unlockCon');
+            echo '<div class="col-lg-3">';
             echo $this->Form->input('dateAdded', array('type' => 'text', 'class' => 'form-control', 'id' => 'datepicker'));
             echo $this->Form->input('coverArt', array('type' => 'file'));
             echo '</div>';
@@ -97,18 +100,18 @@ $this->set('title_for_layout', 'Add Song');
         $('#availDropdown').change(function () {
             if($(this).val() == 'Weekday') {
                 $('#fieldSwitch').empty().append(
-                    '<label><input type="checkbox" name="data[Song][availability][sunday]" value="Sunday" id="SongDay1" />Sunday</label>' +
-                    '<label><input type="checkbox" name="data[Song][availability][monday]" value="Monday" id="SongDay2" />Monday</label>' +
-                    '<label><input type="checkbox" name="data[Song][availability][tuesday]" value="Tuesday" id="SongDay3" />Tuesday</label>' +
-                    '<label><input type="checkbox" name="data[Song][availability][wednesday]" value="Wednesday" id="SongDay4" />Wednesday</label>' +
-                    '<label><input type="checkbox" name="data[Song][availability][thursday]" value="Thursday" id="SongDay5" />Thursday</label>' +
-                    '<label><input type="checkbox" name="data[Song][availability][friday]" value="Friday" id="SongDay6" />Friday</label>' +
-                    '<label><input type="checkbox" name="data[Song][availability][saturday]" value="Saturday" id="SongDay1" />Saturday</label>'
+                    '<label><input type="checkbox" name="data[Song][availDetails][sunday]" value="Sunday" id="SongDay1" />Sunday</label>' +
+                    '<label><input type="checkbox" name="data[Song][availDetails][monday]" value="Monday" id="SongDay2" />Monday</label>' +
+                    '<label><input type="checkbox" name="data[Song][availDetails][tuesday]" value="Tuesday" id="SongDay3" />Tuesday</label>' +
+                    '<label><input type="checkbox" name="data[Song][availDetails][wednesday]" value="Wednesday" id="SongDay4" />Wednesday</label>' +
+                    '<label><input type="checkbox" name="data[Song][availDetails][thursday]" value="Thursday" id="SongDay5" />Thursday</label>' +
+                    '<label><input type="checkbox" name="data[Song][availDetails][friday]" value="Friday" id="SongDay6" />Friday</label>' +
+                    '<label><input type="checkbox" name="data[Song][availDetails][saturday]" value="Saturday" id="SongDay7" />Saturday</label>'
                 );
             } else {
                 $('#fieldSwitch').empty().append(
                     '<label for="SongComment">Comment</label>' +
-                    '<input name="data[Song][availability][comment]" type="text" class="form-control" id="SongComment" />'
+                    '<input name="data[Song][availDetails][comment]" type="text" class="form-control" id="SongComment" />'
                 );
             }
         });

@@ -20,7 +20,9 @@
             <tr>
                 <th>eName</th>
                 <th>jName</th>
+                <th>translated</th>
                 <th>type</th>
+                <th>unlock</th>
                 <th>availability</th>
                 <th>dateAdded</th>
                 <th>coverArt</th>
@@ -32,7 +34,9 @@
                 <tr>
                     <td><?php echo h($song['Song']['eName']); ?></td>
                     <td><?php echo h($song['Song']['jName']); ?></td>
+                    <td><?php echo h($song['Song']['translated']); ?></td>
                     <td><?php echo h($song['Song']['type']); ?></td>
+                    <td><?php echo h($song['Song']['unlockCon']); ?></td>
                     <td><?php echo h($song['Song']['availability']); ?></td>
                     <td><?php echo h($song['Song']['dateAdded']); ?></td>
                     <td><?php echo h($song['Song']['coverArt']); ?></td>
@@ -49,7 +53,8 @@
             $(document).ready( function () {
                 $('#table').DataTable({
                     "responsive":     true,
-                    "order":          [[ 4, 'desc' ]]
+                    "order":          [[ 6, 'desc' ]],
+                    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
                 });
             } );
         </script>
