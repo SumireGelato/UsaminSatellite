@@ -45,6 +45,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <link rel="stylesheet" type="text/css" href="<?php echo $this->Html->url('/'); ?>DataTables/datatables.css"/>
     <script type="text/javascript" src="<?php echo $this->Html->url('/'); ?>DataTables/datatables.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->Html->url('/'); ?>slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->Html->url('/'); ?>slick/slick-theme.css"/>
+    <script type="text/javascript" src="<?php echo $this->Html->url('/'); ?>slick/slick.min.js"></script>
+
+
     <!--    Favicon Stuff-->
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
     <link rel="icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
