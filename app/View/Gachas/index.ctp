@@ -443,10 +443,11 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
     var limitedCountdownElement = $("#limitedJstCountdown");
     var notLimitedCountdownElement = $("#noLimitJstCountdown");
     var countdownElement;
-    if (limitedCountdownElement === undefined) {
-        countdownElement = notLimitedCountdownElement;
-    } else {
+    if (limitedCountdownElement.length) {
         countdownElement = limitedCountdownElement;
+
+    } else {
+        countdownElement = notLimitedCountdownElement;
     }
     var finalDate = countdownElement.data('countdown');
     var jst = moment.tz(finalDate, "Japan");
@@ -457,10 +458,10 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
     var limitedBrowserTimeElement = $("#limitedBrowserTime");
     var notLimitedBrowserTimeElement = $("noLimitBrowserTime");
     var browserTimeElement;
-    if (limitedBrowserTimeElement === undefined) {
-        browserTimeElement = notLimitedBrowserTimeElement;
-    } else {
+    if (limitedBrowserTimeElement.length) {
         browserTimeElement = limitedBrowserTimeElement;
+    } else {
+        browserTimeElement = notLimitedBrowserTimeElement;
     }
     switch (true) {
         case (hoursDifference < 0)://behind jst
