@@ -36,7 +36,7 @@ class SongsController extends AppController
     public function index()
     {
         $this->Song->recursive = 0;
-        $this->set('songs', $this->Song->find('all'));
+        $this->set('songs', $this->Song->find('all', array('order' => 'dateAdded desc')));
     }
 
     /**
