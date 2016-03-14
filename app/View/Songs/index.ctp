@@ -9,30 +9,40 @@ $this->set('title_for_layout', 'Usamin S@telite | Songs List');
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <div class="always">
-            <?php foreach($songs as $song) {
-                echo '<div>'.$this->Html->image('songs/'.$song['Song']['coverArt']).'</div>';
-            } ?>
+        <div class="ContentFlow" id="always">
+            <div class="loadIndicator"><div class="indicator"></div></div>
+            <div class="flow">
+                <?php foreach($songs as $song) {
+                    echo $this->Html->image('songs/'.$song['Song']['coverArt'], array('class' => 'item', 'title' => $song['Song']['eName']));
+                } ?>
+            </div>
+            <div class="globalCaption"></div>
+            <div class="scrollbar"><div class="slider"><div class="position"></div></div></div>
         </div>
     </div>
 </div>
 <hr/>
 <div class="row">
     <div class="col-lg-12">
-        <div class="limited">
-            <?php foreach($songs as $song) {
-                echo '<div>'.$this->Html->image('songs/'.$song['Song']['coverArt']).'</div>';
-            } ?>
+        <div class="ContentFlow" id="limited">
+            <div class="loadIndicator"><div class="indicator"></div></div>
+            <div class="flow">
+                <?php foreach($songs as $song) {
+                    echo $this->Html->image('songs/'.$song['Song']['coverArt'], array('class' => 'item', 'title' => $song['Song']['eName']));
+                } ?>
+            </div>
+            <div class="globalCaption"></div>
+            <div class="scrollbar"><div class="slider"><div class="position"></div></div></div>
         </div>
     </div>
 </div>
-
 <script>
-    $('.always').slick({
+    var myNewFlow1 = new ContentFlow('always', { reflectionHeight: 0, scrollWheelSpeed: 0 } ) ;
+    var myNewFlow2 = new ContentFlow('limited', { reflectionHeight: 0, scrollWheelSpeed: 0 } ) ;
+    /*$('.always').slick({
         centerMode: true,
-        centerPadding: '30px',
+        centerPadding: '60px',
         slidesToShow: 3,
-        variableWidth: true,
         responsive: [
             {
                 breakpoint: 768,
@@ -79,6 +89,6 @@ $this->set('title_for_layout', 'Usamin S@telite | Songs List');
                 }
             }
         ]
-    });
+    });*/
 </script>
 
