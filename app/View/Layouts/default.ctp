@@ -49,7 +49,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <!--    <link rel="stylesheet" type="text/css" href="--><?php //echo $this->Html->url('/'); ?><!--slick/slick-theme.css"/>-->
 <!--    <script type="text/javascript" src="--><?php //echo $this->Html->url('/'); ?><!--slick/slick.min.js"></script>-->
 
-    <script type="text/javascript" src="<?php echo $this->Html->url('/'); ?>coverflow/contentflow.js"></script>
+    <script type="text/javascript" src="<?php echo $this->Html->url('/'); ?>coverflow/contentflow_src.js"></script>
 
     <!--    Favicon Stuff-->
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->Html->url('/'); ?>img/favicon.ico"/>
