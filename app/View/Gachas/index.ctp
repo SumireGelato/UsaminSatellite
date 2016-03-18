@@ -3,10 +3,15 @@
 $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
 ?>
 <div class="row text-center">
-    <h1>Current Limited Platinum Gacha</h1>
+    <div class="col-lg-6">
+        <h1>Current Limited Platinum Gacha</h1>
+    </div>
+    <div class="col-lg-6">
+        <h1>Current Non-Limited Platinum Gacha</h1>
+    </div>
 </div>
 <div class="row text-center center-block">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <?php
         $currentGachaIsLimited = false;
         foreach ($gachas as $gacha) {
@@ -139,12 +144,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
         }
         ?>
     </div>
-</div>
-<div class="row text-center">
-    <h1>Current Non-Limited Platinum Gacha</h1>
-</div>
-<div class="row text-center center-block">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <?php
         foreach ($gachas as $gacha) {
             if (!$this->Time->isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['eName'] == 'Platinum Gacha (Non-Limited)') {
@@ -264,7 +264,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
                         </div>
                     </div>
                 </div>
-            <?php
+                <?php
             }
         }
         ?>
@@ -481,10 +481,10 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
     }
     countdownElement.countdown(jst.toDate())
         .on('update.countdown', function (event) {
-            $(this).html("<h2>" + event.strftime('%-D day%!D %-H hour%!H %-M minute%!M %-S second%!S') + " left</h2>");
+            $(this).html("<h3 style='margin: 0'>" + event.strftime('%-D day%!D %-H hour%!H %-M minute%!M %-S second%!S') + " left</h3>");
         })
         .on('finish.countdown', function (event) {
-            $(this).html('<h2>Gacha Over!</h2>');
+            $(this).html('<h3 style="margin: 0">Gacha Over!</h3>');
         });
     $(function () {
         var $reward = $('.reward');

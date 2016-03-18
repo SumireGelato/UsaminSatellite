@@ -33,7 +33,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Songs List');
                             foreach ($songs as $song) {
                                 ?>
                                 <div class="col-xs-6 col-lg-3 col-xxl-2 center-block text-center">
-                                    <?php echo $this->Html->image('songs/'.$song['Song']['coverArt'], array('class' => 'img-responsive cover')) ?>
+                                    <?php echo $this->Html->image('songs/'.$song['Song']['coverArt'], array('class' => 'img-responsive cover center-block')) ?>
                                 </div>
                             <?php
                             }
@@ -54,7 +54,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Songs List');
                                 foreach ($songs as $song) {
                                     ?>
                                     <div class="col-xs-6 col-lg-3 col-xxl-2 center-block text-center">
-                                        <?php echo $this->Html->image('songs/'.$song['Song']['coverArt'], array('class' => 'img-responsive cover')) ?>
+                                        <?php echo $this->Html->image('songs/'.$song['Song']['coverArt'], array('class' => 'img-responsive cover center-block')) ?>
                                     </div>
                                 <?php
                                 }
@@ -75,7 +75,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Songs List');
                                     foreach ($songs as $song) {
                                         ?>
                                         <div class="col-xs-6 col-lg-3 col-xxl-2 center-block text-center">
-                                            <?php echo $this->Html->image('songs/'.$song['Song']['coverArt'], array('class' => 'img-responsive cover')) ?>
+                                            <?php echo $this->Html->image('songs/'.$song['Song']['coverArt'], array('class' => 'img-responsive cover center-block')) ?>
                                         </div>
                                     <?php
                                     }
