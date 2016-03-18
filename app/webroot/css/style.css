@@ -1,6 +1,5 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
-
 body {
     /*padding-bottom: 40px;*/
     background: inherit;
@@ -38,7 +37,22 @@ a:active {
 }
 
 .noLinkStyle {
-    text-decoration: inherit;
+    text-decoration: none;
+    color: inherit;
+}
+
+.noLinkStyle:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.noLinkStyle:focus {
+    text-decoration: none;
+    color: inherit;
+}
+
+.noLinkStyle:active {
+    text-decoration: none;
     color: inherit;
 }
 
@@ -534,6 +548,17 @@ a:active {
     color: #4a3e1c;
 }
 
+/* SONGS LIST
+-------------------------------------------------- */
+.songsTab {
+    height: 300px;
+    overflow: scroll;
+}
+
+.cover {
+    cursor: pointer;
+}
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 @media (max-width: 767px) {
@@ -547,6 +572,10 @@ a:active {
 
     .mobileOnly {
         padding-top: 10px;
+    }
+
+    .songsTab {
+        height: 200px;
     }
 }
 
@@ -615,6 +644,10 @@ a:active {
 
     .profilePic {
         margin-left: 150px;
+    }
+
+    .songsTab {
+        height: 500px;
     }
 }
 

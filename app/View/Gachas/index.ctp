@@ -282,7 +282,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
         $numItems = 0;
         $totalItems = 1;
         foreach ($gachas as $gacha) {
-            if ($this->Time->isPast($gacha['Gacha']['dateFinish'])) {
+            if ($this->Time->isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['eName'] != 'Platinum Gacha (Non-Limited)') {
                 ?>
                 <div class="col-md-6" style="padding-bottom: 10px">
                     <div class="panel panel-default">
@@ -456,7 +456,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
     var browserConverted = jst.clone().tz(browserTz).format("h:m:s A D/M/YYYY");
     var hoursDifference = (moment.parseZone(browserTime.format()).utcOffset() - moment.parseZone(jst.format()).utcOffset()) / 60;
     var limitedBrowserTimeElement = $("#limitedBrowserTime");
-    var notLimitedBrowserTimeElement = $("noLimitBrowserTime");
+    var notLimitedBrowserTimeElement = $("#noLimitBrowserTime");
     var browserTimeElement;
     if (limitedBrowserTimeElement.length) {
         browserTimeElement = limitedBrowserTimeElement;

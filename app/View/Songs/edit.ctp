@@ -55,6 +55,7 @@ $this->set('title_for_layout', 'Edit Song');
             echo $this->Form->input('availDropdown', array('options' => $options, 'empty' => '', 'id' => 'availDropdown'));
             echo '<div class="form-group">';
             if($this->request->data['Song']['availDropdown'] == 'Weekday') {
+                echo '<div class="fieldSwitch">';
                 $weekdays = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
                 $size = sizeof($weekdays);
                 for($i=0;$i<$size;$i++) {
@@ -66,16 +67,19 @@ $this->set('title_for_layout', 'Edit Song');
                         id="SongDay'.$i.'"/>'.$weekdays[$i].'</label>';
                     }
                 }
+                echo '</div>';
                 ?>
             <?php
-            } else {
+            } else if(!empty($this->request->data['Song']['availDetails']['comment'])) {
                 ?>
                 <label for="SongComment">Comment</label>
                 <input name="data[Song][availDetails][comment]" value="<?php echo $this->request->data['Song']['availDetails']['comment']; ?>"
-                type="text" class="form-control" id="SongComment" />
+                type="text" class="form-control fieldSwitch" id="SongComment" />
             <?php
             }
-            echo '<div id="fieldSwitch"></div>';
+            else {
+                echo '<div class="fieldSwitch"></div>';
+            }
             echo '</div>';
             echo '</div>';
             echo '<div class="col-lg-3">';
@@ -121,19 +125,21 @@ $this->set('title_for_layout', 'Edit Song');
     $(document).ready(function () {
         $('#availDropdown').change(function () {
             if($(this).val() == 'Weekday') {
-                $('#fieldSwitch').empty().append(
+                $('.fieldSwitch').empty().append(
+                    '<div class="fieldSwitch">' +
                     '<label><input type="checkbox" name="data[Song][availDetails][sunday]" value="Sunday" id="SongDay1" />Sunday</label>' +
                     '<label><input type="checkbox" name="data[Song][availDetails][monday]" value="Monday" id="SongDay2" />Monday</label>' +
                     '<label><input type="checkbox" name="data[Song][availDetails][tuesday]" value="Tuesday" id="SongDay3" />Tuesday</label>' +
                     '<label><input type="checkbox" name="data[Song][availDetails][wednesday]" value="Wednesday" id="SongDay4" />Wednesday</label>' +
                     '<label><input type="checkbox" name="data[Song][availDetails][thursday]" value="Thursday" id="SongDay5" />Thursday</label>' +
                     '<label><input type="checkbox" name="data[Song][availDetails][friday]" value="Friday" id="SongDay6" />Friday</label>' +
-                    '<label><input type="checkbox" name="data[Song][availDetails][saturday]" value="Saturday" id="SongDay7" />Saturday</label>'
+                    '<label><input type="checkbox" name="data[Song][availDetails][saturday]" value="Saturday" id="SongDay7" />Saturday</label>' +
+                    '</div>'
                 );
             } else {
-                $('#fieldSwitch').empty().append(
+                $('.fieldSwitch').empty().append(
                     '<label for="SongComment">Comment</label>' +
-                    '<input name="data[Song][availDetails][comment]" type="text" class="form-control" id="SongComment" />'
+                    '<input name="data[Song][availDetails][comment]" type="text" class="form-control fieldSwitch" id="SongComment" />'
                 );
             }
         });

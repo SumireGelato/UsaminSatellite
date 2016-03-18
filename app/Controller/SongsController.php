@@ -36,7 +36,17 @@ class SongsController extends AppController
     public function index()
     {
         $this->Song->recursive = 0;
-        $this->set('songs', $this->Song->find('all', array('order' => 'dateAdded desc')));
+        if($this->request->query('type') === null) {
+            $type = 'Always';
+        }
+        else {
+            $type = $this->request->query('type');
+        }
+        $this->set('type', $type);
+        $this->set('songs', $this->Song->find('all', array(
+            'conditions' => array('Song.availability LIKE' => $type.'%'),
+            'order' => array('Song.dateAdded' => 'desc', 'Song.type' => 'desc')
+        )));
     }
 
     /**
