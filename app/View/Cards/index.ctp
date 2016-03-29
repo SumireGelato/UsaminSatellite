@@ -196,7 +196,7 @@ if(empty($cards)) {
 foreach ($cards as $card) { ?>
     <!--CARD-->
 <div class="col-lg-4 col-xl-3">
-<div class="panel panel-default">
+<div class="panel panel-default" style="margin-bottom: 10px">
 <?php if ($card['Card']['type'] == 'Cool') { ?>
     <div class="panel-heading cool" role="tab" <?php echo 'id="heading' . $totalItems . '"';
     if ($card['Card']['rarity'] != 'N' || $card['Card']['rarity'] != 'R') echo 'style="padding: 0"';?>>
@@ -230,7 +230,7 @@ foreach ($cards as $card) { ?>
                 </a>
             </div>
         </div>
-        <div class="row" style="padding-bottom: 5px">
+        <div class="row text-center" style="padding-bottom: 5px">
             <div class="col-xs-12">
                 <?php
                 switch ($card['Card']['specialSkillType']) {
@@ -270,7 +270,7 @@ foreach ($cards as $card) { ?>
     <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"
          role="tabpanel"
          aria-labelledby="<?php echo "heading" . $totalItems; ?>">
-    <div class="panel-body">
+    <div class="panel-body text-center">
     <div class="row">
         <div class="col-xs-12">
             <h4 style="font-weight: bold"><?php echo $card['Card']['eName']; ?></h4>

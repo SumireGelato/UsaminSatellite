@@ -20,6 +20,19 @@ a:active {
     color: lightblue;
 }
 
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
 .awkCardImage {
     display: none;
 }
@@ -273,43 +286,6 @@ a:active {
     margin-top: 0;
 }
 
-/* Center align the text within the three columns below the carousel */
-.marketing .col-lg-4 {
-    margin-bottom: 10px;
-}
-
-.marketing .col-xs-12 {
-    text-align: center;
-}
-
-.marketing .col-lg-4 img{
-    margin-bottom: 5px;
-}
-
-.marketing h2 {
-    font-weight: normal;
-}
-
-.marketing .col-xs-12 p {
-    margin-right: 10px;
-    margin-left: 10px;
-}
-
-/* Center align the text within the three columns below the carousel */
-.marketing .col-lg-2 {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.marketing h2 {
-    font-weight: normal;
-}
-
-.marketing .col-lg-2 p {
-    margin-right: 10px;
-    margin-left: 10px;
-}
-
 /* Featurettes
 ------------------------- */
 
@@ -550,13 +526,41 @@ a:active {
 
 /* SONGS LIST
 -------------------------------------------------- */
-.songsTab {
-    height: 300px;
-    overflow: scroll;
+#songInfo {
+    position: fixed;
+    top: 70px;
+    right: 0;
+    margin-right: 5px;
+    width: 360px;
+    height: auto;
+    font-size: 0.9em;
+}
+
+#songInfo p {
+    margin-bottom: 0;
+}
+
+#songInfo > .panel-body {
+    padding-bottom: 5px;
+}
+
+#songInfo > .panel-body > .row {
+    padding-bottom: 5px;
+}
+
+#removeInfo {
+    display: none;
 }
 
 .cover {
     cursor: pointer;
+    height: 75%;
+    width: 75%;
+    margin-bottom: 10px;
+}
+
+.stats {
+    margin-bottom: 0;
 }
 
 /* RESPONSIVE CSS
@@ -572,10 +576,6 @@ a:active {
 
     .mobileOnly {
         padding-top: 10px;
-    }
-
-    .songsTab {
-        height: 200px;
     }
 }
 
@@ -645,10 +645,6 @@ a:active {
     .profilePic {
         margin-left: 150px;
     }
-
-    .songsTab {
-        height: 500px;
-    }
 }
 
 @media (max-width: 979px) {
@@ -689,5 +685,23 @@ a:active {
 
     .featurette-heading {
         margin-top: 120px;
+    }
+}
+
+@media (max-width: 980px) {
+    #songInfo {
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        right: 0;
+        left: 0;
+        width: auto;
+        margin: 0;
+        font-size: 0.8em;
+    }
+
+    #removeInfo {
+        display: inline;
+        cursor: pointer;
     }
 }

@@ -47,14 +47,12 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
     </div>
     <!-- /.col-lg-4 -->
     <div class="col-lg-4">
-        <img class="img-circle"
-             src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-             alt="Generic placeholder image" width="140" height="140">
+        <?php echo $this->Html->image('songs.png', array('alt' => 'Events', 'class' => 'img-circle homePics', 'height' => '140',
+            'width' => '280'));?>
 
         <h2>Songs</h2>
 
-        <h4>Song info including difficulty, unlock conditions and more! Also includes flavor information about each
-            song!</h4>
+        <h4>Song info including difficulty, unlock conditions and more!</h4>
 
         <p>
             <?php echo $this->Html->link('Go <span
@@ -79,7 +77,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
     <div class="col-lg-3">
         <?php echo $this->Html->link($this->Html->image('puchis/' . $num2 . '.png', array('class' => 'img-square', 'alt' => 'Puchi2', 'height' => 180)) .
             '<h3>About This Website</h3>', '/about', array('escape' => false)) ?>
-        <p>What is <?php echo $this->Html->image('usamin-logo.png', array('alt'=>'Starlight Stage', 'height' => '89', 'width' => '176')); ?>?</p>
+        <p>What is Usamin S@telite?</p>
     </div>
     <div class="col-lg-2">
         <?php echo $this->Html->link($this->Html->image('puchis/' . $num3 . '.png', array('class' => 'img-square', 'alt' => 'Puchi3', 'height' => 180)) .

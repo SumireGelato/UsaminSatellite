@@ -305,7 +305,7 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
             </a>
         </div>
     </div>
-    <div class="row" style="padding-bottom: 5px">
+    <div class="row text-center" style="padding-bottom: 5px">
         <div class="col-xs-12">
             <?php
             switch ($card['specialSkillType']) {
@@ -345,7 +345,7 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
 <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"
      role="tabpanel"
      aria-labelledby="<?php echo "heading" . $totalItems; ?>">
-<div class="panel-body">
+<div class="panel-body text-center">
 <div class="row">
     <div class="col-xs-12">
         <h4 style="font-weight: bold"><?php echo $card['eName']; ?></h4>

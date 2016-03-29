@@ -10,7 +10,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
         <?php
         $currentEventExists = false;
         foreach ($events as $event) {
-            if (!$this->Time->isPast($event['Event']['finish'])) {
+            if ($this->Time->isFuture($event['Event']['finish']) && $this->Time->isPast($event['Event']['begin'])) {
                 $currentEventExists = true;
                 ?>
                 <div class="row">
@@ -55,36 +55,37 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                                         </div>
                                         <div class="row">
                                             <h5>Max Stats</h5>
-                                        </div>
+                                        </div> ' ?>
                                         <div class="row">
                                             <div class="col-xs-5ths">
                                                 <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['baseMaxLife'] . '</p>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;"><?php if($card['baseMaxLife'] == 0) echo '?'; else echo $card['baseMaxLife']; ?></p>
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['baseMaxVocal'] . '</p>
+                                                <p><?php if($card['baseMaxVocal'] == 0) echo '?'; else echo $card['baseMaxVocal']; ?></p>
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['baseMaxDance'] . '</p>
+                                                <p><?php if($card['baseMaxDance'] == 0) echo '?'; else echo $card['baseMaxDance']; ?></p>
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['baseMaxVisual'] . '</p>
+                                                <p><?php if($card['baseMaxVisual'] == 0) echo '?'; else echo $card['baseMaxVisual']; ?></p>
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['baseMaxTotal']) . '</p>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;"><?php if($card['baseMaxTotal'] == 0) echo '?'; else echo $card['baseMaxTotal']; ?></p>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                    </div>';
+                                <?php echo
+                                        '<div class="row">
+                                                <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
+                                            </div>
+                                            <div class="row">
+                                                <p>' . $card['specialSkillText'] . '</p>
+                                            </div>
+                                        </div>';
                                 echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
                                 echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
                                     'class' => 'btn btn-xs rewardIcons'));
@@ -100,30 +101,31 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
                                         </div>
                                         <div class="row">
                                             <h5>Max Stats</h5>
-                                        </div>
+                                        </div>'?>
                                         <div class="row">
                                             <div class="col-xs-5ths">
                                                 <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['awkMaxLife'] . '</p>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;"><?php if($card['awkMaxLife'] == 0) echo '?'; else echo $card['awkMaxLife'];?></p>
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['awkMaxVocal'] . '</p>
+                                                <p><?php if($card['awkMaxVocal'] == 0) echo '?'; else echo $card['awkMaxVocal'];?></p>
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['awkMaxDance'] . '</p>
+                                                <p><?php if($card['awkMaxDance'] == 0) echo '?'; else echo $card['awkMaxDance'];?></p>
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['awkMaxVisual'] . '</p>
+                                                <p><?php if($card['awkMaxVisual'] == 0) echo '?'; else echo $card['awkMaxVisual'];?></p>
                                             </div>
                                             <div class="col-xs-5ths">
                                                 <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['awkMaxTotal']) . '</p>
+                                                <p style="margin-bottom: 0px; margin-top: -3px;"><?php if($card['awkMaxTotal'] == 0) echo '?'; else echo $card['awkMaxTotal'];?></p>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <?php echo
+                                        '<div class="row">
                                             <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
                                         </div>
                                         <div class="row">

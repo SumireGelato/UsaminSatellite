@@ -65,6 +65,8 @@ class GachasController extends AppController
 
                     move_uploaded_file($pic['tmp_name'], WWW_ROOT . 'img/gacha/' .
                         $picFilename . '.' . $picExt);
+                    chmod(WWW_ROOT . 'img/gacha/' .
+                        $picFilename . '.' . $picExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Gacha']['pic'] = $picFilename .'.'. $picExt;
@@ -130,6 +132,8 @@ class GachasController extends AppController
 
                     move_uploaded_file($pic['tmp_name'], WWW_ROOT . 'img/gacha/' .
                         $picFilename . '.' . $picExt);
+                    chmod(WWW_ROOT . 'img/gacha/' .
+                        $picFilename . '.' . $picExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Gacha']['pic'] = $picFilename .'.'. $picExt;

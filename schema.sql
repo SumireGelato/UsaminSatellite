@@ -95,17 +95,16 @@ CREATE TABLE `idols` (
 CREATE TABLE `news` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
-  `title` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` text COLLATE utf8_unicode_ci NOT NULL,
   `category` char(50) COLLATE utf8_unicode_ci NOT NULL,
-  `body` text COLLATE utf8_unicode_ci NOT NULL,
+  `body` text COLLATE utf8_unicode_ci NULL,
   `created` datetime NOT NULL,
-  `modified` datetime DEFAULT NULL,
-  `isPublished` tinyint(1) NOT NULL
+  `modified` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `news` (`id`, `user_id`, `title`, `category`, `body`, `created`, `modified`, `isPublished`) VALUES
-(1, 1, 'Test Post', 'site', '<h1> This is a published test post </h1>', '2015-09-17 15:33:26', NULL, 1),
-(2, 1, 'Test Post 2', 'game', '<h1> This is a draft test post</h1>', '2015-09-17 15:33:26', NULL, 1);
+INSERT INTO `news` (`id`, `user_id`, `title`, `category`, `body`, `created`, `modified`) VALUES
+(1, 1, 'Test Post', 'site', '<h1> This is a published test post </h1>', '2015-09-17 15:33:26', NULL),
+(2, 1, 'Test Post 2', 'game', '<h1> This is a draft test post</h1>', '2015-09-17 15:33:26', NULL);
 
 CREATE TABLE `songs` (
   `id` int(10) UNSIGNED NOT NULL,
@@ -155,7 +154,7 @@ CREATE TABLE `websites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `websites` (`id`, `numWallpapers`, `currentWallpaper`, `numChibis`, `chibi1`, `chibi2`, `chibi3`) VALUES
-(1, 19, 0, 439, 0, 0, 0);
+(1, 19, 0, 453, 0, 0, 0);
 
 
 ALTER TABLE `cards`
@@ -189,17 +188,17 @@ ALTER TABLE `websites`
 
 
 ALTER TABLE `cards`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 ALTER TABLE `events`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 ALTER TABLE `gacha`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 ALTER TABLE `idols`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 ALTER TABLE `news`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 ALTER TABLE `songs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 

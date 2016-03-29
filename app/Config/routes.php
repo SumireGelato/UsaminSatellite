@@ -46,7 +46,6 @@ Router::connect('/admin/*',array('controller' => 'users', 'action' => 'login'));
 //Human friendly idol addresses
 Router::connect('/idols/:id-:title', array('controller' => 'idols', 'action' => 'view'), array('pass' => array('id', 'title')));
 
-
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

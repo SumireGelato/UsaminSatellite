@@ -182,6 +182,7 @@ class CardsController extends AppController
                     //where we are putting it
                     move_uploaded_file($baseArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         $this->request->data['Card']['card_id'].'.'.$baseExt);
+                    chmod(WWW_ROOT . 'img/cards/' . $this->request->data['Card']['card_id'].'.'.$baseExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.'.$baseExt;
@@ -204,6 +205,8 @@ class CardsController extends AppController
                     //where we are putting it
                     move_uploaded_file($awkArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt);
+                    chmod(WWW_ROOT . 'img/cards/' .
+                        ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt;
@@ -226,6 +229,8 @@ class CardsController extends AppController
                     //where we are putting it
                     move_uploaded_file($baseIconArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         $this->request->data['Card']['card_id']."_icon".'.'.$iconExt);
+                    chmod(WWW_ROOT . 'img/cards/' .
+                        $this->request->data['Card']['card_id']."_icon".'.'.$iconExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Card']['baseIconArt'] = $this->request->data['Card']['card_id']."_icon".'.'.$iconExt;
@@ -248,6 +253,8 @@ class CardsController extends AppController
                     //where we are putting it
                     move_uploaded_file($awkIconArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         ($this->request->data['Card']['card_id'] + 1)."_icon".'.'.$iconExt);
+                    chmod(WWW_ROOT . 'img/cards/' .
+                        ($this->request->data['Card']['card_id'] + 1)."_icon".'.'.$iconExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Card']['awkIconArt'] = ($this->request->data['Card']['card_id'] + 1)."_icon".'.'.$iconExt;
@@ -338,6 +345,8 @@ class CardsController extends AppController
                     //where we are putting it
                     move_uploaded_file($baseArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         $this->request->data['Card']['card_id'].'.'.$baseExt);
+                    chmod(WWW_ROOT . 'img/cards/' .
+                        $this->request->data['Card']['card_id'].'.'.$baseExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Card']['baseArt'] = $this->request->data['Card']['card_id'].'.'.$baseExt;
@@ -360,6 +369,8 @@ class CardsController extends AppController
                     //where we are putting it
                     move_uploaded_file($awkArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt);
+                    chmod(WWW_ROOT . 'img/cards/' .
+                        ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Card']['awkArt'] = ($this->request->data['Card']['card_id'] + 1).'.'.$awkExt;
@@ -382,6 +393,8 @@ class CardsController extends AppController
                     //where we are putting it
                     move_uploaded_file($baseIconArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         $this->request->data['Card']['card_id']."_icon".'.'.$iconExt);
+                    chmod(WWW_ROOT . 'img/cards/' .
+                        $this->request->data['Card']['card_id']."_icon".'.'.$iconExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Card']['baseIconArt'] = $this->request->data['Card']['card_id']."_icon".'.'.$iconExt;
@@ -404,6 +417,8 @@ class CardsController extends AppController
                     //where we are putting it
                     move_uploaded_file($awkIconArt['tmp_name'], WWW_ROOT . 'img/cards/' .
                         ($this->request->data['Card']['card_id'] + 1)."_icon".'.'.$iconExt);
+                    chmod(WWW_ROOT . 'img/cards/' .
+                        ($this->request->data['Card']['card_id'] + 1)."_icon".'.'.$iconExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Card']['awkIconArt'] = ($this->request->data['Card']['card_id'] + 1)."_icon".'.'.$iconExt;

@@ -53,7 +53,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 </head>
 <body onload="startTime()">
-<div class="container-fluid marketing" id="contentContainer">
+<div class="container-fluid" id="contentContainer">
     <div class="row">
         <div class="col-lg-12">
             <noscript>

@@ -36,17 +36,32 @@ class SongsController extends AppController
     public function index()
     {
         $this->Song->recursive = 0;
-        if($this->request->query('type') === null) {
-            $type = 'Always';
+        if($this->request->is('post')) {
+            $id = $this->request->data['id'];
+            $this->layout = 'ajax';
+            $song = $this->Song->find('first', array('conditions' => array('Song.id' => $id)));
+            $this->set('song', $song);
+        } else {
+            if($this->request->query('type') === null) {
+                $type = 'Always';
+            }
+            else {
+                $type = $this->request->query('type');
+            }
+            $this->set('type', $type);
+            if($type == 'Weekday') {
+                $conditions = array('OR' => array(
+                    array('Song.availability LIKE' => $type.'%'),
+                    array('Song.availability LIKE' => 'Limited%')
+                ));
+            } else {
+                $conditions = array('Song.availability LIKE' => $type.'%');
+            }
+            $this->set('songs', $this->Song->find('all', array(
+                'conditions' => $conditions,
+                'order' => array('Song.dateAdded' => 'desc', 'Song.type' => 'desc')
+            )));
         }
-        else {
-            $type = $this->request->query('type');
-        }
-        $this->set('type', $type);
-        $this->set('songs', $this->Song->find('all', array(
-            'conditions' => array('Song.availability LIKE' => $type.'%'),
-            'order' => array('Song.dateAdded' => 'desc', 'Song.type' => 'desc')
-        )));
     }
 
     /**
@@ -74,6 +89,7 @@ class SongsController extends AppController
                     //where we are putting it
                     move_uploaded_file($coverArt['tmp_name'], WWW_ROOT . 'img/songs/' .
                         $this->request->data['Song']['eName'].'.'.$baseExt);
+                    chmod(WWW_ROOT . 'img/songs/' . $this->request->data['Song']['eName'].'.'.$baseExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Song']['coverArt'] = $this->request->data['Song']['eName'].'.'.$baseExt;
@@ -133,6 +149,8 @@ class SongsController extends AppController
                     move_uploaded_file($coverArt['tmp_name'], WWW_ROOT . 'img/songs/' .
                         $this->request->data['Song']['eName'].'.'.$baseExt);
 
+                    chmod(WWW_ROOT . 'img/songs/' . $this->request->data['Song']['eName'].'.'.$baseExt, 0755);
+
                     //prepare the filename for database entry
                     $this->request->data['Song']['coverArt'] = $this->request->data['Song']['eName'].'.'.$baseExt;
                 }
@@ -145,6 +163,9 @@ class SongsController extends AppController
             //REMOVE THIS LATER
 
             $this->request->data['Song']['availability'] = $this->request->data['Song']['availDropdown'];
+            if(!isset($this->request->data['Song']['availDetails'])) {
+                $this->request->data['Song']['availDetails'] = '';
+            }
             foreach($this->request->data['Song']['availDetails'] as $detail) {
                 if(!empty($detail)){
                     $this->request->data['Song']['availability'] = $this->request->data['Song']['availability'] . '/' . $detail;

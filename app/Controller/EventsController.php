@@ -65,6 +65,8 @@ class EventsController extends AppController
 
                     move_uploaded_file($pic['tmp_name'], WWW_ROOT . 'img/events/' .
                         $picFilename . '.' . $picExt);
+                    chmod(WWW_ROOT . 'img/events/' .
+                        $picFilename . '.' . $picExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Event']['pic'] = $picFilename .'.'. $picExt;
@@ -118,6 +120,8 @@ class EventsController extends AppController
 
                     move_uploaded_file($pic['tmp_name'], WWW_ROOT . 'img/events/' .
                         $picFilename . '.' . $picExt);
+                    chmod(WWW_ROOT . 'img/events/' .
+                        $picFilename . '.' . $picExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Event']['pic'] = $picFilename .'.'. $picExt;

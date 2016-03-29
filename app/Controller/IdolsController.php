@@ -103,6 +103,8 @@ class IdolsController extends AppController
                     //where we are putting it
                     move_uploaded_file($profilePic['tmp_name'], WWW_ROOT . 'img/profiles/' .
                         lcfirst($profileFilename).'1.'.$profileExt);
+                    chmod(WWW_ROOT . 'img/profiles/' .
+                        lcfirst($profileFilename).'1.'.$profileExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.'.$profileExt;
@@ -127,6 +129,8 @@ class IdolsController extends AppController
                     //where we are putting it
                     move_uploaded_file($puchiPic['tmp_name'], WWW_ROOT . 'img/profiles/' .
                         lcfirst($puchiFilename).'2.'.$puchiExt);
+                    chmod(WWW_ROOT . 'img/profiles/' .
+                        lcfirst($puchiFilename).'2.'.$puchiExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.'.$puchiExt;
@@ -190,6 +194,8 @@ class IdolsController extends AppController
                     $profileFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
                     move_uploaded_file($profilePic['tmp_name'], WWW_ROOT . 'img/profiles/' .
                         lcfirst($profileFilename).'1.'.$profileExt);
+                    chmod(WWW_ROOT . 'img/profiles/' .
+                        lcfirst($profileFilename).'1.'.$profileExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Idol']['profilePic'] = lcfirst($profileFilename).'1.png';
@@ -214,6 +220,8 @@ class IdolsController extends AppController
                     $puchiFilename = explode(' ', trim($this->request->data['Idol']['eName']))[0];
                     move_uploaded_file($puchiPic['tmp_name'], WWW_ROOT . 'img/profiles/' .
                         lcfirst($puchiFilename).'2.'.$puchiExt);
+                    chmod(WWW_ROOT . 'img/profiles/' .
+                        lcfirst($puchiFilename).'2.'.$puchiExt, 0755);
 
                     //prepare the filename for database entry
                     $this->request->data['Idol']['puchiPic'] = lcfirst($puchiFilename).'2.png';
