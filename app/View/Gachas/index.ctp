@@ -3,15 +3,15 @@
 $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
 ?>
 <div class="row text-center">
-    <div class="col-lg-6">
-        <h1>Current Limited Platinum Gacha</h1>
+    <div class="col-sm-6 col-lg-6">
+        <h2>Current Limited Platinum Gacha</h2>
     </div>
-    <div class="col-lg-6">
-        <h1>Current Non-Limited Platinum Gacha</h1>
+    <div class="col-sm-6 col-lg-6">
+        <h2>Current Non-Limited Platinum Gacha</h2>
     </div>
 </div>
 <div class="row text-center center-block">
-    <div class="col-lg-6">
+    <div class="col-sm-6 col-lg-6">
         <?php
         $currentGachaIsLimited = false;
         foreach ($gachas as $gacha) {
@@ -144,7 +144,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
         }
         ?>
     </div>
-    <div class="col-lg-6">
+    <div class="col-sm-6 col-lg-6">
         <?php
         foreach ($gachas as $gacha) {
             if (!$this->Time->isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['eName'] == 'Platinum Gacha (Non-Limited)') {
@@ -272,7 +272,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
 </div>
 
 <div class="row text-center">
-    <h1>Past Limited Gacha</h1>
+    <h2>Past Limited Gacha</h2>
     <p>Looking for the non-limited gacha cards? <?php echo $this->Html->link('Click here!',
             array('controller' => 'cards', 'action' => 'index', '?' => 'source=gacha&limited=0&sort=dateAdded&order=1&statOrder=0')) ?></p>
 </div>

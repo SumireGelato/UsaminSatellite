@@ -386,6 +386,7 @@ if ($type == 'Unavailable'){
                 <div class="col-xs-4 col-lg-4 stats" id="statStam"></div>
                 <div class="col-xs-4 col-lg-4 stats" id="statNotes"></div>
             </div>
+            <div class="row text-center hidden" id="position"></div>
             <div class="row text-center hidden" id="coverSources">
                 <div class="col-xs-6 col-lg-6">
                     <a href="" class="coverLink" target="_blank">Full Size Cover <span class="glyphicon glyphicon-new-window"
@@ -537,6 +538,13 @@ if ($type == 'Unavailable'){
                         $('#statStam').html('<strong>Stamina Cost</strong><p>' + data.masterStam + '</p>');
                         $('#statNotes').html('<strong>Total Notes</strong><p>' + data.masterNotes + '</p>');
                     });
+                    var $position = $('#position');
+                    $position.removeClass('hidden');
+                    if(!data.artist) {
+                        $position.html('<strong>MV Position:</strong><p>Unknown</p>');
+                    } else {
+                        $position.html('<strong>MV Position:</strong><p>' + data.artist + '</p>');
+                    }
                     var $coverSources = $('#coverSources');
                     $coverSources.removeClass('hidden');//CHANGE THIS LATER
                     $coverSources.find('a.coverLink').attr("href", host + "/Satelite/img/songs/"+data.coverArt);

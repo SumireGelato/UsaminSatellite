@@ -195,7 +195,7 @@ if(empty($cards)) {
 }
 foreach ($cards as $card) { ?>
     <!--CARD-->
-<div class="col-lg-4 col-xl-3">
+<div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
 <div class="panel panel-default" style="margin-bottom: 10px">
 <?php if ($card['Card']['type'] == 'Cool') { ?>
     <div class="panel-heading cool" role="tab" <?php echo 'id="heading' . $totalItems . '"';

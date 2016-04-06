@@ -1,6 +1,6 @@
 <!-- page title -->
 <?php
-$this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources directly from Planet Usamin!');
+$this->set('title_for_layout', 'Usamin S@telite | English Resources for iDOLM@STER Cinderella Girls Starlight Stage!');
 ?>
 
 <!-- Marketing messaging and featurettes-->
@@ -71,12 +71,12 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
 <div class="row text-center center-block" id="puchis">
     <div class="col-lg-3">
         <?php echo $this->Html->link($this->Html->image('puchis/' . $num1 . '.png', array('class' => 'img-square', 'alt' => 'Puchi1', 'height' => 180)) .
-            '<h3>About The Game</h3>', '/about', array('escape' => false)) ?>
+            '<h3>About The Game</h3>', '/about#game', array('escape' => false)) ?>
         <p>What is <?php echo $this->Html->image('gameLogo.png', array('alt'=>'Starlight Stage', 'height' => '66', 'width' => '225')); ?>?</p>
     </div>
     <div class="col-lg-3">
         <?php echo $this->Html->link($this->Html->image('puchis/' . $num2 . '.png', array('class' => 'img-square', 'alt' => 'Puchi2', 'height' => 180)) .
-            '<h3>About This Website</h3>', '/about', array('escape' => false)) ?>
+            '<h3>About This Website</h3>', '/about#aboutus', array('escape' => false)) ?>
         <p>What is Usamin S@telite?</p>
     </div>
     <div class="col-lg-2">
@@ -84,25 +84,29 @@ $this->set('title_for_layout', 'Usamin S@telite | Starlight Stage Resources dire
             '<h3>Donate</h3>', '/donate', array('escape' => false)) ?>
         <p>Usamin S@telite survives on your donations! Help keep Usamin S@telite ad free!</p>
     </div>
-    <div class="col-lg-4 text-left">
-        <div class="newsHeader">Latest News - <a href="https://twitter.com/UsaminSatelite">Follow Us on Twitter!</a>
-        </div>
-        <div class="news">
-            <?php
-            foreach ($news as $newsItem) {
-                ?>
-                <p>
-                    <?php
-                    echo $this->Html->image($newsItem['News']['category'] . '.png', array('class' => 'newsItem')) . ' ' .
-                        $this->Html->link($newsItem['News']['title'] . ' ' . '<span class=" glyphicon glyphicon-chevron-right"></span>',
-                            array('controller' => 'news', 'action' => 'view', $newsItem['News']['id']), array('escape' => false));
-                    ?>
-                </p>
-            <?php
-            }
-            ?>
-        </div>
-    </div>
+    <div class="col-lg-4 center-block">
+        <a class="twitter-timeline" data-chrome="transparent noborder nofooter" data-dnt="true" href="https://twitter.com/UsaminSatelite"
+           data-widget-id="715765886548881409">Latest News - Follow Us at @UsaminSatelite!</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+        <!--        <div class="newsHeader">Latest News - <a href="https://twitter.com/UsaminSatelite">Follow Us on Twitter!</a>-->
+<!--        </div>-->
+<!--        <div class="news">-->
+<!--            --><?php
+//            foreach ($news as $newsItem) {
+//                ?>
+<!--                <p>-->
+<!--                    --><?php
+//                    echo $this->Html->image($newsItem['News']['category'] . '.png', array('class' => 'newsItem')) . ' ' .
+//                        $this->Html->link($newsItem['News']['title'] . ' ' . '<span class=" glyphicon glyphicon-chevron-right"></span>',
+//                            array('controller' => 'news', 'action' => 'view', $newsItem['News']['id']), array('escape' => false));
+//                    ?>
+<!--                </p>-->
+<!--            --><?php
+//            }
+//            ?>
+<!--        </div>-->
+<!--    </div>-->
 </div>
 
 <!-- /END THE FEATURETTES -->

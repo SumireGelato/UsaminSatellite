@@ -29,10 +29,13 @@ $this->set('title_for_layout', 'Add Song');
             echo $this->Form->input('eName');
             echo $this->Form->input('jName');
             echo $this->Form->input('translated');
-            echo '</div>';
-            echo '<div class="col-lg-3">';
             $options = array('All' => 'All', 'Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion');
             echo $this->Form->input('type', array('options' => $options));
+            echo '</div>';
+            echo '<div class="col-lg-3">';
+            $options = array('Solo' => 'Random Positions', 'Unit' => 'Set Positions');
+            echo $this->Form->input('artistDropdown', array('options' => $options, 'empty' => ''));
+            echo $this->Form->input('artist');
             echo $this->Form->input('bpm', array('type' => 'text'));
             echo $this->Form->input('unlockCon');
             echo '</div>';
@@ -117,8 +120,15 @@ $this->set('title_for_layout', 'Add Song');
         });
     });
 
-    //Datepicker
+    //Datepicker & artist
     $(function () {
+
+        $('#SongArtistDropdown').on("change", function() {
+            var selected = $(this).find("option:selected").val();
+            if(selected == "Unit") {
+                $('#SongArtist').val("?|?|?|?|?");
+            }
+        });
 
         var $added = $( "#datepicker" );
 

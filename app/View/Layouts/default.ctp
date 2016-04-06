@@ -51,8 +51,14 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
+    <meta name="description" content="The Only Centralised English Resource For iDOLM@STER Cinderella Girls Starlight Stage! English translations
+    for all cards and idols plus event and gacha countdowns.">
+    <meta name="keywords" content="deresute, iDOLM@STER, idolmaster, cinderella girls, Starlight Stage, シンデレラガールズ,
+    アイドルマスター, スターライトステージ, デレステ, cards, card, translation, countdown, Android game, rhythm game, ios game">
+
+
 </head>
-<body onload="startTime()">
+<body onload="startTime()" data-spy="scroll" data-target=".scrollspy">
 <div class="container-fluid" id="contentContainer">
     <div class="row">
         <div class="col-lg-12">
@@ -101,28 +107,24 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                        aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
                                         Other<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-flag"></span> News',
-                                                array('controller' => 'news', 'action' => 'index'), array('escape' => false)); ?></li>
+<!--                                        <li>--><?php //echo $this->Html->link('<span class="glyphicon glyphicon-flag"></span> News',
+//                                                array('controller' => 'news', 'action' => 'index'), array('escape' => false)); ?><!--</li>-->
                                         <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-list"></span> Translations',
                                                 '/translations', array('escape' => false)); ?></li>
-                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About Game & Site',
-                                                '/about', array('escape' => false)); ?></li>
-                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-user"></span> About the Staff',
-                                                '/about', array('escape' => false)); ?></li>
-                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-link"></span> Links',
-                                                '/links', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About Starlight Stage',
+                                                '/about#game', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-user"></span> About this Site',
+                                                '/about#aboutus', array('escape' => false)); ?></li>
+                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-envelope"></span> Contact Me',
+                                                '/about#contact', array('escape' => false)); ?></li>
                                         <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-book"></span> Credits',
-                                                '/credits', array('escape' => false)); ?></li>
-                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-envelope"></span> Contact Us',
-                                                '/contactUs', array('escape' => false)); ?></li>
+                                                '/about#creditsAndSources', array('escape' => false)); ?></li>
                                         <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-usd"></span> Donate',
                                                 '/donate', array('escape' => false)); ?></li>
-                                        <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-question-sign"></span> Help',
-                                                '/help', array('escape' => false)); ?></li>
                                     </ul>
                                 </li>
                                 <?php
-                                if ($this->Session->read('Auth.User')) {
+                                if ($this->Session->read('Auth.User') && $this->Session->read('Auth.User.role') == 'admin') {
                                 ?>
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -134,6 +136,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                             <li><?php echo $this->Html->link('Songs', array('controller' => 'songs', 'action' => 'adminindex')); ?></li>
                                             <li><?php echo $this->Html->link('Idols', array('controller' => 'idols', 'action' => 'adminindex')); ?></li>
                                             <li><?php echo $this->Html->link('Gacha', array('controller' => 'gachas', 'action' => 'adminindex')); ?></li>
+<!--                                            <li>--><?php //echo $this->Html->link('News', array('controller' => 'news', 'action' => 'adminindex')); ?><!--</li>-->
                                         </ul>
                                     </li>
                                 <?php

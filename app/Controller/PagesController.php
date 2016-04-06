@@ -87,7 +87,7 @@ class PagesController extends AppController
         $this->set($chibis);
 
         $this->loadModel('News');
-        $this->set('news', $this->News->find('all', array('conditions' => array('News.isPublished' => true), 'recursive' => -1, 'order' => 'News.created', 'limit' => 10)));
+        $this->set('news', $this->News->find('all', array('recursive' => -1, 'order' => 'News.created', 'limit' => 10)));
 
         $this->set(compact('page', 'subpage', 'title_for_layout'));
 

@@ -6,6 +6,7 @@ body {
     font-family: 'M+ C Type-1 (basic latin) Regular',
     'M+ Type-2 (general-j) Regular', sans-serif;
     font-size: 1.6em;
+    position: relative;
 }
 
 a {
@@ -563,6 +564,47 @@ a:active {
     margin-bottom: 0;
 }
 
+/* ABOUT PAGE
+-------------------------------------------------- */
+.nav a {
+    color: #000000;
+}
+
+.nav .nav {
+    display: none;
+}
+
+.nav .active .nav {
+    display: block;
+}
+
+.nav .nav .active a,
+.nav .nav .active:hover a,
+.nav .nav .active:focus a {
+    font-weight: bold;
+    padding-left: 30px;
+    border-left: 5px solid black;
+}
+
+
+.nav .active {
+    font-weight: bold;
+}
+
+.nav .nav .active span,
+.nav .nav .active:hover span,
+.nav .nav .active:focus span {
+    display: none;
+}
+
+.affix-top {
+    position: relative;
+}
+
+.affix-bottom {
+    position: absolute;
+}
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 @media (max-width: 767px) {
@@ -586,6 +628,10 @@ a:active {
 
     #accordion > .row > .col-lg-4:nth-child(3n+1) {
         clear: both;
+    }
+
+    #accordion > .row > .col-sm-6:nth-child(1n+1) {
+        clear: none;
     }
 }
 

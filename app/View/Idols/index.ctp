@@ -32,7 +32,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
                         if ($type == 'cute') {
                             foreach ($idols as $idol) {
                                 ?>
-                                <div class="col-xs-6 col-lg-2 center-block text-center" style="height: 194px;">
+                                <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px;">
                                 <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
                                         array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
                                     array('controller' => 'idols',
@@ -65,7 +65,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
                             if ($type == 'cool') {
                                 foreach ($idols as $idol) {
                                     ?>
-                                    <div class="col-xs-6 col-lg-2 center-block text-center" style="height: 194px;">
+                                    <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px;">
                                         <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
                                                 array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
                                             array('controller' => 'idols',
@@ -98,7 +98,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Idols List');
                                 if ($type == 'passion') {
                                     foreach ($idols as $idol) {
                                         ?>
-                                        <div class="col-xs-6 col-lg-2 center-block text-center" style="height: 194px;">
+                                        <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px;">
                                             <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
                                                     array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
                                                 array('controller' => 'idols',

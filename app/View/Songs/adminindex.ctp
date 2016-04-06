@@ -21,11 +21,11 @@
                 <th>eName</th>
                 <th>jName</th>
                 <th>translated</th>
+                <th>artist</th>
                 <th>type</th>
                 <th>unlock</th>
                 <th>availability</th>
                 <th>dateAdded</th>
-                <th>coverArt</th>
                 <th class="actions"><?php echo __('Actions'); ?></th>
             </tr>
             </thead>
@@ -35,11 +35,11 @@
                     <td><?php echo h($song['Song']['eName']); ?></td>
                     <td><?php echo h($song['Song']['jName']); ?></td>
                     <td><?php echo h($song['Song']['translated']); ?></td>
+                    <td><?php echo h($song['Song']['artist']) ?></td>
                     <td><?php echo h($song['Song']['type']); ?></td>
                     <td><?php echo h($song['Song']['unlockCon']); ?></td>
                     <td><?php echo h($song['Song']['availability']); ?></td>
                     <td><?php echo h($song['Song']['dateAdded']); ?></td>
-                    <td><?php echo h($song['Song']['coverArt']); ?></td>
                     <td class="actions">
                         <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $song['Song']['id'])); ?>
                         <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $song['Song']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $song['Song']['id']))); ?>
@@ -53,7 +53,7 @@
             $(document).ready( function () {
                 $('#table').DataTable({
                     "responsive":     true,
-                    "order":          [[ 6, 'desc' ]],
+                    "order":          [[ 7, 'desc' ]],
                     "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
                 });
             } );
