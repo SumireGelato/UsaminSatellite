@@ -59,8 +59,8 @@ class AppController extends Controller
     public function beforeFilter()
     {
         parent::beforeFilter();
+        $this->loadModel('Website');
         if (!$this->Session->check('background')) {
-            $this->loadModel('Website');
             $background = $this->Website->find('first', array('fields' => array('Website.currentWallpaper', 'Website.numWallpapers')));
             if($background['Website']['currentWallpaper'] == 0) {
                 $background = mt_rand(1, $background['Website']['numWallpapers']);
@@ -69,6 +69,8 @@ class AppController extends Controller
             }
             $this->Session->write('background', $background);
         }
+        $version = $this->Website->find('first', array('fields' => array('Website.resVersion', 'Website.lastUpdated')));
+        $this->set('version', $version);
         $this->Auth->allow('index','view', 'display');
     }
 

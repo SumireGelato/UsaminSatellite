@@ -605,6 +605,18 @@ a:active {
     position: absolute;
 }
 
+.donators h4 {
+    text-decoration: underline;
+}
+
+#site img {
+    height: 128px;
+}
+
+.about hr {
+    margin-bottom: 5px;
+}
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 @media (max-width: 767px) {
@@ -628,10 +640,6 @@ a:active {
 
     #accordion > .row > .col-lg-4:nth-child(3n+1) {
         clear: both;
-    }
-
-    #accordion > .row > .col-sm-6:nth-child(1n+1) {
-        clear: none;
     }
 }
 
@@ -735,6 +743,10 @@ a:active {
 }
 
 @media (max-width: 980px) {
+    #accordion > .row > .col-sm-6:nth-child(1n+1) {
+        clear: none;
+    }
+
     #songInfo {
         position: fixed;
         bottom: 0;

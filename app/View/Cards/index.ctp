@@ -183,6 +183,7 @@ if (!$this->request->is('ajax')) {//Page Title
             </div>
         </div>
     </div>
+    <div class="row text-center"><p>Click on a Card to reveal more information about the card.</p></div>
         <!--Cards Gallery-->
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <?php

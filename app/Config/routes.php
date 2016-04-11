@@ -35,13 +35,9 @@ Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'
  * Custom Routes for static pages without the ugly /pages/....
  */
 Router::connect('/translations/*', array('controller' => 'pages', 'action' => 'display', 'translations'));
-Router::connect('/links/*', array('controller' => 'pages', 'action' => 'display', 'links'));
-Router::connect('/credits/*', array('controller' => 'pages', 'action' => 'display', 'credits'));
 Router::connect('/about/*', array('controller' => 'pages', 'action' => 'display', 'about'));
-Router::connect('/aboutUs/*', array('controller' => 'pages', 'action' => 'display', 'aboutUs'));
-Router::connect('/contactUs/*', array('controller' => 'pages', 'action' => 'display', 'contactUs'));
 Router::connect('/donate/*', array('controller' => 'pages', 'action' => 'display', 'donate'));
-Router::connect('/help/*', array('controller' => 'pages', 'action' => 'display', 'help'));
+Router::connect('/donatesuccess/*', array('controller' => 'pages', 'action' => 'display', 'donatesuccess'));
 Router::connect('/admin/*',array('controller' => 'users', 'action' => 'login'));
 //Human friendly idol addresses
 Router::connect('/idols/:id-:title', array('controller' => 'idols', 'action' => 'view'), array('pass' => array('id', 'title')));

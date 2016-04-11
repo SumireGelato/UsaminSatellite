@@ -21,7 +21,7 @@ $this->set('title_for_layout', 'Admin Control Panel');
     </div>
 </div>
 <div class="row text-center">
-    <h4 style="font-weight: bold">Wallpaper and Chibi Settings</h4>
+    <h4 style="font-weight: bold">General Website Settings</h4>
     <p> 0 = random </p>
 </div>
 <div class="row">
@@ -60,6 +60,8 @@ $this->set('title_for_layout', 'Admin Control Panel');
     </div>
     <div class="col-lg-4">
         <?php
+        echo $this->Form->input('resVersion');
+        echo $this->Form->input('lastUpdated');
         echo $this->Form->submit('Save', array(
             'div' => 'form-group',
             'class' => 'btn btn-default'

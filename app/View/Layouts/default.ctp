@@ -163,6 +163,14 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </div>
 <!-- End get Content -->
 </body>
+<footer>
+    <div class="row text-center center-block">
+        <div class="col-lg-12">
+            <em style="font-size: xx-small">Usamin S@telite on <?php echo $version['Website']['resVersion'] ?> - Last Database Update: <?php echo
+    $version['Website']['lastUpdated']?></em>
+        </div>
+    </div>
+</footer>
 
 <script>
     function startTime() {
