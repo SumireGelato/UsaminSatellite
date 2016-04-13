@@ -56,19 +56,19 @@
             </div>
             <div class="row text-center center-block">
                 <div class="col-xs-12 col-sm-6 col-lg-4">
-                    <?php echo $this->Html->image('cards.png', array('alt' => 'Cards', 'class' => 'img-circle img-responsive homePics')); ?>
+                    <?php echo $this->Html->image('cards.jpg', array('alt' => 'Cards', 'class' => 'img-circle img-responsive homePics center-block')); ?>
                     <strong>Cards</strong>
 
                     <p>Look up all the cards in game along with their translations and appeal points!</p>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-lg-4">
-                    <?php echo $this->Html->image('events.png', array('alt' => 'Events', 'class' => 'img-circle img-responsive homePics')); ?>
+                    <?php echo $this->Html->image('events.jpg', array('alt' => 'Events', 'class' => 'img-circle img-responsive homePics center-block')); ?>
                     <strong>Events</strong>
 
                     <p>Check how much time is left on the current event for your time zone and look up past events!</p>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-lg-4">
-                    <?php echo $this->Html->image('idols.png', array('alt' => 'Idols', 'class' => 'img-circle img-responsive homePics')); ?>
+                    <?php echo $this->Html->image('idols.jpg', array('alt' => 'Idols', 'class' => 'img-circle img-responsive homePics center-block')); ?>
                     <strong>Idols</strong>
 
                     <p>Look up data on all the Cinderella Girls as well as the cards the Idol has!</p>
@@ -76,13 +76,13 @@
             </div>
             <div class="row row-centered text-center center-block">
                 <div class="col-xs-12 col-sm-6 col-lg-4 col-centered">
-                    <?php echo $this->Html->image('songs.png', array('alt' => 'Songs', 'class' => 'img-circle img-responsive homePics')); ?>
+                    <?php echo $this->Html->image('songs.jpg', array('alt' => 'Songs', 'class' => 'img-circle img-responsive homePics center-block')); ?>
                     <strong class="text-center center-block">Songs</strong>
 
                     <p class="text-center">Research song data including difficulty, unlock conditions, mv positions and more!</p>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-lg-4 col-centered">
-                    <?php echo $this->Html->image('gacha.png', array('alt' => 'Gachas', 'class' => 'img-circle img-responsive homePics')); ?>
+                    <?php echo $this->Html->image('gacha.jpg', array('alt' => 'Gachas', 'class' => 'img-circle img-responsive homePics center-block')); ?>
                     <strong class="text-center center-block">Gacha</strong>
 
                     <p class="text-center center-block">Explore how much time is left for the current gacha for you time zone!</p>

@@ -275,6 +275,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Gacha List');
     <h2>Past Limited Gacha</h2>
     <p>Looking for the non-limited gacha cards? <?php echo $this->Html->link('Click here!',
             array('controller' => 'cards', 'action' => 'index', '?' => 'source=gacha&limited=0&sort=dateAdded&order=1&statOrder=0')) ?></p>
+    <p>Click on a Gacha Banner to reveal more information!</p>
 </div>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="row text-center center-block">

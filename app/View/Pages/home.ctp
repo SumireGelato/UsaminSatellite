@@ -14,7 +14,7 @@ $this->set('title_for_layout', 'Usamin S@telite | English Resources for iDOLM@ST
 <!-- 3 Columns of content -->
 <div class="row text-center center-block">
     <div class="col-lg-4">
-        <?php echo $this->Html->image('cards.png', array('alt' => 'Cards', 'class' => 'img-circle homePics', 'height' => '140', 'width' => '280'));?>
+        <?php echo $this->Html->image('cards.jpg', array('alt' => 'Cards', 'class' => 'img-circle homePics', 'height' => '140', 'width' => '280'));?>
 
         <h2>Cards</h2>
 
@@ -28,7 +28,7 @@ $this->set('title_for_layout', 'Usamin S@telite | English Resources for iDOLM@ST
     </div>
     <!-- /.col-lg-4 -->
     <div class="col-lg-4">
-        <?php echo $this->Html->image('events.png', array('alt' => 'Events', 'class' => 'img-circle homePics', 'height' => '140',
+        <?php echo $this->Html->image('events.jpg', array('alt' => 'Events', 'class' => 'img-circle homePics', 'height' => '140',
             'width' => '280'));?>
 
         <h2>Events</h2>
@@ -46,7 +46,7 @@ $this->set('title_for_layout', 'Usamin S@telite | English Resources for iDOLM@ST
     </div>
     <!-- /.col-lg-4 -->
     <div class="col-lg-4">
-        <?php echo $this->Html->image('songs.png', array('alt' => 'Events', 'class' => 'img-circle homePics', 'height' => '140',
+        <?php echo $this->Html->image('songs.jpg', array('alt' => 'Events', 'class' => 'img-circle homePics', 'height' => '140',
             'width' => '280'));?>
 
         <h2>Songs</h2>

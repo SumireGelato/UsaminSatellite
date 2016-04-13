@@ -168,6 +168,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Events List');
 </div>
 <div class="row text-center">
     <h1>Past Events</h1>
+    <p>Click on a Event Banner to reveal more information!</p>
 </div>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="row text-center center-block">

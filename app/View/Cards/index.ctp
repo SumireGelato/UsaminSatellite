@@ -3,6 +3,11 @@ if (!$this->request->is('ajax')) {//Page Title
     $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
     ?>
     <!--Search and filter bar-->
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <p style="text-decoration: underline">Card Filters and Sorting Tools:</p>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="text-center center-block" id="filterSortButtons">
@@ -183,7 +188,7 @@ if (!$this->request->is('ajax')) {//Page Title
             </div>
         </div>
     </div>
-    <div class="row text-center"><p>Click on a Card to reveal more information about the card.</p></div>
+    <div class="row text-center"><p>Click on a Card to reveal more information about the card!</p></div>
         <!--Cards Gallery-->
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <?php

@@ -255,8 +255,9 @@ switch ($idol['Idol']['type']) {
 } ?>
 <!--Cards Heading-->
 <div class="row">
-    <div class="col-lg-12">
+    < class="col-lg-12">
         <h2 class="text-center" style="margin: 0">Cards of this Idol</h2>
+        <p class="text-center">Click on a Card to reveal more information about the card!</p>
         <hr style="margin-top: 5px; margin-bottom: 5px"/>
     </div>
 </div>
