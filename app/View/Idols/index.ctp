@@ -3,6 +3,11 @@ if (!$this->request->is('ajax'))
 {//Page Title
 $this->set('title_for_layout', 'Usamin S@telite | Idols List');
 ?>
+<div class="row text-center">
+    <div class="col-lg-12">
+        <p>Click on a Idol puchi to go to the Idol's page!</p>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <!-- Nav tabs -->
