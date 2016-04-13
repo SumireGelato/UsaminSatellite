@@ -84,9 +84,8 @@ class CardsController extends AppController
                 else {
                     $statOrder = 'asc';
                 }
-                $statSort = array('Card'.$statSortField => $statOrder);
+                $statSort = array('Card.'.$statSortField => $statOrder);
                 $this->Paginator->settings['order'] = array_merge($statSort, $sort);
-
             }
             else {
                 $this->Paginator->settings['order'] = $sort;
