@@ -1,6 +1,6 @@
 <!-- page title -->
 <?php
-$this->set('title_for_layout', 'Usamin S@telite | English Resources for iDOLM@STER Cinderella Girls Starlight Stage!');
+$this->set('title_for_layout', 'Usamin S@tellite | English Resources for iDOLM@STER Cinderella Girls Starlight Stage!');
 ?>
 
 <div class="row text-center">
@@ -76,12 +76,12 @@ $this->set('title_for_layout', 'Usamin S@telite | English Resources for iDOLM@ST
     <div class="col-lg-3">
         <?php echo $this->Html->link($this->Html->image('puchis/' . $num2 . '.png', array('class' => 'img-square', 'alt' => 'Puchi2', 'height' => 180)) .
             '<h3>About This Website</h3>', '/about#aboutus', array('escape' => false)) ?>
-        <p>What is Usamin S@telite?</p>
+        <p>What is Usamin S@tellite?</p>
     </div>
     <div class="col-lg-2">
         <?php echo $this->Html->link($this->Html->image('puchis/' . $num3 . '.png', array('class' => 'img-square', 'alt' => 'Puchi3', 'height' => 180)) .
-            '<h3>Donate</h3>', '/donate', array('escape' => false)) ?>
-        <p>Help keep Usamin S@telite free and without ads!</p>
+            '<h3>Suggestions</h3>', '/about#contact', array('escape' => false)) ?>
+        <p>Have a suggestion for a new feature?</p>
     </div>
     <div class="col-lg-4 center-block">
         <a class="twitter-timeline" data-chrome="transparent noborder nofooter" data-dnt="true" href="https://twitter.com/UsaminSatelite"

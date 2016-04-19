@@ -92,8 +92,9 @@ $this->set('title_for_layout', 'Edit Card');
                 3 => array('name' => 'Healer', 'value' => 'Healer'),
                 4 => array('name' => 'Damage Guard', 'value' => 'Damage Guard'),
                 5 => array('name' => 'Combo Bonus', 'value' => 'Combo Bonus'),
-                6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'),
-                7 => array('name' => 'No Skill', 'value' => 'No Skill'));
+                6 => array('name' => 'Overload', 'value' => 'Overload'),
+                7 => array('name' => 'Score Bonus', 'value' => 'Score Boost'),
+                8 => array('name' => 'No Skill', 'value' => 'No Skill'));
             echo $this->Form->input('specialSkillType', array('options' => $options));
             echo $this->Form->input('specialSkillText');
             echo '</div>';
@@ -204,6 +205,9 @@ $this->set('title_for_layout', 'Edit Card');
                 case "Score Boost":
                     skillBox.val('PERFECT/GREAT score 15% up, medium probability of triggering every 9 seconds for some time.');
                     break;
+                case "Overload":
+                    skillBox.val('All notes score 16% up and COMBO is maintained on NICEs temporarily at the cost ' +
+                        'of 15 life, medium probability of triggering every 15 seconds for some time');
             }
         });
 

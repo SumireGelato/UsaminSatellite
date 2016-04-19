@@ -4,7 +4,7 @@ if ($this->request->is('post')) {
 } else {
 if (!$this->request->is('ajax'))
 {//Page Title
-$this->set('title_for_layout', 'Usamin S@telite | Songs List');
+$this->set('title_for_layout', 'Usamin S@tellite | Songs List');
 ?>
 <div class="row text-center center-block">
 <div class="col-xs-12 col-lg-8">
@@ -450,7 +450,7 @@ if ($type == 'Unavailable'){
                     switch (data.type) {
                         case 'Cute':
                             if ($songInfo.find('img').length > 0) {//CHANGE THIS LATER
-                                $songInfo.find('img').attr("src", host + "/Satelite/img/cute.png")
+                                $songInfo.find('img').attr("src", host + "/img/cute.png")
                             } else {
                                 $songInfo.find('strong.panel-title').before('<img src="' + host + '/Satelite/img/cute.png" height="28px" ' +
                                 'width="28px"/>');
@@ -464,7 +464,7 @@ if ($type == 'Unavailable'){
                             break;
                         case 'Cool':
                             if ($songInfo.find('img').length > 0) {
-                                $songInfo.find('img').attr("src", host + "/Satelite/img/cool.png")
+                                $songInfo.find('img').attr("src", host + "/img/cool.png")
                             } else {
                                 $songInfo.find('strong.panel-title').before('<img src="' + host + '/Satelite/img/cool.png" height="28px" ' +
                                 'width="28px"/>');
@@ -478,7 +478,7 @@ if ($type == 'Unavailable'){
                             break;
                         case 'Passion':
                             if ($songInfo.find('img').length > 0) {
-                                $songInfo.find('img').attr("src", host + "/Satelite/img/passion.png")
+                                $songInfo.find('img').attr("src", host + "/img/passion.png")
                             } else {
                                 $songInfo.find('strong.panel-title').before('<img src="' + host + '/Satelite/img/passion.png" ' +
                                 'height="28px" width="28px"/>');
@@ -492,7 +492,7 @@ if ($type == 'Unavailable'){
                             break;
                         default:
                             if ($songInfo.find('img').length > 0) {
-                                $songInfo.find('img').attr("src", host + "/Satelite/img/all.png")
+                                $songInfo.find('img').attr("src", host + "/img/all.png")
                             } else {
                                 $songInfo.find('strong.panel-title').before('<img src="' + host + '/Satelite/img/all.png" height="28px" ' +
                                 'width="28px"/>');
@@ -547,7 +547,7 @@ if ($type == 'Unavailable'){
                     }
                     var $coverSources = $('#coverSources');
                     $coverSources.removeClass('hidden');//CHANGE THIS LATER
-                    $coverSources.find('a.coverLink').attr("href", host + "/Satelite/img/songs/"+data.coverArt);
+                    $coverSources.find('a.coverLink').attr("href", host + "/img/songs/"+data.coverArt);
                     $coverSources.find('a.engWiki').attr("href", "http://www.project-imas.com/wiki/THE_iDOLM@STER_Cinderella_Girls:_Starlight_Stage");
                     $coverSources.find('a.jpWiki').attr("href", "http://imascg-slstage-wiki.gamerch.com/" + data.jName);
                 }, 'json');

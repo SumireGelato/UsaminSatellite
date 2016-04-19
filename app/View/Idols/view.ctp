@@ -1,4 +1,4 @@
-<?php $this->set('title_for_layout', 'Usamin S@telite | ' . $idol['Idol']['eName']);
+<?php $this->set('title_for_layout', 'Usamin S@tellite | ' . $idol['Idol']['eName']);
 switch ($idol['Idol']['type']) {
     case 'Cute':
         echo $this->Html->link('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to Idols list', array('action' => 'index',
@@ -255,7 +255,7 @@ switch ($idol['Idol']['type']) {
 } ?>
 <!--Cards Heading-->
 <div class="row">
-    < class="col-lg-12">
+    <div class="col-lg-12">
         <h2 class="text-center" style="margin: 0">Cards of this Idol</h2>
         <p class="text-center">Click on a Card to reveal more information about the card!</p>
         <hr style="margin-top: 5px; margin-bottom: 5px"/>
@@ -271,7 +271,7 @@ if(empty($idol['Card'])) {
 $totalItems = 0;
 $numItems = 0;
 foreach ($idol['Card'] as $card) { ?>
-<div class="col-lg-4 col-xl-3">
+<div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
 <div class="panel panel-default">
 <?php if ($card['type'] == 'Cool') { ?>
 <div class="panel-heading cool" role="tab" <?php echo 'id="heading' . $totalItems . '"';
@@ -749,7 +749,7 @@ if ($card['rarity'] != 'N') {
                 $this->Html->image('events/' . $card['Event']['pic'], array('alt' => $card['Event']['eName'], 'width' => '75%',
                     'height' => '75%')),
                 array('controller' => 'events',
-                    'action' => 'view', $card['event_id']),
+                    'action' => 'index'),
                 array('escape' => false)
             );
         } ?>

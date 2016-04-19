@@ -4,14 +4,14 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 
-CREATE TABLE `cards` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `idol_id` int(10) UNSIGNED NOT NULL,
-  `event_id` int(10) UNSIGNED DEFAULT NULL,
-  `gacha_id` int(10) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `cards` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idol_id` int(10) unsigned NOT NULL,
+  `event_id` int(10) unsigned DEFAULT NULL,
+  `gacha_id` int(10) unsigned DEFAULT NULL,
   `card_id` int(11) NOT NULL,
   `eName` char(255) COLLATE utf8_unicode_ci NOT NULL,
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -41,8 +41,12 @@ CREATE TABLE `cards` (
   `baseArt` char(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `awkArt` char(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `baseIconArt` char(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `awkIconArt` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `awkIconArt` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cards_idols_fk` (`idol_id`),
+  KEY `cards_events_fk` (`event_id`),
+  KEY `cards_gachas_fk` (`gacha_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=251 ;
 
 INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`, `jName`, `rarity`, `type`, `limited`, `baseLife`, `baseVocal`, `baseDance`, `baseVisual`, `baseMaxLife`, `baseMaxVocal`, `baseMaxDance`, `baseMaxVisual`, `awkBaseLife`, `awkBaseVocal`, `awkBaseDance`, `awkBaseVisual`, `awkMaxLife`, `awkMaxVocal`, `awkMaxDance`, `awkMaxVisual`, `centerSkillText`, `specialSkillType`, `specialSkillText`, `dateAdded`, `baseArt`, `awkArt`, `baseIconArt`, `awkIconArt`) VALUES
 (1, 1, NULL, NULL, 100075, '"Stage of Magic" Uzuki Shimamura', '［ステージオブマジック］島村卯月', 'SSR', 'Cute', 0, 40, 2028, 2006, 2001, 42, 4224, 4178, 4168, 42, 2662, 2633, 2627, 44, 5137, 5080, 5069, 'All Appeals of all Cute Idols up 30%', 'Perfect Lock', 'GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 9 seconds for a very short time.', '2015-09-03', '100075.png', '100076.png', '100075_icon.png', '100076_icon.png'),
@@ -164,14 +168,14 @@ INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`
 (117, 81, 10, NULL, 300097, '"Steam Psychicer" Yuko Hori', '［湯けむりサイキッカー］堀裕子', 'SR', 'Passion', 1, 35, 1440, 1178, 2260, 37, 2770, 2266, 4347, 37, 1857, 1519, 2914, 39, 3412, 2792, 5354, 'Visual Appeal of all Passion idols up 60%', 'Score Boost', 'PERFECT score 15% up, medium probability of triggering every 6 seconds for a very short time.', '2015-10-31', '300097.png', '300098.png', '300097_icon.png', '300098_icon.png'),
 (118, 17, NULL, 5, 100107, '"Dream Colored Clover" Chieri Ogata', '［夢色クローバー］緒方智絵里', 'SSR', 'Cute', 1, 40, 2639, 1728, 1430, 42, 5498, 3601, 2980, 42, 3464, 2270, 1878, 44, 6685, 4380, 3624, 'Vocal Appeal of all Cute idols up 90%', 'Combo Bonus', 'COMBO pt bonus 15% up, medium probability of triggering every 7 seconds for a short time.', '2015-10-31', '100107.png', '100108.png', '100107_icon.png', '100108_icon.png'),
 (119, 45, NULL, 5, 200103, '"Heat & Beat" Riina Tada', '［ヒート＆ビート］多田李衣菜', 'SSR', 'Cool', 1, 40, 1836, 1823, 1902, 42, 3825, 3798, 3962, 42, 2411, 2393, 2497, 44, 4652, 4618, 4818, 'Life of all Cool idols up 30%', 'Healer', 'PERFECTs recover 3 life, high probability of triggering every 13 seconds for some time.', '2015-10-31', '200103.png', '200104.png', '200103_icon.png', '200104_icon.png'),
-(120, 89, NULL, 5, 300101, '"Healing Full Moon" Shizuku Oikawa', '［癒しの満月］及川雫', 'SR', 'Passion', 1, 35, 2410, 1216, 1501, 37, 4635, 2338, 2886, 37, 3106, 1567, 1935, 39, 5708, 2879, 3555, 'Vocal Appeal of all Passion idols up 60%', 'Perfect Lock', 'GREATs and NICEs become PERFECTs temporarily, medium probability of triggering every 15 seconds for a some time.', '2015-10-31', '300101.png', '300102.png', '300101_icon.png', '300102_icon.png'),
+(120, 89, NULL, 5, 300101, '"Healing Full Moon" Shizuku Oikawa', '［癒しの満月］及川雫', 'SR', 'Passion', 1, 35, 2410, 1216, 1501, 37, 4635, 2338, 2886, 37, 3106, 1567, 1935, 39, 5708, 2879, 3555, 'Vocal Appeal of all Passion idols up 60%', 'Perfect Lock', 'GREATs and NICEs become PERFECTs temporarily, medium probability of triggering every 15 seconds for a some time.', '2015-10-31', '300101.png', '300102.png', '300101_icon.png', '300102_icon.png');
+INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`, `jName`, `rarity`, `type`, `limited`, `baseLife`, `baseVocal`, `baseDance`, `baseVisual`, `baseMaxLife`, `baseMaxVocal`, `baseMaxDance`, `baseMaxVisual`, `awkBaseLife`, `awkBaseVocal`, `awkBaseDance`, `awkBaseVisual`, `awkMaxLife`, `awkMaxVocal`, `awkMaxDance`, `awkMaxVisual`, `centerSkillText`, `specialSkillType`, `specialSkillText`, `dateAdded`, `baseArt`, `awkArt`, `baseIconArt`, `awkIconArt`) VALUES
 (121, 34, NULL, NULL, 100105, 'Clarice', 'クラリス', 'R', 'Cute', 0, 25, 1159, 2151, 1403, 27, 1964, 3645, 2378, 27, 1455, 2699, 1760, 29, 2466, 4576, 2985, 'Dance Appeal of all Cute idols up 30%', 'Score Boost', 'PERFECT score 10% up, low probability of triggering every 6 seconds for a short time.', '2015-10-31', '100105.png', '100106.png', '100105_icon.png', '100106_icon.png'),
 (122, 62, NULL, NULL, 200111, 'Tamami Wakiyama', '脇山珠美', 'R', 'Cool', 0, 28, 1489, 1553, 1476, 30, 2524, 2632, 2502, 30, 1869, 1949, 1853, 32, 3169, 3304, 3142, 'Life of all Cool idols up 10%', 'Combo Lock', 'COMBO is maintained on NICEs temporarily, low probability of triggering every 12 seconds for a short time.', '2015-10-31', '200111.png', '200112.png', '200111_icon.png', '200112_icon.png'),
 (123, 92, NULL, NULL, 300099, 'Mary Cochran', 'メアリー・コクラン', 'R', 'Passion', 0, 25, 2227, 1097, 1365, 27, 3775, 1860, 2313, 27, 2794, 1377, 1712, 29, 4739, 2335, 2904, 'Vocal Appeal of all Passion idols up 30%', 'Score Boost', 'PERFECT score 10% up, low probability of triggering every 7 seconds for some time.', '2015-10-31', '300099.png', '300100.png', '300099_icon.png', '300100_icon.png'),
 (124, 13, 11, NULL, 200097, '"Nation Blue" Ranko Kanzaki', '［Nation Blue］神崎蘭子', 'SR', 'Cool', 1, 35, 2258, 1441, 1180, 37, 4342, 2772, 2270, 37, 2911, 1858, 1522, 39, 5348, 3414, 2796, 'Vocal Appeal of all Cool idols up 60%', 'Perfect Lock', 'GREATs and NICEs become PERFECTs temporarily, medium probability of triggering every 12 seconds for a short time.', '2015-10-19', '200097.png', '200098.png', '200097_icon.png', '200098_icon.png'),
 (125, 46, 11, NULL, 200099, '"Nation Blue" Kaede Takagaki', '［Nation Blue］高垣楓', 'SR', 'Cool', 1, 35, 1551, 2472, 1260, 37, 2983, 4754, 2424, 37, 2000, 3186, 1625, 39, 3675, 5855, 2986, 'Dance Appeal of all Cool idols up 60%', 'Combo Bonus', 'COMBO pt bonus 12% up, medium probability of triggering every 9 seconds for some time.', '2015-10-19', '200099.png', '200100.png', '200099_icon.png', '200100_icon.png'),
-(126, 12, NULL, NULL, 200095, '"Noble Venus" Minami Nitta', '［ノーブルヴィーナス］新田美波', 'SSR', 'Cool', 0, 40, 1442, 1736, 2625, 42, 3004, 3616, 5468, 42, 1894, 2279, 3446, 44, 3654, 4397, 6649, 'Visual Appeal of all Cool idols up 90%', 'Score Boost', 'PERFECT/GREAT score 17% up, high probability of triggering every 9 seconds for a short time.', '2015-10-19', '200095.png', '200096.png', '200095_icon.png', '200096_icon.png');
-INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`, `jName`, `rarity`, `type`, `limited`, `baseLife`, `baseVocal`, `baseDance`, `baseVisual`, `baseMaxLife`, `baseMaxVocal`, `baseMaxDance`, `baseMaxVisual`, `awkBaseLife`, `awkBaseVocal`, `awkBaseDance`, `awkBaseVisual`, `awkMaxLife`, `awkMaxVocal`, `awkMaxDance`, `awkMaxVisual`, `centerSkillText`, `specialSkillType`, `specialSkillText`, `dateAdded`, `baseArt`, `awkArt`, `baseIconArt`, `awkIconArt`) VALUES
+(126, 12, NULL, NULL, 200095, '"Noble Venus" Minami Nitta', '［ノーブルヴィーナス］新田美波', 'SSR', 'Cool', 0, 40, 1442, 1736, 2625, 42, 3004, 3616, 5468, 42, 1894, 2279, 3446, 44, 3654, 4397, 6649, 'Visual Appeal of all Cool idols up 90%', 'Score Boost', 'PERFECT/GREAT score 17% up, high probability of triggering every 9 seconds for a short time.', '2015-10-19', '200095.png', '200096.png', '200095_icon.png', '200096_icon.png'),
 (127, 8, NULL, NULL, 100101, '"Perfume Tripper" Shiki Ichinose', '［パフュームトリッパー］一ノ瀬志希', 'SR', 'Cute', 0, 35, 1526, 2361, 1255, 37, 2934, 4540, 2414, 37, 1967, 3042, 1618, 39, 3614, 5591, 2973, 'Dance Appeal of all Cute idols up 60%', 'Score Boost', 'PERFECT score 15% up, medium probability of triggering every 6 seconds for a very short time.', '2015-10-19', '100101.png', '100102.png', '100101_icon.png', '100102_icon.png'),
 (128, 61, NULL, NULL, 200093, 'Asuka Ninomiya', '二宮飛鳥', 'R', 'Cool', 0, 25, 1404, 1161, 2148, 27, 2380, 1968, 3640, 27, 1762, 1457, 2694, 29, 2988, 2471, 4569, 'Visual Appeal of all Cool idols up 30%', 'Combo Bonus', 'COMBO pt bonus 8% up, low probability of triggering every 9 seconds for a considerable length of time.', '2015-10-19', '200093.png', '200094.png', '200093_icon.png', '200094_icon.png'),
 (129, 51, NULL, NULL, 200087, '"Glasses Princess" Haruna Kamijo', '［眼鏡プリンセス］上条春菜', 'SR', 'Cool', 0, 35, 1214, 2413, 1500, 37, 2334, 4640, 2884, 37, 1565, 3109, 1934, 39, 2875, 5714, 3552, 'Dance Appeal of all Cool idols up 60%', 'Score Boost', 'PERFECT score 15% up, medium probability of triggering every 6 seconds for a very short time.', '2015-10-13', '200087.png', '200088.png', '200087_icon.png', '200088_icon.png'),
@@ -283,19 +287,24 @@ INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`
 (235, 20, NULL, 8, 100193, '"Serious/Neko-chan" Miku Maekawa', '［マジメ／ネコチャン］前川みく', 'SR', 'Cute', 1, 35, 1544, 2389, 1271, 37, 2970, 4594, 2444, 37, 1991, 3079, 1639, 39, 3658, 5658, 3011, 'Dance Appeal of all Cute idols up 60%', 'Perfect Lock', 'GREATs and NICEs become PERFECTs temporarily, medium probability of triggering every 9 seconds for a very short time.', '2016-03-31', '100193.png', '100194.png', '100193_icon.png', '100194_icon.png'),
 (236, 58, NULL, NULL, 200243, '"Heartpounding☆Challenge " Honoka Ayase', '［ドキドキ☆チャレンジ］綾瀬穂乃香', 'SR', 'Cool', 0, 39, 1575, 1859, 1517, 41, 3028, 3575, 2918, 41, 2030, 2396, 1956, 43, 3730, 4403, 3594, 'Life of all Cool idols up 20%', 'Healer', 'PERFECTs recover 3 life, medium probability of triggering every 11 seconds for a short time.', '2016-03-31', '200243.png', '200244.png', '200243_icon.png', '200244_icon.png'),
 (237, 115, NULL, NULL, 100195, 'Satomi Sakakibara', '榊原里美', 'R', 'Cute', 0, 25, 1182, 2171, 1427, 27, 2004, 3680, 2418, 27, 1484, 2724, 1790, 29, 2517, 4619, 3035, 'Dance Appeal of all Cute idols up 30%', 'Score Boost', 'PERFECT score 10% up, low probability of triggering every 7 seconds for some time.', '2016-03-31', '100195.png', '100196.png', '100195_icon.png', '100196_icon.png'),
-(238, 61, NULL, 7, 200197, '"Idol Fragment" Asuka Ninomiya', '［《偶像》のフラグメント］二宮飛鳥', 'SSR', 'Cool', 0, 40, 2670, 1444, 1746, 42, 5562, 3009, 3638, 42, 3505, 1897, 2293, 44, 6764, 3660, 4424, 'Vocal Appeal of all Cool idols up 90%', 'Score Boost', 'PERFECT/GREAT score 17% up, medium probability of triggering every 6 seconds for a very short time.', '2016-04-08', '200197.png', '200198.png', '200197_icon.png', '200198_icon.png'),
-(239, 94, NULL, 7, 300197, '"Fluffy Kigurumi" Nina Ichihara', '［きぐるみもふもふ］市原仁奈', 'SR', 'Passion', 0, 39, 1645, 1654, 1699, 41, 3164, 3181, 3268, 41, 2121, 2133, 2191, 43, 3897, 3918, 4025, 'Life of all Passion idols up 20%', 'Damage Guard', 'Life does not decrease temporarily, medium probability of triggering every 7 seconds for a short time.', '2016-04-08', '300197.png', '300198.png', '300197_icon.png', '300198_icon.png'),
-(240, 117, NULL, 7, 200187, 'Otaha Umeki', '梅木音葉', 'R', 'Cool', 0, 25, 1568, 1772, 1602, 27, 2658, 3004, 2715, 27, 1968, 2224, 2010, 29, 3337, 3772, 3408, 'Skill Probability of all Cool idols up 15%', 'Combo Bonus', 'COMBO pt bonus 8% up, low probability of triggering every 6 seconds for a short time.', '2016-04-08', '200187.png', '200188.png', '200187_icon.png', '200188_icon.png'),
+(238, 61, NULL, NULL, 200197, '"Idol Fragment" Asuka Ninomiya', '［《偶像》のフラグメント］二宮飛鳥', 'SSR', 'Cool', 0, 40, 2670, 1444, 1746, 42, 5562, 3009, 3638, 42, 3505, 1897, 2293, 44, 6764, 3660, 4424, 'Vocal Appeal of all Cool idols up 90%', 'Score Boost', 'PERFECT/GREAT score 17% up, medium probability of triggering every 6 seconds for a very short time.', '2016-04-08', '200197.png', '200198.png', '200197_icon.png', '200198_icon.png'),
+(239, 94, NULL, NULL, 300197, '"Fluffy Kigurumi" Nina Ichihara', '［きぐるみもふもふ］市原仁奈', 'SR', 'Passion', 0, 39, 1645, 1654, 1699, 41, 3164, 3181, 3268, 41, 2121, 2133, 2191, 43, 3897, 3918, 4025, 'Life of all Passion idols up 20%', 'Damage Guard', 'Life does not decrease temporarily, medium probability of triggering every 7 seconds for a short time.', '2016-04-08', '300197.png', '300198.png', '300197_icon.png', '300198_icon.png'),
+(240, 117, NULL, NULL, 200187, 'Otaha Umeki', '梅木音葉', 'R', 'Cool', 0, 25, 1568, 1772, 1602, 27, 2658, 3004, 2715, 27, 1968, 2224, 2010, 29, 3337, 3772, 3408, 'Skill Probability of all Cool idols up 15%', 'Combo Bonus', 'COMBO pt bonus 8% up, low probability of triggering every 6 seconds for a short time.', '2016-04-08', '200187.png', '200188.png', '200187_icon.png', '200188_icon.png'),
 (241, 116, NULL, NULL, 100197, 'Hiromi Seki', '関裕美', 'N', 'Cute', 0, 20, 1805, 1166, 960, 21, 2578, 1666, 1371, 21, 2192, 1417, 1166, 22, 3372, 2180, 1794, 'No Skill', 'No Skill', 'N/A', '2016-04-08', '100197.png', '100198.png', '100197_icon.png', '100198_icon.png'),
 (242, 118, NULL, NULL, 200195, 'Yume Narumiya', '成宮由愛', 'N', 'Cool', 0, 20, 1319, 1336, 1424, 21, 1884, 1909, 2034, 21, 1603, 1624, 1730, 22, 2465, 2498, 2661, 'No Skill', 'No Skill', 'N/A', '2016-04-08', '200195.png', '200196.png', '200195_icon.png', '200196_icon.png'),
 (243, 119, NULL, NULL, 300195, 'Suzuho Ueda', '上田鈴帆', 'N', 'Passion', 0, 20, 1170, 1798, 965, 21, 1671, 2568, 1379, 21, 1421, 2184, 1173, 22, 2186, 3360, 1804, 'No Skill', 'No Skill', 'N/A', '2016-04-08', '300195.png', '300196.png', '300195_icon.png', '300196_icon.png'),
 (244, 120, NULL, NULL, 300199, 'Meiko Namiki', '並木芽衣子', 'R', 'Passion', 0, 28, 1627, 1483, 1454, 30, 2758, 2414, 2465, 30, 2042, 1861, 1825, 32, 3462, 3156, 3095, 'Life of all Passion idols up 10%', 'Combo Lock', 'COMBO is maintained on NICEs temporarily, low probability of triggering every 12 seconds for a short time.', '2016-04-11', '300199.png', '300200.png', '300199_icon.png', '300200_icon.png'),
 (245, 72, 19, NULL, 200201, '"Heartbeat USA" Seira Mizuki', '［ハートビートUSA］水木聖來', 'SR', 'Cool', 1, 35, 2430, 1174, 1468, 37, 4674, 2258, 2824, 37, 3132, 1513, 1893, 39, 5756, 2781, 3479, 'Vocal Appeal of all Cool idols up 60%', 'Combo Bonus', 'COMBO pt bonus 12% up, high probability of triggering every 7 seconds for a very short time.', '2016-04-11', '200201.png', '200202.png', '200201_icon.png', '200202_icon.png'),
 (246, 34, 19, NULL, 100199, '"Smiling Saint" Clarice', '［微笑みの聖女］クラリス', 'SR', 'Cute', 1, 35, 1037, 2362, 1338, 37, 1995, 4543, 2574, 37, 1337, 3045, 1725, 39, 2457, 5595, 3170, 'Dance Appeal of all Cute idols up 60%', 'Score Boost', 'PERFECT score 15% up, high probability of triggering every 11 seconds for some time.', '2016-04-11', '100199.png', '100200.png', '100199_icon.png', '100200_icon.png');
+INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`, `jName`, `rarity`, `type`, `limited`, `baseLife`, `baseVocal`, `baseDance`, `baseVisual`, `baseMaxLife`, `baseMaxVocal`, `baseMaxDance`, `baseMaxVisual`, `awkBaseLife`, `awkBaseVocal`, `awkBaseDance`, `awkBaseVisual`, `awkMaxLife`, `awkMaxVocal`, `awkMaxDance`, `awkMaxVisual`, `centerSkillText`, `specialSkillType`, `specialSkillText`, `dateAdded`, `baseArt`, `awkArt`, `baseIconArt`, `awkIconArt`) VALUES
+(247, 96, NULL, 7, 300201, '"Dreaming Princess" Hinako Kita', '［夢みるプリンセス］喜多日菜子', 'SSR', 'Passion', 0, 40, 1448, 2665, 1749, 42, 3017, 5552, 3643, 42, 1901, 3499, 2296, 44, 3669, 6751, 4431, 'Dance Appeal of all Passion idols up 90%', 'Score Boost', 'PERFECT/GREAT score 17% up, high probability of triggering every 4 seconds for very short time.', '2016-04-14', '300201.png', '300202.png', '300201_icon.png', '300202_icon.png'),
+(248, 24, NULL, 7, 100201, '"Innocent Young Woman" Yukari Mizumoto', '［清純令嬢］水本ゆかり', 'SR', 'Cute', 0, 35, 2410, 1254, 1534, 37, 4634, 2412, 2950, 37, 3106, 1617, 1977, 39, 5707, 2971, 3633, 'Skill Probability of all Cute idols up 30%', 'Perfect Lock', 'GREATs and NICEs become PERFECTs temporarily, high probability of triggering every 7 seconds for a very short time.', '2016-04-14', '100201.png', '100202.png', '100201_icon.png', '100202_icon.png'),
+(249, 8, 20, NULL, 100203, '"Tsubomi" Shiki Ichinose', '［つぼみ］一ノ瀬志希', 'SR', 'Cute', 1, 35, 1594, 1314, 2454, 37, 3065, 2527, 4719, 37, 2055, 1694, 3162, 39, 3775, 3113, 5811, 'All Appeal of all Cute idols up 20%', 'Combo Bonus', 'COMBO pt bonus 15% up, high probability of triggering every 11 seconds for some time.', '2016-04-19', '100203.png', '100204.png', '100203_icon.png', '100204_icon.png'),
+(250, 86, 20, NULL, 300203, '"Tsubomi" Yumi Aiba', '［つぼみ］相葉夕美', 'SR', 'Passion', 1, 35, 1815, 1640, 1669, 37, 3491, 3154, 3210, 37, 2340, 2114, 2152, 39, 4300, 3885, 3954, 'Skill Probability of all Passion idols up 30%', 'Overload', 'All notes score 16% up and COMBO is maintained on NICEs temporarily at the cost of 15 life, medium probability of triggering every 15 seconds for some time', '2016-04-19', '300203.png', '300204.png', '300203_icon.png', '300204_icon.png');
 
-CREATE TABLE `events` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `song_id` int(10) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `events` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `song_id` int(10) unsigned DEFAULT NULL,
   `eName` char(255) COLLATE utf8_unicode_ci NOT NULL,
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `begin` datetime NOT NULL,
@@ -308,8 +317,10 @@ CREATE TABLE `events` (
   `t5` int(11) DEFAULT NULL,
   `t6` int(11) DEFAULT NULL,
   `t7` int(11) DEFAULT NULL,
-  `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `events_songs_fk` (`song_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
 
 INSERT INTO `events` (`id`, `song_id`, `eName`, `jName`, `begin`, `finish`, `type`, `t1`, `t2`, `t3`, `t4`, `t5`, `t6`, `t7`, `pic`) VALUES
 (1, 18, 'LIVE Groove Dance burst', 'LIVE Groove Dance burst', '2015-12-30 15:00:00', '2016-01-08 20:59:59', 'Medley', 45128, 31182, 27954, 22930, 18874, 3032, 262, 'LIVE Groove Dance burst 2015-12.png'),
@@ -330,16 +341,18 @@ INSERT INTO `events` (`id`, `song_id`, `eName`, `jName`, `begin`, `finish`, `typ
 (16, NULL, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-03-11 15:00:00', '2016-03-18 20:59:59', 'Caravan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Cinderella Caravan 2016-03.png'),
 (17, 58, 'Zettai Tokken Shuchou Shimasuu!', '絶対特権主張しますっ！', '2016-03-20 15:00:00', '2016-03-27 20:59:59', 'Token', 51353, 26729, 22646, 18454, 15722, 2011, 48, 'Zettai Tokken Shuchou Shimasuu! 2016-03.png'),
 (18, 60, 'LIVE Groove Dance burst', 'LIVE Groove Dance burst', '2016-03-31 15:00:00', '2016-04-07 20:59:59', 'Medley', 40096, 27738, 24937, 20014, 15645, 1799, 0, 'LIVE Groove Dance burst 2016-03.png'),
-(19, NULL, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-04-11 15:00:00', '2016-04-17 20:59:59', 'Caravan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Cinderella Caravan 2016-04.png');
+(19, NULL, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-04-11 15:00:00', '2016-04-17 20:59:59', 'Caravan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Cinderella Caravan 2016-04.png'),
+(20, 62, 'Tsubomi', 'つぼみ', '2016-04-19 15:00:00', '2016-04-26 20:59:59', 'Token', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tsubomi 2016-04.png');
 
-CREATE TABLE `gacha` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gacha` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `eName` char(255) COLLATE utf8_unicode_ci NOT NULL,
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `dateStart` datetime NOT NULL,
   `dateFinish` datetime NOT NULL,
-  `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
 INSERT INTO `gacha` (`id`, `eName`, `jName`, `dateStart`, `dateFinish`, `pic`) VALUES
 (1, 'Made with Love Valentines Day Gacha', 'メイド with LOVE バレンタインデーガシャ', '2016-01-31 15:00:00', '2016-02-10 14:59:59', 'Made with Love Valentines Day Gacha.png'),
@@ -348,11 +361,11 @@ INSERT INTO `gacha` (`id`, `eName`, `jName`, `dateStart`, `dateFinish`, `pic`) V
 (4, 'Present for you! Chrismas Gift Gacha', 'キミに届け！クリスマスプレゼントガシャ', '2015-11-30 15:00:00', '2015-12-14 14:59:59', 'Present for you! Chrismas Gift Gacha.png'),
 (5, 'Laid Back and Relaxing, Cosy Hot Springs Gacha', 'まったりのんびりぽかぽか温泉ガシャ', '2015-10-31 15:00:00', '2015-11-13 14:59:59', 'Laid Back and Relaxing, Cosy Hot Springs Gacha.png'),
 (6, 'Sweet Moments Sweet Halloween Gacha', '甘いひととき スウィートハロウィンガシャ', '2015-09-30 15:00:00', '2015-10-13 14:59:59', 'Sweet Moments Sweet Halloween Gacha.png'),
-(7, 'Platinum Gacha (Non-Limited)', 'プラチナガシャ', '2016-04-08 15:00:00', '2016-04-14 14:59:59', NULL),
+(7, 'Platinum Gacha (Non-Limited)', 'プラチナガシャ', '2016-04-14 15:00:00', '2016-04-19 23:59:59', NULL),
 (8, 'Springtime After School Gacha', '春うららか放課後タイムガシャ', '2016-03-31 15:00:00', '2016-04-08 14:59:59', 'Springtime After School Gacha.png');
 
-CREATE TABLE `idols` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `idols` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `eName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `age` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -369,8 +382,9 @@ CREATE TABLE `idols` (
   `cv` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `bio` text COLLATE utf8_unicode_ci NOT NULL,
   `profilePic` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `puchiPic` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `puchiPic` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=121 ;
 
 INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthday`, `bloodType`, `bwh`, `hobbies`, `writingHand`, `horoscope`, `hometown`, `type`, `cv`, `bio`, `profilePic`, `puchiPic`) VALUES
 (1, 'Uzuki Shimamura', '島村卯月', '17', '159', '45', 'April 24', 'O', '83/59/87', 'Long Phone Calls with friends', 'Right', 'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'Her ordinary personality is her defining trait. She''s so average in fact that it''s almost bizarre, counting such feats as consistently scoring right in the middle of her school''s exam rankings, or always running around the middle of the pack in sporting events, or having never drawn any fortune but the average Good Luck over the course of 17 New Year''s celebrations. ', 'uzuki1.png', 'uzuki2.png'),
@@ -478,10 +492,10 @@ INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthda
 (103, 'Sana Miyoshi', '三好紗南', '14', '149', '39', 'April 14', 'B', '75/56/80', 'Console gaming, staying up late at night', 'Right', 'Aries', 'Kagawa', 'Passion', 'N/A', 'Sana is a fanatical arcade, console, and handheld gamer. She''s never without a gaming device immediately available and quite competitive when it comes to them. The gaming devices she''s shown with on her cards are clearly the Nintendo DS and the Sony PSP.', 'sana1.png', 'sana2.png'),
 (104, 'Sakura Muramatsu', '村松さくら', '15', '145', '38', 'March 27', 'O', '75/55/77', 'Collecting Pink Things', 'Right', 'Aries', 'Shizuoka', 'Cute', 'N/A', 'Sakura is the sweet, fun-loving spirit, Her favorite color is pink, but onstage she normally wears red for the sake of completing the primary colors with her friends, Ako Tsuchiya and Izumi Ohishi. Sakura tends to get distracted easily, as she lets her pastries burn when practicing for a singing and baking simultaneous job.', 'sakura1.png', 'sakura2.png'),
 (108, 'Ako Tsuchiya', '土屋亜子', '15', '156', '42', 'May 2', 'B', '85/54/83', 'Acquiring Savings', 'Right', 'Taurus', 'Shizuoka', 'Passion', 'N/A', 'Ako is a friendly girl who loves money and jewelry. Most of her idol adventures include her looking for prices or wondering about financial gain. Ako''s motivation for becoming an idol is to strike it rich and live a life of luxury with her best friends, Sakura Muramatsu and Izumi Ohishi.', 'ako1.png', 'ako2.png'),
-(109, 'Arisa Mochida', '持田亜里沙', '21', '156', '45', 'August 24', 'AB', '77/55/76', 'Playing with Children', 'Right', 'Virgo', 'Nagano', 'Cute', 'N/A', 'With her rabbit puppet, Usako-chan, Arisa is a nursery worker who has a sweet disposition and a love of children. Her friendly, teacher-like attitude carries over to how she treats her Producer.', 'Arisa1.png', 'Arisa2.png'),
-(110, 'Ai Togo', '東郷あい', '23', '167', '45', 'February 7', 'AB', '82/57/83', 'Saxophone', 'Both', 'Aquarius', 'Fukushima', 'Cool', 'N/A', 'Ai is an attractive and mature saxophone player. While she never makes actual flirtations, she makes it very clear she''s very interested in Producer. She also calls the Producer "-kun", as if he was a child or someone her own age she was very close with.', 'Ai1.png', 'Ai2.png'),
-(111, 'Aoi Shuto', '首藤葵', '13', '145', '39', 'August 19', 'O', '73/53/75', 'Handling Fish', 'Right', 'Leo', 'Oita', 'Passion', 'N/A', 'Aoi is a young girl from Oita whose family owns a boarding house. She''s been raised as its heir since she was little, and taught to cook as part of her boarding house owner training. Always energetic, she usually wears kimonos or kimono inspired outfits.', 'Aoi1.png', 'Aoi2.png');
+(109, 'Arisa Mochida', '持田亜里沙', '21', '156', '45', 'August 24', 'AB', '77/55/76', 'Playing with Children', 'Right', 'Virgo', 'Nagano', 'Cute', 'N/A', 'With her rabbit puppet, Usako-chan, Arisa is a nursery worker who has a sweet disposition and a love of children. Her friendly, teacher-like attitude carries over to how she treats her Producer.', 'arisa1.png', 'arisa2.png');
 INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthday`, `bloodType`, `bwh`, `hobbies`, `writingHand`, `horoscope`, `hometown`, `type`, `cv`, `bio`, `profilePic`, `puchiPic`) VALUES
+(110, 'Ai Togo', '東郷あい', '23', '167', '45', 'February 7', 'AB', '82/57/83', 'Saxophone', 'Both', 'Aquarius', 'Fukushima', 'Cool', 'N/A', 'Ai is an attractive and mature saxophone player. While she never makes actual flirtations, she makes it very clear she''s very interested in Producer. She also calls the Producer "-kun", as if he was a child or someone her own age she was very close with.', 'ai1.png', 'ai2.png'),
+(111, 'Aoi Shuto', '首藤葵', '13', '145', '39', 'August 19', 'O', '73/53/75', 'Handling Fish', 'Right', 'Leo', 'Oita', 'Passion', 'N/A', 'Aoi is a young girl from Oita whose family owns a boarding house. She''s been raised as its heir since she was little, and taught to cook as part of her boarding house owner training. Always energetic, she usually wears kimonos or kimono inspired outfits.', 'aoi1.png', 'aoi2.png'),
 (112, 'Miyabi Tsukimiya', '月宮雅', '18', '153', '44', 'October 30', 'B', '86/56/82', 'Shopping with Mum', 'Right', 'Scorpio', 'Tokyo', 'Cute', 'N/A', 'Miyabi is a sweet young woman who adores her mother and spends a lot of time with her. From her speech it''s deduced that her mother tried to be an idol but failed, and Miyabi tries to accomplish that dream.', 'miyabi1.png', 'miyabi2.png'),
 (113, 'Midori Mizuno', '水野翠', '18', '164', '47', 'December 5', 'AB', '80/54/81', 'Japanese Archery', 'Right', 'Sagittarius', 'Aichi', 'Cool', 'N/A', 'Midori is depicted as earnest and beautiful, but is quickly proven to be a complete airhead. She easily caught up in fun and likes to play darts. The archery aspect of her is played up as her main non-idol talent. She has been known to shatter target boards with her shots.', 'midori1.png', 'midori2.png'),
 (114, 'Ibuki Komatsu', '小松伊吹', '19', '165', '48', 'November 17', 'O', '85/59/88', 'Street Dancing', 'Right', 'Scorpio', 'Ibaraki', 'Passion', 'N/A', 'Ibuki is very carefree and spirited. Normally a fantastic skateboarder, she becomes distracted when thinking of ways to impress the Producer and get closer to him. Her skills are reused when she performs many Frisbee catches while riding around.', 'ibuki1.png', 'ibuki2.png'),
@@ -492,21 +506,23 @@ INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthda
 (119, 'Suzuho Ueda', '上田鈴帆', '14', '156', '42', 'October 26', 'O', '76/55/77', 'Sewing', 'Right', 'Scorpio', 'Fukuoka', 'Passion', 'Nanami Haruno', 'Suzuho is a fun loving girl who enjoys making and wearing full body costumes. Her costumes look like they''re for a Halloween Party or Theme Park and other idols complain they''re hot and stuffy.', 'suzuho1.png', 'suzuho2.png'),
 (120, 'Meiko Namiki', '並木芽衣子', '22', '160', '44', 'October 14', 'AB', '80/57/82', 'Traveling', 'Right', 'Libra', 'Wakayama', 'Passion', 'N/A', 'Meiko is a young woman who loves to travel. She has a never ending curiosity for new places, and becomes extremely energetic at the thought of exploring.', 'meiko1.png', 'meiko2.png');
 
-CREATE TABLE `news` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
   `title` char(255) COLLATE utf8_unicode_ci NOT NULL,
   `category` char(50) COLLATE utf8_unicode_ci NOT NULL,
   `body` text COLLATE utf8_unicode_ci,
   `created` datetime NOT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `news_users_fk` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 INSERT INTO `news` (`id`, `user_id`, `title`, `category`, `body`, `created`, `modified`) VALUES
 (1, 1, 'Welcome to Usamin S@telite β!', 'site', 'The site is now live in beta test mode! If there is any problems please contact me using the contact us page!', '2015-09-17 15:33:26', NULL);
 
-CREATE TABLE `songs` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `songs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `eName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `translated` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -528,15 +544,16 @@ CREATE TABLE `songs` (
   `masterLvl` int(11) NOT NULL,
   `masterStam` int(11) NOT NULL,
   `masterNotes` int(11) NOT NULL,
-  `dateAdded` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `dateAdded` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=63 ;
 
 INSERT INTO `songs` (`id`, `eName`, `jName`, `translated`, `artist`, `type`, `bpm`, `unlockCon`, `availability`, `coverArt`, `debutLvl`, `debutStam`, `debutNotes`, `regLvl`, `regStam`, `regNotes`, `proLvl`, `proStam`, `proNotes`, `masterLvl`, `masterStam`, `masterNotes`, `dateAdded`) VALUES
 (1, 'Onegai! Cinderella', 'お願い！シンデレラ', 'Please! Cinderella', NULL, 'All', 175, 'Complete Tutorial', 'Always', 'Onegai! Cinderella.png', 5, 10, 46, 10, 12, 205, 15, 15, 341, 20, 18, 477, '2015-09-03'),
 (2, 'Orange Sapphire', 'Orange Sapphire', 'Orange Sapphire', 'Rika Jougasaki|Kirari Moroboshi|Miria Akagi|Mio Honda|Mika Jougasaki', 'Passion', 162, 'Available by default. Past Event Song - Unlocked on 2015-12-28', 'Weekday/Sunday/Monday/Tuesday/Friday/Saturday', 'Orange Sapphire.png', 8, 11, 116, 13, 13, 214, 17, 16, 411, 26, 19, 719, '2015-11-20'),
 (3, 'Star!!', 'Star!!', 'Star!!', NULL, 'All', 178, 'Complete Story Episode 2.', 'Always', 'Star!!.png', 6, 10, 102, 12, 13, 180, 16, 15, 346, 25, 19, 569, '2015-09-03'),
 (4, 'Todoke! Idol', 'とどけ！アイドル', 'Reach For! Idol', NULL, 'All', 180, 'Complete Episode Story 1. Other songs will remain locked until this song is unlocked', 'Always', 'Todoke! Idol.png', 5, 10, 74, 11, 12, 145, 15, 15, 310, 21, 18, 481, '2015-09-03'),
-(5, 'We''re the Friends!', 'We''re the Friends!', 'We''re the Friends!', NULL, 'All', 178, 'Complete Panel Mission Sheet 1.', 'Always', 'We''re the Friends!.png', 6, 10, 73, 12, 13, 170, 16, 15, 383, 22, 18, 547, '2015-09-03'),
+(5, 'We''re the Friends!', 'We''re the Friends!', 'We''re the Friends!', NULL, 'All', 178, 'Complete Panel Mission Sheet 1.', 'Always', 'Were the Friends.png', 6, 10, 73, 12, 13, 170, 16, 15, 383, 22, 18, 547, '2015-09-03'),
 (6, 'Yuubae Present', '夕映えプレゼント', 'Sunset Glow''s Present', NULL, 'All', 175, 'Complete Panel Mission Sheet 2.', 'Always', 'Yuubae Present.png', 8, 11, 103, 14, 14, 201, 18, 16, 425, 26, 19, 593, '2015-09-03'),
 (7, 'GOIN''!!!', 'GOIN''!!!', 'GOIN''!!!', NULL, 'All', 178, 'Complete Panel Mission Sheet 3.', 'Always', 'GOIN''!!!.png', 9, 11, 125, 13, 13, 181, 17, 16, 383, 27, 19, 575, '2015-09-03'),
 (8, 'Message', 'メッセージ', 'Message', 'Uzuki Shimamura|Rin Shibuya|Mio Honda|Chieri Ogata|Nana Abe', 'All', 170, 'Get 100 PRP', 'Always', 'Message.png', 7, 10, 105, 13, 13, 202, 16, 15, 347, 25, 19, 521, '2015-09-03'),
@@ -592,22 +609,24 @@ INSERT INTO `songs` (`id`, `eName`, `jName`, `translated`, `artist`, `type`, `bp
 (58, 'Zettai Tokken Shuchou Shimasuu!', '絶対特権主張しますっ！', 'I Absolutely Claim These Privileges~!', 'Airi Totoki|Yuko Hori|Akane Hino|Aiko Takamori|Syoko Hoshi', 'Passion', 200, 'Unavailable - Past Event Song', 'Unavailable - Past Event', 'Zettai Tokken Shuchou Shimasuu!.png', 9, 11, 167, 14, 14, 249, 19, 17, 476, 27, 19, 777, '2016-03-20'),
 (59, 'Hanakanzashi HANAKANZASHI', '花簪 HANAKANZASHI', 'Floral Hairpin', '?|?|Sae Kobayakawa|?|?', 'Cute', 125, 'Complete Story Episode 24. (Producer Level 50 and Up)', 'Always', 'Hanakanzashi HANAKANZASHI.png', 6, 10, 91, 13, 13, 168, 19, 17, 340, 27, 19, 645, '2016-03-28'),
 (60, 'Hi-Fi☆Days', 'ハイファイ☆デイズ', 'Hi-Fi☆Days', 'Miria Akagi|Kaoru Ryuzaki|Chie Sasaki|Momoka Sakurai|Nina Ichihara', 'All', 191, 'Past Event Song - Points Reward', 'Unavailable - Past Event', 'Hi-Fi☆Days.png', 7, 10, 116, 13, 13, 203, 18, 16, 415, 24, 18, 554, '2016-03-31'),
-(61, 'Hotel Moonside', 'Hotel Moonside', 'Hotel Moonside', '', 'Cool', 0, 'Complete Story Episode 25. (Producer Level 50 and Up)', 'Always', 'Hotel Moonside.png', 9, 11, 138, 14, 14, 256, 19, 17, 410, 27, 19, 779, '2016-04-08');
+(61, 'Hotel Moonside', 'Hotel Moonside', 'Hotel Moonside', '', 'Cool', 0, 'Complete Story Episode 25. (Producer Level 50 and Up)', 'Always', 'Hotel Moonside.png', 9, 11, 138, 14, 14, 256, 19, 17, 410, 27, 19, 779, '2016-04-08'),
+(62, 'Tsubomi', 'つぼみ', 'Flower Bud', '', 'All', 0, 'Available by default.', 'Limited', 'Tsubomi.png', 8, 11, 109, 14, 14, 166, 18, 16, 325, 25, 19, 440, '2016-04-19');
 
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `role` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `created`, `modified`) VALUES
 (1, 'pangster123@gmail.com', '$2a$10$Jzopawbn/OX93Tf8gDCghOHnNodZH/DXQ4l9NDMU6ccvCgbpuwfzO', 'admin', '2016-02-06 08:26:09', '2016-02-06 08:26:09');
 
-CREATE TABLE `websites` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `websites` (
+  `id` int(10) unsigned NOT NULL,
   `resVersion` varchar(9) COLLATE utf8_unicode_ci NOT NULL,
   `lastUpdated` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `numWallpapers` int(10) NOT NULL,
@@ -615,57 +634,13 @@ CREATE TABLE `websites` (
   `numChibis` int(10) NOT NULL,
   `chibi1` int(10) NOT NULL,
   `chibi2` int(10) NOT NULL,
-  `chibi3` int(10) NOT NULL
+  `chibi3` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `websites` (`id`, `resVersion`, `lastUpdated`, `numWallpapers`, `currentWallpaper`, `numChibis`, `chibi1`, `chibi2`, `chibi3`) VALUES
-(1, '10014500', '2016-04-11', 19, 0, 486, 0, 0, 0);
+(1, '10014700', '2016-04-19', 19, 0, 494, 0, 0, 0);
 
-
-ALTER TABLE `cards`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `cards_idols_fk` (`idol_id`),
-  ADD KEY `cards_events_fk` (`event_id`),
-  ADD KEY `cards_gachas_fk` (`gacha_id`);
-
-ALTER TABLE `events`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `events_songs_fk` (`song_id`);
-
-ALTER TABLE `gacha`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `idols`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `news`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `news_users_fk` (`user_id`);
-
-ALTER TABLE `songs`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `websites`
-  ADD PRIMARY KEY (`id`);
-
-
-ALTER TABLE `cards`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
-ALTER TABLE `events`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-ALTER TABLE `gacha`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-ALTER TABLE `idols`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
-ALTER TABLE `news`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-ALTER TABLE `songs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `cards`
   ADD CONSTRAINT `cards_events_fk` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),

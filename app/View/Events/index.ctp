@@ -1,6 +1,6 @@
 <?php
 //Page Title
-$this->set('title_for_layout', 'Usamin S@telite | Events List');
+$this->set('title_for_layout', 'Usamin S@tellite | Events List');
 ?>
 <div class="row text-center">
     <h1>Current Event</h1>

@@ -1,6 +1,6 @@
 <?php
 //Page Title
-$this->set('title_for_layout', 'Usamin S@telite | Gacha List');
+$this->set('title_for_layout', 'Usamin S@tellite | Gacha List');
 ?>
 <div class="row text-center">
     <div class="col-sm-6 col-lg-6">

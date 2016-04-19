@@ -84,7 +84,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 <span class="icon-bar"></span>
                             </button>
                             <?php echo $this->Html->link($this->Html->image('favicon.ico',
-                                array('alt' => 'Usamin S@telite', 'class' => 'img-responsive')),
+                                array('alt' => 'Usamin S@tellite', 'class' => 'img-responsive')),
                                 array('controller' => 'pages', 'action' => 'display', 'home'),
                                 array('class' => 'navbar-brand', 'escape' => false, 'style' => 'padding-top: 0;')); ?>
                         </div>
@@ -145,8 +145,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 ?>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <p><span class="navbar-text" id="clock"></span><abbr title="Starlight Server Time" class="navbar-text
-                                clock">SST</abbr></p>
+                                <p><span class="navbar-text" id="clock"></span><span class="navbar-text
+                                clock">JST</span></p>
                             </ul>
                         </div>
                     </div>
@@ -166,7 +166,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <footer>
     <div class="row text-center center-block">
         <div class="col-lg-12">
-            <em style="font-size: xx-small">Usamin S@telite on <?php echo $version['Website']['resVersion'] ?> - Last Database Update: <?php echo
+            <em style="font-size: xx-small">Usamin S@tellite on <?php echo $version['Website']['resVersion'] ?> - Last Database Update: <?php echo
     $version['Website']['lastUpdated']?></em>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<?php $this->set('title_for_layout', 'Usamin S@telite | About'); ?>
+<?php $this->set('title_for_layout', 'Usamin S@tellite | About'); ?>
 <div class="container-fluid about">
 <div class="row">
 <div class="col-md-9">
@@ -46,13 +46,13 @@
     </section>
     <hr/>
     <section id="aboutus">
-        <h1 class="text-center">About Usamin S@telite and Me</h1>
+        <h1 class="text-center">About Usamin S@tellite and Me</h1>
 
         <section id="site">
             <div class="row">
-                <h3 class="text-center">Usamin S@telite</h3>
+                <h3 class="text-center">Usamin S@tellite</h3>
 
-                <p class="text-center">On Usamin S@telite you can:</p>
+                <p class="text-center">On Usamin S@tellite you can:</p>
             </div>
             <div class="row text-center center-block">
                 <div class="col-xs-12 col-sm-6 col-lg-4">
@@ -123,7 +123,7 @@
             <h3 class="text-center">Credits</h3>
 
             <p>
-                Usamin S@telite is not a representative and is not associated with iDOLM@STER, iDOLM@STER Cinderella Girls,
+                Usamin S@tellite is not a representative and is not associated with iDOLM@STER, iDOLM@STER Cinderella Girls,
                 iDOLM@STER Cinderella Girls Starlight Stage, their logos, cards images, idol pictures and backgrounds are Trademarks of Bandai Namco
                 Entertainment, Cygames and NAMCO BANDAI Games Inc.
             </p>
@@ -132,7 +132,7 @@
         <section id="sources">
             <h3 class="text-center">Development Sources</h3>
 
-            <p>Usamin S@telite uses various external data sources to get it's data. Please visit them and donate if you can!</p>
+            <p>Usamin S@tellite uses various external data sources to get it's data. Please visit them and donate if you can!</p>
 
             <div class="row">
                 <div class="col-xs-6">
@@ -159,7 +159,7 @@
             <p>Logo and color scheme design by Sleepybutt.</p>
 
             <p>
-                Usamin S@telite is written with the CakePHP framework and uses Bootstrap for styling.<br/>
+                Usamin S@tellite is written with the CakePHP framework and uses Bootstrap for styling.<br/>
                 The following plugins are used:
             </p>
 
@@ -204,7 +204,7 @@
         </li>
         <li><a href="#aboutus">About this Site and Me</a>
             <ul class="nav">
-                <li><a href="#site"><span class="glyphicon glyphicon-chevron-right"></span>About Usamin S@telite</a></li>
+                <li><a href="#site"><span class="glyphicon glyphicon-chevron-right"></span>About Usamin S@tellite</a></li>
                 <li><a href="#staff"><span class="glyphicon glyphicon-chevron-right"></span>About Me</a></li>
             </ul>
         </li>

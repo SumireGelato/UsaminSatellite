@@ -1,6 +1,6 @@
 <?php
 if (!$this->request->is('ajax')) {//Page Title
-    $this->set('title_for_layout', 'Usamin S@telite | Cards Gallery');
+    $this->set('title_for_layout', 'Usamin S@tellite | Cards Gallery');
     ?>
     <!--Search and filter bar-->
     <div class="row text-center">
@@ -679,7 +679,7 @@ foreach ($cards as $card) { ?>
                     $this->Html->image('events/' . $card['Event']['pic'], array('alt' => $card['Event']['eName'], 'width' => '75%',
                         'height' => '75%')),
                     array('controller' => 'events',
-                        'action' => 'view', $card['Card']['event_id']),
+                        'action' => 'index'),
                     array('escape' => false)
                 );
             } ?>
@@ -796,14 +796,14 @@ foreach ($cards as $card) { ?>
                 var $panelgroup = $(".panel-group");
                 $panelgroup.on("click", "label#regawk1", function () {//Regular
                     $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "none");
-                    $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "inherit");
+                    $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "block");
                     $(this).closest("div.panel-body").find(".baseIcon").css("display", "inherit");
                     $(this).closest("div.panel-body").find(".awkIcon").css("display", "none");
                     $(this).closest("div.panel-body").find(".base").css("display", "inherit");
                     $(this).closest("div.panel-body").find(".awakened").css("display", "none");
                 });
                 $panelgroup.on("click", "label#regawk2", function () {//Awakened
-                    $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "inherit");
+                    $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "block");
                     $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "none");
                     $(this).closest("div.panel-body").find(".baseIcon").css("display", "none");
                     $(this).closest("div.panel-body").find(".awkIcon").css("display", "inherit");

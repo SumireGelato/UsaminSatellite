@@ -1,7 +1,7 @@
 <?php
 if (!$this->request->is('ajax'))
 {//Page Title
-$this->set('title_for_layout', 'Usamin S@telite | Idols List');
+$this->set('title_for_layout', 'Usamin S@tellite | Idols List');
 ?>
 <div class="row text-center">
     <div class="col-lg-12">

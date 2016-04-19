@@ -1,10 +1,10 @@
-<?php $this->set('title_for_layout', 'Usamin S@telite | Donate'); ?>
+<?php $this->set('title_for_layout', 'Usamin S@tellite | Donate'); ?>
 <div class="container-fluid text-center center-block">
     <div class="row">
         <div class="hidden-xs hidden-sm col-lg-4">
             <div class="row" style="margin-top: 75px">
                 <div class="col-lg-12">
-                    <?php echo $this->html->image('donate.jpg', array('class' => 'img-responsive', 'alt' => 'Donate')); ?>
+                    <?php echo $this->Html->image('donate.jpg', array('class' => 'img-responsive', 'alt' => 'Donate')); ?>
                 </div>
                 <div class="col-lg-12">
                     <p style="font-size: xx-small;">Picture Source: http://www.pixiv.net/member_illust.php?mode=manga&illust_id=54124437</p>
@@ -60,7 +60,7 @@
     <hr/>
     <div class="row" id="donators">
         <div class="col-lg-12">
-            <h2 style="margin-top: 0">Usamin S@telite Supporters</h2>
+            <h2 style="margin-top: 0">Usamin S@tellite Supporters</h2>
         </div>
     </div>
     <div class="row donators">
