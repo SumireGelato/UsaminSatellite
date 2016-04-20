@@ -33,8 +33,12 @@ $this->set('title_for_layout', 'Edit Gacha');
             echo '<div class="col-lg-4">';
             echo $this->Form->input('dateStart', array('type' => 'text', 'class' => 'form-control', 'id' => 'beginPicker'));
             echo $this->Form->input('dateFinish', array('type' => 'text', 'class' => 'form-control', 'id' => 'finishPicker'));
+            echo '<p class="pull-right">Format: Date-Type|Date-Type|etc...</p>';
             echo '</div>';
             echo '<div class="col-lg-4">';
+            $options = array('Limited' => 'Limited', 'Regular' => 'Regular', 'Box' => 'Box');
+            echo $this->Form->input('type', array('options' => $options));
+            echo $this->Form->input('boxGachaDays');
             echo $this->Form->input('pic', array('type' => 'file'));
             ?>
     </div>

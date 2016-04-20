@@ -57,10 +57,17 @@
                         case 4:
                             break;
                         default:
-                            echo '<td></td>';
-                            echo '<td></td>';
-                            echo '<td></td>';
-                            echo '<td></td>';
+                            if($gacha['Gacha']['type'] == 'Box') {
+                                echo '<td>'.$gacha['Gacha']['boxGachaDays'].'</td>';
+                                echo '<td></td>';
+                                echo '<td></td>';
+                                echo '<td></td>';
+                            } else {
+                                echo '<td></td>';
+                                echo '<td></td>';
+                                echo '<td></td>';
+                                echo '<td></td>';
+                            }
                             break;
                     }
                     ?>

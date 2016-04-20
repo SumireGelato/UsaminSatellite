@@ -83,7 +83,7 @@ $this->set('title_for_layout', 'Usamin S@tellite | English Resources for iDOLM@S
             '<h3>Suggestions</h3>', '/about#contact', array('escape' => false)) ?>
         <p>Have a suggestion for a new feature?</p>
     </div>
-    <div class="col-lg-4 center-block">
+    <div class="col-lg-4 center-block" style="margin-top: -10px">
         <a class="twitter-timeline" data-chrome="transparent noborder nofooter" data-dnt="true" href="https://twitter.com/UsaminSatelite"
            data-widget-id="715765886548881409">Latest News - Follow Us at @UsaminSatelite!</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

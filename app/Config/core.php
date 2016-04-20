@@ -357,7 +357,7 @@ date_default_timezone_set('Asia/Tokyo');
 $engine = 'File';
 
 // In development mode, caches should expire quickly.
-$duration = '+999 days';
+$duration = '+7 days';
 if (Configure::read('debug') > 0) {
     $duration = '+10 seconds';
 }
