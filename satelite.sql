@@ -1,11 +1,30 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.10.7
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Apr 25, 2016 at 04:03 AM
+-- Server version: 5.5.45-cll-lve
+-- PHP Version: 5.4.31
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
+--
+-- Database: `satelite`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cards`
+--
 
 CREATE TABLE IF NOT EXISTS `cards` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -46,7 +65,11 @@ CREATE TABLE IF NOT EXISTS `cards` (
   KEY `cards_idols_fk` (`idol_id`),
   KEY `cards_events_fk` (`event_id`),
   KEY `cards_gachas_fk` (`gacha_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=251 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=254 ;
+
+--
+-- Dumping data for table `cards`
+--
 
 INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`, `jName`, `rarity`, `type`, `limited`, `baseLife`, `baseVocal`, `baseDance`, `baseVisual`, `baseMaxLife`, `baseMaxVocal`, `baseMaxDance`, `baseMaxVisual`, `awkBaseLife`, `awkBaseVocal`, `awkBaseDance`, `awkBaseVisual`, `awkMaxLife`, `awkMaxVocal`, `awkMaxDance`, `awkMaxVisual`, `centerSkillText`, `specialSkillType`, `specialSkillText`, `dateAdded`, `baseArt`, `awkArt`, `baseIconArt`, `awkIconArt`) VALUES
 (1, 1, NULL, NULL, 100075, '"Stage of Magic" Uzuki Shimamura', '［ステージオブマジック］島村卯月', 'SSR', 'Cute', 0, 40, 2028, 2006, 2001, 42, 4224, 4178, 4168, 42, 2662, 2633, 2627, 44, 5137, 5080, 5069, 'All Appeals of all Cute Idols up 30%', 'Perfect Lock', 'GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 9 seconds for a very short time.', '2015-09-03', '100075.png', '100076.png', '100075_icon.png', '100076_icon.png'),
@@ -263,7 +286,7 @@ INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`
 (211, 17, NULL, NULL, 100015, 'Chieri Ogata', '緒方智絵里', 'N', 'Cute', 0, 20, 1344, 1331, 1410, 21, 1920, 1901, 2013, 21, 1632, 1617, 1712, 22, 2512, 2488, 2633, 'No Skill', 'No Skill', 'N/A', '2015-09-03', '100015.png', '100016.png', '100015_icon.png', '100016_icon.png'),
 (212, 19, NULL, NULL, 100013, 'Miho Kohinata', '小日向美穂', 'N', 'Cute', 0, 20, 1151, 935, 1837, 21, 1643, 1335, 2623, 21, 1398, 1135, 2231, 22, 2150, 1747, 3431, 'No Skill', 'No Skill', 'N/A', '2015-09-03', '100013.png', '100014.png', '100013_icon.png', '100014_icon.png'),
 (213, 23, NULL, NULL, 100009, 'Saori Okuyama', '奥山沙織', 'N', 'Cute', 0, 20, 1816, 1161, 952, 21, 2593, 1658, 1359, 21, 2205, 1410, 1156, 22, 3392, 2169, 1778, 'No Skill', 'No Skill', 'N/A', '2015-09-03', '100009.png', '100010.png', '100009_icon.png', '100010_icon.png'),
-(214, 25, NULL, NULL, 100009, 'Yuka Nakano', '中野有香', 'N', 'Cute', 0, 22, 1268, 1258, 1256, 24, 1811, 1796, 1793, 24, 1540, 1527, 1525, 26, 2369, 2349, 2345, 'No Skill', 'No Skill', 'N/A', '2015-09-03', '100009.png', '100010.png', '100009_icon.png', '100010_icon.png'),
+(214, 25, NULL, NULL, 100003, 'Yuka Nakano', '中野有香', 'N', 'Cute', 0, 22, 1268, 1258, 1256, 24, 1811, 1796, 1793, 24, 1540, 1527, 1525, 26, 2369, 2349, 2345, 'No Skill', 'No Skill', 'N/A', '2015-09-03', '100003.png', '100004.png', '100003_icon.png', '100004_icon.png'),
 (215, 109, NULL, NULL, 100005, 'Arisa Mochida', '持田亜里沙', 'N', 'Cute', 0, 20, 1154, 940, 1829, 21, 1648, 1343, 2613, 21, 1402, 1143, 2222, 22, 2156, 1758, 3418, 'No Skill', 'No Skill', 'N/A', '2016-03-09', '100005.png', '100006.png', '100005_icon.png', '100006_icon.png'),
 (216, 110, NULL, NULL, 200171, 'Ai Togo', '東郷あい', 'N', 'Cool', 0, 22, 1321, 1231, 1212, 24, 1887, 1758, 1732, 24, 1605, 1495, 1473, 26, 2469, 2300, 2266, 'No Skill', 'No Skill', 'N/A', '2016-03-09', '200171.png', '200172.png', '200171_icon.png', '200172_icon.png'),
 (217, 111, NULL, NULL, 300167, 'Aoi Shuto', '首藤葵', 'N', 'Passion', 0, 20, 1843, 929, 1147, 21, 2633, 1327, 1638, 21, 2239, 1129, 1393, 22, 3445, 1737, 2143, 'No Skill', 'No Skill', 'N/A', '2016-03-09', '300167.png', '300168.png', '300167_icon.png', '300168_icon.png'),
@@ -300,7 +323,16 @@ INSERT INTO `cards` (`id`, `idol_id`, `event_id`, `gacha_id`, `card_id`, `eName`
 (247, 96, NULL, NULL, 300201, '"Dreaming Princess" Hinako Kita', '［夢みるプリンセス］喜多日菜子', 'SSR', 'Passion', 0, 40, 1448, 2665, 1749, 42, 3017, 5552, 3643, 42, 1901, 3499, 2296, 44, 3669, 6751, 4431, 'Dance Appeal of all Passion idols up 90%', 'Score Boost', 'PERFECT/GREAT score 17% up, high probability of triggering every 4 seconds for very short time.', '2016-04-14', '300201.png', '300202.png', '300201_icon.png', '300202_icon.png'),
 (248, 24, NULL, NULL, 100201, '"Innocent Young Woman" Yukari Mizumoto', '［清純令嬢］水本ゆかり', 'SR', 'Cute', 0, 35, 2410, 1254, 1534, 37, 4634, 2412, 2950, 37, 3106, 1617, 1977, 39, 5707, 2971, 3633, 'Skill Probability of all Cute idols up 30%', 'Perfect Lock', 'GREATs and NICEs become PERFECTs temporarily, high probability of triggering every 7 seconds for a very short time.', '2016-04-14', '100201.png', '100202.png', '100201_icon.png', '100202_icon.png'),
 (249, 8, 20, NULL, 100203, '"Tsubomi" Shiki Ichinose', '［つぼみ］一ノ瀬志希', 'SR', 'Cute', 1, 35, 1594, 1314, 2454, 37, 3065, 2527, 4719, 37, 2055, 1694, 3162, 39, 3775, 3113, 5811, 'All Appeal of all Cute idols up 20%', 'Combo Bonus', 'COMBO pt bonus 15% up, high probability of triggering every 11 seconds for some time.', '2016-04-19', '100203.png', '100204.png', '100203_icon.png', '100204_icon.png'),
-(250, 86, 20, NULL, 300203, '"Tsubomi" Yumi Aiba', '［つぼみ］相葉夕美', 'SR', 'Passion', 1, 35, 1815, 1640, 1669, 37, 3491, 3154, 3210, 37, 2340, 2114, 2152, 39, 4300, 3885, 3954, 'Skill Probability of all Passion idols up 30%', 'Overload', 'All notes score 16% up and COMBO is maintained on NICEs temporarily at the cost of 15 life, medium probability of triggering every 15 seconds for some time', '2016-04-19', '300203.png', '300204.png', '300203_icon.png', '300204_icon.png');
+(250, 86, 20, NULL, 300203, '"Tsubomi" Yumi Aiba', '［つぼみ］相葉夕美', 'SR', 'Passion', 1, 35, 1815, 1640, 1669, 37, 3491, 3154, 3210, 37, 2340, 2114, 2152, 39, 4300, 3885, 3954, 'Skill Probability of all Passion idols up 30%', 'Overload', 'All notes score 16% up and COMBO is maintained on NICEs temporarily at the cost of 15 life, medium probability of triggering every 15 seconds for some time', '2016-04-19', '300203.png', '300204.png', '300203_icon.png', '300204_icon.png'),
+(251, 32, NULL, 7, 100205, '"Warm Heart" Kyoko Igarashi', '［あったかハート］五十嵐響子', 'SSR', 'Cute', 0, 42, 0, 0, 0, 44, 4031, 4975, 4189, 44, 0, 0, 0, 46, 4860, 5998, 5051, 'All Appeal of all Cute idols up 30%', 'Score Boost', 'PERFECT/GREAT score 17% up, high probability of triggering every 13 seconds for a considerable length of time.', '2016-04-25', '100205.png', '100206.png', '100205_icon.png', '100206_icon.png'),
+(252, 62, NULL, 7, 200203, '"Tiny Stage" Tamami Wakiyama', '［ちびっこステージ］脇山珠美', 'SR', 'Cool', 0, 37, 0, 0, 0, 39, 3140, 4782, 2600, 39, 0, 0, 0, 41, 3833, 5836, 3173, 'Dance Appeal of all Cool idols up 60%', 'Score Boost', 'PERFECT score 15% up, high probability of triggering every 4 seconds for a very short time.', '2016-04-25', '200203.png', '200204.png', '200203_icon.png', '200204_icon.png'),
+(253, 121, NULL, 7, 100207, 'Yao FueiFuei', '楊菲菲', 'R', 'Cute', 0, 27, 0, 0, 0, 29, 2539, 2105, 3864, 29, 0, 0, 0, 31, 3156, 2618, 4803, 'Visual Appeal of all Cute idols up 30%', 'Score Boost', 'PERFECT score 10% up, low probability of triggering every 6 seconds for a short time.', '2016-04-25', '100207.png', '100208.png', '100207_icon.png', '100208_icon.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events`
+--
 
 CREATE TABLE IF NOT EXISTS `events` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -321,6 +353,10 @@ CREATE TABLE IF NOT EXISTS `events` (
   PRIMARY KEY (`id`),
   KEY `events_songs_fk` (`song_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `events`
+--
 
 INSERT INTO `events` (`id`, `song_id`, `eName`, `jName`, `begin`, `finish`, `type`, `t1`, `t2`, `t3`, `t4`, `t5`, `t6`, `t7`, `pic`) VALUES
 (1, 18, 'LIVE Groove Dance burst', 'LIVE Groove Dance burst', '2015-12-30 15:00:00', '2016-01-08 20:59:59', 'Medley', 45128, 31182, 27954, 22930, 18874, 3032, 262, 'LIVE Groove Dance burst 2015-12.png'),
@@ -344,6 +380,45 @@ INSERT INTO `events` (`id`, `song_id`, `eName`, `jName`, `begin`, `finish`, `typ
 (19, NULL, 'Cinderella Caravan', 'シンデレラキャラバン', '2016-04-11 15:00:00', '2016-04-17 20:59:59', 'Caravan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Cinderella Caravan 2016-04.png'),
 (20, 62, 'Tsubomi', 'つぼみ', '2016-04-19 15:00:00', '2016-04-26 20:59:59', 'Token', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tsubomi 2016-04.png');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gacha`
+--
+
+CREATE TABLE IF NOT EXISTS `gacha` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `eName` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `jName` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `type` char(50) COLLATE utf8_unicode_ci NOT NULL,
+  `boxGachaDays` char(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dateStart` datetime NOT NULL,
+  `dateFinish` datetime NOT NULL,
+  `pic` char(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `gacha`
+--
+
+INSERT INTO `gacha` (`id`, `eName`, `jName`, `type`, `boxGachaDays`, `dateStart`, `dateFinish`, `pic`) VALUES
+(1, 'Made with Love Valentines Day Gacha', 'メイド with LOVE バレンタインデーガシャ', 'Limited', NULL, '2016-01-31 15:00:00', '2016-02-10 14:59:59', 'Made with Love Valentines Day Gacha.png'),
+(2, 'Starry Moments Nighttime Gacha', '星々のひととき ナイトタイムガシャ', 'Limited', NULL, '2016-02-29 15:00:00', '2016-03-11 14:59:59', 'Starry Moments Nighttime Gacha.png'),
+(3, 'Happy New Year Gacha', 'ハッピーニューイヤーガシャ', 'Limited', NULL, '2015-12-30 15:00:00', '2016-01-16 14:59:59', 'Happy New Year Gacha.png'),
+(4, 'Present for you! Chrismas Gift Gacha', 'キミに届け！クリスマスプレゼントガシャ', 'Limited', NULL, '2015-11-30 15:00:00', '2015-12-14 14:59:59', 'Present for you! Chrismas Gift Gacha.png'),
+(5, 'Laid Back and Relaxing, Cosy Hot Springs Gacha', 'まったりのんびりぽかぽか温泉ガシャ', 'Limited', NULL, '2015-10-31 15:00:00', '2015-11-13 14:59:59', 'Laid Back and Relaxing, Cosy Hot Springs Gacha.png'),
+(6, 'Sweet Moments Sweet Halloween Gacha', '甘いひととき スウィートハロウィンガシャ', 'Limited', NULL, '2015-09-30 15:00:00', '2015-10-13 14:59:59', 'Sweet Moments Sweet Halloween Gacha.png'),
+(7, 'Platinum Gacha (Non-Limited)', 'プラチナガシャ', 'Regular', '', '2016-04-25 18:00:00', '2016-04-30 14:59:59', NULL),
+(8, 'Springtime After School Gacha', '春うららか放課後タイムガシャ', 'Limited', NULL, '2016-03-31 15:00:00', '2016-04-08 14:59:59', 'Springtime After School Gacha.png'),
+(9, 'Platinum Audition Gacha', 'プラチナオーディションガシャ', 'Box', '20th-Cute|21st-Cool|22nd-Passion|23rd-Cute|24th-Cool|25th-Passion', '2016-04-20 00:00:00', '2016-04-25 17:59:59', 'Platinum Audition Gacha.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `idols`
+--
+
 CREATE TABLE IF NOT EXISTS `idols` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `eName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -364,7 +439,11 @@ CREATE TABLE IF NOT EXISTS `idols` (
   `profilePic` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `puchiPic` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=121 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=122 ;
+
+--
+-- Dumping data for table `idols`
+--
 
 INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthday`, `bloodType`, `bwh`, `hobbies`, `writingHand`, `horoscope`, `hometown`, `type`, `cv`, `bio`, `profilePic`, `puchiPic`) VALUES
 (1, 'Uzuki Shimamura', '島村卯月', '17', '159', '45', 'April 24', 'O', '83/59/87', 'Long Phone Calls with friends', 'Right', 'Taurus', 'Tokyo', 'Cute', 'Ayaka Ohashi', 'Her ordinary personality is her defining trait. She''s so average in fact that it''s almost bizarre, counting such feats as consistently scoring right in the middle of her school''s exam rankings, or always running around the middle of the pack in sporting events, or having never drawn any fortune but the average Good Luck over the course of 17 New Year''s celebrations. ', 'uzuki1.png', 'uzuki2.png'),
@@ -484,7 +563,14 @@ INSERT INTO `idols` (`id`, `eName`, `jName`, `age`, `height`, `weight`, `birthda
 (117, 'Otoha Umeki', '梅木音葉', '19', '172', '49', 'June 20', 'AB', '86/58/85', 'Walking in the Woods, Piano', 'Right', 'Gemini', 'Hokkaido', 'Cool', 'N/A', 'Otoha is the daughter of classical musicians, and considers music to be her foundation and purpose in life. She is very serious when it comes to music, tone, harmony, and pitch.', 'otoha1.png', 'otoha2.png'),
 (118, 'Yume Narumiya', '成宮由愛', '13', '150', '40', 'November 3', 'AB', '72/51/73', 'Sketching, Watercolor Painting', 'Both', 'Scorpio', 'Shiga', 'Cool', 'N/A', 'Yume is always extremely shy and was signed up to be a idol by her mother. She dislikes meeting people and the other idols are often shown as being kind and protective of Yume. ', 'yume1.png', 'yume2.png'),
 (119, 'Suzuho Ueda', '上田鈴帆', '14', '156', '42', 'October 26', 'O', '76/55/77', 'Sewing', 'Right', 'Scorpio', 'Fukuoka', 'Passion', 'Nanami Haruno', 'Suzuho is a fun loving girl who enjoys making and wearing full body costumes. Her costumes look like they''re for a Halloween Party or Theme Park and other idols complain they''re hot and stuffy.', 'suzuho1.png', 'suzuho2.png'),
-(120, 'Meiko Namiki', '並木芽衣子', '22', '160', '44', 'October 14', 'AB', '80/57/82', 'Traveling', 'Right', 'Libra', 'Wakayama', 'Passion', 'N/A', 'Meiko is a young woman who loves to travel. She has a never ending curiosity for new places, and becomes extremely energetic at the thought of exploring.', 'meiko1.png', 'meiko2.png');
+(120, 'Meiko Namiki', '並木芽衣子', '22', '160', '44', 'October 14', 'AB', '80/57/82', 'Traveling', 'Right', 'Libra', 'Wakayama', 'Passion', 'N/A', 'Meiko is a young woman who loves to travel. She has a never ending curiosity for new places, and becomes extremely energetic at the thought of exploring.', 'meiko1.png', 'meiko2.png'),
+(121, 'Yao FueiFuei', '楊菲菲', '15', '152', '41', 'September 29', 'O', '82/58/84', 'Cooking', 'Right', 'Libra', 'Hong Kong', 'Cute', 'N/A', 'Fueifuei is an immigrant from Hong Kong and is the daughter of a family that owns a Chinese restaurant. She embodies Japanese stereotypes of Chinese people, as she knows Kung Fu, she incorporates Wuxia into her costumes, and she wears a Qipao.', 'yao1.png', 'yao2.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `news`
+--
 
 CREATE TABLE IF NOT EXISTS `news` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -498,8 +584,18 @@ CREATE TABLE IF NOT EXISTS `news` (
   KEY `news_users_fk` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
+--
+-- Dumping data for table `news`
+--
+
 INSERT INTO `news` (`id`, `user_id`, `title`, `category`, `body`, `created`, `modified`) VALUES
 (1, 1, 'Welcome to Usamin S@telite β!', 'site', 'The site is now live in beta test mode! If there is any problems please contact me using the contact us page!', '2015-09-17 15:33:26', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `songs`
+--
 
 CREATE TABLE IF NOT EXISTS `songs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -528,11 +624,15 @@ CREATE TABLE IF NOT EXISTS `songs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=63 ;
 
+--
+-- Dumping data for table `songs`
+--
+
 INSERT INTO `songs` (`id`, `eName`, `jName`, `translated`, `artist`, `type`, `bpm`, `unlockCon`, `availability`, `coverArt`, `debutLvl`, `debutStam`, `debutNotes`, `regLvl`, `regStam`, `regNotes`, `proLvl`, `proStam`, `proNotes`, `masterLvl`, `masterStam`, `masterNotes`, `dateAdded`) VALUES
 (1, 'Onegai! Cinderella', 'お願い！シンデレラ', 'Please! Cinderella', NULL, 'All', 175, 'Complete Tutorial', 'Always', 'Onegai! Cinderella.png', 5, 10, 46, 10, 12, 205, 15, 15, 341, 20, 18, 477, '2015-09-03'),
 (2, 'Orange Sapphire', 'Orange Sapphire', 'Orange Sapphire', 'Rika Jougasaki|Kirari Moroboshi|Miria Akagi|Mio Honda|Mika Jougasaki', 'Passion', 162, 'Available by default. Past Event Song - Unlocked on 2015-12-28', 'Weekday/Sunday/Monday/Tuesday/Friday/Saturday', 'Orange Sapphire.png', 8, 11, 116, 13, 13, 214, 17, 16, 411, 26, 19, 719, '2015-11-20'),
-(3, 'Star!!', 'Star!!', 'Star!!', NULL, 'All', 178, 'Complete Story Episode 2.', 'Always', 'Star!!.png', 6, 10, 102, 12, 13, 180, 16, 15, 346, 25, 19, 569, '2015-09-03'),
-(4, 'Todoke! Idol', 'とどけ！アイドル', 'Reach For! Idol', NULL, 'All', 180, 'Complete Episode Story 1. Other songs will remain locked until this song is unlocked', 'Always', 'Todoke! Idol.png', 5, 10, 74, 11, 12, 145, 15, 15, 310, 21, 18, 481, '2015-09-03'),
+(3, 'Star!!', 'Star!!', 'Star!!', 'Miku Maekawa|Mio Honda|Uzuki Shimamura|Rin Shibuya|Mika Jougasaki', 'All', 178, 'Complete Story Episode 2.', 'Always', 'Star!!.png', 6, 10, 102, 12, 13, 180, 16, 15, 346, 25, 19, 569, '2015-09-03'),
+(4, 'Todoke! Idol', 'とどけ！アイドル', 'Reach For! Idol', 'Anzu Futaba|Mio Honda|Uzuki Shimamura|Rin Shibuya|Kirari Moroboshi', 'All', 180, 'Complete Episode Story 1. Other songs will remain locked until this song is unlocked', 'Always', 'Todoke! Idol.png', 5, 10, 74, 11, 12, 145, 15, 15, 310, 21, 18, 481, '2015-09-03'),
 (5, 'We''re the Friends!', 'We''re the Friends!', 'We''re the Friends!', NULL, 'All', 178, 'Complete Panel Mission Sheet 1.', 'Always', 'Were the Friends.png', 6, 10, 73, 12, 13, 170, 16, 15, 383, 22, 18, 547, '2015-09-03'),
 (6, 'Yuubae Present', '夕映えプレゼント', 'Sunset Glow''s Present', NULL, 'All', 175, 'Complete Panel Mission Sheet 2.', 'Always', 'Yuubae Present.png', 8, 11, 103, 14, 14, 201, 18, 16, 425, 26, 19, 593, '2015-09-03'),
 (7, 'GOIN''!!!', 'GOIN''!!!', 'GOIN''!!!', NULL, 'All', 178, 'Complete Panel Mission Sheet 3.', 'Always', 'GOIN''!!!.png', 9, 11, 125, 13, 13, 181, 17, 16, 383, 27, 19, 575, '2015-09-03'),
@@ -548,49 +648,55 @@ INSERT INTO `songs` (`id`, `eName`, `jName`, `translated`, `artist`, `type`, `bp
 (17, 'Gokigen Party Night', 'ゴキゲンParty Night', 'Merry Party Night', NULL, 'All', 175, 'Available by default.', 'Weekday/Sunday/Monday/Tuesday/Saturday', 'Gokigen Party Night.png', 8, 11, 117, 14, 14, 234, 18, 16, 405, 26, 19, 632, '2016-02-16'),
 (18, 'Gokigen Party Night', 'ゴキゲンParty Night イベントver', 'Merry Party Night Event ver', 'Yuki Himekawa|Riina Tada|Mio Honda|Nana Abe|Rin Shibuya', 'All', 175, 'Available by default. Past Event Song - Unlocked on 2016-02-16', 'Weekday/Sunday/Monday/Tuesday/Saturday', 'Gokigen Party Night Event ver.png', 8, 11, 117, 14, 14, 234, 18, 16, 405, 26, 19, 632, '2015-12-30'),
 (19, 'Tulip', 'Tulip', 'Tulip', 'Shiki Ichinose|Syuko Shiomi|Kanade Hayami|Frederica Miyamoto|Mika Jougasaki', 'All', 154, 'Past Event Song - Points Reward', 'Always/Available from 2016-03-20.', 'Tulip.png', 8, 11, 115, 14, 14, 184, 18, 16, 351, 26, 19, 659, '2016-01-31'),
-(20, 'Absolute NIne', 'Absolute NIne', 'Absolute NIne', '', 'All', 175, 'Past Event Song - Points Reward', 'Always/Available from 2016-04-08.', 'Absolute NIne.png', 9, 11, 133, 13, 13, 195, 18, 16, 347, 26, 19, 622, '2016-02-29'),
-(21, 'S(mile)ING!', 'S(mile)ING!', 'S(mile)ING!', '?|?|Uzuki Shimamura|?|?', 'Cute', 178, 'Complete Story Episode 3.', 'Always', 'S(mile)ING!.png', 6, 10, 95, 11, 12, 162, 15, 15, 269, 21, 18, 438, '2015-09-03'),
-(22, 'Onedari Shall We', 'おねだり Shall We', 'Pleadingly, Shall We', '?|?|Miku Maekawa|?|?', 'Cute', 148, 'Complete Story Episode 6. (Producer Level 10 and Up)', 'Always', 'Onedari Shall We.png', 8, 11, 106, 13, 13, 178, 18, 16, 352, 25, 19, 520, '2015-09-03'),
-(23, 'Kazeiro Melody', '風色メロディ', 'Wind-Colored Melody', '?|?|Chieri Ogata|?|?', 'Cute', 90, 'Complete Story Episode 9. (Producer Level 24 and Up)', 'Always', 'Kazeiro Melody.png', 6, 10, 67, 11, 12, 138, 16, 15, 283, 23, 18, 409, '2015-09-03'),
+(20, 'Absolute NIne', 'Absolute NIne', 'Absolute NIne', 'Yumi Aiba|Miku Maekawa|Syuko Shiomi|Kaede Takagaki|Shiki Ichinose', 'All', 175, 'Past Event Song - Points Reward', 'Always/Available from 2016-04-08.', 'Absolute NIne.png', 9, 11, 133, 13, 13, 195, 18, 16, 347, 26, 19, 622, '2016-02-29'),
+(21, 'S(mile)ING!', 'S(mile)ING!', 'S(mile)ING!', 'Chieri Ogata|Mio Honda|Uzuki Shimamura|Rin Shibuya|Miho Kohinata', 'Cute', 178, 'Complete Story Episode 3.', 'Always', 'S(mile)ING!.png', 6, 10, 95, 11, 12, 162, 15, 15, 269, 21, 18, 438, '2015-09-03'),
+(22, 'Onedari Shall We', 'おねだり Shall We', 'Pleadingly, Shall We', 'Nana Abe|Mio Honda|Miku Maekawa|Riina Tada|Sachiko Koshimizu', 'Cute', 148, 'Complete Story Episode 6. (Producer Level 10 and Up)', 'Always', 'Onedari Shall We.png', 8, 11, 106, 13, 13, 178, 18, 16, 352, 25, 19, 520, '2015-09-03'),
+(23, 'Kazeiro Melody', '風色メロディ', 'Wind-Colored Melody', 'Sae Kobayakawa|Miho Kohinata|Chieri Ogata|Sachiko Koshimizu|Kanako Mimura', 'Cute', 90, 'Complete Story Episode 9. (Producer Level 24 and Up)', 'Always', 'Kazeiro Melody.png', 6, 10, 67, 11, 12, 138, 16, 15, 283, 23, 18, 409, '2015-09-03'),
 (24, 'Happy×2 Days', 'Happy×2 Days', 'Happy×2 Days', '?|Chieri Ogata|Anzu Futaba|Kanako Mimura|?', 'Cute', 130, 'Buy for 5000 Money from the room jukebox.', 'Always', 'Happy×2 Days.png', 8, 11, 109, 13, 13, 183, 17, 16, 325, 23, 18, 478, '2015-09-03'),
-(25, 'Anzu no Uta', 'あんずのうた', 'Anzu''s Song', '?|?|Anzu Futaba|?|?', 'Cute', 195, 'Complete Story Episode 11. (Producer Level 35 and Up)', 'Always', 'Anzu no Uta.png', 9, 11, 152, 14, 14, 265, 19, 17, 464, 28, 19, 700, '2015-09-03'),
+(25, 'Anzu no Uta', 'あんずのうた', 'Anzu''s Song', 'Akane Hino|Kanako Mimura|Anzu Futaba|Kirari Moroboshi|Yuko Hori', 'Cute', 195, 'Complete Story Episode 11. (Producer Level 35 and Up)', 'Always', 'Anzu no Uta.png', 9, 11, 152, 14, 14, 265, 19, 17, 464, 28, 19, 700, '2015-09-03'),
 (26, 'ØωØver!!', 'ØωØver!!', 'ØωØver!!', '?|Riina Tada|Miku Maekawa|?|?', 'Cute', 180, 'Buy for 5000 Money from the room jukebox.', 'Always', 'ØωØver!!.png', 8, 11, 110, 12, 13, 181, 17, 16, 374, 26, 19, 606, '2015-09-03'),
-(27, 'Chocolat Tiara', 'ショコラ・ティアラ', 'Chocolat Tiara', '?|?|Kanako Mimura|?|?', 'Cute', 133, 'Complete Story Episode 13. (Producer Level 44 and Up)', 'Always', 'Chocolat Tiara.png', 6, 10, 82, 13, 13, 166, 18, 16, 366, 26, 19, 510, '2015-10-06'),
-(28, 'Naked Romance', 'Naked Romance', 'Naked Romance', '?|?|Miho Kohinata|?|?', 'Cute', 168, 'Complete Story Episode 18. (Producer Level 50 and Up)', 'Always', 'Naked Romance.png', 7, 10, 110, 13, 13, 200, 17, 16, 333, 26, 19, 674, '2015-12-28'),
-(29, 'Everyday Dream', 'エヴリデイドリーム', 'Everyday Dream', '?|?|Mayu Sakuma|?|?', 'Cute', 157, 'Complete Story Episode 21. (Producer Level 50 and Up)', 'Always', 'Everyday Dream.png', 8, 11, 114, 13, 13, 175, 17, 16, 342, 25, 19, 552, '2016-02-08'),
+(27, 'Chocolat Tiara', 'ショコラ・ティアラ', 'Chocolat Tiara', 'Frederica Miyamoto|Airi Totoki|Kanako Mimura|Chieri Ogata|Aiko Takamori', 'Cute', 133, 'Complete Story Episode 13. (Producer Level 44 and Up)', 'Always', 'Chocolat Tiara.png', 6, 10, 82, 13, 13, 166, 18, 16, 366, 26, 19, 510, '2015-10-06'),
+(28, 'Naked Romance', 'Naked Romance', 'Naked Romance', 'Syuko Shiomi|Uzuki Shimamura|Miho Kohinata|Ranko Kanzaki|Sae Kobayakawa', 'Cute', 168, 'Complete Story Episode 18. (Producer Level 50 and Up)', 'Always', 'Naked Romance.png', 7, 10, 110, 13, 13, 200, 17, 16, 333, 26, 19, 674, '2015-12-28'),
+(29, 'Everyday Dream', 'エヴリデイドリーム', 'Everyday Dream', 'Kanako Mimura|Frederica Miyamoto|Mayu Sakuma|Shiki Ichinose|Koume Shirasaka', 'Cute', 157, 'Complete Story Episode 21. (Producer Level 50 and Up)', 'Always', 'Everyday Dream.png', 8, 11, 114, 13, 13, 175, 17, 16, 342, 25, 19, 552, '2016-02-08'),
 (30, 'Susume☆Otome ～jewel parade～', 'ススメ☆オトメ ～jewel parade～', 'Go Forward☆Young Girl ～jewel parade～', 'Anzu Futaba|Miho Kohinata|Uzuki Shimamura|Miku Maekawa|Nana Abe', 'Cute', 130, 'Available by default.', 'Weekday/Wednesday', 'Susume☆Otome ～jewel parade～ Cute ver.png', 8, 11, 88, 13, 13, 179, 17, 16, 292, 24, 18, 517, '2015-09-03'),
 (31, 'Atashi Ponkotsu Android', 'アタシポンコツアンドロイド', 'I''m a Broken-down Android', 'Miho Kohinata|Nana Abe|Uzuki Shimamura|Anzu Futaba|Miku Maekawa', 'Cute', 135, 'Available by default. Past Event Song - Unlocked on 2015-10-28', 'Weekday/Sunday/Monday/Tuesday/Wednesday/Saturday', 'Atashi Ponkotsu Android.png', 8, 11, 99, 12, 13, 202, 17, 16, 391, 26, 19, 634, '2015-09-25'),
 (32, 'Gokigen Party Night', 'ゴキゲンParty Night', 'Merry Party Night', 'Kanako Mimura|Sachiko Koshimizu|Chieri Ogata|Mayu Sakuma|Sae Kobayakawa', 'Cute', 175, 'Available by default.', 'Weekday/Wednesday', 'Gokigen Party Night Cute ver.png', 8, 11, 123, 13, 13, 206, 17, 16, 416, 25, 19, 548, '2016-02-17'),
 (33, 'Pastel Pink na Koi', 'パステルピンクな恋', 'A Pastel Pink Love', 'Kanako Mimura|Sachiko Koshimizu|Chieri Ogata|Mayu Sakuma|Sae Kobayakawa', 'Cute', 175, 'Available by default. Past Event Song - Unlocked on 2015-02-27', 'Weekday/Sunday/Monday/Tuesday/Wednesday/Saturday', 'Pastel Pink na Koi.png', 8, 11, 113, 14, 14, 207, 18, 16, 396, 26, 19, 684, '2016-01-20'),
-(34, 'Never say Never', 'Never say Never', 'Never say Never', '?|?|Rin Shibuya|?|?', 'Cool', 156, 'Complete Story Episode 4.', 'Always', 'Never say Never.png', 6, 10, 112, 12, 13, 216, 17, 16, 371, 25, 19, 611, '2015-09-03'),
-(35, 'Twilight Sky', 'Twilight Sky', 'Twilight Sky', '?|?|Riina Tada|?|?', 'Cool', 176, 'Available by default.', 'Always', 'Twilight Sky.png', 7, 10, 122, 13, 13, 192, 18, 16, 425, 24, 18, 582, '2015-09-03'),
-(36, 'Tsubomi Yumemiru Rapsodia ～Alma no Michibiki～', '華蕾夢ミル狂詩曲～魂ノ導～', 'Dreaming Flower’s Bud Rhapsody ~Soul’s Guidance~', '?|?|Ranko Kanzaki|?|?', 'Cool', 184, 'Complete Story Episode 12. (Producer Level 42 and Up)', 'Always', 'Tsubomi Yumemiru Rapsodia ～Alma no Michibiki～.png', 6, 10, 88, 13, 13, 190, 18, 16, 423, 27, 19, 656, '2015-09-03'),
+(34, 'Never say Never', 'Never say Never', 'Never say Never', 'Karen Hojo|Uzuki Shimamura|Rin Shibuya|Mio Honda|Nao Kamiya', 'Cool', 156, 'Complete Story Episode 4.', 'Always', 'Never say Never.png', 6, 10, 112, 12, 13, 216, 17, 16, 371, 25, 19, 611, '2015-09-03'),
+(35, 'Twilight Sky', 'Twilight Sky', 'Twilight Sky', 'Minami Nitta|Ranko Kanzaki|Riina Tada|Syoko Hoshi|Miku Maekawa', 'Cool', 176, 'Available by default.', 'Always', 'Twilight Sky.png', 7, 10, 122, 13, 13, 192, 18, 16, 425, 24, 18, 582, '2015-09-03'),
+(36, 'Tsubomi Yumemiru Rapsodia ～Alma no Michibiki～', '華蕾夢ミル狂詩曲～魂ノ導～', 'Dreaming Flower’s Bud Rhapsody ~Soul’s Guidance~', 'Syoko Hoshi|Koume Shirasaka|Ranko Kanzaki|Anastasia|Nao Kamiya', 'Cool', 184, 'Complete Story Episode 12. (Producer Level 42 and Up)', 'Always', 'Tsubomi Yumemiru Rapsodia ～Alma no Michibiki～.png', 6, 10, 88, 13, 13, 190, 18, 16, 423, 27, 19, 656, '2015-09-03'),
 (37, 'Memories', 'Memories', 'Memories', '?|Minami Nitta|Anastasia|?|?', 'Cool', 130, 'Buy for 5000 Money from the room jukebox.', 'Always', 'Memories.png', 6, 10, 74, 11, 12, 135, 16, 15, 267, 22, 18, 412, '2015-09-03'),
 (38, '-Engel- Adanasu Tsurugi Hikari no Shirabe', '-LEGNE- 仇なす剣 光の旋律', '-Angel- Vengeful Sword: Melody of Light', '?|?|Ranko Kanzaki|?|?', 'Cool', 189, 'Buy for 5000 Money from the room jukebox.', 'Always', '-Engel- Adanasu Tsurugi Hikari no Shirabe.png', 9, 11, 116, 14, 14, 224, 19, 17, 417, 28, 19, 630, '2015-09-03'),
 (39, 'Trancing Pulse', 'Trancing Pulse', 'Trancing Pulse', '?|Nao Kamiya|Rin Shibuya|Karen Hojo|?', 'Cool', 143, 'Available by default.', 'Always/Past CD Redeption song. Unlocked to everyone on 2015-11-17.', 'Trancing Pulse.png', 9, 11, 112, 14, 14, 194, 19, 17, 389, 28, 19, 662, '2015-10-14'),
-(40, 'Venus Syndrome', 'ヴィーナスシンドローム', 'Venus Syndrome', '?|?|Minami Nitta|?|?', 'Cool', 151, 'Complete Story Episode 14. (Producer Level 46 and Up)', 'Always', 'Venus Syndrome.png', 8, 11, 107, 14, 14, 169, 19, 17, 379, 26, 19, 612, '2015-10-28'),
-(41, 'You''re stars shine on me', 'You''re stars shine on me', 'Your stars shine on me', '?|?|Anastasia|?|?', 'Cool', 96, 'Complete Story Episode 16. (Producer Level 50 and Up)', 'Always', 'You''re stars shine on me.png', 6, 10, 69, 12, 13, 115, 16, 15, 245, 23, 18, 425, '2015-11-27'),
-(42, 'Angel Breeze', 'Angel Breeze', 'Angel Breeze', '?|?|Mizuki Kawashima|?|?', 'Cool', 150, 'Complete Story Episode 19. (Producer Level 50 and Up)', 'Always', 'Angel Breeze.png', 9, 11, 118, 14, 14, 216, 17, 16, 352, 24, 18, 524, '2016-01-09'),
-(43, 'Bright Blue', 'Bright Blue', 'Bright Blue', '?|?|Fumika Sagisawa|?|?', 'Cool', 105, 'Complete Story Episode 22. (Producer Level 50 and Up)', 'Always', 'Bright Blue.png', 6, 10, 81, 11, 12, 144, 16, 15, 240, 23, 18, 389, '2016-02-26'),
+(40, 'Venus Syndrome', 'ヴィーナスシンドローム', 'Venus Syndrome', 'Fumika Sagisawa|Anastasia|Minami Nitta|Kaede Takagaki|Kanade Hayami', 'Cool', 151, 'Complete Story Episode 14. (Producer Level 46 and Up)', 'Always', 'Venus Syndrome.png', 8, 11, 107, 14, 14, 169, 19, 17, 379, 26, 19, 612, '2015-10-28'),
+(41, 'You''re stars shine on me', 'You''re stars shine on me', 'Your stars shine on me', 'Mizuki Kawashima|Minami Nitta|Anastasia|Ranko Kanzaki|Kanade Hayami', 'Cool', 96, 'Complete Story Episode 16. (Producer Level 50 and Up)', 'Always', 'You''re stars shine on me.png', 6, 10, 69, 12, 13, 115, 16, 15, 245, 23, 18, 425, '2015-11-27'),
+(42, 'Angel Breeze', 'Angel Breeze', 'Angel Breeze', 'Momoka Sakurai|Kaede Takagaki|Mizuki Kawashima|Sachiko Koshimizu|Sanae Katagiri', 'Cool', 150, 'Complete Story Episode 19. (Producer Level 50 and Up)', 'Always', 'Angel Breeze.png', 9, 11, 118, 14, 14, 216, 17, 16, 352, 24, 18, 524, '2016-01-09'),
+(43, 'Bright Blue', 'Bright Blue', 'Bright Blue', 'Kanade Hayami|Minami Nitta|Fumika Sagisawa|Arisu Tachibana|Akane Hino', 'Cool', 105, 'Complete Story Episode 22. (Producer Level 50 and Up)', 'Always', 'Bright Blue.png', 6, 10, 81, 11, 12, 144, 16, 15, 240, 23, 18, 389, '2016-02-26'),
 (44, 'Susume☆Otome ～jewel parade～', 'ススメ☆オトメ ～jewel parade～', 'Go Forward☆Young Girl ～jewel parade～', 'Minami Nitta|Rin Shibuya|Ranko Kanzaki|Riina Tada|Kaede Takagaki', 'Cool', 130, 'Available by default.', 'Weekday/Thursday', 'Susume☆Otome ～jewel parade～ Cool ver.png', 8, 11, 88, 13, 13, 179, 17, 16, 292, 24, 18, 406, '2015-09-03'),
 (45, 'Nation Blue', 'Nation Blue', 'Nation Blue', 'Rin Shibuya|Kaede Takagaki|Ranko Kanzaki|Minami Nitta|Riina Tada', 'Cool', 157, 'Available by default. Past Event Song - Unlocked on 2015-11-28', 'Weekday/Sunday/Monday/Tuesday/Thursday/Saturday', 'Nation Blue.png', 9, 11, 141, 13, 13, 219, 17, 16, 368, 26, 19, 708, '2015-10-19'),
 (46, 'Gokigen Party Night', 'ゴキゲンParty Night', 'Merry Party Night', 'Koume Shirasaka|Mizuki Kawashima|Anastasia|Karen Hojo|Nao Kamiya', 'Cool', 175, 'Available by default.', 'Weekday/Thursday', 'Gokigen Party Night Cool ver.png', 8, 11, 116, 13, 13, 252, 17, 16, 380, 25, 19, 630, '2016-02-18'),
 (47, 'Orgel no Kobako', 'オルゴールの小箱', 'Small Music Box', 'Koume Shirasaka|Mizuki Kawashima|Anastasia|Karen Hojo|Nao Kamiya', 'Cool', 93, 'Available by default. Past Event Song - Unlocked on 2016-03-28', 'Weekday/Sunday/Monday/Tuesday/Thursday/Saturday', 'Orgel no Kobako.png', 6, 10, 84, 11, 12, 145, 16, 15, 321, 25, 19, 531, '2016-02-18'),
-(48, 'Mitsuboshi☆☆★', 'ミツボシ☆☆★', 'Three Stars☆☆★', '?|?|Mio Honda|?|?', 'Passion', 175, 'Complete Story Episode 5. (Producer Level 6 and Up)', 'Always', 'Mitsuboshi☆☆★.png', 8, 11, 122, 12, 13, 189, 17, 16, 391, 24, 18, 579, '2015-09-03'),
-(49, 'DOKIDOKI Rhythm', 'DOKIDOKIリズム', 'Heartbeat Rhythm', '?|?|Rika Jougasaki|?|?', 'Passion', 180, 'Complete Story Episode 8. (Producer Level 19 and Up)', 'Always', 'DOKIDOKI Rhythm.png', 8, 11, 101, 13, 13, 192, 17, 16, 380, 24, 18, 569, '2015-09-03'),
-(50, 'Marshmallow☆Kiss', 'ましゅまろ☆キッス', 'Marshmallow☆Kiss', '?|?|Kirari Moroboshi|?|?', 'Passion', 93, 'Complete Story Episode 10. (Producer Level 29 and Up)', 'Always', 'Marshmallow☆Kiss.png', 8, 11, 95, 13, 13, 157, 18, 16, 379, 24, 18, 504, '2015-09-03'),
+(48, 'Mitsuboshi☆☆★', 'ミツボシ☆☆★', 'Three Stars☆☆★', 'Aiko Takamori|Rin Shibuya|Mio Honda|Uzuki Shimamura|Akane Hino', 'Passion', 175, 'Complete Story Episode 5. (Producer Level 6 and Up)', 'Always', 'Mitsuboshi☆☆★.png', 8, 11, 122, 12, 13, 189, 17, 16, 391, 24, 18, 579, '2015-09-03'),
+(49, 'DOKIDOKI Rhythm', 'DOKIDOKIリズム', 'Heartbeat Rhythm', 'Karen Hojo|Mika Jougasaki|Rika Jougasaki|Nana Abe|Miria Akagi', 'Passion', 180, 'Complete Story Episode 8. (Producer Level 19 and Up)', 'Always', 'DOKIDOKI Rhythm.png', 8, 11, 101, 13, 13, 192, 17, 16, 380, 24, 18, 569, '2015-09-03'),
+(50, 'Marshmallow☆Kiss', 'ましゅまろ☆キッス', 'Marshmallow☆Kiss', 'Miria Akagi|Anzu Futaba|Kirari Moroboshi|Rika Jougasaki|Syoko Hoshi', 'Passion', 93, 'Complete Story Episode 10. (Producer Level 29 and Up)', 'Always', 'Marshmallow☆Kiss.png', 8, 11, 95, 13, 13, 157, 18, 16, 379, 24, 18, 504, '2015-09-03'),
 (51, 'LET''S GO HAPPY!!', 'LET''S GO HAPPY!!', 'LET''S GO HAPPY!!', '?|Rika Jougasaki|Kirari Moroboshi|Miria Akagi|?', 'Passion', 192, 'Buy for 5000 Money from the room jukebox.', 'Always', 'LET''S GO HAPPY!!.png', 7, 10, 126, 13, 13, 221, 18, 16, 450, 27, 19, 703, '2015-09-03'),
-(52, 'Romantic Now', 'Romantic Now', 'Romantic Now', '?|?|Miria Akagi|?|?', 'Passion', 170, 'Complete Story Episode 15. (Producer Level 48 and Up)', 'Always', 'Romantic Now.png', 8, 11, 126, 14, 14, 248, 19, 17, 461, 27, 19, 660, '2015-11-09'),
-(53, 'TOKIMEKI Escalate', 'ＴＯＫＩＭＥＫＩエスカレート', 'Exciting Escalate', '?|?|Mika Jougasaki|?|?', 'Passion', 140, 'Complete Story Episode 17. (Producer Level 50 and Up)', 'Always', 'TOKIMEKI Escalate.png', 9, 11, 140, 14, 14, 240, 19, 17, 494, 28, 19, 800, '2015-12-14'),
-(54, 'Apple Pie Princess', 'アップルパイ・プリンセス', 'Apple Pie Princess', '?|?|Airi Totoki|?|?', 'Passion', 178, 'Complete Story Episode 20. (Producer Level 50 and Up)', 'Always', 'Apple Pie Princess.png', 6, 10, 105, 11, 12, 196, 17, 16, 376, 23, 18, 562, '2016-01-28'),
-(55, 'Rockin'' Emotion', 'Rockin'' Emotion', 'Rockin'' Emotion', '?|?|Natsuki Kimura|?|?', 'Passion', 177, 'Complete Story Episode 23. (Producer Level 50 and Up)', 'Always', 'Rockin'' Emotion.png', 9, 11, 148, 13, 13, 210, 18, 16, 396, 26, 19, 675, '2016-03-09'),
+(52, 'Romantic Now', 'Romantic Now', 'Romantic Now', 'Mika Jougasaki|Rika Jougasaki|Miria Akagi|Nia Ichihara|Yuki Himekawa', 'Passion', 170, 'Complete Story Episode 15. (Producer Level 48 and Up)', 'Always', 'Romantic Now.png', 8, 11, 126, 14, 14, 248, 19, 17, 461, 27, 19, 660, '2015-11-09'),
+(53, 'TOKIMEKI Escalate', 'ＴＯＫＩＭＥＫＩエスカレート', 'Exciting Escalate', 'Yui Ohtsuki|Rika Jougasaki|Mika Jougasaki|Karen Hojo|Arisu Tachibana', 'Passion', 140, 'Complete Story Episode 17. (Producer Level 50 and Up)', 'Always', 'TOKIMEKI Escalate.png', 9, 11, 140, 14, 14, 240, 19, 17, 494, 28, 19, 800, '2015-12-14'),
+(54, 'Apple Pie Princess', 'アップルパイ・プリンセス', 'Apple Pie Princess', 'Kaoru Ryuzaki|Aiko Takamori|Airi Totoki|Chie Sasaki|Yuko Hori', 'Passion', 178, 'Complete Story Episode 20. (Producer Level 50 and Up)', 'Always', 'Apple Pie Princess.png', 6, 10, 105, 11, 12, 196, 17, 16, 376, 23, 18, 562, '2016-01-28'),
+(55, 'Rockin'' Emotion', 'Rockin'' Emotion', 'Rockin'' Emotion', 'Rina Fujimoto|Riina Tada|Natsuki Kimura|Ryo Matsunaga|Takumi Mukai', 'Passion', 177, 'Complete Story Episode 23. (Producer Level 50 and Up)', 'Always', 'Rockin'' Emotion.png', 9, 11, 148, 13, 13, 210, 18, 16, 396, 26, 19, 675, '2016-03-09'),
 (56, 'Susume☆Otome ～jewel parade～', 'ススメ☆オトメ ～jewel parade～', 'Go Forward☆Young Girl ～jewel parade～', 'Miria Akagi|Rika Jougasaki|Mio Honda|Mika Jougasaki|Kirari Moroboshi', 'Passion', 130, 'Available by default.', 'Weekday/Friday', 'Susume☆Otome ～jewel parade～ Passion ver.png', 8, 11, 83, 13, 13, 166, 17, 16, 398, 24, 18, 511, '2015-09-03'),
 (57, 'Gokigen Party Night', 'ゴキゲンParty Night', 'Merry Party Night', 'Airi Totoki|Yuko Hori|Akane Hino|Aiko Takamori|Syoko Hoshi', 'Passion', 175, 'Available by default.', 'Weekday/Friday', 'Gokigen Party Night Passion ver.png', 8, 11, 113, 13, 13, 236, 17, 16, 380, 25, 19, 630, '2016-02-19'),
 (58, 'Zettai Tokken Shuchou Shimasuu!', '絶対特権主張しますっ！', 'I Absolutely Claim These Privileges~!', 'Airi Totoki|Yuko Hori|Akane Hino|Aiko Takamori|Syoko Hoshi', 'Passion', 200, 'Unavailable - Past Event Song', 'Unavailable - Past Event', 'Zettai Tokken Shuchou Shimasuu!.png', 9, 11, 167, 14, 14, 249, 19, 17, 476, 27, 19, 777, '2016-03-20'),
-(59, 'Hanakanzashi HANAKANZASHI', '花簪 HANAKANZASHI', 'Floral Hairpin', '?|?|Sae Kobayakawa|?|?', 'Cute', 125, 'Complete Story Episode 24. (Producer Level 50 and Up)', 'Always', 'Hanakanzashi HANAKANZASHI.png', 6, 10, 91, 13, 13, 168, 19, 17, 340, 27, 19, 645, '2016-03-28'),
+(59, 'Hanakanzashi HANAKANZASHI', '花簪 HANAKANZASHI', 'Floral Hairpin', 'Karin Domyoji|Miho Kohinata|Sae Kobayakawa|Syuko Shiomi|Yuki Himekawa', 'Cute', 125, 'Complete Story Episode 24. (Producer Level 50 and Up)', 'Always', 'Hanakanzashi HANAKANZASHI.png', 6, 10, 91, 13, 13, 168, 19, 17, 340, 27, 19, 645, '2016-03-28'),
 (60, 'Hi-Fi☆Days', 'ハイファイ☆デイズ', 'Hi-Fi☆Days', 'Miria Akagi|Kaoru Ryuzaki|Chie Sasaki|Momoka Sakurai|Nina Ichihara', 'All', 191, 'Past Event Song - Points Reward', 'Unavailable - Past Event', 'Hi-Fi☆Days.png', 7, 10, 116, 13, 13, 203, 18, 16, 415, 24, 18, 554, '2016-03-31'),
-(61, 'Hotel Moonside', 'Hotel Moonside', 'Hotel Moonside', '', 'Cool', 0, 'Complete Story Episode 25. (Producer Level 50 and Up)', 'Always', 'Hotel Moonside.png', 9, 11, 138, 14, 14, 256, 19, 17, 410, 27, 19, 779, '2016-04-08'),
-(62, 'Tsubomi', 'つぼみ', 'Flower Bud', '', 'All', 117, 'Available by default.', 'Limited', 'Tsubomi.png', 8, 11, 109, 14, 14, 166, 18, 16, 325, 25, 19, 440, '2016-04-19');
+(61, 'Hotel Moonside', 'Hotel Moonside', 'Hotel Moonside', 'Shiki Ichinose|Karen Hojo|Kanade Hayami|Asuka Ninimiya|Frederica Miyamoto', 'Cool', 129, 'Complete Story Episode 25. (Producer Level 50 and Up)', 'Always', 'Hotel Moonside.png', 9, 11, 138, 14, 14, 256, 19, 17, 410, 27, 19, 779, '2016-04-08'),
+(62, 'Tsubomi', 'つぼみ', 'Flower Bud', 'Yumi Aiba|Miku Maekawa|Syuko Shiomi|Kaede Takagaki|Shiki Ichinose', 'All', 117, 'Available by default.', 'Limited', 'Tsubomi.png', 8, 11, 109, 14, 14, 166, 18, 16, 325, 25, 19, 440, '2016-04-19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -602,8 +708,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
+--
+-- Dumping data for table `users`
+--
+
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `created`, `modified`) VALUES
 (1, 'pangster123@gmail.com', '$2a$10$Jzopawbn/OX93Tf8gDCghOHnNodZH/DXQ4l9NDMU6ccvCgbpuwfzO', 'admin', '2016-02-06 08:26:09', '2016-02-06 08:26:09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `websites`
+--
 
 CREATE TABLE IF NOT EXISTS `websites` (
   `id` int(10) unsigned NOT NULL,
@@ -618,20 +734,12 @@ CREATE TABLE IF NOT EXISTS `websites` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `websites`
+--
+
 INSERT INTO `websites` (`id`, `resVersion`, `lastUpdated`, `numWallpapers`, `currentWallpaper`, `numChibis`, `chibi1`, `chibi2`, `chibi3`) VALUES
-(1, '10014700', '2016-04-19', 14, 4, 494, 0, 0, 0);
-
-
-ALTER TABLE `cards`
-  ADD CONSTRAINT `cards_events_fk` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
-  ADD CONSTRAINT `cards_gachas_fk` FOREIGN KEY (`gacha_id`) REFERENCES `gacha` (`id`),
-  ADD CONSTRAINT `cards_idols_fk` FOREIGN KEY (`idol_id`) REFERENCES `idols` (`id`);
-
-ALTER TABLE `events`
-  ADD CONSTRAINT `events_songs_fk` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`);
-
-ALTER TABLE `news`
-  ADD CONSTRAINT `news_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+(1, '10014700', '2016-04-22', 14, 4, 494, 0, 0, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
