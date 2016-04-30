@@ -98,8 +98,8 @@ if (!$this->Time->isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['type
         if (!$this->Time->isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['type'] == 'Limited') {
         $hasLimited++;
         ?>
-        < class="row text-center center-block">
-            < class="col-sm-6 col-lg-6">
+        <div class="row text-center center-block">
+            <div class="col-sm-6 col-lg-6">
                 <div class="row">
                     <div class="col-lg-12">
                         <?php echo $this->Html->image('gacha/' . $gacha['Gacha']['pic'], array('class' => 'img-responsive center-block')); ?>
@@ -219,6 +219,7 @@ if (!$this->Time->isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['type
                         </div>
                     </div>
                 </div>
+            </div>
                 <?php
                 }
                 }
@@ -350,6 +351,7 @@ if (!$this->Time->isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['type
                 }
                 ?>
             </div>
+        </div>
 
         <div class="row text-center">
             <h2>Past Limited Gacha</h2>

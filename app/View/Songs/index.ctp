@@ -452,7 +452,7 @@ if ($type == 'Unavailable'){
                             if ($songInfo.find('img').length > 0) {//CHANGE THIS LATER
                                 $songInfo.find('img').attr("src", host + "/img/cute.png")
                             } else {
-                                $songInfo.find('strong.panel-title').before('<img src="' + host + '/Satelite/img/cute.png" height="28px" ' +
+                                $songInfo.find('strong.panel-title').before('<img src="' + host + '/img/cute.png" height="28px" ' +
                                 'width="28px"/>');
                             }
                             $songInfo.removeClass("panel-default").addClass("panel-danger");
@@ -466,7 +466,7 @@ if ($type == 'Unavailable'){
                             if ($songInfo.find('img').length > 0) {
                                 $songInfo.find('img').attr("src", host + "/img/cool.png")
                             } else {
-                                $songInfo.find('strong.panel-title').before('<img src="' + host + '/Satelite/img/cool.png" height="28px" ' +
+                                $songInfo.find('strong.panel-title').before('<img src="' + host + '/img/cool.png" height="28px" ' +
                                 'width="28px"/>');
                             }
                             $songInfo.removeClass("panel-default").addClass("panel-info");
@@ -480,7 +480,7 @@ if ($type == 'Unavailable'){
                             if ($songInfo.find('img').length > 0) {
                                 $songInfo.find('img').attr("src", host + "/img/passion.png")
                             } else {
-                                $songInfo.find('strong.panel-title').before('<img src="' + host + '/Satelite/img/passion.png" ' +
+                                $songInfo.find('strong.panel-title').before('<img src="' + host + '/img/passion.png" ' +
                                 'height="28px" width="28px"/>');
                             }
                             $songInfo.removeClass("panel-default").addClass("panel-warning");
@@ -494,7 +494,7 @@ if ($type == 'Unavailable'){
                             if ($songInfo.find('img').length > 0) {
                                 $songInfo.find('img').attr("src", host + "/img/all.png")
                             } else {
-                                $songInfo.find('strong.panel-title').before('<img src="' + host + '/Satelite/img/all.png" height="28px" ' +
+                                $songInfo.find('strong.panel-title').before('<img src="' + host + '/img/all.png" height="28px" ' +
                                 'width="28px"/>');
                             }
                             $songInfo.removeClass("panel-danger").addClass("panel-default");
