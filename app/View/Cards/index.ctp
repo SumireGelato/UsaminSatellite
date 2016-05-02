@@ -223,14 +223,12 @@ foreach ($cards as $card) { ?>
                     <?php
                     if ($card['Card']['rarity'] == 'N' || $card['Card']['rarity'] == 'R') {
                         echo $this->Html->image('cards/' . $card['Card']['baseArt'], array('height' => '51%', 'width' => '51%',
-                            'class' => 'baseCardImage img-responsive img-rounded center-block'));
-                        echo $this->Html->image('cards/' . $card['Card']['awkArt'], array('height' => '51%', 'width' => '51%',
-                            'class' => 'awkCardImage img-responsive img-rounded center-block'));
+                            'class' => 'cardImage img-responsive img-rounded center-block', 'data-baseImage' => $card['Card']['baseArt'],
+                            'data-awkImage' => $card['Card']['awkArt']));
                     } else {
                         echo $this->Html->image('cards/' . $card['Card']['baseArt'], array(/*'height' => '100%', 'width' => '97%',*/
-                            'class' => 'baseCardImage img-responsive img-rounded center-block'));
-                        echo $this->Html->image('cards/' . $card['Card']['awkArt'], array(/*'height' => '100%', 'width' => '97%',*/
-                            'class' => 'awkCardImage img-responsive img-rounded center-block'));
+                            'class' => 'cardImage img-responsive img-rounded center-block', 'data-baseImage' => $card['Card']['baseArt'],
+                            'data-awkImage' => $card['Card']['awkArt']));
                     }
                     ?>
                 </a>
@@ -299,14 +297,9 @@ foreach ($cards as $card) { ?>
         <div class="col-xs-2">
             <?php echo $this->Html->image('cards/'.$card['Card']['baseIconArt'], array(
                 'width' => '63px',
-                'class' => 'baseIcon',
-                'url' => array('controller' => 'idols',
-                    'action' => 'view',
-                    'id' => $card['Idol']['id'],
-                    'title' => Inflector::slug($card['Idol']['eName'])))); ?>
-            <?php echo $this->Html->image('cards/'.$card['Card']['awkIconArt'], array(
-                'width' => '63px',
-                'class'=>'awkIcon',
+                'class' => 'icon',
+                'data-baseicon' => $card['Card']['baseIconArt'],
+                'data-awkicon' => $card['Card']['awkIconArt'],
                 'url' => array('controller' => 'idols',
                     'action' => 'view',
                     'id' => $card['Idol']['id'],
@@ -794,19 +787,36 @@ foreach ($cards as $card) { ?>
             //Reg/Awk Image/Icon and Stat change
             $(document).ready(function () {
                 var $panelgroup = $(".panel-group");
+                var host = [location.protocol, '//', location.host].join('');
                 $panelgroup.on("click", "label#regawk1", function () {//Regular
-                    $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "none");
-                    $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "block");
-                    $(this).closest("div.panel-body").find(".baseIcon").css("display", "inherit");
-                    $(this).closest("div.panel-body").find(".awkIcon").css("display", "none");
+                    var baseImg = $(this).closest(".panel.panel-default").find(".cardImage").data('baseimage');
+                    if(location.host == 'localhost' || location.host == 'localhost:8080') {
+                        $(this).closest(".panel.panel-default").find(".cardImage").attr("src", host + "/Satelite/img/cards/" + baseImg);
+                    } else {
+                        $(this).closest(".panel.panel-default").find(".cardImage").attr("src", host + "/img/cards/" + baseImg);
+                    }
+                    var baseIcon = $(this).closest(".panel.panel-default").find(".icon").data('baseicon');
+                    if(location.host == 'localhost' || location.host == 'localhost:8080') {
+                        $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/Satelite/img/cards/" + baseIcon);
+                    } else {
+                        $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/img/cards/" + baseIcon);
+                    }
                     $(this).closest("div.panel-body").find(".base").css("display", "inherit");
                     $(this).closest("div.panel-body").find(".awakened").css("display", "none");
                 });
                 $panelgroup.on("click", "label#regawk2", function () {//Awakened
-                    $(this).closest(".panel.panel-default").find(".awkCardImage").css("display", "block");
-                    $(this).closest(".panel.panel-default").find(".baseCardImage").css("display", "none");
-                    $(this).closest("div.panel-body").find(".baseIcon").css("display", "none");
-                    $(this).closest("div.panel-body").find(".awkIcon").css("display", "inherit");
+                    var awkImg = $(this).closest(".panel.panel-default").find(".cardImage").data('awkimage');
+                    if(location.host == 'localhost' || location.host == 'localhost:8080') {
+                        $(this).closest(".panel.panel-default").find(".cardImage").attr("src", host + "/Satelite/img/cards/" + awkImg);
+                    } else {
+                        $(this).closest(".panel.panel-default").find(".cardImage").attr("src", host + "/img/cards/" + awkImg);
+                    }
+                    var awkIcon = $(this).closest(".panel.panel-default").find(".icon").data('awkicon');
+                    if(location.host == 'localhost' || location.host == 'localhost:8080') {
+                        $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/Satelite/img/cards/" + awkIcon);
+                    } else {
+                        $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/img/cards/" + awkIcon);
+                    }
                     $(this).closest("div.panel-body").find(".base").css("display", "none");
                     $(this).closest("div.panel-body").find(".awakened").css("display", "inherit");
                 });

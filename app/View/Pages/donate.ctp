@@ -50,20 +50,6 @@
                     <a class="btn btn-default" href="#donators" style="margin-top: -50px;" role="button">Supporters</a>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <h3>Donation amounts of more then $1 get mentioned below!</h3>
-                </div>
-            </div>
         </div>
-    </div>
-    <hr/>
-    <div class="row" id="donators">
-        <div class="col-lg-12">
-            <h2 style="margin-top: 0">Usamin S@tellite Supporters</h2>
-        </div>
-    </div>
-    <div class="row donators">
-        Be the first!
     </div>
 </div>

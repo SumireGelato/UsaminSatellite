@@ -145,8 +145,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 ?>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <p><span class="navbar-text" id="clock"></span><span class="navbar-text
-                                clock">JST</span></p>
+                                <p class="timedate"><span class="navbar-text" id="clock"></span><span class="navbar-text clock">JST</span><span
+                                        class="navbar-text" id="date"></span></p>
                             </ul>
                         </div>
                     </div>
@@ -182,11 +182,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
     $(function () {
         var jstNow = moment().tz('Japan');
-        $('#clock').tooltip({
-            toggle: "tooltip",
-            placement: "bottom",
-            title: jstNow.format("YYYY/MM/DD")
-        });
+        $('#date').html(jstNow.format("YYYY-MM-DD"));
     });
 
     /*Menu handler*/

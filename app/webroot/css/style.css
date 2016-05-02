@@ -34,14 +34,6 @@ a:active {
     margin-right:-4px;
 }
 
-.awkCardImage {
-    display: none;
-}
-
-.baseCardImage {
-    display: block;
-}
-
 .homePics {
     overflow: hidden;
 }
@@ -152,10 +144,6 @@ a:active {
     padding-left: 0;
 }
 
-.awkIcon {
-    display: none;
-}
-
 #idolBio {
     margin-top: 20px;
 }
@@ -247,13 +235,22 @@ a:active {
 }
 
 #clock {
-    margin: 0px -15px;
-    padding: 13px 15px 15px 15px;
+    margin: 0;
+    padding: 0;
 }
 
 .clock {
-    margin: 0px -15px;
-    padding: 13px 15px 15px 15px;
+    margin: 0;
+    padding: 0;
+}
+
+#date {
+    margin: 0 0 0 5px;
+    padding: 0;
+}
+
+.timedate {
+    margin-top: 14px;
 }
 
 /* Flip around the padding for proper display in narrow viewports */
