@@ -2,17 +2,35 @@
 //Page Title
 $this->set('title_for_layout', 'Usamin S@tellite | Events List');
 ?>
-<div class="row text-center">
-    <h1>Current Event</h1>
-</div>
 <div class="row text-center center-block">
     <div class="col-lg-12">
         <?php
-        $currentEventExists = false;
         foreach ($events as $event) {
-            if ($this->Time->isFuture($event['Event']['finish']) && $this->Time->isPast($event['Event']['begin'])) {
-                $currentEventExists = true;
+            if ($this->Time->isFuture($event['Event']['begin'])) {
                 ?>
+                <div class="row">
+                    <h1>Upcoming Event</h1>
+                </div>
+                <div class="row">
+                    <p>Time Until Event '<?php echo $event['Event']['eName']; ?>' Starts:</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="jstCountdown" data-type="future" data-countdown="<?php echo $event['Event']['begin']; ?>"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="browserTime"></div>
+                    </div>
+                </div>
+            <?php
+            }
+            if ($this->Time->isFuture($event['Event']['finish']) && $this->Time->isPast($event['Event']['begin'])) {
+                ?>
+                <div class="row">
+                    <h1>Current Event</h1>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <?php echo $this->Html->image('events/' . $event['Event']['pic'], array('class' => 'img-responsive center-block')); ?>
@@ -20,7 +38,7 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div id="jstCountdown" data-countdown="<?php echo $event['Event']['finish']; ?>"></div>
+                        <div id="jstCountdown" data-type="current" data-countdown="<?php echo $event['Event']['finish']; ?>"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -159,9 +177,6 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                 </div>
             <?php
             }
-        }
-        if (!$currentEventExists) {
-            echo '<p>No Current Event!</p>';
         }
         ?>
     </div>
@@ -385,35 +400,62 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
 <script>
     var countdownElement = $("#jstCountdown");
     var finalDate = countdownElement.data('countdown');
+    var eventTime = countdownElement.data('type');
     var jst = moment.tz(finalDate, "Japan");
     var browserTime = moment();
     var browserTz = moment.tz.guess();
-    var browserConverted = jst.clone().tz(browserTz).format("h:m:s A D/M/YYYY");
+    var browserConverted = jst.clone().tz(browserTz).format("h:mm:ss A D/M/YYYY");
     var hoursDifference = (moment.parseZone(browserTime.format()).utcOffset() - moment.parseZone(jst.format()).utcOffset()) / 60;
     var browserTimeElement = $("#browserTime");
-    switch (true) {
-        case (hoursDifference < 0)://behind jst
-            browserTimeElement.html("<p>You are " + Math.abs(hoursDifference) + " hour(s) behind Starlight Server Time, " +
-            "the event will end at " + browserConverted + " for you.</p>");
-            break;
-        case (hoursDifference == 0)://is jst
-            browserTimeElement.html("<p>You are on Starlight Server Time, the event will end at " + jst.format("h:m:s A D/M/YYYY") + " for you.</p>");
-            break;
-        case (hoursDifference > 0)://ahead jst
-            browserTimeElement.html("<p>You are " + hoursDifference + " hour(s) ahead of Starlight Server Time, " +
-            "the event will end at " + browserConverted + " for you.</p>");
-            break;
-        default://unknown
-            browserTimeElement.html("<p>Unable to detect time! Sorry cannot provide converted times.</p>");
-            break;
+    if (eventTime == 'future') {
+        switch (true) {
+            case (hoursDifference < 0)://behind jst
+                browserTimeElement.html("<p>You are " + Math.abs(hoursDifference) + " hour(s) behind Starlight Server Time, " +
+                    "the event will start at " + browserConverted + " for you.</p>");
+                break;
+            case (hoursDifference == 0)://is jst
+                browserTimeElement.html("<p>You are on Starlight Server Time, the event will start at " + jst.format("h:mm:ss A D/M/YYYY") + " for you.</p>");
+                break;
+            case (hoursDifference > 0)://ahead jst
+                browserTimeElement.html("<p>You are " + hoursDifference + " hour(s) ahead of Starlight Server Time, " +
+                    "the event will start at " + browserConverted + " for you.</p>");
+                break;
+            default://unknown
+                browserTimeElement.html("<p>Unable to detect time! Sorry cannot provide converted times.</p>");
+                break;
+        }
+        countdownElement.countdown(jst.toDate())
+            .on('update.countdown', function (event) {
+                $(this).html("<h2>" + event.strftime('%-D day%!D %-H hour%!H %-M minute%!M %-S second%!S') + "</h2>");
+            })
+            .on('finish.countdown', function (event) {
+                $(this).html('<h2>Event Started! Please refresh the page for the countdown till finish.</h2>');
+            });
+    } else if (eventTime == 'current') {
+        switch (true) {
+            case (hoursDifference < 0)://behind jst
+                browserTimeElement.html("<p>You are " + Math.abs(hoursDifference) + " hour(s) behind Starlight Server Time, " +
+                    "the event will end at " + browserConverted + " for you.</p>");
+                break;
+            case (hoursDifference == 0)://is jst
+                browserTimeElement.html("<p>You are on Starlight Server Time, the event will end at " + jst.format("h:mm:ss A D/M/YYYY") + " for you.</p>");
+                break;
+            case (hoursDifference > 0)://ahead jst
+                browserTimeElement.html("<p>You are " + hoursDifference + " hour(s) ahead of Starlight Server Time, " +
+                    "the event will end at " + browserConverted + " for you.</p>");
+                break;
+            default://unknown
+                browserTimeElement.html("<p>Unable to detect time! Sorry cannot provide converted times.</p>");
+                break;
+        }
+        countdownElement.countdown(jst.toDate())
+            .on('update.countdown', function (event) {
+                $(this).html("<h2>" + event.strftime('%-D day%!D %-H hour%!H %-M minute%!M %-S second%!S') + " left</h2>");
+            })
+            .on('finish.countdown', function (event) {
+                $(this).html('<h2>Event Over!</h2>');
+            });
     }
-    countdownElement.countdown(jst.toDate())
-        .on('update.countdown', function (event) {
-            $(this).html("<h2>" + event.strftime('%-D day%!D %-H hour%!H %-M minute%!M %-S second%!S') + " left</h2>");
-        })
-        .on('finish.countdown', function (event) {
-            $(this).html('<h2>Event Over!</h2>');
-        });
     $(function () {
         var $reward = $('.reward');
         $reward.find('.rewardIcons').each(function () {

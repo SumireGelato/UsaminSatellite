@@ -77,7 +77,6 @@ class EventsController extends AppController
 
             $picFilenameDateArray = explode('-', trim($this->request->data['Event']['begin']));
             $picFilename = trim($this->request->data['Event']['eName']) .' '. $picFilenameDateArray[0] . '-' . $picFilenameDateArray[1];
-            $this->request->data['Event']['pic'] = $picFilename .'.'. $picExt;
 
 
             if ($this->Event->save($this->request->data)) {
