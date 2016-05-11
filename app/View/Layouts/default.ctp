@@ -168,6 +168,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <div class="col-lg-12">
             <em style="font-size: xx-small">Usamin S@tellite on <?php echo $version['Website']['resVersion'] ?> - Last Database Update: <?php echo
     $version['Website']['lastUpdated']?></em>
+            </br>
+            <em style="font-size: xx-small"> Like this website and use it often? Please consider <?php echo $this->Html->link('donating',
+                    '/donate'); ?>! It costs $4 per month for hosting costs and $5 per year for the domain.</em>
         </div>
     </div>
 </footer>

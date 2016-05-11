@@ -47,7 +47,6 @@
                                alt="PayPal — The safer, easier way to pay online.">
                         <img alt="" border="0" src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif" width="1" height="1">
                     </form>
-                    <a class="btn btn-default" href="#donators" style="margin-top: -50px;" role="button">Supporters</a>
                 </div>
             </div>
         </div>
