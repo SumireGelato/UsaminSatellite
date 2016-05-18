@@ -24,8 +24,18 @@ class EventsController extends AppController
      */
     public function index()
     {
+        App::uses('CakeTime', 'Utility');
         $this->Event->recursive = 2;
-        $this->set('events', $this->Event->find('all', array('order' => 'Event.finish desc')));
+        $events = $this->Event->find('all', array('order' => 'Event.finish desc'));
+        foreach($events as $event) {
+            if (CakeTime::isFuture($event['Event']['begin'])) {
+                $this->set('futureEvent', $event);
+            }
+            if (CakeTime::isFuture($event['Event']['finish']) && CakeTime::isPast($event['Event']['begin'])) {
+                $this->set('currentEvent', $event);
+            }
+        }
+        $this->set('events', $events);
     }
 
     /**
