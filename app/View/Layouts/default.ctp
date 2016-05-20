@@ -107,8 +107,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                        aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
                                         Other<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-<!--                                        <li>--><?php //echo $this->Html->link('<span class="glyphicon glyphicon-flag"></span> News',
-//                                                array('controller' => 'news', 'action' => 'index'), array('escape' => false)); ?><!--</li>-->
                                         <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-list"></span> Translations',
                                                 '/translations', array('escape' => false)); ?></li>
                                         <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-info-sign"></span> About Starlight Stage',
@@ -136,7 +134,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                             <li><?php echo $this->Html->link('Songs', array('controller' => 'songs', 'action' => 'adminindex')); ?></li>
                                             <li><?php echo $this->Html->link('Idols', array('controller' => 'idols', 'action' => 'adminindex')); ?></li>
                                             <li><?php echo $this->Html->link('Gacha', array('controller' => 'gachas', 'action' => 'adminindex')); ?></li>
-<!--                                            <li>--><?php //echo $this->Html->link('News', array('controller' => 'news', 'action' => 'adminindex')); ?><!--</li>-->
                                         </ul>
                                     </li>
                                 <?php
@@ -227,15 +224,5 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         }
     });
 </script>
-
-<style>
-    html {
-        background: url("<?php echo $this->Html->url('/').'img/backgrounds/'.$this->Session->read('background').'.png'?>") no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-    }
-</style>
 
 </html>

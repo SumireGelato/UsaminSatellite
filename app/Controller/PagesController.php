@@ -64,30 +64,13 @@ class PagesController extends AppController
         if (!empty($path[$count - 1])) {
             $title_for_layout = Inflector::humanize($path[$count - 1]);
         }
-        $this->loadModel('Website');
-        $settings = $this->Website->find('first');
-        $numChibis = $settings['Website']['numChibis'];
 
-        if($settings['Website']['chibi1'] == 0) {
-            $chibi1 = mt_rand(1, $numChibis);
-        } else {
-            $chibi1 = $settings['Website']['chibi1'];
-        }
-        if($settings['Website']['chibi2'] == 0) {
-            $chibi2 = mt_rand(1, $numChibis);
-        } else {
-            $chibi2 = $settings['Website']['chibi2'];
-        }
-        if($settings['Website']['chibi3'] == 0) {
-            $chibi3 = mt_rand(1, $numChibis);
-        } else {
-            $chibi3 = $settings['Website']['chibi3'];
-        }
-        $chibis = array('num1' => $chibi1, 'num2' => $chibi2, 'num3' => $chibi3);
-        $this->set($chibis);
+        //loop though files and choose 3 random files here
+        $imagesDir = 'img/puchis/';
+        $images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+        $randomImages = array(explode('img/',$images[array_rand($images)])[1], explode('img/',$images[array_rand($images)])[1], explode('img/',$images[array_rand($images)])[1]);
+        $this->set('puchis', $randomImages);
 
-        $this->loadModel('News');
-        $this->set('news', $this->News->find('all', array('recursive' => -1, 'order' => 'News.created', 'limit' => 10)));
 
         $this->set(compact('page', 'subpage', 'title_for_layout'));
 

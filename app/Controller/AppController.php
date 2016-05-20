@@ -60,15 +60,6 @@ class AppController extends Controller
     {
         parent::beforeFilter();
         $this->loadModel('Website');
-        if (!$this->Session->check('background')) {
-            $background = $this->Website->find('first', array('fields' => array('Website.currentWallpaper', 'Website.numWallpapers')));
-            if($background['Website']['currentWallpaper'] == 0) {
-                $background = mt_rand(1, $background['Website']['numWallpapers']);
-            } else {
-                $background = $background['Website']['currentWallpaper'];
-            }
-            $this->Session->write('background', $background);
-        }
         $version = $this->Website->find('first', array('fields' => array('Website.resVersion', 'Website.lastUpdated')));
         $this->set('version', $version);
         $this->Auth->allow('index','view', 'display');
