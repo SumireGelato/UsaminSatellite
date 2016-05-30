@@ -28,11 +28,86 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
         </div>
         <div class="row">
             <?php if ($currentEvent['Event']['type'] != 'Caravan') { ?>
-                <div class="col-lg-4">
-
+                <div class="col-lg-4 center-block text-center">
+                    <div class="row">
+                        <h3>Event Song</h3>
+                    </div>
+                    <div class="row">
+                        <?php echo $this->Html->image('songs/'. $currentEvent['Song']['coverArt'],
+                            array('class' => 'img-responsive center-block song'));?>
+                        <div class="songName hidden"><p><?php echo $currentEvent['Song']['eName']?></p></div>
+                        <div class="songInfo hidden">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <p><strong>Type: </strong><?php echo $currentEvent['Song']['type'] ?></p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <p><strong>BPM: </strong><?php if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm'] ?></p>
+                                </div>
+                                <div class="col-xs-12">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Difficulty</th>
+                                                <th>Star Level</th>
+                                                <th>Stamina Cost</th>
+                                                <th>Total Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Debut</th>
+                                                <td><?php echo $currentEvent['Song']['debutLvl']; ?></td>
+                                                <td><?php echo $currentEvent['Song']['debutStam']; ?></td>
+                                                <td><?php echo $currentEvent['Song']['debutNotes']; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Regular</th>
+                                                <td><?php echo $currentEvent['Song']['regLvl']; ?></td>
+                                                <td><?php echo $currentEvent['Song']['regStam']; ?></td>
+                                                <td><?php echo $currentEvent['Song']['regNotes']; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Pro</th>
+                                                <td><?php echo $currentEvent['Song']['proLvl']; ?></td>
+                                                <td><?php echo $currentEvent['Song']['proStam']; ?></td>
+                                                <td><?php echo $currentEvent['Song']['proNotes']; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Master</th>
+                                                <td><?php echo $currentEvent['Song']['masterLvl']; ?></td>
+                                                <td><?php echo $currentEvent['Song']['masterStam']; ?></td>
+                                                <td><?php echo $currentEvent['Song']['masterNotes']; ?></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+<!--                                <div class="col-xs-3">-->
+<!--                                    <span class="label label-default" style="margin-left: 5px">Debut</span>-->
+<!---->
+<!--                                    <p>--><?php //if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm']; ?><!--</p>-->
+<!--                                </div>-->
+<!--                                <div class="col-xs-3">-->
+<!--                                    <span class="label label-default" style="margin-left: 5px">Regular</span>-->
+<!---->
+<!--                                    <p>--><?php //if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm']; ?><!--</p>-->
+<!--                                </div>-->
+<!--                                <div class="col-xs-3">-->
+<!--                                    <span class="label label-default" style="margin-left: 5px">Pro</span>-->
+<!---->
+<!--                                    <p>--><?php //if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm']; ?><!--</p>-->
+<!--                                </div>-->
+<!--                                <div class="col-xs-3">-->
+<!--                                    <span class="label label-default" style="margin-left: 5px">Master</span>-->
+<!---->
+<!--                                    <p>--><?php //if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm']; ?><!--</p>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            <?php } ?>
-            <?php if ($currentEvent['Event']['type'] != 'Caravan') { ?>
+            <?php }
+            if ($currentEvent['Event']['type'] != 'Caravan') { ?>
             <div class="col-lg-4">
                 <?php } else { ?>
                 <div class="col-lg-12">
@@ -158,7 +233,7 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                 </div>
                 <?php if ($currentEvent['Event']['type'] != 'Caravan') { ?>
                     <div class="col-lg-4">
-                        <a class="twitter-timeline" data-chrome="nofooter" data-dnt="true"
+                        <a class="twitter-timeline" data-chrome="nofooter transparent" data-dnt="true"
                            href="https://twitter.com/deresute_border"
                            data-widget-id="701579824934965249">Tweets by @deresute_border</a>
                         <script>!function (d, s, id) {
@@ -489,6 +564,15 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                     title: $this.prev('.cardTitle').html(),
                     content: $this.next('.cardInfo').html()
                 });
+            });
+        });
+        $(function () {
+            $('.song').popover({
+                trigger: 'hover',
+                placement: 'bottom',
+                html: true,
+                title: $('.songName').html(),
+                content: $('.songInfo').html()
             });
         });
 

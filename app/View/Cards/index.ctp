@@ -256,6 +256,9 @@ foreach ($cards as $card) { ?>
                     case 'Score Boost':
                         echo '<i class="icon-scorebonus pull-left" data-toggle="tooltip" title="Score Boost"></i>';
                         break;
+                    case 'Overload':
+                        echo '<span class="glyphicon glyphicon-flash pull-left" data-toggle="tooltip" title="Overload"></span>';
+                        break;
                     case 'No Skill':
                         echo '<span class="glyphicon glyphicon-ban-circle pull-left" data-toggle="tooltip" title="No Skill"></span>';
                         break;
@@ -708,6 +711,13 @@ foreach ($cards as $card) { ?>
             }?>
             <p><?php echo $this->Html->link('Starlight Kirara',
                     'https://starlight.kirara.ca/', array('target' => '_blank')); ?></p>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="row">
+            <h4 style="font-weight: bold">Release Date</h4>
+            <p><?php echo $card['Card']['dateAdded'];?></p>
         </div>
     </div>
     </div>

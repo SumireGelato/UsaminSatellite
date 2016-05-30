@@ -26,8 +26,23 @@ class GachasController extends AppController
      */
     public function index()
     {
-        $this->Gacha->recursive = 2;
-        $this->set('gachas', $this->Gacha->find('all', array('order' => 'Gacha.dateFinish desc')));
+        App::uses('CakeTime', 'Utility');
+        $this->Gacha->recursive = 1;
+        $gachas = $this->Gacha->find('all', array('order' => 'Gacha.dateFinish desc'));
+        foreach($gachas as $gacha) {
+            if (!CakeTime::isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['type'] == 'Box') {
+                $this->set('currentBoxGacha', $gacha);
+            }
+            if (!CakeTime::isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['type'] == 'Limited') {
+                $this->set('currentLimitedGacha', $gacha);
+            }
+            if (!CakeTime::isPast($gacha['Gacha']['dateFinish']) && $gacha['Gacha']['type'] == 'Regular') {
+                $this->set('currentRegularGacha', $gacha);
+            }
+        }
+        $this->set('limitedGachas', $this->Gacha->find('all', array('conditions' => array('Gacha.type' => 'Limited'),
+            'order' => 'Gacha.dateFinish desc')));
+        $this->set('gachas', $gachas);
     }
 
     /**
