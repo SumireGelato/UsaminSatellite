@@ -23,7 +23,7 @@ $this->set('title_for_layout', 'Usamin S@telite | Not Found');
     <p style="font-size: xx-small">Picture source: http://danbooru.donmai.us/posts/1413476?tags=idolmaster_cinderella_girls+confused</p>
 </div>
 <?php
-if (Configure::read('debug') > 0){ ?>
+if (Configure::read('debug') > 1){ ?>
     <p class="error">
         <strong><?php echo __d('cake', 'Error'); ?>: </strong>
         <?php printf(

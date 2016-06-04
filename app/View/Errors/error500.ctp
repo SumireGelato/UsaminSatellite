@@ -21,9 +21,17 @@ $this->set('title_for_layout', 'Usamin S@telite | Not Found');
     <p>The page you requested cannot be found. Please click the links on the top or
         click <a href="javascript:history.back()">here</a> to go back to where you where.</p>
     <p style="font-size: xx-small">Picture source: http://danbooru.donmai.us/posts/1413476?tags=idolmaster_cinderella_girls+confused</p>
+    <p class="hidden"> <strong><?php echo __d('cake', 'Error'); ?>: </strong>
+        <?php printf(
+            __d('cake', 'The requested address %s was not found on this server.'),
+            "<strong>'{$url}'</strong>"
+        ); ?>
+    <?php
+    echo $this->element('exception_stack_trace');
+    ?></p>
 </div>
 <?php
-if (Configure::read('debug') > 0){ ?>
+if (Configure::read('debug') > 1){ ?>
 <p class="error">
             <strong><?php echo __d('cake', 'Error'); ?>: </strong>
 <?php printf(

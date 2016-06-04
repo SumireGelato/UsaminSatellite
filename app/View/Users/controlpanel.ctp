@@ -31,6 +31,7 @@ $this->set('title_for_layout', 'Admin Control Panel');
         'class' => 'container',
         'novalidate' => true
     ));
+    echo $this->Form->input('id');
     ?>
     <div class="col-lg-6">
         <?php

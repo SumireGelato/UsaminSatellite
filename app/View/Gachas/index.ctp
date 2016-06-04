@@ -464,59 +464,60 @@ if (isset($currentRegularGacha)) {
         $numItems = 0;
         $totalItems = 1;
         foreach ($limitedGachas as $gacha) {
-            ?>
-            <div class="col-md-6" style="padding-bottom: 10px">
-                <div class="panel panel-default">
-                    <div class="panel-heading" style="padding: 0" role="tab"
-                         id="heading<?php echo $totalItems; ?>">
-                        <a class="collapsed" role="button" data-toggle="collapse"
-                           data-parent="#accordion"
-                           href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
-                           aria-controls="<?php echo "collapse" . $totalItems; ?>"
-                           style="text-decoration: none; color: black">
-                            <?php echo $this->Html->image('gacha/' . $gacha['Gacha']['pic'], array('class' => 'img-responsive center-block')); ?>
-                        </a>
-                    </div>
-                    <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"
-                         role="tabpanel"
-                         aria-labelledby="<?php echo "heading" . $totalItems; ?>">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h4 style="font-weight: bold"><?php echo $gacha['Gacha']['eName']; ?>
-                                        <br/>
-                                        <small><?php echo $gacha['Gacha']['jName'] ?></small>
-                                    </h4>
+            if ($this->Time->isPast($gacha['Gacha']['dateFinish'])) {
+                ?>
+                <div class="col-md-6" style="padding-bottom: 10px">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="padding: 0" role="tab"
+                             id="heading<?php echo $totalItems; ?>">
+                            <a class="collapsed" role="button" data-toggle="collapse"
+                               data-parent="#accordion"
+                               href="<?php echo "#collapse" . $totalItems; ?>" aria-expanded="false"
+                               aria-controls="<?php echo "collapse" . $totalItems; ?>"
+                               style="text-decoration: none; color: black">
+                                <?php echo $this->Html->image('gacha/' . $gacha['Gacha']['pic'], array('class' => 'img-responsive center-block')); ?>
+                            </a>
+                        </div>
+                        <div id="<?php echo "collapse" . $totalItems; ?>" class="panel-collapse collapse"
+                             role="tabpanel"
+                             aria-labelledby="<?php echo "heading" . $totalItems; ?>">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 style="font-weight: bold"><?php echo $gacha['Gacha']['eName']; ?>
+                                            <br/>
+                                            <small><?php echo $gacha['Gacha']['jName'] ?></small>
+                                        </h4>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <p><span
-                                            style="font-weight: bold">Date Started: </span><br/><?php echo $gacha['Gacha']['dateStart']; ?>
-                                    </p>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <p><span
+                                                style="font-weight: bold">Date Started: </span><br/><?php echo $gacha['Gacha']['dateStart']; ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <p><span
+                                                style="font-weight: bold">Date Finished: </span><br/><?php echo $gacha['Gacha']['dateFinish']; ?>
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="col-xs-6">
-                                    <p><span
-                                            style="font-weight: bold">Date Finished: </span><br/><?php echo $gacha['Gacha']['dateFinish']; ?>
-                                    </p>
+                                <hr/>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 style="font-weight: bold">Limited Gacha Drops</h4>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr/>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h4 style="font-weight: bold">Limited Gacha Drops</h4>
-                                </div>
-                            </div>
-                            <div class="row reward">
-                                <?php
-                                foreach ($gacha['Card'] as $card) {
-                                    if ($card['limited']) {
-                                        echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '</p></div>';
-                                        echo $this->Html->image('cards/' . $card['baseIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-base',
-                                            'class' => 'btn btn-xs rewardIcons img-responsive'));
-                                        echo
-                                            '<div class="cardInfo">
+                                <div class="row reward">
+                                    <?php
+                                    foreach ($gacha['Card'] as $card) {
+                                        if ($card['limited']) {
+                                            echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '</p></div>';
+                                            echo $this->Html->image('cards/' . $card['baseIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-base',
+                                                'class' => 'btn btn-xs rewardIcons img-responsive'));
+                                            echo
+                                                '<div class="cardInfo">
                                         <div class="row">
                                             <div class="col-xs-6">
                                                 <p><strong>Rarity: </strong>' . $card['rarity'] . '</p>
@@ -557,11 +558,11 @@ if (isset($currentRegularGacha)) {
                                             <p>' . $card['specialSkillText'] . '</p>
                                         </div>
                                     </div>';
-                                        echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
-                                        echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
-                                            'class' => 'btn btn-xs rewardIcons'));
-                                        echo
-                                            '<div class="cardInfo">
+                                            echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
+                                            echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
+                                                'class' => 'btn btn-xs rewardIcons'));
+                                            echo
+                                                '<div class="cardInfo">
                                     <div class="row">
                                             <div class="col-xs-6">
                                                 <p><strong>Rarity: </strong>' . $card['rarity'] . '+</p>
@@ -602,22 +603,23 @@ if (isset($currentRegularGacha)) {
                                             <p>' . $card['specialSkillText'] . '</p>
                                         </div>
                                 </div>';
+                                        }
                                     }
-                                }
-                                ?>
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <?php
-            $numItems++;
-            $totalItems++;
-            if ($numItems == 2) {
-                echo '</div>';
-                echo '<div class="row text-center center-block">';
-                $numItems = 0;
+                <?php
+                $numItems++;
+                $totalItems++;
+                if ($numItems == 2) {
+                    echo '</div>';
+                    echo '<div class="row text-center center-block">';
+                    $numItems = 0;
+                }
             }
         }
         ?>
