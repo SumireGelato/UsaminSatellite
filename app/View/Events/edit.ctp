@@ -39,7 +39,7 @@ $this->set('title_for_layout', 'Edit Event');
                 'data-date' => $this->request->data['Event']['begin'], 'id' => 'beginPicker'));
             echo $this->Form->input('finish', array('type' => 'text', 'class' => 'form-control',
                 'data-date' => $this->request->data['Event']['finish'], 'id' => 'finishPicker'));
-            $options = array('Token' => 'Token', 'Medley' => 'Live Groove', 'Caravan' => 'Cinderella Caravan');
+            $options = array('Token' => 'Token', 'Medley' => 'Live Groove', 'Caravan' => 'Cinderella Caravan', 'Coop' => 'Live Party');
             echo $this->Form->input('type', array('options' => $options));
             echo '</div>';
             echo '<div class="col-lg-4">';

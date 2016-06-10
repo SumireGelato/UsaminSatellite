@@ -27,7 +27,7 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
             </div>
         </div>
         <div class="row">
-            <?php if ($currentEvent['Event']['type'] != 'Caravan') { ?>
+            <?php if ($currentEvent['Event']['type'] != 'Caravan' && $currentEvent['Event']['type'] != 'Coop') { ?>
                 <div class="col-lg-4 center-block text-center">
                     <div class="row">
                         <h3>Event Song</h3>
@@ -82,32 +82,12 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                                         </tbody>
                                     </table>
                                 </div>
-<!--                                <div class="col-xs-3">-->
-<!--                                    <span class="label label-default" style="margin-left: 5px">Debut</span>-->
-<!---->
-<!--                                    <p>--><?php //if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm']; ?><!--</p>-->
-<!--                                </div>-->
-<!--                                <div class="col-xs-3">-->
-<!--                                    <span class="label label-default" style="margin-left: 5px">Regular</span>-->
-<!---->
-<!--                                    <p>--><?php //if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm']; ?><!--</p>-->
-<!--                                </div>-->
-<!--                                <div class="col-xs-3">-->
-<!--                                    <span class="label label-default" style="margin-left: 5px">Pro</span>-->
-<!---->
-<!--                                    <p>--><?php //if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm']; ?><!--</p>-->
-<!--                                </div>-->
-<!--                                <div class="col-xs-3">-->
-<!--                                    <span class="label label-default" style="margin-left: 5px">Master</span>-->
-<!---->
-<!--                                    <p>--><?php //if ($currentEvent['Song']['bpm'] == 0) echo '?'; else echo $currentEvent['Song']['bpm']; ?><!--</p>-->
-<!--                                </div>-->
                             </div>
                         </div>
                     </div>
                 </div>
             <?php }
-            if ($currentEvent['Event']['type'] != 'Caravan') { ?>
+            if ($currentEvent['Event']['type'] != 'Caravan' && $currentEvent['Event']['type'] != 'Coop') { ?>
             <div class="col-lg-4">
                 <?php } else { ?>
                 <div class="col-lg-12">
@@ -231,7 +211,7 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                                 'action' => 'index', '?' => 'source=' . $currentEvent['Event']['id'] . '&sort=dateAdded&order=1&statOrder=0')); ?>
                     </div>
                 </div>
-                <?php if ($currentEvent['Event']['type'] != 'Caravan') { ?>
+                <?php if ($currentEvent['Event']['type'] != 'Caravan' && $currentEvent['Event']['type'] != 'Coop') { ?>
                     <div class="col-lg-4">
                         <a class="twitter-timeline" data-chrome="nofooter transparent" data-dnt="true"
                            href="https://twitter.com/deresute_border"

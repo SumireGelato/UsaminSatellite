@@ -36,7 +36,7 @@ $this->set('title_for_layout', 'Add Event');
         echo $this->Form->input('jName');
         echo $this->Form->input('begin', array('type' => 'text', 'class' => 'form-control', 'id' => 'beginPicker'));
         echo $this->Form->input('finish', array('type' => 'text', 'class' => 'form-control', 'id' => 'finishPicker'));
-        $options = array('Token' => 'Token', 'Medley' => 'Live Groove', 'Caravan' => 'Cinderella Caravan');
+        $options = array('Token' => 'Token', 'Medley' => 'Live Groove', 'Caravan' => 'Cinderella Caravan', 'Coop' => 'Live Party');
         echo $this->Form->input('type', array('options' => $options));
         echo '</div>';
         echo '<div class="col-lg-4">';
