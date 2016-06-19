@@ -1,4 +1,9 @@
 <?php
+if ($this->request->is('post')) {
+    echo json_encode($song['Song']);
+} else {
+if (!$this->request->is('ajax'))
+{
 $this->set('title_for_layout', 'Add Card');
 ?>
 <div class="row container">
@@ -101,6 +106,11 @@ $this->set('title_for_layout', 'Add Card');
             echo '</div>';
             echo '</div>';
             echo '<hr/>';
+            echo '<div class="row center-block text-center">';
+            echo '<div class="col-lg-12">';
+            echo '<button id="autofill" class="btn btn-default" type="button">Fill in stats</button>';
+            echo '</div>';
+            echo '</div>';
             echo '<div class="row">';
             echo '<div class="col-lg-3">';
             echo $this->Form->input('baseLife');
@@ -201,6 +211,14 @@ $this->set('title_for_layout', 'Add Card');
                         'of 15 life, medium probability of triggering every 15 seconds for some time');
             }
         });
+        $("#autofill").click(function() {
+            var id = $("#CardCardId").val();
+            var baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
+            var host = [location.protocol, '//', location.host].join('');
+            $.get(baseUrl, {id: id}, function( data ) {
+                alert((data.result["name"]).toString());
+            }, "json");
+        });
 
         var baseMax = $("#CardBaseMaxLife");
         var awkBase = $("#CardAwkBaseLife");
@@ -231,3 +249,7 @@ $this->set('title_for_layout', 'Add Card');
 
 
 </script>
+<?php
+}
+}
+?>

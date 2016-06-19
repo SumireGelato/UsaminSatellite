@@ -148,6 +148,12 @@ class CardsController extends AppController
      */
     public function add()
     {
+        if($this->request->is('get')) {
+            $id = $this->request->data['id'];
+            $this->layout = 'ajax';
+            //php get request to kirara here
+            //set data to appear in view here
+        }
         if ($this->request->is('post')) {
             $this->Card->create();
             //Check if image has been uploaded
