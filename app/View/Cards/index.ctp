@@ -297,21 +297,10 @@ foreach ($cards as $card) { ?>
     </div>
     <hr>
     <div class="row text-center center-block">
-        <div class="col-xs-2">
-            <?php echo $this->Html->image('cards/'.$card['Card']['baseIconArt'], array(
-                'width' => '63px',
-                'class' => 'icon',
-                'data-baseicon' => $card['Card']['baseIconArt'],
-                'data-awkicon' => $card['Card']['awkIconArt'],
-                'url' => array('controller' => 'idols',
-                    'action' => 'view',
-                    'id' => $card['Idol']['id'],
-                    'title' => Inflector::slug($card['Idol']['eName'])))); ?>
-        </div>
-        <div class="col-xs-5">
+        <div class="col-xs-6">
             <p><span style="font-weight: bold">Rarity: </span><?php echo $card['Card']['rarity']; ?></p>
         </div>
-        <div class="col-xs-5" id="cardType">
+        <div class="col-xs-6" id="cardType">
             <?php switch ($card['Card']['type']) {
                 case "Cute":
                     echo '<p><span style="font-weight: bold">Type: </span>' .
@@ -331,7 +320,7 @@ foreach ($cards as $card) { ?>
             } ?>
         </div>
     </div>
-    <hr>
+    <hr/>
     <div class="row">
         <div class="col-xs-12">
             <div class="btn-group" data-toggle="buttons">
@@ -682,6 +671,28 @@ foreach ($cards as $card) { ?>
         </div>
     </div>
     <hr/>
+    <div class="row center-block text-center">
+        <h4 style="font-weight: bold">Icon & Puchi Art:</h4>
+        <div class="col-xs-6">
+            <?php echo $this->Html->image('cards/'.$card['Card']['baseIconArt'], array(
+//                'width' => '63px',
+                'class' => 'icon',
+                'data-baseicon' => $card['Card']['baseIconArt'],
+                'data-awkicon' => $card['Card']['awkIconArt'],
+                'url' => array('controller' => 'idols',
+                    'action' => 'view',
+                    'id' => $card['Idol']['id'],
+                    'title' => Inflector::slug($card['Idol']['eName'])))); ?>
+        </div>
+        <div class="col-xs-6">
+            <?php echo $this->Html->image('puchis/petit_'.$card['Card']['card_id'].'.dds.png', array(
+                'width' => '88px',
+                'class' => 'puchi',
+                'data-basepuchi' => 'petit_'.$card['Card']['card_id'].'.dds.png',
+                'data-awkpuchi' => 'petit_'.($card['Card']['card_id']+1).'.dds.png')); ?>
+        </div>
+    </div>
+    <hr/>
     <div class="row text-center">
         <div class="col-xs-12">
             <h4 style="font-weight: bold">Full Size Art Links</h4>
@@ -811,6 +822,12 @@ foreach ($cards as $card) { ?>
                     } else {
                         $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/img/cards/" + baseIcon);
                     }
+                    var basePuchi = $(this).closest(".panel.panel-default").find(".puchi").data('basepuchi');
+                    if(location.host == 'localhost' || location.host == 'localhost:8080') {
+                        $(this).closest(".panel.panel-default").find(".puchi").attr("src", host + "/Satelite/img/puchis/" + basePuchi);
+                    } else {
+                        $(this).closest(".panel.panel-default").find(".puchi").attr("src", host + "/img/puchis/" + basePuchi);
+                    }
                     $(this).closest("div.panel-body").find(".base").css("display", "inherit");
                     $(this).closest("div.panel-body").find(".awakened").css("display", "none");
                 });
@@ -826,6 +843,12 @@ foreach ($cards as $card) { ?>
                         $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/Satelite/img/cards/" + awkIcon);
                     } else {
                         $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/img/cards/" + awkIcon);
+                    }
+                    var awkPuchi = $(this).closest(".panel.panel-default").find(".puchi").data('awkpuchi');
+                    if(location.host == 'localhost' || location.host == 'localhost:8080') {
+                        $(this).closest(".panel.panel-default").find(".puchi").attr("src", host + "/Satelite/img/puchis/" + awkPuchi);
+                    } else {
+                        $(this).closest(".panel.panel-default").find(".puchi").attr("src", host + "/img/puchis/" + awkPuchi);
                     }
                     $(this).closest("div.panel-body").find(".base").css("display", "none");
                     $(this).closest("div.panel-body").find(".awakened").css("display", "inherit");

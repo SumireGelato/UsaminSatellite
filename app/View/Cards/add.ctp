@@ -1,6 +1,6 @@
 <?php
 if ($this->request->is('post')) {
-    echo json_encode($song['Song']);
+    echo $cardDetails;
 } else {
 if (!$this->request->is('ajax'))
 {
@@ -107,30 +107,42 @@ $this->set('title_for_layout', 'Add Card');
             echo '</div>';
             echo '<hr/>';
             echo '<div class="row center-block text-center">';
-            echo '<div class="col-lg-12">';
-            echo '<button id="autofill" class="btn btn-default" type="button">Fill in stats</button>';
+            echo '<div class="col-lg-6">';
+            echo '<button id="autofillBase" class="btn btn-default" type="button">Fill in stats</button>';
+            echo '</div>';
+            echo '<div class="col-lg-6">';
+            echo '<button id="autofillAwk" class="btn btn-default" type="button">Fill in stats</button>';
             echo '</div>';
             echo '</div>';
             echo '<div class="row">';
-            echo '<div class="col-lg-3">';
+            echo '<div class="col-lg-2">';
             echo $this->Form->input('baseLife');
             echo $this->Form->input('baseMaxLife');
             echo $this->Form->input('baseVocal');
             echo $this->Form->input('baseMaxVocal');
             echo '</div>';
-            echo '<div class="col-lg-3">';
+            echo '<div class="col-lg-1">';
+
+            echo '</div>';
+            echo '<div class="col-lg-2">';
             echo $this->Form->input('baseDance');
             echo $this->Form->input('baseMaxDance');
             echo $this->Form->input('baseVisual');
             echo $this->Form->input('baseMaxVisual');
             echo '</div>';
-            echo '<div class="col-lg-3">';
+            echo '<div class="col-lg-1">';
+
+            echo '</div>';
+            echo '<div class="col-lg-2">';
             echo $this->Form->input('awkBaseLife');
             echo $this->Form->input('awkMaxLife');
             echo $this->Form->input('awkBaseVocal');
             echo $this->Form->input('awkMaxVocal');
             echo '</div>';
-            echo '<div class="col-lg-3">';
+            echo '<div class="col-lg-1">';
+
+            echo '</div>';
+            echo '<div class="col-lg-2">';
             echo $this->Form->input('awkBaseDance');
             echo $this->Form->input('awkMaxDance');
             echo $this->Form->input('awkBaseVisual');
@@ -140,6 +152,9 @@ $this->set('title_for_layout', 'Add Card');
                 'class' => 'btn btn-default'
             ));
             echo $this->Form->end();
+            echo '</div>';
+            echo '<div class="col-lg-1">';
+
             echo '</div>';
             echo '</div>';
             ?>
@@ -211,30 +226,34 @@ $this->set('title_for_layout', 'Add Card');
                         'of 15 life, medium probability of triggering every 15 seconds for some time');
             }
         });
-        $("#autofill").click(function() {
+        $("#autofillBase").click(function() {
             var id = $("#CardCardId").val();
             var baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
-            var host = [location.protocol, '//', location.host].join('');
-            $.get(baseUrl, {id: id}, function( data ) {
-                alert((data.result["name"]).toString());
+            $.post(baseUrl, {id: id, type: "autofill"}, function( data ) {
+                $("#CardBaseLife").val(data.result[0]["hp_min"]);
+                $("#CardBaseMaxLife").val((data.result[0]["hp_max"])+(data.result[0]["bonus_hp"]));
+                $("#CardBaseVocal").val(data.result[0]["vocal_min"]);
+                $("#CardBaseMaxVocal").val(data.result[0]["vocal_max"]);
+                $("#CardBaseDance").val(data.result[0]["dance_min"]);
+                $("#CardBaseMaxDance").val(data.result[0]["dance_max"]);
+                $("#CardBaseVisual").val(data.result[0]["visual_min"]);
+                $("#CardBaseMaxVisual").val(data.result[0]["visual_max"]);
             }, "json");
         });
 
-        var baseMax = $("#CardBaseMaxLife");
-        var awkBase = $("#CardAwkBaseLife");
-        $("#CardBaseLife").change(function() {
-            baseMax.val(parseInt($("#CardBaseLife").val())+2);
-            baseMax.trigger("change");
-            awkBase.trigger("change");
-        });
-
-        baseMax.change(function() {
-            awkBase.val(baseMax.val());
-            awkBase.trigger("change");
-        });
-
-        awkBase.change(function() {
-            $("#CardAwkMaxLife").val(parseInt(baseMax.val())+2);
+        $("#autofillAwk").click(function() {
+            var id = parseInt($("#CardCardId").val()) + 1;
+            var baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
+            $.post(baseUrl, {id: id, type: "autofill"}, function( data ) {
+                $("#CardAwkBaseLife").val(data.result[0]["hp_min"]);
+                $("#CardAwkMaxLife").val((data.result[0]["hp_max"])+(data.result[0]["bonus_hp"]));
+                $("#CardAwkBaseVocal").val(data.result[0]["vocal_min"]);
+                $("#CardAwkMaxVocal").val(data.result[0]["vocal_max"]);
+                $("#CardAwkBaseDance").val(data.result[0]["dance_min"]);
+                $("#CardAwkMaxDance").val(data.result[0]["dance_max"]);
+                $("#CardAwkBaseVisual").val(data.result[0]["visual_min"]);
+                $("#CardAwkMaxVisual").val(data.result[0]["visual_max"]);
+            }, "json");
         });
 
         var rarityBox = $("#CardRarity");
