@@ -417,7 +417,8 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                                                 'action' => 'index', '?' => 'source=' . $event['Event']['id'] . '&sort=dateAdded&order=1&statOrder=0')); ?>
                                     </div>
                                     <hr/>
-                                    <?php if ($event['Event']['type'] != 'Caravan' && $event['Event']['t1'] != null) { ?>
+                                    <?php if ($event['Event']['type'] != 'Caravan' && $event['Event']['type'] != 'Coop' &&
+                                        $event['Event']['t1'] != null) { ?>
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <h4 style="font-weight: bold">Event Rankings</h4>
@@ -449,7 +450,8 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                                                 </tbody>
                                             </table>
                                         </div>
-                                    <?php } elseif ($event['Event']['type'] != 'Caravan' && $event['Event']['t1'] == null) { ?>
+                                    <?php } elseif ($event['Event']['type'] != 'Caravan' && $event['Event']['type'] != 'Coop' &&
+                                        $event['Event']['t1'] == null) { ?>
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <h4>Event Rankings Coming Soon!</h4>
