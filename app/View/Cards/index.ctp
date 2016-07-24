@@ -70,7 +70,8 @@ if (!$this->request->is('ajax')) {//Page Title
                     4 => array('name' => 'Damage Guard', 'value' => 'Damage Guard'),
                     5 => array('name' => 'Combo Bonus', 'value' => 'Combo Bonus'),
                     6 => array('name' => 'Score Bonus', 'value' => 'Score Boost'),
-                    7 => array('name' => 'No Skill', 'value' => 'No Skill'));
+                    7 => array('name' => 'Overload', 'value' => 'Overload'),
+                    8 => array('name' => 'No Skill', 'value' => 'No Skill'));
 
                 echo $this->Form->input('skill', array(
                     'options' => $options,

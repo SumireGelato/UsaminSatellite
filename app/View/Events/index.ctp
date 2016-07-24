@@ -428,13 +428,13 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
                                             <table class="table text-left">
                                                 <thead>
                                                 <tr>
-                                                    <th>Tier 1<br/>2001st</th>
-                                                    <th>Tier 2<br/>10001st</th>
-                                                    <th>Tier 3<br/>20001st</th>
-                                                    <th>Tier 4<br/>50001st</th>
-                                                    <th>Tier 5<br/>100001st</th>
-                                                    <th>Tier 6<br/>300001st</th>
-                                                    <th>Tier 7<br/>500001st</th>
+                                                    <th>Tier 1</th>
+                                                    <th>Tier 2</th>
+                                                    <th>Tier 3</th>
+                                                    <th>Tier 4</th>
+                                                    <th>Tier 5</th>
+                                                    <th>Tier 6</th>
+                                                    <th>Tier 7</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
