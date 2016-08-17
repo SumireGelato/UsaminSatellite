@@ -230,7 +230,7 @@ $this->set('title_for_layout', 'Usamin S@tellite | Events List');
             </div>
             <?php
             }
-            if (isset($futureEvent)) {
+            else if (isset($futureEvent)) {
                 ?>
                 <div class="row">
                     <h1>Upcoming Event</h1>
