@@ -66,6 +66,7 @@ $this->set('title_for_layout', 'Add Idol');
         echo $this->Form->input('bio');
         echo $this->Form->input('profilePic', array('type' => 'file'));
         echo $this->Form->input('puchiPic', array('type' => 'file'));
+        echo $this->Form->input('signPic', array('type' => 'file'));
         echo $this->Form->submit('Save', array(
             'div' => 'form-group',
             'class' => 'btn btn-default'

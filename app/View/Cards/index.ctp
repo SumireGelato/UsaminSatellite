@@ -281,7 +281,11 @@ foreach ($cards as $card) { ?>
     <div class="panel-body text-center">
     <div class="row">
         <div class="col-xs-12">
-            <h4 style="font-weight: bold"><?php echo $card['Card']['eName']; ?></h4>
+            <h4 style="font-weight: bold"><?php echo $this->Html->link($card['Card']['eName'],
+                    array('controller' => 'cards',
+                        'action' => 'view',
+                        $card['Card']['card_id']),
+                    array('class' => 'noLinkStyle', 'escape' => false));?></h4>
         </div>
     </div>
     <hr>
@@ -682,15 +686,17 @@ foreach ($cards as $card) { ?>
                 'data-awkicon' => $card['Card']['awkIconArt'],
                 'url' => array('controller' => 'idols',
                     'action' => 'view',
-                    'id' => $card['Idol']['id'],
-                    'title' => Inflector::slug($card['Idol']['eName'])))); ?>
+                    Inflector::slug($card['Idol']['eName'])))); ?>
         </div>
         <div class="col-xs-6">
             <?php echo $this->Html->image('puchis/petit_'.$card['Card']['card_id'].'.dds.png', array(
                 'width' => '88px',
                 'class' => 'puchi',
                 'data-basepuchi' => 'petit_'.$card['Card']['card_id'].'.dds.png',
-                'data-awkpuchi' => 'petit_'.($card['Card']['card_id']+1).'.dds.png')); ?>
+                'data-awkpuchi' => 'petit_'.($card['Card']['card_id']+1).'.dds.png',
+                'url' => array('controller' => 'idols',
+                    'action' => 'view',
+                    Inflector::slug($card['Idol']['eName'])))); ?>
         </div>
     </div>
     <hr/>
@@ -722,7 +728,7 @@ foreach ($cards as $card) { ?>
                         'http://imascg-slstage-wiki.gamerch.com/' . $card['Card']['jName'], array('target' => '_blank')) . '</p>';
             }?>
             <p><?php echo $this->Html->link('Starlight Kirara',
-                    'https://starlight.kirara.ca/', array('target' => '_blank')); ?></p>
+                    'https://starlight.kirara.ca/card/'.$card['Card']['card_id'], array('target' => '_blank')); ?></p>
         </div>
     </div>
     <hr/>

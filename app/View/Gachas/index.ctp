@@ -113,97 +113,15 @@ if (isset($currentLimitedGacha)) {
                     if ($card['limited']) {
                         echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '</p></div>';
                         echo $this->Html->image('cards/' . $card['baseIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-base',
-                            'class' => 'btn btn-xs rewardIcons'));
-                        echo
-                            '<div class="cardInfo">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Max Stats</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['baseMaxLife'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['baseMaxVocal'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['baseMaxDance'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['baseMaxVisual'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['baseMaxTotal']) . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                    </div>';
-                        echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
-                        echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
-                            'class' => 'btn btn-xs rewardIcons'));
-                        echo
-                            '<div class="cardInfo">
-                                    <div class="row">
-                                            <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '+</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Max Stats</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['awkMaxLife'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['awkMaxVocal'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['awkMaxDance'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['awkMaxVisual'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['awkMaxTotal']) . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                </div>';
+                            'class' => 'btn btn-xs rewardIcons', 'url' => array('controller' => 'cards',
+                                'action' => 'view',
+                                $card['card_id'])));
                     }
                 }
                 ?>
+            </div>
+            <div class="row">
+                <p>Click on the icons to view more details on the cards!</p>
             </div>
         </div>
     </div>
@@ -218,97 +136,15 @@ if (isset($currentLimitedGacha)) {
                     if (!$card['limited']) {
                         echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '</p></div>';
                         echo $this->Html->image('cards/' . $card['baseIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-base',
-                            'class' => 'btn btn-xs rewardIcons'));
-                        echo
-                            '<div class="cardInfo">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Max Stats</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['baseMaxLife'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['baseMaxVocal'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['baseMaxDance'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['baseMaxVisual'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['baseMaxTotal']) . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                    </div>';
-                        echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
-                        echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
-                            'class' => 'btn btn-xs rewardIcons'));
-                        echo
-                            '<div class="cardInfo">
-                                    <div class="row">
-                                            <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '+</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Max Stats</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['awkMaxLife'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['awkMaxVocal'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['awkMaxDance'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['awkMaxVisual'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['awkMaxTotal']) . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                </div>';
+                            'class' => 'btn btn-xs rewardIcons', 'url' => array('controller' => 'cards',
+                                'action' => 'view',
+                                $card['card_id'])));
                     }
                 }
                 ?>
+            </div>
+            <div class="row">
+                <p>Click on the icons to view more details on the cards!</p>
             </div>
         </div>
     </div>
@@ -351,96 +187,14 @@ if (isset($currentRegularGacha)) {
                         foreach ($currentRegularGacha['Card'] as $card) {
                             echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '</p></div>';
                             echo $this->Html->image('cards/' . $card['baseIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-base',
-                                'class' => 'btn btn-xs rewardIcons'));
-                            echo
-                                '<div class="cardInfo">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Max Stats</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['baseMaxLife'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['baseMaxVocal'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['baseMaxDance'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['baseMaxVisual'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['baseMaxTotal']) . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                    </div>';
-                            echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
-                            echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
-                                'class' => 'btn btn-xs rewardIcons'));
-                            echo
-                                '<div class="cardInfo">
-                                    <div class="row">
-                                            <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '+</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Max Stats</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['awkMaxLife'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['awkMaxVocal'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['awkMaxDance'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['awkMaxVisual'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['awkMaxTotal']) . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                </div>';
+                                'class' => 'btn btn-xs rewardIcons', 'url' => array('controller' => 'cards',
+                                    'action' => 'view',
+                                    $card['card_id'])));
                         }
                         ?>
+                    </div>
+                    <div class="row">
+                        <p>Click on the icons to view more details on the cards!</p>
                     </div>
                 </div>
             </div>
@@ -515,97 +269,16 @@ if (isset($currentRegularGacha)) {
                                         if ($card['limited']) {
                                             echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '</p></div>';
                                             echo $this->Html->image('cards/' . $card['baseIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-base',
-                                                'class' => 'btn btn-xs rewardIcons img-responsive'));
-                                            echo
-                                                '<div class="cardInfo">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Max Stats</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['baseMaxLife'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['baseMaxVocal'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['baseMaxDance'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['baseMaxVisual'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['baseMaxTotal']) . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                    </div>';
-                                            echo '<div class="cardTitle" style="display: none"><p>' . $card['eName'] . '+</p></div>';
-                                            echo $this->Html->image('cards/' . $card['awkIconArt'], array('alt' => str_replace('"', '', $card['eName']) . '-awk',
-                                                'class' => 'btn btn-xs rewardIcons'));
-                                            echo
-                                                '<div class="cardInfo">
-                                    <div class="row">
-                                            <div class="col-xs-6">
-                                                <p><strong>Rarity: </strong>' . $card['rarity'] . '+</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <p><strong>Type: </strong>' . $card['type'] . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Max Stats</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em; color: lawngreen" class="glyphicon glyphicon-heart"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . $card['awkMaxLife'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-danger" style="margin-left: 5px">Vo.</span>
-                                                <p>' . $card['awkMaxVocal'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-primary" style="margin-left: 5px">Da.</span>
-                                                <p>' . $card['awkMaxDance'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span class="label label-warning" style="margin-left: 5px">Vi.</span>
-                                                <p>' . $card['awkMaxVisual'] . '</p>
-                                            </div>
-                                            <div class="col-xs-5ths">
-                                                <span style="font-size: 1.3em" class="glyphicon glyphicon-stats"></span>
-                                                <p style="margin-bottom: 0px; margin-top: -3px;">' . ($card['awkMaxTotal']) . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <h5>Card Skill - ' . $card['specialSkillType'] . '</h5>
-                                        </div>
-                                        <div class="row">
-                                            <p>' . $card['specialSkillText'] . '</p>
-                                        </div>
-                                </div>';
+                                                'class' => 'btn btn-xs rewardIcons img-responsive',
+                                                'url' => array('controller' => 'cards',
+                                                    'action' => 'view',
+                                                    $card['card_id'])));
                                         }
                                     }
                                     ?>
+                                </div>
+                                <div class="row">
+                                    <p>Click on the icons to view more details on the cards!</p>
                                 </div>
                             </div>
                         </div>
@@ -636,14 +309,14 @@ if (isset($currentRegularGacha)) {
     var browserTimeElement = $("#browserTime");
     switch (true) {
         case (hoursDifference < 0)://behind jst
-            browserTimeElement.html("<p>You are " + Math.abs(hoursDifference) + " hour(s) behind Starlight Server Time, " +
+            browserTimeElement.html("<p>You are " + Math.abs(hoursDifference) + " hour(s) behind Japan Standard Time, " +
             "the gacha will end at " + browserConverted + " for you.</p>");
             break;
         case (hoursDifference == 0)://is jst
-            browserTimeElement.html("<p>You are on Starlight Server Time, the gacha will end at " + jst.format("h:m:s A D/M/YYYY") + " for you.</p>");
+            browserTimeElement.html("<p>You are on Japan Standard Time, the gacha will end at " + jst.format("h:m:s A D/M/YYYY") + " for you.</p>");
             break;
         case (hoursDifference > 0)://ahead jst
-            browserTimeElement.html("<p>You are " + hoursDifference + " hour(s) ahead of Starlight Server Time, " +
+            browserTimeElement.html("<p>You are " + hoursDifference + " hour(s) ahead of Japan Standard Time, " +
             "the gacha will end at " + browserConverted + " for you.</p>");
             break;
         default://unknown

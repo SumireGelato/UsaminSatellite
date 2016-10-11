@@ -69,6 +69,7 @@ $this->set('title_for_layout', 'Edit Idol');
             echo 'Current filename is: '.$this->request->data['Idol']['profilePic'];
             echo $this->Form->input('puchiPic', array('type' => 'file'));
             echo 'Current filename is: '.$this->request->data['Idol']['puchiPic'];
+            echo $this->Form->input('signPic', array('type' => 'file'));
             echo $this->Form->submit('Save', array(
                 'div' => 'form-group',
                 'class' => 'btn btn-default'

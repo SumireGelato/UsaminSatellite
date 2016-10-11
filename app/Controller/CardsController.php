@@ -35,6 +35,120 @@ class CardsController extends AppController
         return parent::isAuthorized($user);
     }*/
 
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param string $cardId
+     * @return void
+     */
+    public function view($cardId = null)
+    {
+        $conditions = array('Card.card_id' => $cardId);
+        if (!$this->Card->hasAny($conditions)) {
+            throw new NotFoundException(__('Invalid Card'));
+        }
+        $this->Card->recursive = 2;
+        $options = array('conditions' => array('Card.card_id' => $cardId));
+        $card = $this->Card->find('first', $options);
+        $this->set('card', $card);
+    }
+
+    /**
+     * indexlite method
+     *
+     * almost exact copy of index
+     * @return void
+     */
+    public function indexlite()
+    {
+        $this->Card->recursive = 0;
+        $numItems = 0;
+        if (!$this->request->is('ajax')) {
+            $totalItems = 1;
+        } else {
+//            $totalItems = $this->passedArgs['pass'];
+        }
+        $this->set(compact('numItems'));
+        $this->set(compact('totalItems'));
+        $this->Prg->commonProcess();
+        $this->Paginator->settings['conditions'] = $this->Card->parseCriteria($this->Prg->parsedParams());
+        $this->Paginator->settings['limit'] = 28;
+        if($this->request->is(array('post', 'put', 'get')) && $this->request->query('sort') != null)
+        {
+            $sortField = $this->request->query('sort');
+            $orderBool = $this->request->query('order');
+            if($orderBool) {
+                $order = 'desc';
+            }
+            else {
+                $order = 'asc';
+            }
+            switch($sortField) {
+                case 'dateAdded':
+                    $sort = array('Card.'.$sortField => $order, 'Card.rarity' => 'desc', 'Card.limited' => 'desc');
+                    break;
+                case 'rarity':
+                    $sort = array('Card.'.$sortField => $order, 'Card.limited' => 'desc', 'Card.dateAdded' => 'desc');
+                    break;
+                default:
+                    $sort = array('Card.'.$sortField => $order, 'Card.rarity' => 'desc', 'Card.dateAdded' => 'desc', 'Card.limited' => 'desc');
+            }
+            if($this->request->query('statSort') != null) {
+                $statSortField = $this->request->query('statSort');
+                $statsSortOrderBool = $this->request->query('statOrder');
+                if($statsSortOrderBool) {
+                    $statOrder = 'desc';
+                }
+                else {
+                    $statOrder = 'asc';
+                }
+                $statSort = array('Card.'.$statSortField => $statOrder);
+                $this->Paginator->settings['order'] = array_merge($statSort, $sort);
+            }
+            else {
+                $this->Paginator->settings['order'] = $sort;
+            }
+        }
+        else {
+            $this->Paginator->settings['order'] = array('Card.dateAdded' => 'desc', 'Card.rarity' => 'desc', 'Card.limited' => 'desc');
+        }
+        if(!$this->request->is('ajax')) {
+            $this->Session->write('filter',$this->Prg->parsedParams());
+            $this->set('cards', $this->Paginator->paginate());
+        }
+        else {
+            $filter = $this->Session->read('filter');
+            $this->set('cards', $this->Paginator->paginate($this->Card->parseCriteria($filter)));
+        }
+        $gacha = array('gacha' => 'Gacha');
+        $eventsList = $this->Card->Event->find('list', array(
+            'fields' => array('Event.id', 'Event.eName', 'Event.type'),
+            'order' => 'Event.finish desc'));
+        $sourceList = array_merge($gacha, $eventsList);
+
+        $eventDate = $this->Card->Event->find('list', array(
+            'fields' => array('Event.id', 'Event.finish'),
+            'order' => 'Event.finish desc'));
+        $dateKey = array_keys($eventDate);
+        $size = sizeof($dateKey);
+        for ($i=0; $i<$size; $i++) {
+            $dateOnly = explode(' ', $eventDate[$dateKey[$i]])[0];
+            $dateExplode = explode('-', $dateOnly);
+            //0 => Year, 1 => Month, 2 => Day
+            $eventDate[$dateKey[$i]] = $dateExplode[1].'/'.$dateExplode[0];
+        }
+        foreach($sourceList as &$type) {
+            if($type != 'Gacha') {
+                $size = sizeOf($type);
+                $key = array_keys($type);
+                for ($i=0; $i<$size; $i++) {
+                    $type[$key[$i]] = $type[$key[$i]]." ".$eventDate[$key[$i]];
+                }
+            }
+        }
+        $this->set('sourceList', $sourceList);
+    }
 
     /**
      * index method

@@ -76,7 +76,8 @@ class GachasController extends AppController
                 if (in_array($picExt, $arr_ext)) {
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
-                    $picFilename = trim($this->request->data['Gacha']['eName']);
+                    $picFilenameDateArray = explode('-', trim($this->request->data['Gacha']['dateStart']));
+                    $picFilename = trim($this->request->data['Gacha']['eName'] . ' '. $picFilenameDateArray[0] . '-' . $picFilenameDateArray[1]);
 
                     move_uploaded_file($pic['tmp_name'], WWW_ROOT . 'img/gacha/' .
                         $picFilename . '.' . $picExt);
@@ -143,7 +144,8 @@ class GachasController extends AppController
                 if (in_array($picExt, $arr_ext)) {
                     //do the actual uploading of the file. First arg is the tmp name, second arg is
                     //where we are putting it
-                    $picFilename = trim($this->request->data['Gacha']['eName']);
+                    $picFilenameDateArray = explode('-', trim($this->request->data['Gacha']['dateStart']));
+                    $picFilename = trim($this->request->data['Gacha']['eName'] . ' '. $picFilenameDateArray[0] . '-' . $picFilenameDateArray[1]);
 
                     move_uploaded_file($pic['tmp_name'], WWW_ROOT . 'img/gacha/' .
                         $picFilename . '.' . $picExt);

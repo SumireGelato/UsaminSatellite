@@ -81,8 +81,6 @@ $this->set('title_for_layout', 'Usamin S@tellite | English Resources for iDOLM@S
         <p>Have a suggestion for a new feature?</p>
     </div>
     <div class="col-lg-4 center-block" style="margin-top: -10px">
-        <a class="twitter-timeline" data-chrome="transparent noborder nofooter" data-dnt="true" href="https://twitter.com/UsaminSatelite"
-           data-widget-id="715765886548881409">Latest News - Follow Us at @UsaminSatelite!</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        <a class="twitter-timeline" data-height="350" data-dnt="true" data-link-color="#1B95E0" href="https://twitter.com/UsaminSatellite">Tweets by UsaminSatellite</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>
 

@@ -37,7 +37,7 @@ switch ($idol['Idol']['type']) {
                 }
                 ?>
             </div>
-            <div class="col-lg-6" id="idolBio">
+            <div class="col-lg-4" id="idolBio">
                 <div class="row">
                     <div class="col-lg-6">
                         <p><span class="label label-cute">Height:</span> <?php echo $idol['Idol']['height']; ?>cm</p>
@@ -51,14 +51,14 @@ switch ($idol['Idol']['type']) {
                         <p><span class="label label-cute">Age:</span> <?php echo $idol['Idol']['age']; ?></p>
 
                         <p><span class="label label-cute">Birthday:</span> <?php echo $idol['Idol']['birthday']; ?></p>
-
-                        <p><span
-                                class="label label-cute">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?>
-                        </p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
+                        <p><span
+                                class="label label-cute">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?>
+                        </p>
+
                         <p><span
                                 class="label label-cute">Three Sizes:</span> <?php echo 'B' . $idol['Idol']['b'] . ' / W' . $idol['Idol']['w'] . ' / H'
                                 . $idol['Idol']['h']; ?></p>
@@ -81,6 +81,15 @@ switch ($idol['Idol']['type']) {
                         </p>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-4">
+                <?php
+                $signFilename = explode(' ', trim($idol['Idol']['eName']))[0];
+                if (file_exists(WWW_ROOT.'img/signs/' . lcfirst($signFilename).'-sign.png')) {
+                    echo $this->Html->image('signs/'.lcfirst($signFilename).'-sign.png', array('class' => 'center-block img-responsive',
+                        'id'=>'idolSign', 'height' => 512));
+                }
+                ?>
             </div>
         </div>
         <?php break;
@@ -121,7 +130,7 @@ switch ($idol['Idol']['type']) {
                 }
                 ?>
             </div>
-            <div class="col-lg-6" id="idolBio">
+            <div class="col-lg-4" id="idolBio">
                 <div class="row">
                     <div class="col-lg-6">
                         <p><span class="label label-info">Height:</span> <?php echo $idol['Idol']['height']; ?>cm</p>
@@ -135,14 +144,13 @@ switch ($idol['Idol']['type']) {
                         <p><span class="label label-info">Age:</span> <?php echo $idol['Idol']['age']; ?></p>
 
                         <p><span class="label label-info">Birthday:</span> <?php echo $idol['Idol']['birthday']; ?></p>
-
-                        <p><span
-                                class="label label-info">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?>
-                        </p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
+                        <p><span
+                                class="label label-info">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?></p>
+
                         <p><span
                                 class="label label-info">Three Sizes:</span> <?php echo 'B' . $idol['Idol']['b'] . ' / W' . $idol['Idol']['w'] . ' / H'
                                 . $idol['Idol']['h']; ?></p>
@@ -165,6 +173,15 @@ switch ($idol['Idol']['type']) {
                         </p>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-4">
+                <?php
+                $signFilename = explode(' ', trim($idol['Idol']['eName']))[0];
+                if (file_exists(WWW_ROOT.'img/signs/' . lcfirst($signFilename).'-sign.png')) {
+                    echo $this->Html->image('signs/'.lcfirst($signFilename).'-sign.png', array('class' => 'center-block img-responsive',
+                        'id'=>'idolSign', 'height' => 512));
+                }
+                ?>
             </div>
         </div>
         <?php break;
@@ -205,7 +222,7 @@ switch ($idol['Idol']['type']) {
                 }
                 ?>
             </div>
-            <div class="col-lg-6" id="idolBio">
+            <div class="col-lg-4" id="idolBio">
                 <div class="row">
                     <div class="col-lg-6">
                         <p><span class="label label-warning">Height:</span> <?php echo $idol['Idol']['height']; ?>cm</p>
@@ -219,14 +236,13 @@ switch ($idol['Idol']['type']) {
                         <p><span class="label label-warning">Age:</span> <?php echo $idol['Idol']['age']; ?></p>
 
                         <p><span class="label label-warning">Birthday:</span> <?php echo $idol['Idol']['birthday']; ?></p>
-
-                        <p><span
-                                class="label label-warning">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?>
-                        </p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
+                        <p><span
+                                class="label label-warning">Writing Hand:</span> <?php echo $idol['Idol']['writingHand']; ?>
+                        </p>
                         <p><span
                                 class="label label-warning">Three Sizes:</span> <?php echo 'B' . $idol['Idol']['b'] . ' / W' . $idol['Idol']['w'] . ' / H'
                                 . $idol['Idol']['h']; ?></p>
@@ -249,6 +265,15 @@ switch ($idol['Idol']['type']) {
                         </p>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-4">
+                <?php
+                $signFilename = explode(' ', trim($idol['Idol']['eName']))[0];
+                if (file_exists(WWW_ROOT.'img/signs/' . lcfirst($signFilename).'-sign.png')) {
+                    echo $this->Html->image('signs/'.lcfirst($signFilename).'-sign.png', array('class' => 'center-block img-responsive',
+                        'id'=>'idolSign', 'height' => 512));
+                }
+                ?>
             </div>
         </div>
         <?php break;
@@ -369,11 +394,7 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
             'width' => '63px',
             'class' => 'icon',
             'data-baseicon' => $card['baseIconArt'],
-            'data-awkicon' => $card['awkIconArt'],
-            'url' => array('controller' => 'idols',
-                'action' => 'view',
-                'id' => $card['Idol']['id'],
-                'title' => Inflector::slug($card['Idol']['eName'])))); ?>
+            'data-awkicon' => $card['awkIconArt'])); ?>
     </div>
     <div class="col-xs-5">
         <p><span style="font-weight: bold">Rarity: </span><?php echo $card['rarity']; ?></p>
@@ -749,6 +770,24 @@ if ($card['rarity'] != 'N') {
     </div>
 </div>
 <hr/>
+<div class="row center-block text-center">
+    <h4 style="font-weight: bold">Icon & Puchi Art:</h4>
+    <div class="col-xs-6">
+        <?php echo $this->Html->image('cards/'.$card['baseIconArt'], array(
+//                'width' => '63px',
+            'class' => 'icon',
+            'data-baseicon' => $card['baseIconArt'],
+            'data-awkicon' => $card['awkIconArt'])); ?>
+    </div>
+    <div class="col-xs-6">
+        <?php echo $this->Html->image('puchis/petit_'.$card['card_id'].'.dds.png', array(
+            'width' => '88px',
+            'class' => 'puchi',
+            'data-basepuchi' => 'petit_'.$card['card_id'].'.dds.png',
+            'data-awkpuchi' => 'petit_'.($card['card_id']+1).'.dds.png')); ?>
+    </div>
+</div>
+<hr/>
 <div class="row text-center">
     <div class="col-xs-12">
         <h4 style="font-weight: bold">Full Size Art Links</h4>
@@ -814,6 +853,12 @@ $totalItems++;
             } else {
                 $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/img/cards/" + baseIcon);
             }
+            var basePuchi = $(this).closest(".panel.panel-default").find(".puchi").data('basepuchi');
+            if(location.host == 'localhost' || location.host == 'localhost:8080') {
+                $(this).closest(".panel.panel-default").find(".puchi").attr("src", host + "/Satelite/img/puchis/" + basePuchi);
+            } else {
+                $(this).closest(".panel.panel-default").find(".puchi").attr("src", host + "/img/puchis/" + basePuchi);
+            }
             $(this).closest("div.panel-body").find(".base").css("display", "inherit");
             $(this).closest("div.panel-body").find(".awakened").css("display", "none");
         });
@@ -829,6 +874,12 @@ $totalItems++;
                 $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/Satelite/img/cards/" + awkIcon);
             } else {
                 $(this).closest(".panel.panel-default").find(".icon").attr("src", host + "/img/cards/" + awkIcon);
+            }
+            var awkPuchi = $(this).closest(".panel.panel-default").find(".puchi").data('awkpuchi');
+            if(location.host == 'localhost' || location.host == 'localhost:8080') {
+                $(this).closest(".panel.panel-default").find(".puchi").attr("src", host + "/Satelite/img/puchis/" + awkPuchi);
+            } else {
+                $(this).closest(".panel.panel-default").find(".puchi").attr("src", host + "/img/puchis/" + awkPuchi);
             }
             $(this).closest("div.panel-body").find(".base").css("display", "none");
             $(this).closest("div.panel-body").find(".awakened").css("display", "inherit");

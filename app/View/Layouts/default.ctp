@@ -92,8 +92,20 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             <ul class="nav navbar-nav">
                                 <li><?php echo $this->Html->link('<span class=" glyphicon glyphicon-home"></span> Home',
                                         array('controller' => 'pages', 'action' => 'display', 'home'), array('escape' => false)); ?></li>
-                                <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-th-large"></span> Cards',
-                                        array('controller' => 'cards', 'action' => 'index'), array('escape' => false)); ?></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-th-large"></span> Cards<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><?php
+                                            echo "<span style='color: #ffe0e9; padding-left: 10px'>Gallery</span>";
+                                            echo $this->Html->link('Full',
+                                                array('controller' => 'cards', 'action' => 'index'),
+                                                array('escape' => false, 'style' => 'display: inline'));
+                                            echo $this->Html->link('Lite',
+                                                array('controller' => 'cards', 'action' => 'indexlite'),
+                                                array('escape' => false, 'style' => 'display: inline'));?>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-bullhorn"></span> Events',
                                         array('controller' => 'events', 'action' => 'index'), array('escape' => false)); ?></li>
                                 <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-music"></span> Songs',

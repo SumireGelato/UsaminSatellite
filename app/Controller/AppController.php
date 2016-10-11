@@ -62,7 +62,7 @@ class AppController extends Controller
         $this->loadModel('Website');
         $version = $this->Website->find('first', array('fields' => array('Website.resVersion', 'Website.lastUpdated')));
         $this->set('version', $version);
-        $this->Auth->allow('index','view', 'display');
+        $this->Auth->allow('index', 'indexlite', 'view', 'display');
     }
 
     public function isAuthorized($user) {

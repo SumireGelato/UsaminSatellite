@@ -37,20 +37,18 @@ $this->set('title_for_layout', 'Usamin S@tellite | Idols List');
                         if ($type == 'cute') {
                             foreach ($idols as $idol) {
                                 ?>
-                                <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px;">
+                                <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px; margin-bottom: 10px;">
                                 <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
                                         array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
                                     array('controller' => 'idols',
                                         'action' => 'view',
-                                        'id' => $idol['Idol']['id'],
-                                        'title' => Inflector::slug($idol['Idol']['eName'])),
+                                        Inflector::slug($idol['Idol']['eName'])),
                                     array('escape' => false)) ?>
-                                    <?php echo $this->Html->link($idol['Idol']['eName'],
+                                    <?php echo $this->Html->link($idol['Idol']['eName'].'</br>'.$idol['Idol']['jName'],
                                         array('controller' => 'idols',
                                             'action' => 'view',
-                                            'id' => $idol['Idol']['id'],
-                                            'title' => Inflector::slug($idol['Idol']['eName'])),
-                                        array('class' => 'noLinkStyle'));?>
+                                            Inflector::slug($idol['Idol']['eName'])),
+                                        array('class' => 'noLinkStyle', 'escape' => false));?>
                                 </div>
                             <?php
                             }
@@ -70,20 +68,18 @@ $this->set('title_for_layout', 'Usamin S@tellite | Idols List');
                             if ($type == 'cool') {
                                 foreach ($idols as $idol) {
                                     ?>
-                                    <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px;">
+                                    <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px; margin-bottom: 10px;">
                                         <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
                                                 array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
                                             array('controller' => 'idols',
                                                 'action' => 'view',
-                                                'id' => $idol['Idol']['id'],
-                                                'title' => Inflector::slug($idol['Idol']['eName'])),
+                                                Inflector::slug($idol['Idol']['eName'])),
                                             array('escape' => false)) ?>
-                                        <?php echo $this->Html->link($idol['Idol']['eName'],
+                                        <?php echo $this->Html->link($idol['Idol']['eName'].'</br>'.$idol['Idol']['jName'],
                                             array('controller' => 'idols',
                                                 'action' => 'view',
-                                                'id' => $idol['Idol']['id'],
-                                                'title' => Inflector::slug($idol['Idol']['eName'])),
-                                            array('class' => 'noLinkStyle'));?>
+                                                Inflector::slug($idol['Idol']['eName'])),
+                                            array('class' => 'noLinkStyle','escape' => false));?>
                                     </div>
                                 <?php
                                 }
@@ -103,20 +99,18 @@ $this->set('title_for_layout', 'Usamin S@tellite | Idols List');
                                 if ($type == 'passion') {
                                     foreach ($idols as $idol) {
                                         ?>
-                                        <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px;">
+                                        <div class="col-xs-6 col-sm-3 col-lg-2 center-block text-center" style="height: 194px; margin-bottom: 10px">
                                             <?php echo $this->Html->link($this->Html->image('profiles/' . $idol['Idol']['puchiPic'],
                                                     array('alt' => $idol['Idol']['eName'], 'height' => '150px')),
                                                 array('controller' => 'idols',
                                                     'action' => 'view',
-                                                    'id' => $idol['Idol']['id'],
-                                                    'title' => Inflector::slug($idol['Idol']['eName'])),
+                                                    Inflector::slug($idol['Idol']['eName'])),
                                                 array('escape' => false)) ?>
-                                            <?php echo $this->Html->link($idol['Idol']['eName'],
+                                            <?php echo $this->Html->link($idol['Idol']['eName'].'</br>'.$idol['Idol']['jName'],
                                                 array('controller' => 'idols',
                                                     'action' => 'view',
-                                                    'id' => $idol['Idol']['id'],
-                                                    'title' => Inflector::slug($idol['Idol']['eName'])),
-                                                array('class' => 'noLinkStyle'));?>
+                                                    Inflector::slug($idol['Idol']['eName'])),
+                                                array('class' => 'noLinkStyle', 'escape' => false));?>
                                         </div>
                                     <?php
                                     }

@@ -50,6 +50,10 @@ a:active {
     display: none;
 }
 
+.awakenedStats {
+    display: none;
+}
+
 .noLinkStyle {
     text-decoration: none;
     color: inherit;
@@ -200,7 +204,16 @@ a:active {
     border-color: #F8D060;
 }
 
-    /*BACK TO TOP*/
+.singleCard hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.icon {
+    padding: 5px;
+}
+
+/*BACK TO TOP*/
 #back-to-top {
     position: fixed;
     bottom: 50px;
@@ -751,6 +764,11 @@ a:active {
 
     .featurette-heading {
         margin-top: 120px;
+    }
+
+    #idolSign {
+        height: 50%;
+        width: 50%;
     }
 }
 
