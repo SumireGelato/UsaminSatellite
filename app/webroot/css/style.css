@@ -213,6 +213,10 @@ a:active {
     padding: 5px;
 }
 
+#autofilljp {
+    margin-top: 25px;
+}
+
 /*BACK TO TOP*/
 #back-to-top {
     position: fixed;

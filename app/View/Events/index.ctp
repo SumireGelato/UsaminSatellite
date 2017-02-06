@@ -104,6 +104,13 @@ if ($currentEvent['Event']['type'] != 'Caravan' && $currentEvent['Event']['type'
                     'class' => 'btn btn-xs rewardIcons', 'url' => array('controller' => 'cards',
                         'action' => 'view',
                         $card['card_id'])));
+                if ($currentEvent['Event']['type'] != 'Caravan' && $currentEvent['Event']['type'] != 'Coop' && $currentEvent['Event']['type'] != 'Parade') {
+                    if ($currentEvent['Event']['ranking'] == $card['card_id']) {
+                        echo '<p>Ranking Reward</p>';
+                    } else if ($currentEvent['Event']['points'] == $card['card_id']) {
+                        echo '<p>Points Reward</p>';
+                    }
+                }
             }
             ?>
         </div>

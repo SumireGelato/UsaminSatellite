@@ -270,6 +270,10 @@ class CardsController extends AppController
         }
         else {
             if ($this->request->is('post')) {
+                ini_set('upload_max_filesize', '10M');
+                ini_set('post_max_size', '10M');
+                ini_set('max_input_time', 300);
+                ini_set('max execution_time', 300);
                 $this->Card->create();
                 //Check if image has been uploaded
                 if (!empty($this->request->data['Card']['baseArt']['name'])) {
@@ -435,6 +439,10 @@ class CardsController extends AppController
         }
         else {
             if ($this->request->is(array('post', 'put'))) {
+                ini_set('upload_max_filesize', '10M');
+                ini_set('post_max_size', '10M');
+                ini_set('max_input_time', 300);
+                ini_set('max execution_time', 300);
                 //Check if image has been uploaded
                 if (!empty($this->request->data['Card']['baseArt']['name'])) {
                     $baseArt = $this->request->data['Card']['baseArt'];//put the data into a var for easy use

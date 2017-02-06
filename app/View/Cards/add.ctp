@@ -20,38 +20,6 @@ $this->set('title_for_layout', 'Add Card');
         <p>Remember to add events and idols before the cards for easier data entry!</p>
     </div>
 </div>
-<div class="row container table-responsive" style="font-size: 0.8em">
-    <div class="col-lg-6">
-        <table class="table table-condensed table-bordered">
-            <tr>
-                <td><strong>Low Probability</strong></td>
-                <td><strong>Medium Probability</strong></td>
-                <td><strong>High Probability</strong></td>
-            </tr>
-            <tr>
-                <td>30% - 45%</td>
-                <td>35% - 52.5%</td>
-                <td>40% - 60%</td>
-            </tr>
-        </table>
-    </div>
-    <div class="col-lg-6">
-        <table class="table table-condensed table-bordered">
-            <tr>
-                <td><strong>considerable length of time</strong></td>
-                <td><strong>some time</strong></td>
-                <td><strong>short time</strong></td>
-                <td><strong>very short time</strong></td>
-            </tr>
-            <tr>
-                <td>6 - 9 sec</td>
-                <td>5 - 7.5 sec</td>
-                <td>4 - 6 sec</td>
-                <td>3 - 4.5 sec or less</td>
-            </tr>
-        </table>
-    </div>
-</div>
 <div class="row">
     <div class="col-lg-12">
         <?php
@@ -68,25 +36,58 @@ $this->set('title_for_layout', 'Add Card');
         <fieldset>
             <?php
             echo $this->Form->input('id');
-            echo '<div class="row">';
-            echo '<div class="col-lg-3">';
+            echo '<div class="row center-block text-center">';
+            echo '<div class="col-lg-4">';
             echo $this->Form->input('idol_id');
             echo $this->Form->input('event_id', array('options' => $sourceList, 'empty' => 'Gacha'));
             echo $this->Form->input('card_id', array('type' => 'text', 'label' => 'Card Number'));
             echo $this->Form->input('eName');
+            echo '</div>';
+            echo '<div class="col-lg-4">';
+            echo '<div class="row">';
+            echo '<div class="col-lg-8" style="padding-right: 0">';
             echo $this->Form->input('jName');
             echo '</div>';
-            echo '<div class="col-lg-3">';
+            echo '<div class="col-lg-4" style="padding-left: 0">';
+            echo '<button id="autofilljp" class="btn btn-default" type="button">Fill in japanese</button>';
+            echo '</div>';
+            echo '</div>';
             $rarityOptions = array('N' => 'N', 'R' => 'R', 'SR' => 'SR', 'SSR' => 'SSR');
             echo $this->Form->input('rarity', array('options' => $rarityOptions, 'empty' => ''));
             $typeOptions = array('Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion');
             echo $this->Form->input('type', array('options' => $typeOptions));
             echo $this->Form->input('dateAdded', array('type' => 'text', 'class' => 'form-control', 'id' => 'datepicker'));
             echo $this->Form->input('limited', array('class' => 'form-inline'));
-            echo $this->Form->input('centerSkillText', array('type' => 'textarea', 'rows' => '2'));
             echo '</div>';
-            echo '<div class="col-lg-3">';
-            $options = array(
+            echo '<div class="col-lg-4">';
+            echo $this->Form->input('baseArt', array('type' => 'file'));
+            echo $this->Form->input('awkArt', array('type' => 'file'));
+            echo $this->Form->input('baseIconArt', array('type' => 'file'));
+            echo $this->Form->input('awkIconArt', array('type' => 'file'));
+            echo '</div>';
+            echo '</div>';
+            echo '<hr/>';
+            echo '<div class="row center-block text-center">';
+            echo '<div class="col-lg-4">';
+            $appealOptions = array('Vocal' => 'Vocal', 'Dance' => 'Dance', 'Visual' => 'Visual', 'Life' => 'Life',
+                'Skill Probability' => 'Skill Probability', 'All Appeals' => 'All Appeals');
+            echo $this->Form->input('appealType', array('options' => $appealOptions));
+            echo '</div>';
+            echo '<div class="col-lg-4">';
+            $typeOptions2 = array('Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion', 'All' => 'All');
+            echo $this->Form->input('centerSkillType', array('options' => $typeOptions2));
+            echo '</div>';
+            echo '<div class="col-lg-4">';
+            echo $this->Form->input('bonusAmount');
+            echo '</div>';
+            echo '</div>';
+            echo '<div class="row center-block text-center">';
+            echo $this->Form->input('centerSkillText');
+            echo '</div>';
+            echo '<hr/>';
+            echo '<div class="row center-block text-center">';
+            echo '<div class="col-lg-4 col-lg-offset-4">';
+            $skillOptions = array(
                 1 => array('name' => 'Perfect Lock (All Variants)', 'value' => 'Perfect Lock'),
                 2 => array('name' => 'Combo Lock', 'value' => 'Combo Lock'),
                 3 => array('name' => 'Healer', 'value' => 'Healer'),
@@ -95,14 +96,72 @@ $this->set('title_for_layout', 'Add Card');
                 6 => array('name' => 'Overload', 'value' => 'Overload'),
                 7 => array('name' => 'Score Bonus', 'value' => 'Score Boost'),
                 8 => array('name' => 'No Skill', 'value' => 'No Skill'));
-            echo $this->Form->input('specialSkillType', array('options' => $options, 'empty' => ''));
-            echo $this->Form->input('specialSkillText');
+            echo $this->Form->input('specialSkillType', array('options' => $skillOptions));
+            echo '</div>';
+            echo '</div>';
+            echo '<div class="skillDetails row center-block text-center">';
+
+            echo '<div class="perfectlock show">';
+            echo '<div class="col-lg-3">';
+            $rarityLockOptions = array('GREATs, NICEs and BADs' => 'SSR', 'GREATs and NICEs' => 'SR', 'GREATs' => 'R');
+            echo $this->Form->input('rarityLock', array('options' => $rarityLockOptions));
+            echo '</div>';
+            echo '</div>';
+
+            echo '<div class="healer hidden">';
+            echo '<div class="col-lg-3">';
+            echo $this->Form->input('healAmount');
+            echo '</div>';
+            echo '</div>';
+
+            echo '<div class="combobonus hidden">';
+            echo '<div class="col-lg-3">';
+            echo $this->Form->input('comboBonusAmount');
+            echo '</div>';
+            echo '</div>';
+
+            echo '<div class="overload hidden">';
+            echo '<div class="col-lg-3">';
+            echo $this->Form->input('overloadBonusAmount');
             echo '</div>';
             echo '<div class="col-lg-3">';
-            echo $this->Form->input('baseArt', array('type' => 'file'));
-            echo $this->Form->input('awkArt', array('type' => 'file'));
-            echo $this->Form->input('baseIconArt', array('type' => 'file'));
-            echo $this->Form->input('awkIconArt', array('type' => 'file'));
+            echo $this->Form->input('lifeCost');
+            echo '</div>';
+            echo '</div>';
+
+            echo '<div class="scorebonus hidden">';
+            echo '<div class="col-lg-3">';
+            $rarityBonusOptions = array('PERFECT/GREAT' => 'SSR', 'PERFECT' => 'SR & R');
+            echo $this->Form->input('rarityBonus', array('options' => $rarityBonusOptions));
+            echo '</div>';
+            echo '<div class="col-lg-3">';
+            echo $this->Form->input('scoreBonusAmount');
+            echo '</div>';
+            echo '</div>';
+
+            echo '<div class="col-lg-3">';
+            $probOptions = array('high' => 'High (40% - 60%)', 'medium' => 'Medium (35% - 52.5%)', 'low' => 'Low (30% - 45%)');
+            echo $this->Form->input('probability', array('options' => $probOptions));
+            echo '</div>';
+            echo '<div class="col-lg-3">';
+            echo $this->Form->input('time');
+            echo '</div>';
+            echo '<div class="col-lg-3">';
+            $lengthOptions = array('a considerable length of time' => '6 - 9 sec', 'some time' => '5 - 7.5 sec',
+                'a short time' => '4 - 6 sec', 'a very short time' => '3 - 4.5 sec or less');
+            echo $this->Form->input('length', array('options' => $lengthOptions));
+            echo '</div>';
+            echo '</div>';
+
+            echo '<div class="row center-block text-center">';
+            echo '<div class="col-lg-12">';
+            echo '<button id="constructSkill" class="btn btn-default" type="button" style="margin-bottom: 10px">Construct Skill</button>';
+            echo '</div>';
+            echo '</div>';
+
+            echo '<div class="row center-block text-center">';
+            echo '<div class="col-lg-12">';
+            echo $this->Form->input('specialSkillText', array('rows' => '2'));
             echo '</div>';
             echo '</div>';
             echo '<hr/>';
@@ -185,47 +244,210 @@ $this->set('title_for_layout', 'Add Card');
         } );
     });
 
+    function writeCenterSkill(appeal, type, bonus) {
+        var skillText;
+        if (appeal == "Life") {
+            skillText = appeal + " of all " + type + " idols up " + bonus + "%"
+        } else if (appeal == "All Appeals" || appeal == "Skill Probability") {
+            skillText = appeal + " of all " + type + " idols up " + bonus + "%"
+        } else {
+            if(type == "All") {
+                skillText = appeal + " Appeal of " + type + " idols up " + bonus + "% when there is Cute, Cool and Passion idols in the same unit"
+            }
+            else {
+                skillText = appeal + " Appeal of all " + type + " idols up " + bonus + "%"
+            }
+        }
+        return skillText;
+    }
+
     $(function() {
         var idolSelector = $("#CardIdolId");
 
         idolSelector.change(function() {
             var selected = idolSelector.find("option:selected").text();
-            $("#CardEName").val('"name" '+selected);
+            $("#CardEName").val(selected);
         });
 
-        $("#CardCenterSkillText").val('Vocal Appeal of all Cool idols up 60%');
+        var centerAppealSelector = $("#CardAppealType");
+        var centerSkillTypeSelector = $("#CardCenterSkillType");
+        var centerBonusSelector = $("#CardBonusAmount");
+        var centerSkillText = $("#CardCenterSkillText");
+
+        centerAppealSelector.change(function(){
+            centerSkillText.val(writeCenterSkill(
+                centerAppealSelector.find("option:selected").text(),
+                centerSkillTypeSelector.find("option:selected").text(),
+                centerBonusSelector.val()));
+        });
+        centerSkillTypeSelector.change(function(){
+            centerSkillText.val(writeCenterSkill(
+                centerAppealSelector.find("option:selected").text(),
+                centerSkillTypeSelector.find("option:selected").text(),
+                centerBonusSelector.val()));
+        });
+        centerBonusSelector.keyup(function(){
+            centerSkillText.val(writeCenterSkill(
+                centerAppealSelector.find("option:selected").text(),
+                centerSkillTypeSelector.find("option:selected").text(),
+                centerBonusSelector.val()));
+        });
 
         var skillSelector = $("#CardSpecialSkillType");
+        var skillDetailDiv = $(".skillDetails");
+        var skillBox = $("#CardSpecialSkillText");
+
 
         skillSelector.change(function() {
             var selected = skillSelector.find("option:selected").val();
-            var skillBox = $("#CardSpecialSkillText");
+            var oldActiveSkill = skillDetailDiv.find(".show");
+            var perfectLockDiv = skillDetailDiv.find(".perfectlock");
+            var healerDiv = skillDetailDiv.find(".healer");
+            var comboBonusDiv = skillDetailDiv.find(".combobonus");
+            var overloadDiv = skillDetailDiv.find(".overload");
+            var scoreBonusDiv = skillDetailDiv.find(".scorebonus");
+
             switch(selected) {
                 case "Perfect Lock":
-                    skillBox.val('GREATs, NICEs and BADs become PERFECTs temporarily, high probability of triggering every 15 seconds for a ' +
-                    'considerable length of time.');
+                    oldActiveSkill.toggleClass("hidden");
+                    perfectLockDiv.toggleClass("hidden");
+                    oldActiveSkill.toggleClass("show");
+                    perfectLockDiv.toggleClass("show");
                     break;
                 case "Combo Lock":
-                    skillBox.val('COMBO is maintained on NICEs temporarily, medium probability of triggering every 12 seconds for some time.');
+                    oldActiveSkill.toggleClass("hidden");
+                    oldActiveSkill.toggleClass("show");
                     break;
                 case "Healer":
-                    skillBox.val('PERFECTs recover 3 life, high probability of triggering every 13 seconds for some time.');
+                    oldActiveSkill.toggleClass("hidden");
+                    healerDiv.toggleClass("hidden");
+                    oldActiveSkill.toggleClass("show");
+                    healerDiv.toggleClass("show");
                     break;
                 case "Damage Guard":
-                    skillBox.val('Life does not decrease temporarily, medium probability of triggering every 11 seconds for a considerable length ' +
-                    'of time.');
+                    oldActiveSkill.toggleClass("hidden");
+                    oldActiveSkill.toggleClass("show");
                     break;
                 case "Combo Bonus":
-                    skillBox.val('COMBO pt bonus 15% up, medium probability of triggering every 7 seconds for a short time.');
+                    oldActiveSkill.toggleClass("hidden");
+                    comboBonusDiv.toggleClass("hidden");
+                    oldActiveSkill.toggleClass("show");
+                    comboBonusDiv.toggleClass("show");
                     break;
                 case "Score Boost":
-                    skillBox.val('PERFECT/GREAT score 15% up, medium probability of triggering every 9 seconds for some time.');
+                    oldActiveSkill.toggleClass("hidden");
+                    scoreBonusDiv.toggleClass("hidden");
+                    oldActiveSkill.toggleClass("show");
+                    scoreBonusDiv.toggleClass("show");
                     break;
                 case "Overload":
-                    skillBox.val('All notes score 16% up and COMBO is maintained on NICEs temporarily at the cost ' +
-                        'of 15 life, medium probability of triggering every 15 seconds for some time');
+                    oldActiveSkill.toggleClass("hidden");
+                    overloadDiv.toggleClass("hidden");
+                    oldActiveSkill.toggleClass("show");
+                    overloadDiv.toggleClass("show");
+                    break;
+                default:
+                    break;
             }
+
         });
+
+        $("#constructSkill").click(function() {
+            var skillString;
+            var selected = skillSelector.find("option:selected").val();
+            var probabilitySelector = $("#CardProbability");
+            var timeSelector = $("#CardTime");
+            var lengthSelector = $("#CardLength");
+            switch(selected) {
+                case "Perfect Lock":
+                    skillString =
+                    $("#CardRarityLock").find("option:selected").val() +
+                    " become PERFECTs temporarily, " +
+                    probabilitySelector.find("option:selected").val() +
+                    " probability of triggering every " +
+                    timeSelector.val() +
+                    " seconds for " +
+                    lengthSelector.find("option:selected").val()+".";
+                    break;
+                case "Combo Lock":
+                    skillString =
+                    "COMBO is maintained on NICEs temporarily, " +
+                    probabilitySelector.find("option:selected").val() +
+                    " probability of triggering every " +
+                    timeSelector.val() +
+                    " seconds for " +
+                    lengthSelector.find("option:selected").val()+".";
+                    break;
+                case "Healer":
+                    skillString =
+                    "PERFECTs recover " +
+                    $("#CardHealAmount").val() +
+                    " life, " +
+                    probabilitySelector.find("option:selected").val() +
+                    " probability of triggering every " +
+                    timeSelector.val() +
+                    " seconds for " +
+                    lengthSelector.find("option:selected").val()+".";
+                    break;
+                case "Damage Guard":
+                    skillString =
+                    "Life does not decrease temporarily, " +
+                    probabilitySelector.find("option:selected").val() +
+                    " probability of triggering every " +
+                    timeSelector.val() +
+                    " seconds for " +
+                    lengthSelector.find("option:selected").val()+".";
+                    break;
+                case "Combo Bonus":
+                    skillString =
+                    "COMBO pt bonus " +
+                    $("#CardComboBonusAmount").val() +
+                    "% up, " +
+                    probabilitySelector.find("option:selected").val() +
+                    " probability of triggering every " +
+                    timeSelector.val() +
+                    " seconds for " +
+                    lengthSelector.find("option:selected").val()+".";
+                    break;
+                case "Score Boost":
+                    skillString =
+                    $("#CardRarityBonus").find("option:selected").val() +
+                    " score " +
+                    $("#CardScoreBonusAmount").val() +
+                    "% up, " +
+                    probabilitySelector.find("option:selected").val() +
+                    " probability of triggering every " +
+                    timeSelector.val() +
+                    " seconds for " +
+                    lengthSelector.find("option:selected").val()+".";
+                    break;
+                case "Overload":
+                    skillString =
+                    "All notes score " +
+                    $("#CardOverloadBonusAmount").val() +
+                    "% up and COMBO is maintained on NICEs temporarily at the cost of " +
+                    $("#CardLifeCost").val() +
+                    " life, " +
+                    probabilitySelector.find("option:selected").val() +
+                    " probability of triggering every " +
+                    timeSelector.val() +
+                    " seconds for " +
+                    lengthSelector.find("option:selected").val()+".";
+                    break;
+                default:
+                    break;
+            }
+            skillBox.val(skillString);
+        });
+
+        $("#autofilljp").click(function() {
+            var id = $("#CardCardId").val();
+            var baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
+            $.post(baseUrl, {id: id, type: "autofill"}, function( data ) {
+                $("#CardJName").val(data.result[0]["name"]);
+            }, "json");
+        });
+
         $("#autofillBase").click(function() {
             var id = $("#CardCardId").val();
             var baseUrl = [location.protocol, '//', location.host, location.pathname].join('');

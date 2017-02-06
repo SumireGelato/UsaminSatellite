@@ -62,7 +62,16 @@ $this->set('title_for_layout', 'Edit Event');
             echo '<div class="col-lg-4">';
             echo $this->Form->input('pic', array('type' => 'file'));
             echo '<p style="font-size: small">Current filename is: '.$this->request->data['Event']['pic'].'</p>';
-
+            $rewards = array();
+            foreach ($this->request->data['Card'] as $card) {
+                $rewards[$card['card_id']] = $card['eName'];
+            }
+            echo $this->Form->input('ranking', array(
+                'options' => $rewards
+            ));
+            echo $this->Form->input('points', array(
+                'options' => $rewards,
+            ));
             echo $this->Form->submit('Save', array(
                 'div' => 'form-group',
                 'class' => 'btn btn-default'
