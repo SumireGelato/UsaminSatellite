@@ -72,14 +72,14 @@ if (!$this->request->is('ajax')) {
                 <?php
                 echo $this->Form->input('id');
                 echo '<div class="row">';
-                echo '<div class="col-lg-3">';
+                echo '<div class="col-lg-4">';
                 echo $this->Form->input('idol_id');
                 echo $this->Form->input('event_id', array('options' => $sourceList, 'empty' => 'Gacha'));
                 echo $this->Form->input('card_id', array('type' => 'text', 'label' => 'Card Number'));
                 echo $this->Form->input('eName');
                 echo $this->Form->input('jName');
                 echo '</div>';
-                echo '<div class="col-lg-3">';
+                echo '<div class="col-lg-4">';
                 $rarityOptions = array('N' => 'N', 'R' => 'R', 'SR' => 'SR', 'SSR' => 'SSR');
                 echo $this->Form->input('rarity', array('options' => $rarityOptions));
                 $typeOptions = array('Cute' => 'Cute', 'Cool' => 'Cool', 'Passion' => 'Passion');
@@ -89,7 +89,7 @@ if (!$this->request->is('ajax')) {
                 echo $this->Form->input('limited', array('class' => 'form-inline'));
                 echo $this->Form->input('centerSkillText', array('type' => 'textarea', 'rows' => '2'));
                 echo '</div>';
-                echo '<div class="col-lg-3">';
+                echo '<div class="col-lg-4">';
                 $options = array(
                     1 => array('name' => 'Perfect Lock (All Variants)', 'value' => 'Perfect Lock'),
                     2 => array('name' => 'Combo Lock', 'value' => 'Combo Lock'),
@@ -101,16 +101,30 @@ if (!$this->request->is('ajax')) {
                     8 => array('name' => 'No Skill', 'value' => 'No Skill'));
                 echo $this->Form->input('specialSkillType', array('options' => $options));
                 echo $this->Form->input('specialSkillText');
+                echo '<div class="row">';
+                    echo '<div class="col-lg-6">';
+                        echo '<p>Reg Art: '; if(true) echo 'yes'; else echo 'no'; echo '</p>';
+                    echo '</div>';
+                    echo '<div class="col-lg-6">';
+                        echo '<p>Awk Art: '; if(true) echo 'yes'; else echo 'no'; echo '</p>';
+                    echo '</div>';
                 echo '</div>';
-                echo '<div class="col-lg-3">';
-                echo $this->Form->input('baseArt', array('type' => 'file'));
-                echo '<p style="font-size: small">Current filename is: ' . $this->request->data['Card']['baseArt'] . '</p>';
-                echo $this->Form->input('awkArt', array('type' => 'file'));
-                echo '<p style="font-size: small">Current filename is: ' . $this->request->data['Card']['awkArt'] . '</p>';
-                echo $this->Form->input('baseIconArt', array('type' => 'file'));
-                echo '<p style="font-size: small">Current filename is: ' . $this->request->data['Card']['baseIconArt'] . '</p>';
-                echo $this->Form->input('awkIconArt', array('type' => 'file'));
-                echo '<p style="font-size: small">Current filename is: ' . $this->request->data['Card']['awkIconArt'] . '</p>';
+                echo '<div class="row">';
+                    echo '<div class="col-lg-6">';
+                        echo '<p>Reg Icon: '; if(true) echo 'yes'; else echo 'no'; echo '</p>';
+                    echo '</div>';
+                    echo '<div class="col-lg-6">';
+                        echo '<p>Awk Icon: '; if(true) echo 'yes'; else echo 'no'; echo '</p>';
+                    echo '</div>';
+                echo '</div>';
+                echo '<div class="row">';
+                    echo '<div class="col-lg-6">';
+                        echo '<p>Reg Puchi: '; if(true) echo 'yes'; else echo 'no'; echo '</p>';
+                    echo '</div>';
+                    echo '<div class="col-lg-6">';
+                        echo '<p>Awk Puchi: '; if(true) echo 'yes'; else echo 'no'; echo '</p>';
+                    echo '</div>';
+                echo '</div>';
                 echo '</div>';
                 echo '</div>';
                 echo '<hr/>';

@@ -16,8 +16,11 @@ $this->set('title_for_layout', 'Add Card');
         <div class="col-lg-4"><?php echo $this->Html->link(__('Back to Control Panel'), array('controller' => 'users', 'action' => 'controlpanel'), array('class' => 'noLinkStyle')); ?></div>
 </div>
 <div class="row container">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <p>Remember to add events and idols before the cards for easier data entry!</p>
+    </div>
+    <div class="col-lg-6">
+        <p>Remember to upload images!</p>
     </div>
 </div>
 <div class="row">
@@ -37,13 +40,13 @@ $this->set('title_for_layout', 'Add Card');
             <?php
             echo $this->Form->input('id');
             echo '<div class="row center-block text-center">';
-            echo '<div class="col-lg-4">';
+            echo '<div class="col-lg-6">';
             echo $this->Form->input('idol_id');
             echo $this->Form->input('event_id', array('options' => $sourceList, 'empty' => 'Gacha'));
             echo $this->Form->input('card_id', array('type' => 'text', 'label' => 'Card Number'));
             echo $this->Form->input('eName');
             echo '</div>';
-            echo '<div class="col-lg-4">';
+            echo '<div class="col-lg-6">';
             echo '<div class="row">';
             echo '<div class="col-lg-8" style="padding-right: 0">';
             echo $this->Form->input('jName');
@@ -58,12 +61,6 @@ $this->set('title_for_layout', 'Add Card');
             echo $this->Form->input('type', array('options' => $typeOptions));
             echo $this->Form->input('dateAdded', array('type' => 'text', 'class' => 'form-control', 'id' => 'datepicker'));
             echo $this->Form->input('limited', array('class' => 'form-inline'));
-            echo '</div>';
-            echo '<div class="col-lg-4">';
-            echo $this->Form->input('baseArt', array('type' => 'file'));
-            echo $this->Form->input('awkArt', array('type' => 'file'));
-            echo $this->Form->input('baseIconArt', array('type' => 'file'));
-            echo $this->Form->input('awkIconArt', array('type' => 'file'));
             echo '</div>';
             echo '</div>';
             echo '<hr/>';
