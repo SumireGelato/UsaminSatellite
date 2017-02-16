@@ -394,7 +394,11 @@ if ($card['rarity'] != 'N' || $card['rarity'] != 'R') echo 'style="padding: 0"';
             'width' => '63px',
             'class' => 'icon',
             'data-baseicon' => $card['baseIconArt'],
-            'data-awkicon' => $card['awkIconArt'])); ?>
+            'data-awkicon' => $card['awkIconArt'],
+            'url' => array('controller' => 'idols',
+                'action' => 'view',
+                'id' => $card['Idol']['id'],
+                'title' => Inflector::slug($card['Idol']['eName'])))); ?>
     </div>
     <div class="col-xs-5">
         <p><span style="font-weight: bold">Rarity: </span><?php echo $card['rarity']; ?></p>

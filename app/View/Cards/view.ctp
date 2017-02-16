@@ -444,7 +444,7 @@ if ($card['Card']['rarity'] != 'N') {
                         '/img/cards/' . $card['Card']['awkArt'], array('escape' => false, 'target' => '_blank')); ?></p>
 
                 <p><?php echo $this->Html->link('Puchi <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>',
-                        '/img/puchi/' . 'petit_' . ($card['Card']['card_id'] + 1) . '.dds.png', array('escape' => false, 'target' => '_blank')); ?></p>
+                        '/img/puchis/' . 'petit_' . ($card['Card']['card_id'] + 1) . '.dds.png', array('escape' => false, 'target' => '_blank')); ?></p>
 
                 <p><?php echo $this->Html->link('Icon <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>',
                         '/img/cards/' . $card['Card']['awkIconArt'], array('escape' => false, 'target' => '_blank')); ?></p>

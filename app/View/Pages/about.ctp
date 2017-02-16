@@ -98,8 +98,7 @@
                 hardcore Starlight Stage player!<br/>I made this website from scratch, don't earn any money out of it and
                 don't have any income so any <?php echo $this->Html->link('donations', '/donate') ?> will be greatly appreciated!<br/>
                 This is the first time I've tackled a website of this size and I've tried to keep things user and mobile friendly!<br/>
-                If you have any suggestions and comments please use <a href="https://docs.google
-                        .com/document/d/16Cyub-6iLSj0dTPGwz-6rBo_49lxC6UrwYL21SRruTc/edit?usp=sharing">this</a> Google doc and I'll look at it as
+                If you have any suggestions and comments please use <a href="https://docs.google.com/document/d/16Cyub-6iLSj0dTPGwz-6rBo_49lxC6UrwYL21SRruTc/edit?usp=sharing">this</a> Google doc and I'll look at it as
                 soon as I can!
             </p>
         </section>
@@ -111,8 +110,7 @@
         <p>If you see any errors or anything breaks please send me a email to
             <a href="mailto:usamindevs@gmail.com" target="_top">usamindevs@gmail.com</a></p>
 
-        <p>For all suggestions and comments please make a comment on <a href="https://docs.google
-                        .com/document/d/16Cyub-6iLSj0dTPGwz-6rBo_49lxC6UrwYL21SRruTc/edit?usp=sharing">this</a> Google doc and I'll look at it as
+        <p>For all suggestions and comments please make a comment on <a href="https://docs.google.com/document/d/16Cyub-6iLSj0dTPGwz-6rBo_49lxC6UrwYL21SRruTc/edit?usp=sharing">this</a> Google doc and I'll look at it as
             soon as I can!</p>
     </section>
     <hr/>
