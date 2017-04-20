@@ -1061,7 +1061,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `created`, `modified`) VALUES
-(1, 'pangster123@gmail.com', '$2a$10$hpSXwfAUz010c7w7NuM3iO5Z29s4gfEqelPC8zX5R/r6XCKN2v4Ou', 'admin', '2016-02-06 08:26:09', '2017-04-20 09:11:10');
+(1, 'admin@example.com', '$2a$10$hpSXwfAUz010c7w7NuM3iO5Z29s4gfEqelPC8zX5R/r6XCKN2v4Ou', 'admin', '2016-02-06 08:26:09', '2017-04-20 09:11:10');
 
 DROP TABLE IF EXISTS `websites`;
 CREATE TABLE IF NOT EXISTS `websites` (
