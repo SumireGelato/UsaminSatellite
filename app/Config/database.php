@@ -67,13 +67,13 @@
 class DATABASE_CONFIG
 {
 
-    public $default = array(
+public $default = array(
         'datasource' => 'Database/Mysql',
         'persistent' => false,
         'host' => '127.0.0.1',
-        'login' => 'usamin',
-        'password' => 'StarlightBreaker123',
-        'database' => 'satelite',
+        'login' => 'root',
+        'password' => '',
+        'database' => 'satellite',
         'prefix' => '',
         'encoding' => 'utf8',
     );

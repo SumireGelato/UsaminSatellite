@@ -6,8 +6,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
-CREATE DATABASE IF NOT EXISTS `satelite` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `satelite`;
+CREATE DATABASE IF NOT EXISTS `satellite` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `satellite`;
 
 DROP TABLE IF EXISTS `cards`;
 CREATE TABLE IF NOT EXISTS `cards` (
@@ -1061,7 +1061,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `created`, `modified`) VALUES
-(1, 'pangster123@gmail.com', '$2a$10$Jzopawbn/OX93Tf8gDCghOHnNodZH/DXQ4l9NDMU6ccvCgbpuwfzO', 'admin', '2016-02-06 08:26:09', '2016-02-06 08:26:09');
+(1, 'pangster123@gmail.com', '$2a$10$hpSXwfAUz010c7w7NuM3iO5Z29s4gfEqelPC8zX5R/r6XCKN2v4Ou', 'admin', '2016-02-06 08:26:09', '2017-04-20 09:11:10');
 
 DROP TABLE IF EXISTS `websites`;
 CREATE TABLE IF NOT EXISTS `websites` (
