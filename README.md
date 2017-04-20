@@ -7,6 +7,8 @@ Requirements:
 
 Extract into root of cakephp directory replacing the /app and import satellite.sql into MySQL
 
+Go to UsaminSatellite/admin login with username: admin@example.com password: password
+
 Change these things before doing anything:
 * /Applications/XAMPP/xamppfiles/htdocs/Satelite/app/View/Songs/index.ctp
 * database settings
